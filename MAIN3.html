@@ -412,8 +412,189 @@ body {
 .pay-unpaid  { background: #fee2e2; color: #991b1b; }
 
 /* ══════════════════════════════════════
-   EMPTY STATE
+   SELECTION MODE
 ══════════════════════════════════════ */
+.booking-card.selected {
+  border-color: var(--red) !important;
+  box-shadow: 0 0 0 2px rgba(220,38,38,0.18), 0 4px 16px rgba(220,38,38,0.1) !important;
+  background: #fff5f5;
+}
+.booking-card.selected .bc-status-stripe {
+  background: var(--red) !important;
+}
+.bc-select-check {
+  display: none;
+  width: 22px; height: 22px;
+  border-radius: 6px;
+  border: 2px solid var(--border);
+  background: white;
+  align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-size: 13px;
+  transition: all 0.15s;
+  cursor: pointer;
+  margin-right: 4px;
+}
+.selection-mode .bc-select-check { display: flex; }
+.booking-card.selected .bc-select-check {
+  background: var(--red);
+  border-color: var(--red);
+  color: white;
+}
+/* In selection mode, disable hover transform on non-selected */
+.selection-mode .booking-card:not(.selected):hover {
+  transform: none;
+}
+/* Long-press ripple feedback */
+.booking-card.pressing {
+  transform: scale(0.985);
+  transition: transform 0.1s;
+}
+
+/* ── Floating bulk-delete bar ── */
+.bulk-bar {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(120px);
+  background: var(--navy);
+  color: white;
+  border-radius: 16px;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 12px 40px rgba(12,20,69,0.35);
+  z-index: 400;
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  white-space: nowrap;
+  min-width: 280px;
+}
+.bulk-bar.visible {
+  transform: translateX(-50%) translateY(0);
+}
+.bulk-bar-count {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  background: rgba(255,255,255,0.12);
+  padding: 4px 10px;
+  border-radius: 8px;
+  min-width: 32px;
+  text-align: center;
+}
+.bulk-bar-label { font-size: 13px; font-weight: 600; flex: 1; }
+.bulk-bar-select-all {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: white;
+  padding: 7px 12px;
+  border-radius: 9px;
+  font-size: 12px; font-weight: 700;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  transition: background 0.15s;
+}
+.bulk-bar-select-all:hover { background: rgba(255,255,255,0.18); }
+.bulk-bar-delete {
+  background: var(--red);
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 13px; font-weight: 800;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  display: flex; align-items: center; gap: 6px;
+  box-shadow: 0 3px 12px rgba(220,38,38,0.4);
+  transition: background 0.15s;
+}
+.bulk-bar-delete:hover { background: #b91c1c; }
+.bulk-bar-cancel {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.7);
+  padding: 7px 12px;
+  border-radius: 9px;
+  font-size: 12px; font-weight: 600;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  transition: all 0.15s;
+}
+.bulk-bar-cancel:hover { border-color: rgba(255,255,255,0.5); color: white; }
+
+/* Selection mode hint on cards */
+.selection-mode .booking-card { cursor: default; }
+.selection-mode .booking-card .bc-main { user-select: none; }
+
+/* ══════════════════════════════════════
+   EDIT MODAL
+══════════════════════════════════════ */
+.edit-modal-box {
+  background: white; border-radius: 20px;
+  width: 100%; max-width: 540px;
+  max-height: 90vh; display: flex; flex-direction: column;
+  overflow: hidden; box-shadow: 0 30px 80px rgba(12,20,69,0.25);
+  animation: slideUp 0.25s ease;
+}
+.edit-head {
+  background: linear-gradient(135deg, var(--navy), #1e3a8a);
+  padding: 20px 26px; color: white;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.edit-head h2 { font-size: 17px; font-weight: 800; }
+.edit-head p  { font-size: 12px; opacity: 0.6; margin-top: 2px; }
+.edit-close {
+  background: rgba(255,255,255,0.1); border: none; color: white;
+  width: 30px; height: 30px; border-radius: 8px; font-size: 15px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+}
+.edit-close:hover { background: rgba(255,255,255,0.2); }
+.edit-body { flex: 1; overflow-y: auto; padding: 22px 26px; display: flex; flex-direction: column; gap: 14px; }
+.edit-field { display: flex; flex-direction: column; gap: 5px; }
+.edit-label {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.8px; color: var(--muted);
+}
+.edit-input {
+  border: 1.5px solid var(--border); border-radius: 10px;
+  padding: 10px 13px; font-size: 14px; font-family: 'Outfit', sans-serif;
+  background: var(--input-bg); outline: none; transition: border-color 0.2s; color: var(--text);
+}
+.edit-input:focus { border-color: var(--blue); background: white; }
+.edit-footer {
+  padding: 16px 26px; border-top: 1px solid var(--border-light);
+  display: flex; gap: 8px; justify-content: flex-end;
+  background: var(--input-bg);
+}
+
+/* ── Undo toast ── */
+.toast.undo {
+  background: #1e293b;
+  display: flex; align-items: center; gap: 10px; cursor: default;
+}
+.toast-undo-btn {
+  background: var(--blue); color: white;
+  border: none; border-radius: 6px;
+  padding: 4px 10px; font-size: 12px; font-weight: 800;
+  cursor: pointer; font-family: 'Outfit', sans-serif;
+  white-space: nowrap; flex-shrink: 0;
+}
+.toast-undo-btn:hover { background: var(--blue-dark); }
+
+/* ── Copy ID ── */
+.copy-id-btn {
+  cursor: pointer; user-select: none;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 6px; border-radius: 5px;
+  transition: background 0.15s;
+}
+.copy-id-btn:hover { background: var(--blue-pale); color: var(--blue); }
+.copy-id-btn:active { transform: scale(0.95); }
+
+/* ── Export btn in filter bar ── */
+.btn-teal { background: var(--teal); color: white; box-shadow: 0 3px 10px rgba(13,148,136,0.3); }
+.btn-teal:hover { background: #0f766e; }
 .empty-state {
   text-align: center;
   padding: 60px 20px;
@@ -809,6 +990,7 @@ body {
       <option value="name">Patient Name A→Z</option>
     </select>
     <button class="btn-sm btn-outline" onclick="openReportModal()">📊 Daily Report</button>
+    <button class="btn-sm btn-teal" onclick="exportCSV()">⬇️ Export CSV</button>
     <button class="btn-sm btn-primary" onclick="refreshAll()">🔄 Refresh</button>
   </div>
 
@@ -832,6 +1014,50 @@ body {
   </div>
 </div>
 
+<!-- ══ EDIT BOOKING MODAL ══ -->
+<div class="modal-overlay" id="editModal" onclick="if(event.target===this)closeEditModal()">
+  <div class="edit-modal-box">
+    <div class="edit-head">
+      <div>
+        <h2>✏️ Edit Booking</h2>
+        <p id="editModalSubtitle">Update patient details</p>
+      </div>
+      <button class="edit-close" onclick="closeEditModal()">✕</button>
+    </div>
+    <div class="edit-body">
+      <input type="hidden" id="editBookingId">
+      <div class="edit-field">
+        <label class="edit-label">Patient Name</label>
+        <input type="text" class="edit-input" id="editName" placeholder="Full name">
+      </div>
+      <div class="edit-field">
+        <label class="edit-label">Age / Gender</label>
+        <input type="text" class="edit-input" id="editAge" placeholder="e.g. 32Y / Male">
+      </div>
+      <div class="edit-field">
+        <label class="edit-label">Mobile Number</label>
+        <input type="tel" class="edit-input" id="editMobile" placeholder="10-digit mobile">
+      </div>
+      <div class="edit-field">
+        <label class="edit-label">Referring Doctor</label>
+        <input type="text" class="edit-input" id="editDoctor" placeholder="Dr. Name">
+      </div>
+      <div class="edit-field">
+        <label class="edit-label">Sample Date</label>
+        <input type="date" class="edit-input" id="editSampleDate">
+      </div>
+      <div class="edit-field">
+        <label class="edit-label">Notes / Remarks</label>
+        <textarea class="edit-input" id="editNotes" rows="3" placeholder="Any special instructions or notes…" style="resize:vertical;"></textarea>
+      </div>
+    </div>
+    <div class="edit-footer">
+      <button class="btn-sm btn-outline" onclick="closeEditModal()">Cancel</button>
+      <button class="btn-sm btn-primary" onclick="saveEditBooking()">💾 Save Changes</button>
+    </div>
+  </div>
+</div>
+
 <!-- ══ DAILY REPORT MODAL ══ -->
 <div class="modal-overlay" id="reportModal" onclick="if(event.target===this)closeReportModal()">
   <div class="report-modal-box">
@@ -851,7 +1077,7 @@ body {
 </div>
 
 <!-- ══ CONFIRM DELETE MODAL ══ -->
-<div class="modal-overlay" id="confirmModal">
+<div class="modal-overlay" id="confirmModal" onclick="if(event.target===this)closeConfirmModal()">
   <div class="confirm-modal-box">
     <div class="confirm-modal-icon">🗑️</div>
     <h3>Delete Booking?</h3>
@@ -861,6 +1087,15 @@ body {
       <button class="btn-sm btn-danger" style="flex:1" id="confirmDeleteBtn">Delete</button>
     </div>
   </div>
+</div>
+
+<!-- BULK DELETE BAR -->
+<div class="bulk-bar" id="bulkBar">
+  <span class="bulk-bar-count" id="bulkCount">0</span>
+  <span class="bulk-bar-label">selected</span>
+  <button class="bulk-bar-select-all" onclick="bulkSelectAll()">Select All</button>
+  <button class="bulk-bar-delete" onclick="bulkDeleteSelected()">🗑️ Delete</button>
+  <button class="bulk-bar-cancel" onclick="exitSelectionMode()">✕ Cancel</button>
 </div>
 
 <!-- TOAST -->
@@ -885,6 +1120,12 @@ body {
 let allBookings = [];
 let currentStatusFilter = 'All';
 let _detailBookingId = null;
+
+// ── Selection mode state ──
+let _selectionMode = false;
+let _selectedIds = new Set();
+let _longPressTimer = null;
+const LONG_PRESS_MS = 500;
 
 const STATUSES = ['Booked', 'Sample Collected', 'Processing', 'Ready', 'Delivered', 'Cancelled'];
 const STATUS_KEY = {
@@ -1041,6 +1282,9 @@ function updateSummaryCards() {
 function renderBookings() {
   const list = getFilteredBookings();
   const container = document.getElementById('bookingsList');
+  // Preserve selection-mode class
+  if (_selectionMode) container.classList.add('selection-mode');
+  else container.classList.remove('selection-mode');
 
   if (list.length === 0) {
     const msg = allBookings.length === 0
@@ -1072,10 +1316,19 @@ function renderBookings() {
     const discLine = b.totalDisc > 0
       ? `<div class="bc-amount-disc">- ₹${b.totalDisc.toLocaleString()} disc</div>` : '';
 
-    return `<div class="booking-card" onclick="openDetailModal('${b.bookingId}')">
+    return `<div class="booking-card${_selectedIds.has(b.bookingId) ? ' selected' : ''}"
+      data-id="${b.bookingId}"
+      onclick="handleCardClick(event, '${b.bookingId}')"
+      onmousedown="startLongPress(event, '${b.bookingId}')"
+      onmouseup="cancelLongPress()"
+      onmouseleave="cancelLongPress()"
+      ontouchstart="startLongPress(event, '${b.bookingId}')"
+      ontouchend="cancelLongPress()"
+      ontouchmove="cancelLongPress()">
       <div class="booking-card-inner">
         <div class="bc-status-stripe stripe-${sk.cls}"></div>
         <div class="bc-main">
+          <div class="bc-select-check">${_selectedIds.has(b.bookingId) ? '✓' : ''}</div>
           <div class="bc-avatar avatar-${sk.cls}">${initials}</div>
           <div class="bc-info">
             <div class="bc-name">${b.patientName || '—'}${b.patientAge ? ' <span style="font-weight:500;font-size:13px;color:var(--muted)">· ' + b.patientAge + '</span>' : ''}</div>
@@ -1128,7 +1381,7 @@ function openDetailModal(bookingId) {
   document.getElementById('dmTitle').textContent = b.patientName || 'Booking Detail';
   document.getElementById('dmSubtitle').innerHTML =
     `<span class="bc-status-badge status-${sk.cls}" style="font-size:11px;">${sk.label}</span>
-     &nbsp; <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);">${b.bookingId}</span>`;
+     &nbsp; <span class="copy-id-btn" title="Click to copy" onclick="copyBookingId('${b.bookingId}')" style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);">📋 ${b.bookingId}</span>`;
 
   // ── Body ──
   const tests = b.tests || [];
@@ -1166,6 +1419,8 @@ function openDetailModal(bookingId) {
         <div class="detail-val">${fmtDate(b.bookedAt)} ${fmtTime(b.bookedAt)}</div>
       </div>
     </div>
+    ${b.notes ? `<div class="modal-section-title">Notes</div>
+    <div style="background:var(--amber-light);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--text);border-left:3px solid var(--amber);">📝 ${b.notes}</div>` : ''}
 
     <div class="modal-section-title">Tests Ordered (${tests.length})</div>
     <table class="test-rows-table">
@@ -1240,6 +1495,7 @@ function openDetailModal(bookingId) {
 
   // ── Action buttons ──
   document.getElementById('dmActions').innerHTML = `
+    <button class="btn-sm btn-outline" onclick="openEditModal('${bookingId}')">✏️ Edit</button>
     <button class="btn-sm btn-outline" onclick="whatsappBooking('${bookingId}')">📲 WhatsApp</button>
     <button class="btn-sm btn-outline" onclick="printBooking('${bookingId}')">🖨️ Print</button>
     <button class="btn-sm btn-danger" onclick="confirmDelete('${bookingId}')">🗑 Delete</button>
@@ -1262,8 +1518,12 @@ function updateStatus(bookingId, newStatus) {
   if (!b) return;
   b.status = newStatus;
   saveBookings();
-  refreshAll();
-  // Re-open modal with updated data
+  // Update stats/counts without re-rendering the list (avoids flicker)
+  updatePipelineCounts();
+  updateHeaderStats();
+  updateSummaryCards();
+  renderBookings();
+  // Refresh the modal in-place with updated data
   openDetailModal(bookingId);
   showToast(`✓ Status updated to: ${newStatus}`, 'success');
 }
@@ -1286,7 +1546,10 @@ function savePayment(bookingId) {
   b.paymentMode = mode;
   b.paymentStatus = amt === 0 ? 'Unpaid' : amt >= b.totalNet ? 'Paid' : 'Partial';
   saveBookings();
-  refreshAll();
+  updatePipelineCounts();
+  updateHeaderStats();
+  updateSummaryCards();
+  renderBookings();
   openDetailModal(bookingId);
   showToast(`✓ Payment saved: ₹${amt.toLocaleString()} (${b.paymentStatus})`, 'success');
 }
@@ -1301,17 +1564,19 @@ function confirmDelete(bookingId) {
   document.getElementById('confirmText').textContent =
     `Delete booking ${bookingId} for ${b ? b.patientName : ''}? This cannot be undone.`;
   document.getElementById('confirmDeleteBtn').onclick = () => executeDelete();
+  // Close the detail modal first so confirm dialog is the only overlay
+  document.getElementById('detailModal').classList.remove('open');
   document.getElementById('confirmModal').classList.add('open');
 }
 function executeDelete() {
   if (!_pendingDeleteId) return;
+  const deleted = allBookings.find(b => b.bookingId === _pendingDeleteId);
   allBookings = allBookings.filter(b => b.bookingId !== _pendingDeleteId);
   saveBookings();
-  closeConfirmModal();
-  closeDetailModal();
-  refreshAll();
-  showToast('Booking deleted', 'warning');
   _pendingDeleteId = null;
+  closeConfirmModal();
+  refreshAll();
+  if (deleted) showUndoToast(deleted);
 }
 function closeConfirmModal() {
   document.getElementById('confirmModal').classList.remove('open');
@@ -1468,6 +1733,297 @@ function closeReportModal() {
 function printReport() {
   window.print();
 }
+
+// ═══════════════════════════════════════════
+//  SELECTION MODE
+// ═══════════════════════════════════════════
+function startLongPress(e, bookingId) {
+  cancelLongPress();
+  const card = e.currentTarget;
+  card.classList.add('pressing');
+  _longPressTimer = setTimeout(() => {
+    card.classList.remove('pressing');
+    if (!_selectionMode) enterSelectionMode();
+    toggleSelectCard(bookingId);
+  }, LONG_PRESS_MS);
+}
+
+function cancelLongPress() {
+  if (_longPressTimer) {
+    clearTimeout(_longPressTimer);
+    _longPressTimer = null;
+  }
+  document.querySelectorAll('.booking-card.pressing').forEach(c => c.classList.remove('pressing'));
+}
+
+function enterSelectionMode() {
+  _selectionMode = true;
+  document.getElementById('bookingsList').classList.add('selection-mode');
+  updateBulkBar();
+}
+
+function exitSelectionMode() {
+  _selectionMode = false;
+  _selectedIds.clear();
+  document.getElementById('bookingsList').classList.remove('selection-mode');
+  document.getElementById('bulkBar').classList.remove('visible');
+  renderBookings();
+}
+
+function handleCardClick(e, bookingId) {
+  if (_selectionMode) {
+    e.stopPropagation();
+    toggleSelectCard(bookingId);
+  } else {
+    openDetailModal(bookingId);
+  }
+}
+
+function toggleSelectCard(bookingId) {
+  if (_selectedIds.has(bookingId)) {
+    _selectedIds.delete(bookingId);
+  } else {
+    _selectedIds.add(bookingId);
+  }
+  // Update just this card visually without full re-render
+  const card = document.querySelector(`.booking-card[data-id="${bookingId}"]`);
+  if (card) {
+    const isSelected = _selectedIds.has(bookingId);
+    card.classList.toggle('selected', isSelected);
+    const check = card.querySelector('.bc-select-check');
+    if (check) check.textContent = isSelected ? '✓' : '';
+    // Update stripe colour
+    const stripe = card.querySelector('.bc-status-stripe');
+    if (stripe && isSelected) {
+      stripe.style.background = 'var(--red)';
+    } else if (stripe) {
+      stripe.style.background = '';
+    }
+  }
+  updateBulkBar();
+  // Auto-exit if nothing selected
+  if (_selectedIds.size === 0 && _selectionMode) {
+    exitSelectionMode();
+  }
+}
+
+function updateBulkBar() {
+  const bar = document.getElementById('bulkBar');
+  const count = document.getElementById('bulkCount');
+  count.textContent = _selectedIds.size;
+  bar.classList.toggle('visible', _selectionMode && _selectedIds.size >= 0);
+}
+
+function bulkSelectAll() {
+  const filtered = getFilteredBookings();
+  const allIds = filtered.map(b => b.bookingId);
+  const allSelected = allIds.every(id => _selectedIds.has(id));
+  if (allSelected) {
+    // Deselect all
+    allIds.forEach(id => _selectedIds.delete(id));
+  } else {
+    // Select all visible
+    allIds.forEach(id => _selectedIds.add(id));
+  }
+  renderBookings();
+  updateBulkBar();
+  if (_selectedIds.size === 0) exitSelectionMode();
+}
+
+function bulkDeleteSelected() {
+  if (_selectedIds.size === 0) return;
+  const count = _selectedIds.size;
+  document.getElementById('confirmText').textContent =
+    `Delete ${count} selected booking${count > 1 ? 's' : ''}? This cannot be undone.`;
+  document.getElementById('confirmDeleteBtn').onclick = () => executeBulkDelete();
+  document.getElementById('confirmModal').classList.add('open');
+}
+
+function executeBulkDelete() {
+  allBookings = allBookings.filter(b => !_selectedIds.has(b.bookingId));
+  const count = _selectedIds.size;
+  saveBookings();
+  _selectedIds.clear();
+  _selectionMode = false;
+  closeConfirmModal();
+  refreshAll();
+  document.getElementById('bookingsList').classList.remove('selection-mode');
+  document.getElementById('bulkBar').classList.remove('visible');
+  showToast(`🗑️ ${count} booking${count > 1 ? 's' : ''} deleted`, 'warning');
+}
+
+// ═══════════════════════════════════════════
+//  EDIT BOOKING
+// ═══════════════════════════════════════════
+function openEditModal(bookingId) {
+  const b = allBookings.find(x => x.bookingId === bookingId);
+  if (!b) return;
+  // Close detail modal first
+  document.getElementById('detailModal').classList.remove('open');
+
+  document.getElementById('editBookingId').value = bookingId;
+  document.getElementById('editModalSubtitle').textContent = bookingId;
+  document.getElementById('editName').value   = b.patientName   || '';
+  document.getElementById('editAge').value    = b.patientAge    || '';
+  document.getElementById('editMobile').value = b.patientMobile || '';
+  document.getElementById('editDoctor').value = b.refDoctor     || '';
+  document.getElementById('editNotes').value  = b.notes         || '';
+  // Format date for input[type=date] — expects YYYY-MM-DD
+  if (b.sampleDate) {
+    const d = new Date(b.sampleDate);
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth()+1).padStart(2,'0');
+    const dd = String(d.getDate()).padStart(2,'0');
+    document.getElementById('editSampleDate').value = `${yyyy}-${mm}-${dd}`;
+  } else {
+    document.getElementById('editSampleDate').value = '';
+  }
+  document.getElementById('editModal').classList.add('open');
+}
+
+function closeEditModal() {
+  document.getElementById('editModal').classList.remove('open');
+}
+
+function saveEditBooking() {
+  const bookingId = document.getElementById('editBookingId').value;
+  const b = allBookings.find(x => x.bookingId === bookingId);
+  if (!b) return;
+
+  const name   = document.getElementById('editName').value.trim();
+  const mobile = document.getElementById('editMobile').value.trim();
+  if (!name)   { showToast('⚠️ Patient name is required', 'warning'); return; }
+  if (mobile && !/^\d{10}$/.test(mobile)) { showToast('⚠️ Enter a valid 10-digit mobile', 'warning'); return; }
+
+  b.patientName   = name;
+  b.patientAge    = document.getElementById('editAge').value.trim();
+  b.patientMobile = mobile;
+  b.refDoctor     = document.getElementById('editDoctor').value.trim();
+  b.notes         = document.getElementById('editNotes').value.trim();
+  const sd = document.getElementById('editSampleDate').value;
+  if (sd) b.sampleDate = new Date(sd).toISOString();
+
+  saveBookings();
+  closeEditModal();
+  updatePipelineCounts();
+  updateHeaderStats();
+  updateSummaryCards();
+  renderBookings();
+  openDetailModal(bookingId);
+  showToast('✓ Booking updated successfully', 'success');
+}
+
+// ═══════════════════════════════════════════
+//  COPY BOOKING ID
+// ═══════════════════════════════════════════
+function copyBookingId(id) {
+  navigator.clipboard.writeText(id).then(() => {
+    showToast(`📋 Copied: ${id}`, 'success');
+  }).catch(() => {
+    // Fallback for older browsers
+    const el = document.createElement('textarea');
+    el.value = id; document.body.appendChild(el);
+    el.select(); document.execCommand('copy'); document.body.removeChild(el);
+    showToast(`📋 Copied: ${id}`, 'success');
+  });
+}
+
+// ═══════════════════════════════════════════
+//  EXPORT CSV
+// ═══════════════════════════════════════════
+function exportCSV() {
+  const list = getFilteredBookings();
+  if (list.length === 0) { showToast('⚠️ No bookings to export', 'warning'); return; }
+
+  const headers = ['Booking ID','Patient Name','Age/Gender','Mobile','Ref Doctor',
+    'Sample Date','Booked At','Tests','Total Price','Discount','Net Amount',
+    'Amount Paid','Balance','Payment Status','Payment Mode','Status','Notes'];
+
+  const rows = list.map(b => {
+    const tests = (b.tests||[]).map(t=>t.name).join(' | ');
+    const balance = (b.totalNet||0) - (b.amountPaid||0);
+    return [
+      b.bookingId,
+      b.patientName||'',
+      b.patientAge||'',
+      b.patientMobile||'',
+      b.refDoctor||'',
+      fmtDate(b.sampleDate),
+      `${fmtDate(b.bookedAt)} ${fmtTime(b.bookedAt)}`,
+      tests,
+      b.totalPrice||0,
+      b.totalDisc||0,
+      b.totalNet||0,
+      b.amountPaid||0,
+      balance,
+      b.paymentStatus||'Unpaid',
+      b.paymentMode||'',
+      b.status||'Booked',
+      b.notes||''
+    ].map(v => `"${String(v).replace(/"/g,'""')}"`);
+  });
+
+  const csv = [headers.map(h=>`"${h}"`).join(','), ...rows.map(r=>r.join(','))].join('\n');
+  const blob = new Blob(['\uFEFF'+csv], { type: 'text/csv;charset=utf-8;' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  const date = new Date().toISOString().slice(0,10);
+  a.href = url; a.download = `medicore-bookings-${date}.csv`;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
+  showToast(`✓ Exported ${list.length} bookings to CSV`, 'success');
+}
+
+// ═══════════════════════════════════════════
+//  UNDO DELETE
+// ═══════════════════════════════════════════
+let _undoStack = null;
+let _undoTimer = null;
+
+function showUndoToast(deletedBooking) {
+  const c = document.getElementById('toastContainer');
+  // Remove any existing undo toast
+  const existing = c.querySelector('.toast.undo');
+  if (existing) existing.remove();
+  if (_undoTimer) clearTimeout(_undoTimer);
+
+  const t = document.createElement('div');
+  t.className = 'toast undo';
+  t.innerHTML = `<span>🗑️ Booking deleted</span><button class="toast-undo-btn" onclick="undoDelete()">↩ Undo</button>`;
+  c.appendChild(t);
+  _undoStack = deletedBooking;
+  _undoTimer = setTimeout(() => { t.remove(); _undoStack = null; }, 5000);
+}
+
+function undoDelete() {
+  if (!_undoStack) return;
+  allBookings.push(_undoStack);
+  // Re-sort by bookedAt descending
+  allBookings.sort((a,b) => new Date(b.bookedAt) - new Date(a.bookedAt));
+  saveBookings();
+  _undoStack = null;
+  if (_undoTimer) { clearTimeout(_undoTimer); _undoTimer = null; }
+  // Remove undo toast
+  const existing = document.querySelector('.toast.undo');
+  if (existing) existing.remove();
+  refreshAll();
+  showToast('↩ Booking restored', 'success');
+}
+
+// ═══════════════════════════════════════════
+//  KEYBOARD SHORTCUTS
+// ═══════════════════════════════════════════
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if (document.getElementById('editModal').classList.contains('open'))    { closeEditModal(); return; }
+    if (document.getElementById('confirmModal').classList.contains('open')) { closeConfirmModal(); return; }
+    if (document.getElementById('reportModal').classList.contains('open'))  { closeReportModal(); return; }
+    if (document.getElementById('detailModal').classList.contains('open'))  { closeDetailModal(); return; }
+    if (_selectionMode) { exitSelectionMode(); return; }
+  }
+  // Ctrl/Cmd + E to export
+  if ((e.ctrlKey || e.metaKey) && e.key === 'e') { e.preventDefault(); exportCSV(); }
+});
 
 // ═══════════════════════════════════════════
 //  REFRESH ALL

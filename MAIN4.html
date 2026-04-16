@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* ══════════════════════════════════════════
-   DESIGN TOKENS — MediCore palette
+   DESIGN TOKENS
 ══════════════════════════════════════════ */
 :root {
   --navy:     #0c1445;
@@ -22,10 +22,8 @@
   --amber:    #d97706;
   --red:      #dc2626;
   --purple:   #7c3aed;
-
   --blue-15:  rgba(37,99,235,.15);
   --blue-08:  rgba(37,99,235,.08);
-
   --bg:       #f0f5ff;
   --surface:  #ffffff;
   --surface2: #f8faff;
@@ -35,936 +33,571 @@
   --text-2:   #334155;
   --muted:    #475569;
   --muted2:   #94a3b8;
-
   --shadow-sm: 0 1px 3px rgba(12,20,69,.06), 0 1px 2px rgba(12,20,69,.04);
   --shadow:    0 4px 16px rgba(12,20,69,.08), 0 1px 4px rgba(12,20,69,.04);
   --shadow-lg: 0 8px 32px rgba(12,20,69,.12), 0 2px 8px rgba(12,20,69,.06);
-
-  --r-sm: 8px;
-  --r:    12px;
-  --r-lg: 16px;
-  --r-xl: 20px;
-
-  --sidebar: 360px;
-  --nav-h:   64px;
+  --r-sm: 8px; --r: 12px; --r-lg: 16px; --r-xl: 20px;
+  --sidebar: 360px; --nav-h: 64px;
 }
-*,*::before,*::after { box-sizing: border-box; margin:0; padding:0; }
-html { scroll-behavior: smooth; }
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
 
-/* ── ANIMATED BACKGROUND ── */
 .bg-canvas {
-  position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background:
-    radial-gradient(ellipse 80% 60% at 10% -10%, rgba(37,99,235,.12) 0%, transparent 60%),
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background: radial-gradient(ellipse 80% 60% at 10% -10%, rgba(37,99,235,.12) 0%, transparent 60%),
     radial-gradient(ellipse 60% 50% at 90% 110%, rgba(6,182,212,.10) 0%, transparent 60%),
     radial-gradient(ellipse 50% 40% at 50% 50%, rgba(13,148,136,.05) 0%, transparent 70%);
 }
 .bg-grid {
-  position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background-image:
-    linear-gradient(rgba(37,99,235,.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(37,99,235,.07) 1px, transparent 1px);
-  background-size: 48px 48px;
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background-image: linear-gradient(rgba(37,99,235,.07) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(37,99,235,.07) 1px,transparent 1px);
+  background-size:48px 48px;
 }
+body { font-family:'Outfit',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; }
 
-body {
-  font-family: 'Outfit', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-/* ══════════════════════════════════════════
-   NAVBAR
-══════════════════════════════════════════ */
+/* ── NAVBAR ── */
 .navbar {
-  position: sticky; top: 0; z-index: 400;
-  height: var(--nav-h);
-  background: rgba(12,20,69,.95);
-  backdrop-filter: blur(20px);
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 32px;
-  border-bottom: 1px solid rgba(255,255,255,.08);
+  position:sticky; top:0; z-index:400; height:var(--nav-h);
+  background:rgba(12,20,69,.95); backdrop-filter:blur(20px);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 32px; border-bottom:1px solid rgba(255,255,255,.08);
 }
-.nav-logo {
-  display: flex; align-items: center; gap: 12px;
-  text-decoration: none;
-}
+.nav-logo { display:flex; align-items:center; gap:12px; text-decoration:none; }
 .logo-icon {
-  width: 40px; height: 40px;
-  background: linear-gradient(135deg, #2563eb, #06b6d4);
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 20px;
-  box-shadow: 0 4px 16px rgba(37,99,235,.4);
+  width:40px; height:40px; background:linear-gradient(135deg,#2563eb,#06b6d4);
+  border-radius:10px; display:flex; align-items:center; justify-content:center;
+  font-size:20px; box-shadow:0 4px 16px rgba(37,99,235,.4);
 }
-.logo-text {
-  font-size: 20px; font-weight: 800;
-  color: white; letter-spacing: -.5px;
-}
-.logo-text span { color: #06b6d4; }
-
-.nav-links {
-  display: flex; align-items: center; gap: 4px;
-}
+.logo-text { font-size:20px; font-weight:800; color:white; letter-spacing:-.5px; }
+.logo-text span { color:#06b6d4; }
+.nav-links { display:flex; align-items:center; gap:4px; }
 .nav-step {
-  font-size: 13px; font-weight: 600;
-  color: rgba(255,255,255,.45);
-  display: flex; align-items: center; gap: 6px;
-  padding: 7px 14px; border-radius: 8px;
-  transition: all .15s;
+  font-size:13px; font-weight:600; color:rgba(255,255,255,.45);
+  display:flex; align-items:center; gap:6px; padding:7px 14px;
+  border-radius:8px; transition:all .15s;
 }
-.nav-step.active {
-  background: rgba(37,99,235,.25);
-  color: rgba(255,255,255,.9);
-}
+.nav-step.active { background:rgba(37,99,235,.25); color:rgba(255,255,255,.9); }
 .nav-step .step-num {
-  width: 20px; height: 20px; border-radius: 5px;
-  background: rgba(255,255,255,.1);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 11px; font-weight: 800;
+  width:20px; height:20px; border-radius:5px;
+  background:rgba(255,255,255,.1); display:flex; align-items:center;
+  justify-content:center; font-size:11px; font-weight:800;
 }
-.nav-step.active .step-num {
-  background: #2563eb; color: white;
-}
-.nav-step-div { width: 24px; height: 1px; background: rgba(255,255,255,.15); }
-
-.nav-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
-.nav-datetime {
-  display: flex; flex-direction: column; align-items: flex-end; gap: 1px;
-}
-.clock-badge {
-  font-family: 'DM Mono', monospace;
-  font-size: 14px; font-weight: 500;
-  color: rgba(255,255,255,.85); letter-spacing: 1px; line-height: 1;
-}
-.date-badge-inline {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px; color: rgba(255,255,255,.4);
-  letter-spacing: .3px; line-height: 1;
-}
-.nav-divider { width: 1px; height: 28px; background: rgba(255,255,255,.12); flex-shrink: 0; }
+.nav-step.active .step-num { background:#2563eb; color:white; }
+.nav-step-div { width:24px; height:1px; background:rgba(255,255,255,.15); }
+.nav-right { display:flex; align-items:center; gap:10px; flex-shrink:0; }
+.nav-datetime { display:flex; flex-direction:column; align-items:flex-end; gap:1px; }
+.clock-badge { font-family:'DM Mono',monospace; font-size:14px; font-weight:500; color:rgba(255,255,255,.85); letter-spacing:1px; line-height:1; }
+.date-badge-inline { font-family:'DM Mono',monospace; font-size:10px; color:rgba(255,255,255,.4); letter-spacing:.3px; line-height:1; }
+.nav-divider { width:1px; height:28px; background:rgba(255,255,255,.12); flex-shrink:0; }
 .btn-nav {
-  display: inline-flex; align-items: center; gap: 5px;
-  background: rgba(255,255,255,.08);
-  color: rgba(255,255,255,.75);
-  border: 1px solid rgba(255,255,255,.12);
-  padding: 7px 14px; border-radius: 8px;
-  font-size: 13px; font-weight: 600; cursor: pointer;
-  font-family: 'Outfit', sans-serif;
-  text-decoration: none; transition: all .15s;
+  display:inline-flex; align-items:center; gap:5px;
+  background:rgba(255,255,255,.08); color:rgba(255,255,255,.75);
+  border:1px solid rgba(255,255,255,.12); padding:7px 14px;
+  border-radius:8px; font-size:13px; font-weight:600; cursor:pointer;
+  font-family:'Outfit',sans-serif; text-decoration:none; transition:all .15s;
 }
-.btn-nav:hover { background: rgba(255,255,255,.14); color: #fff; }
+.btn-nav:hover { background:rgba(255,255,255,.14); color:#fff; }
 .btn-nav-primary {
-  background: linear-gradient(135deg, #2563eb, #06b6d4);
-  color: white; border: none;
-  padding: 8px 16px; border-radius: 8px;
-  font-size: 13px; font-weight: 600; cursor: pointer;
-  font-family: 'Outfit', sans-serif;
-  text-decoration: none; transition: all .2s;
-  box-shadow: 0 4px 12px rgba(37,99,235,.35);
+  background:linear-gradient(135deg,#2563eb,#06b6d4); color:white; border:none;
+  padding:8px 16px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer;
+  font-family:'Outfit',sans-serif; text-decoration:none; transition:all .2s;
+  box-shadow:0 4px 12px rgba(37,99,235,.35); display:inline-flex; align-items:center; gap:5px;
 }
-.btn-nav-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(37,99,235,.45); }
+.btn-nav-primary:hover { transform:translateY(-1px); box-shadow:0 6px 18px rgba(37,99,235,.45); }
 
-/* ══════════════════════════════════════════
-   PAGE HEADER
-══════════════════════════════════════════ */
+/* ── PAGE HEADER ── */
 .page-header {
-  background: linear-gradient(135deg, var(--navy) 0%, #1e3a8a 55%, #2563eb 100%);
-  padding: 20px 32px;
-  position: relative; overflow: hidden; z-index: 1;
+  background:linear-gradient(135deg,var(--navy) 0%,#1e3a8a 55%,#2563eb 100%);
+  padding:20px 32px; position:relative; overflow:hidden; z-index:1;
 }
 .page-header::before {
-  content: '';
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 60% 100% at 85% 50%, rgba(8,145,178,.2), transparent 60%),
-    radial-gradient(ellipse 40% 80% at 5% 0%, rgba(37,99,235,.15), transparent 50%);
+  content:''; position:absolute; inset:0;
+  background: radial-gradient(ellipse 60% 100% at 85% 50%,rgba(8,145,178,.2),transparent 60%),
+    radial-gradient(ellipse 40% 80% at 5% 0%,rgba(37,99,235,.15),transparent 50%);
 }
 .ph-inner {
-  position: relative; z-index: 1;
-  max-width: 100%; display: flex; align-items: center;
-  justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  position:relative; z-index:1; max-width:100%;
+  display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
 }
-.ph-title { font-size: 20px; font-weight: 900; color: #fff; letter-spacing: -.5px; }
-.ph-sub { font-size: 12px; color: rgba(255,255,255,.5); margin-top: 2px; font-weight: 500; }
-.ph-badges { display: flex; align-items: center; gap: 6px; }
+.ph-title { font-size:20px; font-weight:900; color:#fff; letter-spacing:-.5px; }
+.ph-sub { font-size:12px; color:rgba(255,255,255,.5); margin-top:2px; font-weight:500; }
+.ph-badges { display:flex; align-items:center; gap:6px; }
 .ph-badge {
-  display: inline-flex; align-items: center; gap: 5px;
-  background: rgba(255,255,255,.1);
-  border: 1px solid rgba(255,255,255,.15);
-  padding: 4px 11px; border-radius: 100px;
-  font-size: 11px; font-weight: 700; color: rgba(255,255,255,.75);
+  display:inline-flex; align-items:center; gap:5px;
+  background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.15);
+  padding:4px 11px; border-radius:100px; font-size:11px; font-weight:700; color:rgba(255,255,255,.75);
 }
-.live-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: #22c55e;
-  animation: live 2s ease-in-out infinite;
-}
-@keyframes live {
-  0%,100% { box-shadow: 0 0 0 2px rgba(34,197,94,.2); }
-  50%      { box-shadow: 0 0 0 4px rgba(34,197,94,.08); }
-}
+.live-dot { width:6px; height:6px; border-radius:50%; background:#22c55e; animation:live 2s ease-in-out infinite; }
+@keyframes live { 0%,100%{box-shadow:0 0 0 2px rgba(34,197,94,.2)} 50%{box-shadow:0 0 0 4px rgba(34,197,94,.08)} }
 
-/* ══════════════════════════════════════════
-   TWO-PANEL LAYOUT
-══════════════════════════════════════════ */
+/* ── TWO-PANEL LAYOUT ── */
 .layout {
-  display: grid;
-  grid-template-columns: var(--sidebar) 1fr;
-  min-height: calc(100vh - var(--nav-h) - 64px);
-  align-items: start;
-  position: relative; z-index: 1;
+  display:grid; grid-template-columns:var(--sidebar) 1fr;
+  min-height:calc(100vh - var(--nav-h) - 64px);
+  align-items:start; position:relative; z-index:1;
 }
 .sidebar {
-  background: var(--surface);
-  border-right: 1.5px solid var(--border2);
-  position: sticky;
-  top: var(--nav-h);
-  height: calc(100vh - var(--nav-h));
-  z-index: 1;
-  overflow-y: auto;
-  display: flex; flex-direction: column;
+  background:var(--surface); border-right:1.5px solid var(--border2);
+  position:sticky; top:var(--nav-h); height:calc(100vh - var(--nav-h));
+  z-index:1; overflow-y:auto; display:flex; flex-direction:column;
 }
-.sidebar::-webkit-scrollbar { width: 4px; }
-.sidebar::-webkit-scrollbar-track { background: transparent; }
-.sidebar::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+.sidebar::-webkit-scrollbar { width:4px; }
+.sidebar::-webkit-scrollbar-track { background:transparent; }
+.sidebar::-webkit-scrollbar-thumb { background:var(--border2); border-radius:4px; }
+.main-panel { padding:16px 18px 80px; min-height:calc(100vh - var(--nav-h)); }
 
-.main-panel {
-  padding: 16px 18px 80px;
-  min-height: calc(100vh - var(--nav-h));
-}
-
-/* ══════════════════════════════════════════
-   SIDEBAR HEADER
-══════════════════════════════════════════ */
-.sidebar-header {
-  padding: 14px 14px 10px;
-  border-bottom: 1.5px solid var(--border);
-  background: var(--surface2);
-  flex-shrink: 0;
-}
+/* ── SIDEBAR HEADER ── */
+.sidebar-header { padding:14px 14px 10px; border-bottom:1.5px solid var(--border); background:var(--surface2); flex-shrink:0; }
 .sidebar-title {
-  font-size: 11px; font-weight: 800;
-  letter-spacing: 1.2px; text-transform: uppercase;
-  color: var(--blue); margin-bottom: 8px;
-  display: flex; align-items: center; gap: 6px;
+  font-size:11px; font-weight:800; letter-spacing:1.2px; text-transform:uppercase;
+  color:var(--blue); margin-bottom:8px; display:flex; align-items:center; gap:6px;
 }
-.sidebar-title::after {
-  content: ''; flex: 1; height: 1px;
-  background: linear-gradient(to right, rgba(37,99,235,.2), transparent);
-}
-.search-box {
-  position: relative; margin-bottom: 8px;
-}
+.sidebar-title::after { content:''; flex:1; height:1px; background:linear-gradient(to right,rgba(37,99,235,.2),transparent); }
+.search-box { position:relative; margin-bottom:8px; }
 .search-box input {
-  width: 100%; padding: 7px 10px 7px 32px;
-  border: 1.5px solid var(--border);
-  border-radius: var(--r-sm);
-  font-size: 12.5px; font-family: 'Outfit', sans-serif;
-  font-weight: 500; color: var(--text);
-  background: var(--surface);
-  transition: all .15s;
+  width:100%; padding:7px 10px 7px 32px; border:1.5px solid var(--border);
+  border-radius:var(--r-sm); font-size:12.5px; font-family:'Outfit',sans-serif;
+  font-weight:500; color:var(--text); background:var(--surface); transition:all .15s;
 }
-.search-box input:focus {
-  outline: none; border-color: var(--blue);
-  box-shadow: 0 0 0 3px rgba(37,99,235,.08);
-}
-.search-box input::placeholder { color: var(--muted2); }
-.search-icon {
-  position: absolute; left: 9px; top: 50%;
-  transform: translateY(-50%);
-  color: var(--muted2); font-size: 12px; pointer-events: none;
-}
-.filter-pills {
-  display: flex; gap: 4px; flex-wrap: wrap;
-}
+.search-box input:focus { outline:none; border-color:var(--blue); box-shadow:0 0 0 3px rgba(37,99,235,.08); }
+.search-box input::placeholder { color:var(--muted2); }
+.search-icon { position:absolute; left:9px; top:50%; transform:translateY(-50%); color:var(--muted2); font-size:12px; pointer-events:none; }
+.filter-pills { display:flex; gap:4px; flex-wrap:wrap; }
 .fp {
-  padding: 3px 10px;
-  border: 1.5px solid var(--border);
-  border-radius: 100px;
-  font-size: 10.5px; font-weight: 700;
-  color: var(--muted); background: var(--surface);
-  cursor: pointer; transition: all .12s;
+  padding:3px 10px; border:1.5px solid var(--border); border-radius:100px;
+  font-size:10.5px; font-weight:700; color:var(--muted); background:var(--surface);
+  cursor:pointer; transition:all .12s;
 }
-.fp:hover { border-color: var(--blue); color: var(--blue); }
-.fp.on { background: var(--blue); color: #fff; border-color: var(--blue); }
-.bk-count {
-  font-size: 10px; font-weight: 600; color: var(--muted);
-  padding: 3px 8px 3px 0;
-}
+.fp:hover { border-color:var(--blue); color:var(--blue); }
+.fp.on { background:var(--blue); color:#fff; border-color:var(--blue); }
+.bk-count { font-size:10px; font-weight:600; color:var(--muted); padding:3px 8px 3px 0; }
 
-/* ══════════════════════════════════════════
-   BOOKING LIST
-══════════════════════════════════════════ */
-.bk-list { padding: 6px 8px; flex: 1; }
-
+/* ── BOOKING LIST ── */
+.bk-list { padding:6px 8px; flex:1; }
 .bk-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 9px 10px;
-  border: 1.5px solid transparent;
-  border-radius: var(--r);
-  cursor: pointer;
-  transition: all .14s;
-  margin-bottom: 4px;
-  position: relative;
+  display:flex; align-items:center; gap:10px; padding:9px 10px;
+  border:1.5px solid transparent; border-radius:var(--r);
+  cursor:pointer; transition:all .14s; margin-bottom:4px; position:relative;
 }
-.bk-item:hover {
-  background: var(--bg);
-  border-color: var(--border);
-}
-.bk-item.selected {
-  background: #eff6ff;
-  border-color: var(--blue);
-  box-shadow: 0 0 0 3px rgba(37,99,235,.06);
-}
-
-/* Avatar */
+.bk-item:hover { background:var(--bg); border-color:var(--border); }
+.bk-item.selected { background:#eff6ff; border-color:var(--blue); box-shadow:0 0 0 3px rgba(37,99,235,.06); }
 .bk-av {
-  width: 36px; height: 36px;
-  border-radius: 9px;
-  background: linear-gradient(135deg, var(--blue), var(--cyan));
-  display: flex; align-items: center; justify-content: center;
-  color: white; font-weight: 900; font-size: 12px;
-  flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(37,99,235,.25);
+  width:36px; height:36px; border-radius:9px;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  display:flex; align-items:center; justify-content:center;
+  color:white; font-weight:900; font-size:12px; flex-shrink:0;
+  box-shadow:0 2px 8px rgba(37,99,235,.25);
 }
-.bk-body { flex: 1; min-width: 0; }
-.bk-name {
-  font-size: 12.5px; font-weight: 700;
-  color: var(--text); white-space: nowrap;
-  overflow: hidden; text-overflow: ellipsis;
-}
-.bk-meta {
-  font-size: 10.5px; color: var(--muted);
-  margin-top: 1px; font-weight: 500;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.bk-right {
-  display: flex; flex-direction: column;
-  align-items: flex-end; gap: 4px; flex-shrink: 0;
-}
-.bk-id {
-  font-family: 'DM Mono', monospace;
-  font-size: 9.5px; font-weight: 600;
-  padding: 2px 6px; border-radius: 4px;
-  background: var(--blue-08); color: var(--blue-h);
-}
-
-/* ── STATUS BADGE (large, visible) ── */
+.bk-body { flex:1; min-width:0; }
+.bk-name { font-size:12.5px; font-weight:700; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.bk-meta { font-size:10.5px; color:var(--muted); margin-top:1px; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.bk-right { display:flex; flex-direction:column; align-items:flex-end; gap:4px; flex-shrink:0; }
+.bk-id { font-family:'DM Mono',monospace; font-size:9.5px; font-weight:600; padding:2px 6px; border-radius:4px; background:var(--blue-08); color:var(--blue-h); }
 .status-badge {
-  display: inline-flex; align-items: center; gap: 4px;
-  padding: 3px 8px; border-radius: 100px;
-  font-size: 10px; font-weight: 800;
-  letter-spacing: .3px; text-transform: uppercase;
+  display:inline-flex; align-items:center; gap:4px; padding:3px 8px;
+  border-radius:100px; font-size:10px; font-weight:800; letter-spacing:.3px; text-transform:uppercase;
 }
-.status-badge .s-dot {
-  width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
-}
-.sb-pending  { background: #fef3c7; color: #92400e; }
-.sb-pending .s-dot  { background: #d97706; border-radius: 50%; }
-.sb-partial  { background: #dbeafe; color: #1e40af; }
-.sb-partial .s-dot  { background: #2563eb; border-radius: 50%; }
-.sb-completed { background: #dcfce7; color: #14532d; }
-.sb-completed .s-dot { background: #16a34a; border-radius: 50%; }
+.status-badge .s-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+.sb-pending  { background:#fef3c7; color:#92400e; } .sb-pending .s-dot  { background:#d97706; }
+.sb-partial  { background:#dbeafe; color:#1e40af; } .sb-partial .s-dot  { background:#2563eb; }
+.sb-completed{ background:#dcfce7; color:#14532d; } .sb-completed .s-dot{ background:#16a34a; }
+.fill-icon { position:absolute; top:7px; right:7px; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:900; }
+.fill-empty { background:#f1f5f9; color:#94a3b8; border:1.5px solid #e2e8f0; }
+.fill-part  { background:#dbeafe; color:#2563eb; border:1.5px dashed #93c5fd; }
+.fill-done  { background:#dcfce7; color:#16a34a; border:1.5px solid #86efac; }
+.bk-prog { display:flex; align-items:center; gap:4px; margin-top:2px; }
+.bk-prog-bar { flex:1; height:3px; background:var(--border); border-radius:100px; overflow:hidden; max-width:70px; }
+.bk-prog-fill { height:100%; border-radius:100px; background:linear-gradient(to right,var(--cyan),var(--green)); transition:width .3s ease; }
+.bk-prog-lbl { font-size:9px; font-weight:700; color:var(--muted); font-family:'DM Mono',monospace; }
+.empty-state { text-align:center; padding:32px 16px; color:var(--muted); }
+.empty-state .ei { font-size:32px; margin-bottom:8px; opacity:.3; }
+.empty-state h3 { font-size:13px; font-weight:800; color:var(--navy); }
 
-/* ── FILL STATUS ICON (right corner of each booking card) ── */
-.fill-icon {
-  position: absolute; top: 7px; right: 7px;
-  width: 18px; height: 18px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 9px; font-weight: 900;
-}
-.fill-empty  { background: #f1f5f9; color: #94a3b8; border: 1.5px solid #e2e8f0; }
-.fill-part   { background: #dbeafe; color: #2563eb; border: 1.5px dashed #93c5fd; }
-.fill-done   { background: #dcfce7; color: #16a34a; border: 1.5px solid #86efac; }
-
-/* Progress mini */
-.bk-prog {
-  display: flex; align-items: center; gap: 4px; margin-top: 2px;
-}
-.bk-prog-bar {
-  flex: 1; height: 3px; background: var(--border);
-  border-radius: 100px; overflow: hidden; max-width: 70px;
-}
-.bk-prog-fill {
-  height: 100%; border-radius: 100px;
-  background: linear-gradient(to right, var(--cyan), var(--green));
-  transition: width .3s ease;
-}
-.bk-prog-lbl {
-  font-size: 9px; font-weight: 700;
-  color: var(--muted); font-family: 'DM Mono', monospace;
-}
-
-/* Empty state */
-.empty-state {
-  text-align: center; padding: 32px 16px; color: var(--muted);
-}
-.empty-state .ei { font-size: 32px; margin-bottom: 8px; opacity: .3; }
-.empty-state h3 { font-size: 13px; font-weight: 800; color: var(--navy); }
-
-/* ══════════════════════════════════════════
-   MAIN PANEL — WELCOME STATE
-══════════════════════════════════════════ */
+/* ── WELCOME STATE ── */
 .welcome-state {
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  min-height: 60vh; text-align: center; padding: 40px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  min-height:60vh; text-align:center; padding:40px;
 }
 .welcome-icon {
-  width: 80px; height: 80px;
-  background: linear-gradient(135deg, #dbeafe, #ede9fe);
-  border-radius: 24px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 36px; margin-bottom: 20px;
-  box-shadow: 0 8px 24px rgba(37,99,235,.12);
+  width:80px; height:80px; background:linear-gradient(135deg,#dbeafe,#ede9fe);
+  border-radius:24px; display:flex; align-items:center; justify-content:center;
+  font-size:36px; margin-bottom:20px; box-shadow:0 8px 24px rgba(37,99,235,.12);
 }
-.welcome-state h2 {
-  font-size: 22px; font-weight: 900; color: var(--navy);
-  margin-bottom: 8px; letter-spacing: -.5px;
-}
-.welcome-state p { font-size: 13px; color: var(--muted); line-height: 1.6; max-width: 340px; }
+.welcome-state h2 { font-size:22px; font-weight:900; color:var(--navy); margin-bottom:8px; letter-spacing:-.5px; }
+.welcome-state p { font-size:13px; color:var(--muted); line-height:1.6; max-width:340px; }
 
-/* ══════════════════════════════════════════
-   RESULT ENTRY PANEL
-══════════════════════════════════════════ */
-#resultPanel { display: none; }
+/* ── RESULT ENTRY PANEL ── */
+#resultPanel { display:none; }
 
 /* ── PATIENT HEADER CARD ── */
-.patient-card {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--r-lg);
-  box-shadow: var(--shadow);
-  margin-bottom: 14px;
-  overflow: hidden;
-}
+.patient-card { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--r-lg); box-shadow:var(--shadow); margin-bottom:14px; overflow:hidden; }
 .patient-card-header {
-  background: linear-gradient(135deg, var(--navy) 0%, #1e3a8a 60%, #1d4ed8 100%);
-  padding: 14px 18px;
-  display: flex; align-items: center; gap: 14px;
-  flex-wrap: wrap;
-  position: relative;
+  background:linear-gradient(135deg,var(--navy) 0%,#1e3a8a 60%,#1d4ed8 100%);
+  padding:14px 18px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; position:relative;
 }
 .patient-card-header::after {
-  content: '';
-  position: absolute; right: 0; top: 0; bottom: 0; width: 200px;
-  background: radial-gradient(ellipse at right, rgba(8,145,178,.25), transparent 70%);
+  content:''; position:absolute; right:0; top:0; bottom:0; width:200px;
+  background:radial-gradient(ellipse at right,rgba(8,145,178,.25),transparent 70%);
 }
 .pt-av {
-  width: 46px; height: 46px; border-radius: 13px;
-  background: linear-gradient(135deg, #2563eb, #0891b2);
-  display: flex; align-items: center; justify-content: center;
-  color: white; font-weight: 900; font-size: 16px;
-  box-shadow: 0 4px 14px rgba(37,99,235,.45);
-  flex-shrink: 0; position: relative; z-index: 1;
+  width:46px; height:46px; border-radius:13px;
+  background:linear-gradient(135deg,#2563eb,#0891b2);
+  display:flex; align-items:center; justify-content:center;
+  color:white; font-weight:900; font-size:16px;
+  box-shadow:0 4px 14px rgba(37,99,235,.45); flex-shrink:0; position:relative; z-index:1;
 }
-.pt-main { flex: 1; position: relative; z-index: 1; min-width: 0; }
-.pt-name { font-size: 16px; font-weight: 900; color: #fff; letter-spacing: -.4px; }
-.pt-fields { display: flex; gap: 0; flex-wrap: wrap; margin-top: 4px; }
-.pt-field {
-  display: flex; flex-direction: column;
-  padding-right: 14px; margin-right: 14px;
-  border-right: 1px solid rgba(255,255,255,.12);
-}
-.pt-field:last-child { border-right: none; }
-.pt-lbl { font-size: 8.5px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: rgba(255,255,255,.4); }
-.pt-val { font-size: 11.5px; font-weight: 700; color: rgba(255,255,255,.9); font-family: 'DM Mono', monospace; margin-top: 1px; }
-.pt-status { position: relative; z-index: 1; flex-shrink: 0; }
+.pt-main { flex:1; position:relative; z-index:1; min-width:0; }
+.pt-name { font-size:16px; font-weight:900; color:#fff; letter-spacing:-.4px; }
+.pt-fields { display:flex; gap:0; flex-wrap:wrap; margin-top:4px; }
+.pt-field { display:flex; flex-direction:column; padding-right:14px; margin-right:14px; border-right:1px solid rgba(255,255,255,.12); }
+.pt-field:last-child { border-right:none; }
+.pt-lbl { font-size:8.5px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; color:rgba(255,255,255,.4); }
+.pt-val { font-size:11.5px; font-weight:700; color:rgba(255,255,255,.9); font-family:'DM Mono',monospace; margin-top:1px; }
+.pt-status { position:relative; z-index:1; flex-shrink:0; }
+.overall-prog { padding:8px 18px 10px; background:var(--surface2); border-top:1px solid var(--border); display:flex; align-items:center; gap:10px; }
+.prog-track { flex:1; height:5px; background:var(--border); border-radius:100px; overflow:hidden; }
+.prog-fill { height:100%; border-radius:100px; background:linear-gradient(to right,var(--cyan),var(--green)); transition:width .4s cubic-bezier(.34,1.56,.64,1); }
+.prog-pct { font-family:'DM Mono',monospace; font-size:11px; font-weight:700; color:var(--muted); white-space:nowrap; }
+.prog-flags { display:flex; gap:5px; }
+.pf { display:inline-flex; align-items:center; gap:3px; padding:2px 7px; border-radius:100px; font-size:9.5px; font-weight:800; }
+.pf-h { background:#fef2f2; color:#991b1b; } .pf-l { background:#eff6ff; color:#1d4ed8; } .pf-c { background:#f5f3ff; color:#6d28d9; }
 
-/* ── OVERALL PROGRESS BAR ── */
-.overall-prog {
-  padding: 8px 18px 10px;
-  background: var(--surface2);
-  border-top: 1px solid var(--border);
-  display: flex; align-items: center; gap: 10px;
-}
-.prog-track {
-  flex: 1; height: 5px; background: var(--border);
-  border-radius: 100px; overflow: hidden;
-}
-.prog-fill {
-  height: 100%; border-radius: 100px;
-  background: linear-gradient(to right, var(--cyan), var(--green));
-  transition: width .4s cubic-bezier(.34,1.56,.64,1);
-}
-.prog-pct {
-  font-family: 'DM Mono', monospace;
-  font-size: 11px; font-weight: 700; color: var(--muted); white-space: nowrap;
-}
-.prog-flags { display: flex; gap: 5px; }
-.pf {
-  display: inline-flex; align-items: center; gap: 3px;
-  padding: 2px 7px; border-radius: 100px;
-  font-size: 9.5px; font-weight: 800;
-}
-.pf-h { background: #fef2f2; color: #991b1b; }
-.pf-l { background: #eff6ff; color: #1d4ed8; }
-.pf-c { background: #f5f3ff; color: #6d28d9; }
-
-/* ══════════════════════════════════════════
-   TEST CHIPS STRIP
-══════════════════════════════════════════ */
-.test-chips-wrap {
-  padding: 12px 18px 14px;
-  border-top: 1px solid var(--border);
-  background: var(--surface);
-}
-.test-chips-label {
-  font-size: 9.5px; font-weight: 800; letter-spacing: 1px;
-  text-transform: uppercase; color: var(--muted);
-  margin-bottom: 8px;
-}
-.test-chips {
-  display: flex; flex-wrap: wrap; gap: 7px;
-}
+/* ── TEST CHIPS ── */
+.test-chips-wrap { padding:12px 18px 14px; border-top:1px solid var(--border); background:var(--surface); }
+.test-chips-label { font-size:9.5px; font-weight:800; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+.test-chips { display:flex; flex-wrap:wrap; gap:7px; }
 .test-chip {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 6px 12px 6px 10px;
-  border-radius: 10px;
-  border: 1.5px solid var(--border);
-  background: var(--surface2);
-  cursor: pointer; transition: all .15s;
-  user-select: none; position: relative;
-  font-size: 12px; font-weight: 700; color: var(--text-2);
+  display:inline-flex; align-items:center; gap:6px; padding:6px 12px 6px 10px;
+  border-radius:10px; border:1.5px solid var(--border); background:var(--surface2);
+  cursor:pointer; transition:all .15s; user-select:none; position:relative;
+  font-size:12px; font-weight:700; color:var(--text-2);
 }
-.test-chip:hover {
-  border-color: var(--blue);
-  background: #eff6ff;
-  color: var(--blue);
-  transform: translateY(-1px);
-  box-shadow: 0 3px 10px rgba(37,99,235,.12);
-}
-.test-chip.active {
-  border-color: var(--blue);
-  background: #dbeafe;
-  color: #1e40af;
-  box-shadow: 0 4px 14px rgba(37,99,235,.18);
-}
-.test-chip.done {
-  border-color: #86efac;
-  background: #f0fdf4;
-  color: #15803d;
-}
-.test-chip.done.active {
-  border-color: var(--green);
-  background: #dcfce7;
-}
-.test-chip.partial {
-  border-color: #fcd34d;
-  background: #fffbeb;
-  color: #92400e;
-}
-.chip-icon { font-size: 13px; line-height: 1; }
-.chip-name { max-width: 160px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.test-chip:hover { border-color:var(--blue); background:#eff6ff; color:var(--blue); transform:translateY(-1px); box-shadow:0 3px 10px rgba(37,99,235,.12); }
+.test-chip.active { border-color:var(--blue); background:#dbeafe; color:#1e40af; box-shadow:0 4px 14px rgba(37,99,235,.18); }
+.test-chip.done { border-color:#86efac; background:#f0fdf4; color:#15803d; }
+.test-chip.done.active { border-color:var(--green); background:#dcfce7; }
+.test-chip.partial { border-color:#fcd34d; background:#fffbeb; color:#92400e; }
+.chip-icon { font-size:13px; line-height:1; }
+.chip-name { max-width:160px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .chip-badge {
-  min-width: 18px; height: 18px; border-radius: 100px;
-  display: inline-flex; align-items: center; justify-content: center;
-  font-size: 9px; font-weight: 900;
-  background: rgba(37,99,235,.12); color: var(--blue);
-  padding: 0 4px;
+  min-width:18px; height:18px; border-radius:100px;
+  display:inline-flex; align-items:center; justify-content:center;
+  font-size:9px; font-weight:900; background:rgba(37,99,235,.12); color:var(--blue); padding:0 4px;
 }
-.test-chip.done .chip-badge   { background: rgba(22,163,74,.15); color: var(--green); }
-.test-chip.partial .chip-badge{ background: rgba(217,119,6,.15); color: var(--amber); }
-.test-chip.active .chip-badge { background: rgba(37,99,235,.2); }
+.test-chip.done .chip-badge { background:rgba(22,163,74,.15); color:var(--green); }
+.test-chip.partial .chip-badge { background:rgba(217,119,6,.15); color:var(--amber); }
+.test-chip.active .chip-badge { background:rgba(37,99,235,.2); }
+.chip-no-params {
+  display:inline-flex; align-items:center; gap:5px; padding:5px 11px; border-radius:8px;
+  background:#fff7ed; border:1.5px solid #fed7aa; font-size:11px; font-weight:700; color:#c2410c;
+  cursor:pointer; transition:all .15s;
+}
+.chip-no-params:hover { background:#ffedd5; border-color:#fb923c; }
 
-/* ══════════════════════════════════════════
-   TEST ENTRY PANEL (slide-in below chips)
-══════════════════════════════════════════ */
-.test-panel-wrap {
-  margin-top: 14px;
-}
+/* ── TEST ENTRY PANEL ── */
+.test-panel-wrap { margin-top:14px; }
 .test-panel {
-  background: var(--surface);
-  border: 1.5px solid var(--blue);
-  border-radius: var(--r-lg);
-  box-shadow: 0 8px 28px rgba(37,99,235,.1);
-  overflow: hidden;
-  animation: panelIn .2s cubic-bezier(.34,1.3,.64,1);
+  background:var(--surface); border:1.5px solid var(--blue);
+  border-radius:var(--r-lg); box-shadow:0 8px 28px rgba(37,99,235,.1);
+  overflow:hidden; animation:panelIn .2s cubic-bezier(.34,1.3,.64,1);
 }
-@keyframes panelIn {
-  from { opacity:0; transform: translateY(-8px) scale(.99); }
-  to   { opacity:1; transform: translateY(0) scale(1); }
-}
+@keyframes panelIn { from{opacity:0;transform:translateY(-8px) scale(.99)} to{opacity:1;transform:translateY(0) scale(1)} }
 .tp-header {
-  background: linear-gradient(to right, #eef2ff, #f0f9ff);
-  border-bottom: 1.5px solid #bfdbfe;
-  padding: 11px 16px;
-  display: flex; align-items: center; gap: 10px;
-  flex-wrap: wrap;
+  background:linear-gradient(to right,#eef2ff,#f0f9ff); border-bottom:1.5px solid #bfdbfe;
+  padding:11px 16px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;
 }
-.tp-title {
-  font-size: 13px; font-weight: 900; color: var(--navy);
-  flex: 1; letter-spacing: -.3px;
-}
-.tp-dept {
-  font-size: 9px; font-weight: 700; color: var(--blue);
-  background: rgba(37,99,235,.1); padding: 2px 8px;
-  border-radius: 100px; text-transform: uppercase; letter-spacing: .5px;
-}
-.tp-close {
-  width: 26px; height: 26px; border-radius: 7px;
-  background: rgba(0,0,0,.05); border: none; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px; color: var(--muted); transition: all .12s;
-}
-.tp-close:hover { background: #fee2e2; color: var(--red); }
+.tp-title { font-size:13px; font-weight:900; color:var(--navy); flex:1; letter-spacing:-.3px; }
+.tp-dept { font-size:9px; font-weight:700; color:var(--blue); background:rgba(37,99,235,.1); padding:2px 8px; border-radius:100px; text-transform:uppercase; letter-spacing:.5px; }
+.tp-close { width:26px; height:26px; border-radius:7px; background:rgba(0,0,0,.05); border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:14px; color:var(--muted); transition:all .12s; }
+.tp-close:hover { background:#fee2e2; color:var(--red); }
+.kb-row { display:flex; gap:10px; align-items:center; padding:5px 16px; background:#f8faff; border-bottom:1px solid var(--border); flex-wrap:wrap; }
+.kb-hint { display:inline-flex; align-items:center; gap:4px; font-size:10px; color:var(--muted); font-weight:500; }
+.kbd { display:inline-flex; align-items:center; justify-content:center; background:white; border:1.5px solid var(--border2); border-radius:4px; font-family:'DM Mono',monospace; font-size:9px; font-weight:700; color:var(--navy); padding:1px 5px; box-shadow:0 1px 2px rgba(0,0,0,.05); min-width:20px; }
+.tp-action-bar { padding:10px 16px; border-top:1.5px solid var(--border); background:var(--surface2); display:flex; gap:7px; flex-wrap:wrap; align-items:center; }
+.tp-prog-wrap { flex:1; display:flex; align-items:center; gap:8px; min-width:120px; }
+.tp-prog-track { flex:1; height:4px; background:var(--border); border-radius:100px; overflow:hidden; }
+.tp-prog-fill { height:100%; border-radius:100px; background:linear-gradient(to right,var(--cyan),var(--green)); transition:width .3s ease; }
+.tp-prog-lbl { font-family:'DM Mono',monospace; font-size:10px; font-weight:700; color:var(--muted); white-space:nowrap; }
 
-/* ── KB HINTS in panel ── */
-.kb-row {
-  display: flex; gap: 10px; align-items: center;
-  padding: 5px 16px;
-  background: #f8faff;
-  border-bottom: 1px solid var(--border);
-  flex-wrap: wrap;
-}
-.kb-hint {
-  display: inline-flex; align-items: center; gap: 4px;
-  font-size: 10px; color: var(--muted); font-weight: 500;
-}
-.kbd {
-  display: inline-flex; align-items: center; justify-content: center;
-  background: white; border: 1.5px solid var(--border2);
-  border-radius: 4px; font-family: 'DM Mono', monospace;
-  font-size: 9px; font-weight: 700; color: var(--navy);
-  padding: 1px 5px; box-shadow: 0 1px 2px rgba(0,0,0,.05); min-width: 20px;
-}
-
-/* ── ACTION BAR inside each test panel ── */
-.tp-action-bar {
-  padding: 10px 16px;
-  border-top: 1.5px solid var(--border);
-  background: var(--surface2);
-  display: flex; gap: 7px; flex-wrap: wrap; align-items: center;
-}
-.tp-prog-wrap {
-  flex: 1; display: flex; align-items: center; gap: 8px; min-width: 120px;
-}
-.tp-prog-track {
-  flex: 1; height: 4px; background: var(--border);
-  border-radius: 100px; overflow: hidden;
-}
-.tp-prog-fill {
-  height: 100%; border-radius: 100px;
-  background: linear-gradient(to right, var(--cyan), var(--green));
-  transition: width .3s ease;
-}
-.tp-prog-lbl {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px; font-weight: 700; color: var(--muted); white-space: nowrap;
-}
-
-/* ── DEPT ACCORDION ── (kept for any fallback uses) */
-.dept-block { margin-bottom: 2px; }
-.dept-fill-status {
-  display: flex; align-items: center; gap: 4px;
-  font-size: 9.5px; font-weight: 700; color: var(--green);
-}
-
-/* ══════════════════════════════════════════
-   EXCEL-STYLE GRID
-══════════════════════════════════════════ */
-.grid-wrap { overflow-x: auto; }
-table.xls {
-  width: 100%; border-collapse: collapse;
-  font-size: 12.5px; table-layout: fixed;
-}
-table.xls col.c-num      { width: 36px; }
-table.xls col.c-testname { width: 160px; }
-table.xls col.c-test     { width: 200px; }
-table.xls col.c-unit     { width: 90px; }
-table.xls col.c-gauge    { width: 180px; }
-table.xls col.c-inp      { width: 130px; }
-
-/* Header */
+/* ── EXCEL GRID ── */
+.grid-wrap { overflow-x:auto; }
+table.xls { width:100%; border-collapse:collapse; font-size:12.5px; table-layout:fixed; }
 table.xls thead th {
-  background: linear-gradient(to bottom, #edf2ff, #e2eafc);
-  color: #2338a0;
-  font-size: 9.5px; font-weight: 800;
-  letter-spacing: .7px; text-transform: uppercase;
-  padding: 7px 10px; text-align: left;
-  border-bottom: 2px solid #b8ccf5;
-  border-right: 1px solid #c7d7f8;
-  white-space: nowrap; position: sticky; top: 0; z-index: 10;
-  font-family: 'Outfit', sans-serif;
+  background:linear-gradient(to bottom,#edf2ff,#e2eafc); color:#2338a0;
+  font-size:9.5px; font-weight:800; letter-spacing:.7px; text-transform:uppercase;
+  padding:7px 10px; text-align:left; border-bottom:2px solid #b8ccf5;
+  border-right:1px solid #c7d7f8; white-space:nowrap; position:sticky; top:0; z-index:10;
+  font-family:'Outfit',sans-serif;
 }
-table.xls thead th:last-child { border-right: none; }
-table.xls thead th.c-num { text-align: center; }
-
-/* Body rows */
-table.xls tbody tr {
-  border-bottom: 1px solid var(--border);
-  transition: background .07s;
-}
-table.xls tbody tr:last-child { border-bottom: none; }
-table.xls tbody tr:hover { background: #f5f8ff; }
-
-/* Flag states */
-table.xls tbody tr.flag-H { background: #fff5f5; border-left: 2px solid var(--red) !important; }
-table.xls tbody tr.flag-L { background: #eff6ff; border-left: 2px solid var(--blue) !important; }
-table.xls tbody tr.flag-C {
-  background: #f5f0ff; border-left: 2px solid var(--purple) !important;
-  animation: crit-row 2s ease-in-out infinite;
-}
+table.xls thead th:last-child { border-right:none; }
+table.xls thead th.c-num { text-align:center; }
+table.xls tbody tr { border-bottom:1px solid var(--border); transition:background .07s; }
+table.xls tbody tr:last-child { border-bottom:none; }
+table.xls tbody tr:hover { background:#f5f8ff; }
+table.xls tbody tr.flag-H { background:#fff5f5; border-left:2px solid var(--red) !important; }
+table.xls tbody tr.flag-L { background:#eff6ff; border-left:2px solid var(--blue) !important; }
+table.xls tbody tr.flag-C { background:#f5f0ff; border-left:2px solid var(--purple) !important; animation:crit-row 2s ease-in-out infinite; }
 @keyframes crit-row { 0%,100%{background:#f5f0ff} 50%{background:#ede9fe} }
-
-table.xls tbody td {
-  padding: 0; border-right: 1px solid var(--border);
-  vertical-align: middle;
-}
-table.xls tbody td:last-child { border-right: none; }
-
-/* Row number */
-td.td-num {
-  text-align: center;
-  font-family: 'DM Mono', monospace;
-  font-size: 9.5px; color: var(--muted2); font-weight: 600;
-  background: #fafbff; padding: 0 4px;
-  border-right: 2px solid var(--border) !important;
-  user-select: none;
-}
-
-/* Test name */
-td.td-test { padding: 0 10px; }
-.tn {
-  font-weight: 700; color: var(--text);
-  font-size: 12.5px; line-height: 1.3;
-  white-space: nowrap; overflow: hidden;
-  text-overflow: ellipsis; display: block;
-}
-.tu { font-size: 9.5px; color: var(--muted); font-family: 'DM Mono', monospace; }
-.tsub { font-size: 9px; color: var(--muted2); font-weight: 500; opacity: .7; }
-
-/* Result input */
-td.td-inp { padding: 3px 6px; }
+table.xls tbody td { padding:0; border-right:1px solid var(--border); vertical-align:middle; }
+table.xls tbody td:last-child { border-right:none; }
+td.td-num { text-align:center; font-family:'DM Mono',monospace; font-size:9.5px; color:var(--muted2); font-weight:600; background:#fafbff; padding:0 4px; border-right:2px solid var(--border) !important; user-select:none; }
+td.td-test { padding:0 10px; }
+.tn { font-weight:700; color:var(--text); font-size:12.5px; line-height:1.3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block; }
+.tu-cell { font-family:'DM Mono',monospace; font-size:10.5px; font-weight:600; color:var(--muted); white-space:nowrap; }
+td.td-inp { padding:3px 6px; }
 .ri {
-  width: 100%; padding: 6px 10px;
-  border: 1.5px solid transparent;
-  border-radius: 6px; font-size: 14px;
-  font-family: 'DM Mono', monospace;
-  font-weight: 700; color: var(--text);
-  background: transparent; text-align: right;
-  transition: all .13s;
-  outline: none; cursor: pointer; display: block; min-height: 34px;
+  width:100%; padding:6px 10px; border:1.5px solid transparent; border-radius:6px;
+  font-size:14px; font-family:'DM Mono',monospace; font-weight:700; color:var(--text);
+  background:transparent; text-align:right; transition:all .13s; outline:none; cursor:pointer; display:block; min-height:34px;
 }
-.ri:hover { background: white; border-color: var(--border2); cursor: text; }
-.ri:focus { background: white; border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(8,145,178,.12); }
-.ri.f-H { background: #fff0f0; border-color: #fca5a5; color: var(--red); font-weight: 800; }
-.ri.f-H:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(220,38,38,.1); }
-.ri.f-L { background: #eff6ff; border-color: #93c5fd; color: var(--blue-h); font-weight: 800; }
-.ri.f-L:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,.1); }
-.ri.f-C { background: #f5f0ff; border-color: #c4b5fd; color: var(--purple); font-weight: 800;
-  animation: crit-inp 1.5s ease-in-out infinite; }
-@keyframes crit-inp { 0%,100%{box-shadow: 0 0 0 2px rgba(124,58,237,.12)} 50%{box-shadow: 0 0 0 4px rgba(124,58,237,.18)} }
-
+.ri:hover { background:white; border-color:var(--border2); cursor:text; }
+.ri:focus { background:white; border-color:var(--cyan); box-shadow:0 0 0 3px rgba(8,145,178,.12); }
+.ri.f-H { background:#fff0f0; border-color:#fca5a5; color:var(--red); font-weight:800; }
+.ri.f-L { background:#eff6ff; border-color:#93c5fd; color:var(--blue-h); font-weight:800; }
+.ri.f-C { background:#f5f0ff; border-color:#c4b5fd; color:var(--purple); font-weight:800; animation:crit-inp 1.5s ease-in-out infinite; }
+@keyframes crit-inp { 0%,100%{box-shadow:0 0 0 2px rgba(124,58,237,.12)} 50%{box-shadow:0 0 0 4px rgba(124,58,237,.18)} }
 .ri-txt {
-  width: 100%; padding: 6px 8px;
-  border: 1.5px solid transparent; border-radius: 6px;
-  font-size: 12px; font-family: 'Outfit', sans-serif;
-  font-weight: 500; color: var(--text); background: transparent;
-  outline: none; cursor: pointer; display: block; min-height: 34px; transition: all .13s;
+  width:100%; padding:6px 8px; border:1.5px solid transparent; border-radius:6px;
+  font-size:12px; font-family:'Outfit',sans-serif; font-weight:500; color:var(--text);
+  background:transparent; outline:none; cursor:pointer; display:block; min-height:34px; transition:all .13s;
 }
-.ri-txt:hover { background: white; border-color: var(--border2); }
-.ri-txt:focus { background: white; border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(8,145,178,.1); }
-
-/* Test name column (first col) */
-td.td-testname { padding: 0 10px; }
-.tname-main {
-  font-weight: 800; color: var(--navy);
-  font-size: 12px; line-height: 1.3;
-  white-space: normal; display: block;
-}
-.tname-dept {
-  font-size: 9px; font-weight: 600;
-  color: var(--blue); margin-top: 1px;
-  text-transform: uppercase; letter-spacing: .5px;
-}
-
-/* Unit column */
-td.td-unit { padding: 0 8px; }
-.tu-cell {
-  font-family: 'DM Mono', monospace;
-  font-size: 10.5px; font-weight: 600;
-  color: var(--muted); white-space: nowrap;
-}
-
-/* Method (hidden now — kept for compat) */
-td.td-meth { display: none; }
-
-/* Gauge */
-td.td-gauge { padding: 5px 10px 5px 8px; }
-.gauge-outer { display: flex; flex-direction: column; gap: 2px; }
+.ri-txt:hover { background:white; border-color:var(--border2); }
+.ri-txt:focus { background:white; border-color:var(--cyan); box-shadow:0 0 0 3px rgba(8,145,178,.1); }
+td.td-gauge { padding:5px 10px 5px 8px; }
+.gauge-outer { display:flex; flex-direction:column; gap:2px; }
 .gauge-track {
-  position: relative; height: 7px; border-radius: 100px; overflow: visible;
-  background: linear-gradient(to right,
-    #bfdbfe 0%, #bfdbfe var(--lo-pct),
-    #86efac var(--lo-pct), #86efac var(--hi-pct),
-    #fca5a5 var(--hi-pct), #fca5a5 100%);
+  position:relative; height:7px; border-radius:100px; overflow:visible;
+  background:linear-gradient(to right,#bfdbfe 0%,#bfdbfe var(--lo-pct),#86efac var(--lo-pct),#86efac var(--hi-pct),#fca5a5 var(--hi-pct),#fca5a5 100%);
 }
-.gauge-norm-line {
-  position: absolute; top: 0; height: 100%;
-  border-left: 1px dashed rgba(22,163,74,.5);
-  border-right: 1px dashed rgba(22,163,74,.5);
-  pointer-events: none;
-}
-.gauge-needle {
-  position: absolute; top: -3px;
-  width: 3px; height: 13px; border-radius: 2px;
-  transform: translateX(-50%);
-  transition: left .35s cubic-bezier(.34,1.56,.64,1), background .2s;
-  box-shadow: 0 1px 3px rgba(0,0,0,.3); z-index: 2;
-}
-.gn-ok { background: var(--green); }
-.gn-H  { background: var(--red); }
-.gn-L  { background: var(--blue); }
-.gn-C  { background: var(--purple); }
-.gn-empty { background: var(--muted2); opacity: .4; }
-.gauge-labels { display: flex; justify-content: space-between; align-items: center; margin-top: 2px; }
-.gl { font-size: 8px; font-family: 'DM Mono', monospace; color: var(--muted2); font-weight: 600; }
-.gl-norm { font-size: 8px; font-family: 'DM Mono', monospace; color: var(--green); font-weight: 700;
-  padding: 0 3px; background: rgba(22,163,74,.08); border-radius: 3px; }
-
-/* Remarks — hidden in this layout */
-td.td-rem { display: none; }
-
-/* ══════════════════════════════════════════
-   ACTION BAR (bottom of result card)
-══════════════════════════════════════════ */
-.action-bar {
-  padding: 12px 18px;
-  border-top: 1.5px solid var(--border);
-  background: var(--surface2);
-  display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
-}
+.gauge-norm-line { position:absolute; top:0; height:100%; border-left:1px dashed rgba(22,163,74,.5); border-right:1px dashed rgba(22,163,74,.5); pointer-events:none; }
+.gauge-needle { position:absolute; top:-3px; width:3px; height:13px; border-radius:2px; transform:translateX(-50%); transition:left .35s cubic-bezier(.34,1.56,.64,1),background .2s; box-shadow:0 1px 3px rgba(0,0,0,.3); z-index:2; }
+.gn-ok { background:var(--green); } .gn-H { background:var(--red); } .gn-L { background:var(--blue); } .gn-C { background:var(--purple); } .gn-empty { background:var(--muted2); opacity:.4; }
+.gauge-labels { display:flex; justify-content:space-between; align-items:center; margin-top:2px; }
+.gl { font-size:8px; font-family:'DM Mono',monospace; color:var(--muted2); font-weight:600; }
+.gl-norm { font-size:8px; font-family:'DM Mono',monospace; color:var(--green); font-weight:700; padding:0 3px; background:rgba(22,163,74,.08); border-radius:3px; }
 
 /* ── BUTTONS ── */
 .btn {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 8px 16px;
-  border: 1.5px solid transparent;
-  border-radius: var(--r-sm);
-  font-size: 12.5px; font-family: 'Outfit', sans-serif;
-  font-weight: 700; cursor: pointer; transition: all .14s;
-  white-space: nowrap;
+  display:inline-flex; align-items:center; gap:6px; padding:8px 16px;
+  border:1.5px solid transparent; border-radius:var(--r-sm); font-size:12.5px;
+  font-family:'Outfit',sans-serif; font-weight:700; cursor:pointer; transition:all .14s; white-space:nowrap;
 }
-.btn:active { transform: scale(.97); }
-.btn:disabled { opacity: .4; cursor: not-allowed; pointer-events: none; }
+.btn:active { transform:scale(.97); }
+.btn:disabled { opacity:.4; cursor:not-allowed; pointer-events:none; }
+.btn-save { background:var(--green); color:white; box-shadow:0 4px 12px rgba(22,163,74,.2); }
+.btn-save:hover { background:#15803d; transform:translateY(-1px); box-shadow:0 6px 16px rgba(22,163,74,.25); }
+.btn-complete { background:linear-gradient(135deg,#0369a1,var(--cyan)); color:white; box-shadow:0 4px 12px rgba(8,145,178,.2); }
+.btn-complete:hover { transform:translateY(-1px); box-shadow:0 6px 16px rgba(8,145,178,.25); }
+.btn-back { background:white; color:var(--muted); border-color:var(--border2); }
+.btn-back:hover { border-color:var(--blue); color:var(--blue); }
+.btn-sm { padding:5px 12px; font-size:11.5px; }
+.btn-params { background:linear-gradient(135deg,#7c3aed,#6d28d9); color:white; border:none; padding:7px 14px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; font-family:'Outfit',sans-serif; transition:all .2s; box-shadow:0 4px 12px rgba(124,58,237,.3); display:inline-flex; align-items:center; gap:5px; }
+.btn-params:hover { transform:translateY(-1px); box-shadow:0 6px 18px rgba(124,58,237,.4); }
 
-.btn-save {
-  background: var(--green); color: white;
-  box-shadow: 0 4px 12px rgba(22,163,74,.2);
-}
-.btn-save:hover { background: #15803d; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(22,163,74,.25); }
+/* ── ACTION BAR ── */
+.action-bar { padding:12px 18px; border-top:1.5px solid var(--border); background:var(--surface2); display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+.sec-label { font-size:10.5px; font-weight:800; letter-spacing:1.2px; text-transform:uppercase; color:var(--blue); margin-bottom:8px; display:flex; align-items:center; gap:8px; }
+.sec-label::after { content:''; flex:1; height:1.5px; background:linear-gradient(to right,rgba(37,99,235,.2),transparent); }
 
-.btn-complete {
-  background: linear-gradient(135deg, #0369a1, var(--cyan));
-  color: white; box-shadow: 0 4px 12px rgba(8,145,178,.2);
-}
-.btn-complete:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(8,145,178,.25); }
-
-.btn-back {
-  background: white; color: var(--muted);
-  border-color: var(--border2);
-}
-.btn-back:hover { border-color: var(--blue); color: var(--blue); }
-
-.btn-sm { padding: 5px 12px; font-size: 11.5px; }
-
-/* ══════════════════════════════════════════
-   STICKY SAVE BAR
-══════════════════════════════════════════ */
+/* ── STICKY SAVE BAR ── */
 .sticky-bar {
-  position: fixed; bottom: 0; left: 0; right: 0;
-  background: rgba(10,22,40,.97); backdrop-filter: blur(20px);
-  border-top: 1px solid rgba(255,255,255,.07);
-  padding: 9px 20px;
-  display: none; align-items: center;
-  justify-content: space-between; gap: 12px; z-index: 300;
+  position:fixed; bottom:0; left:0; right:0; background:rgba(10,22,40,.97);
+  backdrop-filter:blur(20px); border-top:1px solid rgba(255,255,255,.07);
+  padding:9px 20px; display:none; align-items:center; justify-content:space-between; gap:12px; z-index:300;
 }
-.sticky-bar.vis { display: flex; }
-.sb-left { display: flex; flex-direction: column; }
-.sb-info { color: rgba(255,255,255,.65); font-size: 12px; font-weight: 600; }
-.sb-info strong { color: white; }
-.sb-hint { font-size: 10px; color: rgba(255,255,255,.35); font-family: 'DM Mono', monospace; margin-top: 1px; }
-.sb-acts { display: flex; gap: 6px; align-items: center; }
+.sticky-bar.vis { display:flex; }
+.sb-left { display:flex; flex-direction:column; }
+.sb-info { color:rgba(255,255,255,.65); font-size:12px; font-weight:600; }
+.sb-info strong { color:white; }
+.sb-hint { font-size:10px; color:rgba(255,255,255,.35); font-family:'DM Mono',monospace; margin-top:1px; }
+.sb-acts { display:flex; gap:6px; align-items:center; }
+.sb-dirty-dot { display:inline-block; width:7px; height:7px; border-radius:50%; background:#facc15; margin-right:5px; animation:dirty-pulse 1.5s ease-in-out infinite; }
+@keyframes dirty-pulse { 0%,100%{box-shadow:0 0 0 2px rgba(250,204,21,.2)} 50%{box-shadow:0 0 0 5px rgba(250,204,21,.08)} }
 
-/* ══════════════════════════════════════════
-   SECTION HEADER LABELS
-══════════════════════════════════════════ */
-.sec-label {
-  font-size: 10.5px; font-weight: 800;
-  letter-spacing: 1.2px; text-transform: uppercase;
-  color: var(--blue); margin-bottom: 8px;
-  display: flex; align-items: center; gap: 8px;
-}
-.sec-label::after {
-  content: ''; flex: 1; height: 1.5px;
-  background: linear-gradient(to right, rgba(37,99,235,.2), transparent);
-}
-
-/* ══════════════════════════════════════════
-   TOAST
-══════════════════════════════════════════ */
-#toastC {
-  position: fixed; bottom: 60px; right: 16px;
-  display: flex; flex-direction: column; gap: 5px;
-  z-index: 9999; pointer-events: none;
-}
-.toast {
-  padding: 9px 14px; border-radius: var(--r-sm);
-  font-size: 12.5px; font-weight: 600; color: white;
-  background: var(--navy); box-shadow: var(--shadow-lg);
-  animation: tin .2s ease; max-width: 280px;
-}
-.toast.success { background: var(--green); }
-.toast.warning { background: var(--amber); }
-.toast.error   { background: var(--red); }
-.toast.info    { background: var(--blue); }
+/* ── TOAST ── */
+#toastC { position:fixed; bottom:60px; right:16px; display:flex; flex-direction:column; gap:5px; z-index:9999; pointer-events:none; }
+.toast { padding:9px 14px; border-radius:var(--r-sm); font-size:12.5px; font-weight:600; color:white; background:var(--navy); box-shadow:var(--shadow-lg); animation:tin .2s ease; max-width:280px; }
+.toast.success { background:var(--green); } .toast.warning { background:var(--amber); } .toast.error { background:var(--red); } .toast.info { background:var(--blue); }
 @keyframes tin { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
 
+/* ── CONFIRM MODAL ── */
+.modal-overlay { position:fixed; inset:0; background:rgba(10,22,40,.5); backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center; z-index:500; opacity:0; pointer-events:none; transition:opacity .2s; }
+.modal-overlay.open { opacity:1; pointer-events:all; }
+.modal-box { background:white; border-radius:var(--r-xl); padding:22px 24px; width:min(400px,90vw); box-shadow:0 24px 60px rgba(10,22,40,.2); transform:scale(.95); transition:transform .2s; }
+.modal-overlay.open .modal-box { transform:scale(1); }
+.modal-title { font-size:15px; font-weight:900; color:var(--navy); margin-bottom:8px; }
+.modal-body { font-size:13px; color:var(--muted); line-height:1.6; }
+.modal-acts { display:flex; gap:6px; justify-content:flex-end; margin-top:18px; }
+
 /* ══════════════════════════════════════════
-   MODAL
+   ★ PARAMETER MANAGER MODAL — NEW DESIGN
+   Layout: Test (catalog dropdown) → Parameters → Units → Ref Range
 ══════════════════════════════════════════ */
-.modal-overlay {
-  position: fixed; inset: 0;
-  background: rgba(10,22,40,.5); backdrop-filter: blur(6px);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 500; opacity: 0; pointer-events: none; transition: opacity .2s;
+.pm-overlay {
+  position:fixed; inset:0; z-index:600;
+  background:rgba(10,22,40,.6); backdrop-filter:blur(8px);
+  display:flex; align-items:flex-start; justify-content:center;
+  padding:20px 16px 80px; overflow-y:auto;
+  opacity:0; pointer-events:none; transition:opacity .22s;
 }
-.modal-overlay.open { opacity: 1; pointer-events: all; }
-.modal-box {
-  background: white; border-radius: var(--r-xl);
-  padding: 22px 24px; width: min(400px, 90vw);
-  box-shadow: 0 24px 60px rgba(10,22,40,.2);
-  transform: scale(.95); transition: transform .2s;
+.pm-overlay.open { opacity:1; pointer-events:all; }
+.pm-box {
+  background:white; border-radius:var(--r-xl); width:min(960px,100%);
+  box-shadow:0 32px 80px rgba(10,22,40,.25);
+  transform:translateY(16px); transition:transform .22s; overflow:hidden;
 }
-.modal-overlay.open .modal-box { transform: scale(1); }
-.modal-title { font-size: 15px; font-weight: 900; color: var(--navy); margin-bottom: 8px; }
-.modal-body { font-size: 13px; color: var(--muted); line-height: 1.6; }
-.modal-acts { display: flex; gap: 6px; justify-content: flex-end; margin-top: 18px; }
+.pm-overlay.open .pm-box { transform:translateY(0); }
 
-/* Fix #8: Unsaved changes indicator */
-.sb-dirty-dot {
-  display: inline-block; width: 7px; height: 7px; border-radius: 50%;
-  background: #facc15; margin-right: 5px;
-  animation: dirty-pulse 1.5s ease-in-out infinite;
+/* PM Header */
+.pm-head {
+  background:linear-gradient(135deg,var(--navy) 0%,#1e3a8a 60%,#7c3aed 100%);
+  padding:18px 24px; display:flex; align-items:center; gap:14px;
 }
-@keyframes dirty-pulse {
-  0%,100%{ box-shadow: 0 0 0 2px rgba(250,204,21,.2); }
-  50%     { box-shadow: 0 0 0 5px rgba(250,204,21,.08); }
+.pm-head-icon { font-size:28px; }
+.pm-head-info { flex:1; }
+.pm-head-title { font-size:18px; font-weight:900; color:#fff; letter-spacing:-.4px; }
+.pm-head-sub { font-size:11.5px; color:rgba(255,255,255,.5); margin-top:2px; }
+.pm-head-close {
+  width:32px; height:32px; border-radius:9px; background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.15); color:rgba(255,255,255,.8); font-size:16px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; transition:all .13s;
 }
+.pm-head-close:hover { background:rgba(255,255,255,.2); color:#fff; }
 
-/* Scrollbar styling */
-.main-panel::-webkit-scrollbar { width: 0; }
+.pm-body { padding:20px 24px; }
 
-@media (max-width: 768px) {
-  .layout { grid-template-columns: 1fr; }
-  .sidebar { position: static; height: auto; }
-  table.xls col.c-gauge { width: 130px; }
-  table.xls col.c-testname { width: 100px; }
-  .nav-links { display: none; }
+/* ── PM: Test Selector (catalog-driven) ── */
+.pm-test-selector {
+  background:linear-gradient(to right,#f0f5ff,#f8faff);
+  border:1.5px solid #c7d7f8; border-radius:var(--r);
+  padding:16px 18px; margin-bottom:18px;
+}
+.pm-test-selector-title {
+  font-size:10px; font-weight:800; letter-spacing:1px; text-transform:uppercase;
+  color:var(--blue); margin-bottom:12px; display:flex; align-items:center; gap:8px;
+}
+.pm-test-selector-title::after { content:''; flex:1; height:1px; background:rgba(37,99,235,.2); }
+.pm-selector-grid {
+  display:grid; grid-template-columns:1fr 1fr auto; gap:10px; align-items:end;
+}
+.pm-sel-field { display:flex; flex-direction:column; gap:4px; }
+.pm-sel-label { font-size:10px; font-weight:800; letter-spacing:.7px; text-transform:uppercase; color:var(--muted); }
+.pm-catalog-search-wrap { position:relative; }
+.pm-catalog-search {
+  width:100%; padding:9px 36px 9px 12px; border:1.5px solid var(--border);
+  border-radius:var(--r-sm); font-family:'Outfit',sans-serif; font-size:13px;
+  font-weight:600; color:var(--text); background:white; outline:none; transition:all .15s;
+}
+.pm-catalog-search:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(37,99,235,.08); }
+.pm-catalog-dropdown {
+  position:absolute; top:calc(100% + 4px); left:0; right:0;
+  background:white; border:1.5px solid var(--border); border-radius:var(--r);
+  box-shadow:0 8px 24px rgba(12,20,69,.12); z-index:200;
+  max-height:240px; overflow-y:auto; display:none;
+}
+.pm-catalog-dropdown.open { display:block; }
+.pm-catalog-dropdown::-webkit-scrollbar { width:4px; }
+.pm-catalog-dropdown::-webkit-scrollbar-thumb { background:var(--border2); border-radius:4px; }
+.pm-dd-item {
+  padding:9px 14px; cursor:pointer; border-bottom:1px solid var(--border2);
+  transition:background .1s; display:flex; align-items:center; gap:10px;
+}
+.pm-dd-item:last-child { border-bottom:none; }
+.pm-dd-item:hover { background:#eff6ff; }
+.pm-dd-item.configured { background:#f0fdf4; }
+.pm-dd-item.configured:hover { background:#dcfce7; }
+.pm-dd-name { font-size:13px; font-weight:700; color:var(--text); flex:1; }
+.pm-dd-dept { font-size:10px; font-weight:600; color:var(--blue); background:rgba(37,99,235,.08); padding:2px 7px; border-radius:100px; white-space:nowrap; }
+.pm-dd-configured { font-size:9px; font-weight:800; color:var(--green); background:rgba(22,163,74,.1); padding:2px 7px; border-radius:100px; white-space:nowrap; }
+.pm-dd-empty { padding:20px; text-align:center; font-size:13px; color:var(--muted2); font-style:italic; }
+.pm-selected-test {
+  background:linear-gradient(135deg,#1e3a8a,#2563eb); color:white;
+  border-radius:var(--r-sm); padding:10px 14px;
+  display:none; align-items:center; gap:10px;
+}
+.pm-selected-test.show { display:flex; }
+.pm-sel-test-name { font-size:14px; font-weight:900; flex:1; letter-spacing:-.3px; }
+.pm-sel-test-dept { font-size:10px; background:rgba(255,255,255,.15); padding:3px 10px; border-radius:100px; font-weight:700; }
+.pm-sel-change { background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.2); color:white; padding:5px 12px; border-radius:7px; font-size:11.5px; font-weight:700; cursor:pointer; font-family:'Outfit',sans-serif; transition:all .13s; }
+.pm-sel-change:hover { background:rgba(255,255,255,.25); }
+
+/* ── PM: Parameters Table ──
+   Columns: # | Parameter Name | Unit | Reference Range | Lo | Hi | ✕
+*/
+.pm-params-section { margin-bottom:14px; }
+.pm-params-section-title {
+  font-size:10px; font-weight:800; letter-spacing:1px; text-transform:uppercase;
+  color:var(--muted); margin-bottom:8px; display:flex; align-items:center; gap:8px;
+}
+.pm-params-section-title::after { content:''; flex:1; height:1px; background:var(--border2); }
+.pm-table-wrap { border:1.5px solid var(--border); border-radius:var(--r); overflow:hidden; }
+.pm-table-head {
+  display:grid;
+  grid-template-columns: 36px 1fr 100px 150px 70px 70px 44px;
+  background:linear-gradient(to bottom,#edf2ff,#e2eafc);
+  border-bottom:2px solid #b8ccf5;
+}
+.pm-table-head span {
+  padding:8px 10px; font-size:9.5px; font-weight:800;
+  letter-spacing:.7px; text-transform:uppercase; color:#2338a0;
+  font-family:'Outfit',sans-serif; display:flex; align-items:center;
+}
+.pm-rows { max-height:320px; overflow-y:auto; }
+.pm-rows::-webkit-scrollbar { width:4px; }
+.pm-rows::-webkit-scrollbar-thumb { background:var(--border2); border-radius:4px; }
+.pm-row {
+  display:grid;
+  grid-template-columns: 36px 1fr 100px 150px 70px 70px 44px;
+  border-bottom:1px solid var(--border2); align-items:center;
+  transition:background .1s;
+}
+.pm-row:last-child { border-bottom:none; }
+.pm-row:hover { background:#fafbff; }
+.pm-row-num {
+  text-align:center; font-family:'DM Mono',monospace; font-size:9.5px;
+  color:var(--muted2); font-weight:600; background:#fafbff; padding:0 4px;
+  border-right:2px solid var(--border); align-self:stretch;
+  display:flex; align-items:center; justify-content:center;
+}
+.pm-row input {
+  width:100%; padding:8px 10px; border:none; border-right:1px solid var(--border2);
+  font-family:'Outfit',sans-serif; font-size:12.5px; font-weight:600;
+  color:var(--text); background:transparent; outline:none; transition:background .12s;
+}
+.pm-row input:focus { background:#eff6ff; }
+.pm-row input:last-of-type { border-right:none; }
+.pm-row-del { display:flex; align-items:center; justify-content:center; width:44px; align-self:stretch; }
+.pm-del-btn { width:26px; height:26px; border-radius:7px; border:none; cursor:pointer; background:#fee2e2; color:var(--red); font-size:14px; display:flex; align-items:center; justify-content:center; transition:all .12s; }
+.pm-del-btn:hover { background:#fecaca; transform:scale(1.1); }
+.pm-add-row { display:flex; align-items:center; gap:8px; padding:9px 14px; background:var(--surface2); border-top:1px dashed var(--border); cursor:pointer; font-size:12px; font-weight:700; color:var(--blue); transition:all .13s; }
+.pm-add-row:hover { background:#eff6ff; }
+
+/* PM Saved chips */
+.pm-saved-list { margin-top:20px; }
+.pm-saved-title { font-size:11px; font-weight:800; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+.pm-saved-title::after { content:''; flex:1; height:1px; background:var(--border2); }
+.pm-saved-grid { display:flex; flex-wrap:wrap; gap:8px; }
+.pm-saved-chip {
+  display:inline-flex; align-items:center; gap:7px; padding:6px 12px;
+  border:1.5px solid var(--border); border-radius:10px; background:var(--surface2);
+  font-size:12px; font-weight:700; color:var(--text-2); cursor:pointer; transition:all .14s;
+}
+.pm-saved-chip:hover { border-color:var(--purple); background:#f5f3ff; color:var(--purple); }
+.pm-saved-chip.active-edit { border-color:var(--purple); background:#ede9fe; color:#5b21b6; }
+.pm-saved-chip .psc-count { font-size:9.5px; background:rgba(124,58,237,.12); color:var(--purple); padding:1px 6px; border-radius:100px; font-weight:800; }
+.pm-saved-chip .psc-del { color:#dc2626; font-size:13px; opacity:.6; transition:opacity .1s; }
+.pm-saved-chip .psc-del:hover { opacity:1; }
+.pm-empty-saved { font-size:12.5px; color:var(--muted2); font-style:italic; padding:8px 0; }
+.pm-footer { display:flex; gap:8px; padding:16px 24px; border-top:1.5px solid var(--border2); background:var(--surface2); flex-wrap:wrap; }
+.pm-hint-box { font-size:11px; color:var(--muted); margin-bottom:14px; background:#f8faff; padding:8px 12px; border-radius:8px; border:1px solid var(--border2); line-height:1.6; }
+
+@media (max-width:768px) {
+  .layout { grid-template-columns:1fr; }
+  .sidebar { position:static; height:auto; }
+  .nav-links { display:none; }
+  .pm-table-head, .pm-row { grid-template-columns:32px 1fr 80px 120px 60px 60px 38px; }
+  .pm-selector-grid { grid-template-columns:1fr; }
 }
 </style>
 </head>
@@ -973,20 +606,16 @@ td.td-rem { display: none; }
 <div class="bg-canvas"></div>
 <div class="bg-grid"></div>
 
-<!-- ══════════════════════════════════════ NAVBAR ══════ -->
+<!-- NAVBAR -->
 <nav class="navbar">
   <a class="nav-logo" href="#">
     <div class="logo-icon">🧪</div>
     <span class="logo-text">Medi<span>Core</span></span>
   </a>
   <div class="nav-links">
-    <div class="nav-step" id="step1">
-      <span class="step-num">1</span> Select Patient
-    </div>
+    <div class="nav-step" id="step1"><span class="step-num">1</span> Select Patient</div>
     <div class="nav-step-div"></div>
-    <div class="nav-step" id="step2">
-      <span class="step-num">2</span> Enter Results
-    </div>
+    <div class="nav-step" id="step2"><span class="step-num">2</span> Enter Results</div>
   </div>
   <div class="nav-right">
     <div class="nav-datetime">
@@ -994,29 +623,31 @@ td.td-rem { display: none; }
       <div class="date-badge-inline" id="dateBadge">—</div>
     </div>
     <div class="nav-divider"></div>
+    <button class="btn-params" onclick="openPM()">🧬 Test Parameters</button>
     <a href="index.html" class="btn-nav">🏠 Home</a>
     <a href="MAIN3.html" class="btn-nav">📋 Dashboard</a>
   </div>
 </nav>
 
-<!-- ══════════════════════════════════════ PAGE HEADER ══════ -->
+<!-- PAGE HEADER -->
 <div class="page-header">
   <div class="ph-inner">
     <div>
       <div class="ph-title">🔬 Result Entry</div>
-      <div class="ph-sub">Excel-style parameter input with live reference range validation</div>
+      <div class="ph-sub">Parameters sourced from test catalog · Live reference range validation</div>
     </div>
     <div class="ph-badges">
       <div class="ph-badge"><div class="live-dot"></div> Live Module</div>
       <div class="ph-badge" id="bkCountBadge">0 Bookings</div>
+      <div class="ph-badge" id="paramCountBadge">0 Tests Configured</div>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════ TWO-PANEL LAYOUT ══════ -->
+<!-- TWO-PANEL LAYOUT -->
 <div class="layout">
 
-  <!-- ══════════ LEFT SIDEBAR: BOOKING LIST ══════════ -->
+  <!-- LEFT SIDEBAR — Patient Queue -->
   <aside class="sidebar">
     <div class="sidebar-header">
       <div class="sidebar-title">Patient Queue</div>
@@ -1025,7 +656,7 @@ td.td-rem { display: none; }
         <input type="text" id="bkSearch" placeholder="Search name, ID, mobile…" oninput="filterBks()">
       </div>
       <div class="filter-pills">
-        <button class="fp on"  onclick="setSF('all',this)">All</button>
+        <button class="fp on" onclick="setSF('all',this)">All</button>
         <button class="fp" onclick="setSF('Booked',this)">⏳ Pending</button>
         <button class="fp" onclick="setSF('Partial',this)">🔄 Partial</button>
         <button class="fp" onclick="setSF('Completed',this)">✅ Done</button>
@@ -1033,60 +664,46 @@ td.td-rem { display: none; }
       <div class="bk-count" id="bkCount">Loading…</div>
     </div>
     <div class="bk-list" id="bkList">
-      <div class="empty-state">
-        <div class="ei">📋</div>
-        <h3>Loading…</h3>
-      </div>
+      <div class="empty-state"><div class="ei">📋</div><h3>Loading…</h3></div>
     </div>
   </aside>
 
-  <!-- ══════════ RIGHT PANEL: RESULT ENTRY ══════════ -->
+  <!-- RIGHT PANEL — Result Entry -->
   <div class="main-panel">
 
-    <!-- Welcome state -->
     <div class="welcome-state" id="welcomeState">
       <div class="welcome-icon">🧪</div>
       <h2>Select a Patient to Begin</h2>
-      <p>Choose a booking from the queue on the left to enter test results. Each booking shows its fill status at a glance.</p>
+      <p>Choose a booking from the queue on the left. Use <strong>🧬 Test Parameters</strong> to configure parameters for any test from the catalog — they'll auto-appear here for every patient.</p>
     </div>
 
-    <!-- ── RESULT ENTRY AREA ── -->
     <div id="resultPanel">
-
-      <!-- Patient card -->
       <div class="sec-label">② Result Entry</div>
       <div class="patient-card" id="patientCard">
-        <div class="patient-card-header" id="patientHeader"><!-- JS --></div>
-
-        <!-- Overall progress -->
+        <div class="patient-card-header" id="patientHeader"></div>
         <div class="overall-prog" id="overallProg">
           <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
           <div class="prog-pct" id="progPct">0/0</div>
           <div class="prog-flags" id="progFlags"></div>
         </div>
-
-        <!-- Test chips strip -->
         <div class="test-chips-wrap">
           <div class="test-chips-label">Booked Tests — tap to enter results</div>
-          <div class="test-chips" id="testChips"><!-- JS --></div>
+          <div class="test-chips" id="testChips"></div>
         </div>
       </div>
-
-      <!-- Active test panel (renders here when chip clicked) -->
       <div class="test-panel-wrap" id="testPanelWrap" style="display:none"></div>
-
-      <!-- Save All / Complete buttons -->
       <div class="action-bar" id="mainActionBar" style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:12px 18px;display:none;gap:8px;flex-wrap:wrap;align-items:center;margin-top:14px;">
         <button class="btn btn-save" onclick="saveResults()">💾 Save All</button>
         <button class="btn btn-complete" onclick="markComplete()">✅ Mark All Complete</button>
+        <button class="btn" style="background:linear-gradient(135deg,#7c3aed,#6d28d9);color:white;border:none;" onclick="openPM()">🧬 Manage Parameters</button>
         <button class="btn btn-back" onclick="clearSel()">← Back</button>
       </div>
+    </div>
 
-    </div><!-- /resultPanel -->
-  </div><!-- /main-panel -->
-</div><!-- /layout -->
+  </div>
+</div>
 
-<!-- ══════════════════════════════════════ STICKY BAR ══════ -->
+<!-- STICKY SAVE BAR -->
 <div class="sticky-bar" id="stickyBar">
   <div class="sb-left">
     <div class="sb-info" id="sbInfo">—</div>
@@ -1099,6 +716,7 @@ td.td-rem { display: none; }
 
 <div id="toastC"></div>
 
+<!-- CONFIRM MODAL -->
 <div class="modal-overlay" id="confModal">
   <div class="modal-box">
     <div class="modal-title" id="confTitle"></div>
@@ -1110,405 +728,785 @@ td.td-rem { display: none; }
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════
+<!-- ════════════════════════════════════════
+     PARAMETER MANAGER MODAL
+     Layout: Catalog Test Selector → Parameters → Units → Reference Range
+════════════════════════════════════════ -->
+<div class="pm-overlay" id="pmOverlay" onclick="if(event.target===this)closePM()">
+  <div class="pm-box">
+
+    <div class="pm-head">
+      <div class="pm-head-icon">🧬</div>
+      <div class="pm-head-info">
+        <div class="pm-head-title">Test Parameter Manager</div>
+        <div class="pm-head-sub">Select a test from the catalog → define its parameters, units, and reference ranges</div>
+      </div>
+      <button class="pm-head-close" onclick="closePM()">✕</button>
+    </div>
+
+    <div class="pm-body">
+
+      <!-- ── STEP 1: Select Test from Catalog ── -->
+      <div class="pm-test-selector">
+        <div class="pm-test-selector-title">① Select Test from Catalog (293 tests)</div>
+        <div class="pm-selector-grid">
+          <div class="pm-sel-field" style="grid-column:1/3">
+            <div class="pm-sel-label">Search & Select Test</div>
+            <div class="pm-catalog-search-wrap">
+              <input type="text" id="pmCatalogSearch" class="pm-catalog-search"
+                placeholder="Type test name or department to search…"
+                oninput="pmFilterCatalog()" onfocus="pmOpenDropdown()" autocomplete="off">
+              <div class="pm-catalog-dropdown" id="pmCatalogDropdown"></div>
+            </div>
+          </div>
+          <div class="pm-sel-field">
+            <div class="pm-sel-label">Action</div>
+            <button class="btn btn-back btn-sm" onclick="pmClear()" style="height:38px;">✕ Clear / New</button>
+          </div>
+        </div>
+        <!-- Selected test display -->
+        <div class="pm-selected-test" id="pmSelectedTest" style="margin-top:12px;">
+          <span style="font-size:16px;">🧪</span>
+          <div style="flex:1">
+            <div class="pm-sel-test-name" id="pmSelTestName">—</div>
+            <div style="font-size:10px;opacity:.65;margin-top:1px;" id="pmSelTestId">—</div>
+          </div>
+          <span class="pm-sel-test-dept" id="pmSelTestDept">—</span>
+          <button class="pm-sel-change" onclick="pmClear()">Change Test</button>
+        </div>
+      </div>
+
+      <!-- ── STEP 2: Parameters Table ──
+           Columns: # | Parameter Name | Unit | Reference Range | Lo | Hi | ✕ -->
+      <div class="pm-params-section">
+        <div class="pm-params-section-title">② Define Parameters — Test · Parameters · Units · Reference Range</div>
+        <div class="pm-table-wrap">
+          <div class="pm-table-head">
+            <span style="justify-content:center;">#</span>
+            <span>Parameter Name</span>
+            <span>Unit</span>
+            <span>Reference Range</span>
+            <span>Lo (numeric)</span>
+            <span>Hi (numeric)</span>
+            <span></span>
+          </div>
+          <div class="pm-rows" id="pmRows"></div>
+          <div class="pm-add-row" onclick="pmAddRow()">
+            <span style="font-size:16px;">＋</span> Add Parameter Row
+          </div>
+        </div>
+      </div>
+
+      <div class="pm-hint-box">
+        💡 <strong>Parameter Name</strong> = e.g. Haemoglobin, WBC Count, Platelet Count &nbsp;|&nbsp;
+        <strong>Unit</strong> = e.g. g/dL, ×10³/µL &nbsp;|&nbsp;
+        <strong>Reference Range</strong> = display string e.g. <em>11.5–16.5</em>, <em>&lt;200</em>, <em>Negative</em> &nbsp;|&nbsp;
+        <strong>Lo / Hi</strong> = numeric boundaries for the live gauge (leave blank for text results)
+      </div>
+
+      <!-- Saved configs -->
+      <div class="pm-saved-list">
+        <div class="pm-saved-title">Saved Parameter Configurations</div>
+        <div id="pmSavedGrid" class="pm-saved-grid">
+          <div class="pm-empty-saved">No tests configured yet.</div>
+        </div>
+      </div>
+
+    </div><!-- /pm-body -->
+
+    <div class="pm-footer">
+      <button class="btn btn-save" onclick="pmSave()">💾 Save Parameters</button>
+      <button class="btn" style="background:#f1f5f9;color:var(--muted);border:1.5px solid var(--border);" onclick="pmClear()">✕ Clear Form</button>
+      <button class="btn btn-back" onclick="closePM()">← Close</button>
+      <div style="flex:1"></div>
+      <div style="font-size:11px;color:var(--muted2);align-self:center;" id="pmSaveCount"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
      JAVASCRIPT
-══════════════════════════════════════════════════════════ -->
+════════════════════════════════════════ -->
 <script>
-/* ─── REFERENCE DATABASE ─── */
-const REF = {
-  /* ── BIOCHEMISTRY ── */
-  "Blood Urea Nitrogen (BUN)":  { mlo:9.81, mhi:20.00, flo:9.81, fhi:20.00, u:"mg/dL", meth:"Spectrophotometry" },
-  "Blood Urea Level (BUL)":     { mlo:12.6, mhi:42.6,  flo:12.6, fhi:42.6,  u:"mg/dl", meth:"Spectrophotometry" },
+/* ════════════════════════════════════════════════════════════
+   CATALOG — same rawTests data as MAIN2.html (T001–T293)
+   Used to power the PM test selector dropdown
+════════════════════════════════════════════════════════════ */
+const RAW_CATALOG = `CHIKUNGUNYA VIRUS ANTIBODY | SEROLOGY | 100 | T001
+HERPES SIMPLEX VIRUS 1 & 2 IGM | SEROLOGY | 100 | T002
+HIV (I) PCR REPORT - QUANTITATIVE | SEROLOGY | 100 | T003
+HIV 1-DNA PCR - QUALITATIVE | SEROLOGY | 100 | T004
+RUBELLA VIRUS ANTIBODY - IGM | SEROLOGY | 100 | T005
+STOOL HANGING DROP | CLINICAL PATHOLOGY | 100 | T006
+TOXOPLASMA - IGM | SEROLOGY | 100 | T007
+TOXOPLASMA - IGM & IGG | HEMATOLOGY | 100 | T008
+Unary HCG | IMMUNOLOGY | 100 | T009
+Urine 24 hours test | BIOCHEMISTRY | 100 | T010
+URINE ACETONE - POST PRANDIAL | CLINICAL PATHOLOGY | 100 | T011
+URINE ALBUMIN | CLINICAL PATHOLOGY | 100 | T012
+URINE FOR BENCE - JONES (B-J) PROTEINS | CLINICAL PATHOLOGY | 100 | T013
+URINE FOR PH | CLINICAL PATHOLOGY | 100 | T014
+URINE GLUCOSE - FASTING | CLINICAL PATHOLOGY | 100 | T015
+URINE GLUCOSE - PRE DINNER | CLINICAL PATHOLOGY | 100 | T016
+URINE OSMOLALITY | CLINICAL PATHOLOGY | 100 | T017
+VARICELLA ZOSTER IgG & IgM ANTIBODY | SEROLOGY | 100 | T018
+VLDL Cholesterol | BIOCHEMISTRY | 100 | T019
+Zincovit Test | BIOCHEMISTRY | 100 | T020
+ABSOLUTE EOSINOPHIL COUNT (AEC) | HEMATOLOGY | 0 | T021
+ACE (ANGIOTENSIN CONVERTING ENZYME) | HEMATOLOGY | 100 | T022
+Aldosterone | BIOCHEMISTRY | 0 | T023
+Aldosterone & Plasma Renin Ratio | BIOCHEMISTRY | 0 | T024
+Aldosterone, 24 Hrs Urine | BIOCHEMISTRY | 250 | T025
+Alkaline Phosphatase (ALP) | BIOCHEMISTRY | 0 | T026
+AMMONIA | BIOCHEMISTRY | 100 | T027
+AMYLASE | BIOCHEMISTRY | 350 | T028
+ANA IGG TEST REPORT | SEROLOGY | 100 | T029
+ANTI CARDIOLIPIN ANTIBODY - IgM | HEMATOLOGY | 100 | T030
+ANTI CARDIOLIPIN ANTIBODY IGM | HEMATOLOGY | 100 | T031
+ANTI HCV (ELISA) | SEROLOGY | 100 | T032
+ANTI HEV IGM (ELISA) | SEROLOGY | 100 | T033
+ANTI MULLERIAN HORMONE (AMH) | HEMATOLOGY | 0 | T034
+ANTI PHOSPHOLIPID ANTIBODIES (IgG & IgM) | HEMATOLOGY | 0 | T035
+Anti Streptolysin O (ASO), Quantitative | BIOCHEMISTRY | 700 | T036
+Anti-LKM Antibody Test Report | SEROLOGY | 100 | T037
+Anti-Nuclear Antibody (ANA) IFA | HEMATOLOGY | 2900 | T038
+Anti-Smooth Muscle Antibody (SMA) Test Report | SEROLOGY | 100 | T039
+APTT | HEMATOLOGY | 100 | T040
+Arterial Blood Gas (ABG) report | BIOCHEMISTRY | 100 | T041
+ARTERIAL BLOOD GASES (ABG) | BIOCHEMISTRY | 100 | T042
+Ascitic Fluid Analysis | CLINICAL PATHOLOGY | 100 | T043
+BETA HCG | ROUTINE (PATHOLOGY) | 0 | T044
+Bicarbonate Serum Test | BIOCHEMISTRY | 350 | T045
+BILE SALT AND PIGMENTS - URINE | CLINICAL PATHOLOGY | 100 | T046
+BILIRUBIN | BIOCHEMISTRY | 100 | T047
+BILIRUBIN, TOTAL, SERUM | BIOCHEMISTRY | 100 | T048
+BLEEDING TIME (BT) & CLOTTING TIME (CT) | HEMATOLOGY | 300 | T049
+BLOOD CULTURE AND SENSITIVITY | BIOCHEMISTRY | 100 | T050
+Blood Glucose - (After 75 gms of Glucose) | BIOCHEMISTRY | 100 | T051
+Blood Glucose - PG (1 hr After 75 gms of Glucose) | BIOCHEMISTRY | 100 | T052
+Blood Glucose - PG (3 hr After 75 gms of Glucose) | BIOCHEMISTRY | 100 | T053
+Blood Glucose - PG (2 hrs After 100 gms of Glucose) | BIOCHEMISTRY | 50 | T054
+Blood Glucose - PG (2 hrs After 75 gms of Glucose) | BIOCHEMISTRY | 100 | T055
+BLOOD GLUCOSE - PRE DINNER | BIOCHEMISTRY | 0 | T056
+BLOOD GLUCOSE FASTING | BIOCHEMISTRY | 100 | T057
+BLOOD GLUCOSE LEVEL (PG AFTER 1 HR) | BIOCHEMISTRY | 100 | T058
+BLOOD GLUCOSE LEVEL (PG AFTER 2 HR) | BIOCHEMISTRY | 100 | T059
+BLOOD GLUCOSE LEVEL (PG AFTER 3 HR) | BIOCHEMISTRY | 100 | T060
+BLOOD GLUCOSE LEVEL - PP (POST PRANDIAL) | BIOCHEMISTRY | 100 | T061
+BLOOD GROUP | HEMATOLOGY | 90 | T062
+BLOOD SUGAR FASTING (BSF) | BIOCHEMISTRY | 100 | T063
+BLOOD SUGAR LEVEL (F/PP) | BIOCHEMISTRY | 800 | T064
+BLOOD SUGAR POST PRANDIAL (BSPP) | BIOCHEMISTRY | 50 | T065
+Blood Urea Level (BUL) | BIOCHEMISTRY | 100 | T066
+BLOOD UREA NITROGEN (BUN) | BIOCHEMISTRY | 100 | T067
+BRUCELLA ANTIBODY IGM | SEROLOGY | 100 | T068
+CA -125 (OVARIAN CANCER MARKER) | HEMATOLOGY | 100 | T069
+CA 19.9 | BIOCHEMISTRY | 1900 | T070
+CALCIUM | BIOCHEMISTRY | 100 | T071
+CBC/GBP | HEMATOLOGY | 100 | T072
+CBNAAT Test | BIOCHEMISTRY | 100 | T073
+CCP - CYCLIC CITRULLINATED PEPTIDE ANTIBODY | HEMATOLOGY | 2400 | T074
+CHIKUNGUNYA ANTIBODIES IGM (SPOT) | SEROLOGY | 1500 | T075
+Chikungunya Test Report | SEROLOGY | 100 | T076
+CMV (CYTOMEGALO VIRUS) - IGM | SEROLOGY | 1200 | T077
+Complete Blood Count - CBC | HEMATOLOGY | 400 | T078
+Complete Blood Count - CBC WITH ESR | HEMATOLOGY | 400 | T079
+Creatine Kinase (CK), MB | PATHOLOGY | 1800 | T080
+CREATININE | BIOCHEMISTRY | 50 | T081
+CREATININE CLEARANCE (24 HRS URINE) | CLINICAL PATHOLOGY | 300 | T082
+CREATININE PHOSPHOKINASE - CPK NAC | BIOCHEMISTRY | 0 | T083
+CROMOSOMAL STUDY - BLOOD | BIOCHEMISTRY | 100 | T084
+CRP (QUANTITATIVE) | SEROLOGY | 100 | T085
+CRP (QUALITATIVE) | SEROLOGY | 100 | T086
+Cryptococcus Antigen CSF Test | BIOCHEMISTRY | 100 | T087
+CSF ADA Test Report | BIOCHEMISTRY | 100 | T088
+CSF AFB Test Report | BIOCHEMISTRY | 100 | T089
+CSF Biochemical Analysis | BIOCHEMISTRY | 550 | T090
+CSF Routine And Microscopic Examination Test Report | BIOCHEMISTRY | 100 | T091
+Culture, Urine | MICROBIOLOGY | 100 | T092
+D - DIMER | SEROLOGY | 1700 | T093
+Dengue IgG & IgM Antibody And NS1 Antigen (Card Test) | SEROLOGY | 300 | T094
+DENGUE IgM & IgG Antibodies (Card Test) | SEROLOGY | 100 | T095
+DENGUE IgM & IgG Antibodies (ELISA) | SEROLOGY | 100 | T096
+DENGUE IGM & IGG ANTIBODIES (RAPID) | SEROLOGY | 1400 | T097
+DENGUE IGM & IGG ANTIBODIES AND NS1 ANTIGEN (RAPID) | SEROLOGY | 100 | T098
+Dengue Ns1 Antigen Card Test | SEROLOGY | 0 | T099
+Dengue Ns1 Antigen Test (ELISA) | BIOCHEMISTRY | 1500 | T100
+Dengue Ns1 Antigen Test (ELISA) | SEROLOGY | 1500 | T101
+Dihydrotestosterone (DHT) | PATHOLOGY | 100 | T102
+Direct Coombs Test | HEMATOLOGY | 100 | T103
+Double Marker Test | PATHOLOGY | 2500 | T104
+EGFR (GLOMERULAR FILTRATION RATE, ESTIMATED) | BIOCHEMISTRY | 0 | T105
+ELECTROLYTES | BIOCHEMISTRY | 200 | T106
+EPSTEIN BARR VIRUS (VCA) - IGM ANTIBODIES | SEROLOGY | 1800 | T107
+ESR (ERYTHROCYTE SEDIMENTATION RATE) | HEMATOLOGY | 100 | T108
+ESTRADIOL (E2) | BIOCHEMISTRY | 100 | T109
+ET Culture | BIOCHEMISTRY | 100 | T110
+Factor 8 Test | HEMATOLOGY | 100 | T111
+Factor 9 Test | HEMATOLOGY | 100 | T112
+FERRITIN Test | CLINICAL PATHOLOGY | 100 | T113
+FERTILITY PROFILE III | BIOCHEMISTRY | 100 | T114
+Fibrinogen Level | HEMATOLOGY | 100 | T115
+Filaria Antibody Detection | SEROLOGY | 1400 | T116
+FINE NEEDLE ASPIRATION CYTOLOGY (FNAC) | CYTOPATHOLOGY | 100 | T117
+Fine Needle Aspiration Cytology (FNAC) 2 | CYTOPATHOLOGY | 100 | T118
+Fluid Cytology | HEMATOLOGY | 100 | T119
+Fluid For ADA | BIOCHEMISTRY | 880 | T120
+Folic Acid | BIOCHEMISTRY | 100 | T121
+FOLLICLE STIMULATING HORMONE (FSH) | BIOCHEMISTRY | 0 | T122
+Free PSA | BIOCHEMISTRY | 1200 | T123
+FREE T3 (TRI-IODOTHYRONINE - FREE) | BIOCHEMISTRY | 100 | T124
+Free T3 (FT3) | BIOCHEMISTRY | 100 | T125
+Free T4 (FT4) | BIOCHEMISTRY | 100 | T126
+FREE T4 (THYROXINE - FREE) | BIOCHEMISTRY | 100 | T127
+FREE THYROID PANEL | BIOCHEMISTRY | 100 | T128
+Free Thyroid Profile | ROUTINE (PATHOLOGY) | 100 | T129
+FSH / LH / PRL | BIOCHEMISTRY | 1800 | T130
+FUNGUS ROUTINE EXAMINATION | SEROLOGY | 200 | T131
+GAMMA GLUTAMYL TRANSPEPTIDASE (GGT) | BIOCHEMISTRY | 800 | T132
+GBP Test | PATHOLOGY | 500 | T133
+GBP Test Report | BIOCHEMISTRY | 500 | T134
+General Blood Picture | HEMATOLOGY | 0 | T135
+GFRE (Glomerular Filtration Rate - Estimated) | BIOCHEMISTRY | 0 | T136
+Glucose 6 Phosphate Dehydrogenase (G6PD Quantitative) | BIOCHEMISTRY | 100 | T137
+Glucose Challenge Test (GCT) | BIOCHEMISTRY | 150 | T138
+Glucose Tolerance Test (GTT) | BIOCHEMISTRY | 150 | T139
+Glucose Tolerance Test ORAL (OGTT) | BIOCHEMISTRY | 600 | T140
+GLYCOSYLATED HAEMOGLOBIN (GHB / HBA1c) | BIOCHEMISTRY | 100 | T141
+Gram Stain Test | MICROBIOLOGY | 100 | T142
+GVP Test | PATHOLOGY | 500 | T143
+HBA1C Test | BIOCHEMISTRY | 100 | T144
+HBsAg-ELISA | SEROLOGY | 100 | T145
+HBV DNA Viral Load Test (Quantitative) | SEROLOGY | 100 | T146
+HCG Beta, Total, Quantitative, Random Urine | BIOCHEMISTRY | 1200 | T147
+HCV RNA Viral Load Test (Quantitative PCR) Report | SEROLOGY | 2500 | T148
+HDL Cholesterol | BIOCHEMISTRY | 500 | T149
+HELICOBACTER PYLORI IGG & IGM ANTIBODY | SEROLOGY | 600 | T150
+Hemoglobin | HEMATOLOGY | 100 | T151
+HEPATITIS A | SEROLOGY | 2000 | T152
+HEPATITIS A VIRUS - IGG (HAV - IGG) | SEROLOGY | 100 | T153
+HEPATITIS A VIRUS - IGM (HAV - IGM) | SEROLOGY | 100 | T154
+HEPATITIS B SURFACE ANTIGEN (HBSAG) RAPID CARD | SEROLOGY | 100 | T155
+Hepatitis B Virus (HBV) ELISA | SEROLOGY | 100 | T156
+HEPATITIS B VIRUS CORE ANTIBODY (HBcAb) | SEROLOGY | 1100 | T157
+Hepatitis B Virus DNA Detector Qualitative | SEROLOGY | 100 | T158
+HEPATITIS B VIRUS ENVELOPE ANTIBODY (HBeAb) | SEROLOGY | 800 | T159
+HEPATITIS B VIRUS ENVELOPE ANTIGEN (HBeAg) | SEROLOGY | 1000 | T160
+HEPATITIS C VIRUS (HCV) Card Test | SEROLOGY | 450 | T161
+HEPATITIS C VIRUS (HCV) ELISA | SEROLOGY | 100 | T162
+HEPATITIS E VIRUS - IGM (HEV IGM) | SEROLOGY | 100 | T163
+HIV 1 & 2 ANTIBODY (CARD TEST) | SEROLOGY | 100 | T164
+HIV 1 & 2 ANTIBODY (ELISA) | SEROLOGY | 100 | T165
+HIV And Hepatitis B Surface Antigen (HBsAg) | SEROLOGY | 100 | T166
+HIV ANTIBODY, RAPID CARD | SEROLOGY | 100 | T167
+HLA - B 27 Flowcytometry | HEMATOLOGY | 3200 | T168
+HLA - B 27 PCR | SEROLOGY | 100 | T169
+HMPV RTPCR Test | MICROBIOLOGY | 3500 | T170
+Homa IR | BIOCHEMISTRY | 1200 | T171
+Homocysteine Test | BIOCHEMISTRY | 100 | T172
+HPLC Test | PATHOLOGY | 1550 | T173
+Hydroxy Vitamin D- Serum | BIOCHEMISTRY | 1500 | T174
+Immunoglobulin IGM | SEROLOGY | 850 | T175
+Indirect Coombs Test (ICT) | HEMATOLOGY | 850 | T176
+IRON | BIOCHEMISTRY | 0 | T177
+IRON (FE) | BIOCHEMISTRY | 100 | T178
+Iron Profile Test | BIOCHEMISTRY | 100 | T179
+KARYOTYPING (PERIPHERAL BLOOD) | BIOCHEMISTRY | 100 | T180
+KIDNEY FUNCTION TEST (KFT) | CLINICAL BIOCHEMISTRY | 600 | T181
+KIDNEY FUNCTION TEST WITH ELECTROLYTES | CLINICAL BIOCHEMISTRY | 200 | T182
+Lactate Dehydrogenase (LDH) | BIOCHEMISTRY | 1500 | T183
+LDL CHOLESTEROL | BIOCHEMISTRY | 100 | T184
+LEPTOSPIRA ANTIBODY IGM & IGG | SEROLOGY | 2000 | T185
+LEPTOSPIRA IGM | HEMATOLOGY | 100 | T186
+LIPASE | BIOCHEMISTRY | 350 | T187
+LIPID PROFILE | BIOCHEMISTRY | 800 | T188
+Lithium Test | BIOCHEMISTRY | 100 | T189
+Liver Function Test (LFT) | BIOCHEMISTRY | 300 | T190
+LUTEINISING HORMONE (LH) | BIOCHEMISTRY | 0 | T191
+Magnesium | BIOCHEMISTRY | 350 | T192
+Malaria ELISA Test | SEROLOGY | 1150 | T193
+Malaria Paracheck Antigen Test | HEMATOLOGY | 100 | T194
+Malarial Parasite (MP) Smear | HEMATOLOGY | 200 | T195
+Malignant Cell | CYTOLOGY | 1200 | T196
+MANTOUX MX TEST | SEROLOGY | 100 | T197
+Methamphetamine Screen | BIOCHEMISTRY | 100 | T198
+MICROALBUMIN / CREATININE RATIO - URINE | CLINICAL PATHOLOGY | 100 | T199
+MP (Antigen) Test | SEROLOGY/IMMUNOLOGY | 100 | T200
+Nicotine Urine Test | CLINICAL BIOCHEMISTRY | 555 | T201
+NT-PROBNP | PATHOLOGY | 3500 | T202
+PAP Smear | CYTOLOGY | 100 | T203
+Parathyroid Hormone, Intact (iPTH) | BIOCHEMISTRY | 0 | T204
+PBS FOR MALARIAL PARASITE | HEMATOLOGY | 350 | T205
+Peripheral Blood Smear (PBS) | HEMATOLOGY | 100 | T206
+Phosphorus | HEMATOLOGY | 100 | T207
+Platelet Count | HEMATOLOGY | 100 | T208
+PLATELETS COUNT | HEMATOLOGY | 100 | T209
+PLEURAL FLUID EXAMINATION | HEMATOLOGY | 250 | T210
+Plural Fluid Examination | CLINICAL PATHOLOGY | 100 | T211
+POTASSIUM | BIOCHEMISTRY | 100 | T212
+Pregnancy Test | CLINICAL PATHOLOGY | 100 | T213
+Procalcitonin | SEROLOGY | 2200 | T214
+PROGESTERONE | HEMATOLOGY | 100 | T215
+PROLACTIN | BIOCHEMISTRY | 0 | T216
+Prostate Specific Antigen (PSA) | BIOCHEMISTRY | 100 | T217
+PROTHROMBINE TIME (PT) | HEMATOLOGY | 100 | T218
+Pus Culture | BIOCHEMISTRY | 100 | T219
+QuantiFERON-TB Gold (QFT) | HEMATOLOGY | 2500 | T220
+RA FACTOR (QUALITATIVE) | SEROLOGY | 200 | T221
+RA Factor (Quantitative) | SEROLOGY | 600 | T222
+RAPID MALARIA TEST (RMT) | HEMATOLOGY | 100 | T223
+RBC Count Test | HEMATOLOGY | 100 | T224
+RBS BLOOD GLUCOSE LEVEL (RANDOM) | BIOCHEMISTRY | 100 | T225
+RENAL PROFILE | BIOCHEMISTRY | 300 | T226
+Reticulocyte Count | HEMATOLOGY | 100 | T227
+Rh Factor Test | SEROLOGY | 500 | T228
+ROTA VIRUS ANTIGEN DETECTION (STOOL) | CLINICAL PATHOLOGY | 0 | T229
+Salmonella Typhi IgG & IgM (Card Test) | SEROLOGY | 100 | T230
+Scrub Typhus | SEROLOGY | 1200 | T231
+Scrub Typhus IgG Antibody | SEROLOGY | 1200 | T232
+Scrub Typhus IgM Antibody | SEROLOGY | 1200 | T233
+SEMEN ANALYSIS REPORT | CLINICAL PATHOLOGY | 200 | T234
+Serum IgE (Immunoglobulin E) | SEROLOGY | 550 | T235
+SGOT (AST) | BIOCHEMISTRY | 100 | T236
+SGPT (ALT) | BIOCHEMISTRY | 100 | T237
+Sodium (Na) | BIOCHEMISTRY | 100 | T238
+Spot Urine Microalbumin Test Report | PATHOLOGY | 100 | T239
+Sputum AFB Test | HEMATOLOGY | 100 | T240
+Sputum for Acid-Fast Bacilli (AFB) Test | MICROBIOLOGY | 100 | T241
+Stone Analysis | BIOCHEMISTRY | 100 | T242
+STOOL EXAMINATION | PATHOLOGY | 100 | T243
+STOOL FOR OCCULT BLOOD | HEMATOLOGY | 300 | T244
+TB GOLD | SEROLOGY | 2800 | T245
+TESTOSTERONE (TOTAL) | PATHOLOGY | 0 | T246
+TESTOSTERONE - FREE | PATHOLOGY | 100 | T247
+THYROID FUNCTION TEST (TFT) | ROUTINE (PATHOLOGY) | 100 | T248
+Thyroid Profile II | BIOCHEMISTRY | 100 | T249
+TISSUE TRANSGLUTAMINASE - IgA (TTGA) | SEROLOGY | 1380 | T250
+TORCH-5 PARA (IGG) | HEMATOLOGY | 100 | T251
+TORCH-5 PARA (IGM) | HEMATOLOGY | 100 | T252
+Total Albumin | BIOCHEMISTRY | 100 | T253
+Total Cholesterol | BIOCHEMISTRY | 0 | T254
+Total IgE Test | BIOCHEMISTRY | 100 | T255
+Total Protein | HEMATOLOGY | 200 | T256
+TROPONIN I | SEROLOGY | 0 | T257
+TROPONIN T | HEMATOLOGY | 0 | T258
+TROPONIN T | IMMUNOLOGY | 1400 | T259
+TSH (THYROID STIMULATING HORMONE) | ROUTINE (PATHOLOGY) | 100 | T260
+Typhidot Test | SEROLOGY | 350 | T261
+Typhoid Antibody | SEROLOGY | 300 | T262
+UREA | BIOCHEMISTRY | 100 | T263
+Uric Acid | BIOCHEMISTRY | 100 | T264
+Urinary Copper 24 Hours | BIOCHEMISTRY | 2800 | T265
+Urinary HCG | IMMUNOLOGY | 100 | T266
+Urinary Sodium (Na) | HEMATOLOGY | 100 | T267
+URINE ACETONE - RANDOM | CLINICAL PATHOLOGY | 150 | T268
+URINE ACETONE - FASTING | CLINICAL PATHOLOGY | 50 | T269
+Urine ACR | PATHOLOGY | 100 | T270
+URINE ALBUMIN CREATININE RATIO | CLINICAL PATHOLOGY | 100 | T271
+URINE ALBUMIN CREATININE RATIO | GENERAL | 1200 | T272
+URINE FOR HAEMOGLOBINURIA | CLINICAL PATHOLOGY | 100 | T273
+URINE GLUCOSE - POST PRANDIAL (USPP) | CLINICAL PATHOLOGY | 100 | T274
+URINE MICRO ALBUMIN | CLINICAL PATHOLOGY | 100 | T275
+URINE MICROALBUMIN | CLINICAL PATHOLOGY | 100 | T276
+URINE PROTEIN & CREATININE RATIO | CLINICAL PATHOLOGY | 0 | T277
+URINE ROUTINE EXAMINATION REPORT | CLINICAL PATHOLOGY | 100 | T278
+URINE ROUTINE EXAMINATION REPORT (CUE) | CLINICAL PATHOLOGY | 100 | T279
+Urine Spot Creatinine | BIOCHEMISTRY | 850 | T280
+VARICELLA ZOSTER IGM ANTIBODY | SEROLOGY | 100 | T281
+VDRL (RPR) | SEROLOGY | 0 | T282
+Viral Markers (Rapid Card) | SEROLOGY | 100 | T283
+VITAMIN B - 12 | BIOCHEMISTRY | 850 | T284
+VITAMIN B6 | BIOCHEMISTRY | 100 | T285
+VITAMIN D (25-HYDROXYCHOLECALCIFEROL) | HEMATOLOGY | 100 | T286
+VITAMIN D3 (1,25 DIHYDROXYCHOLECALCIFEROL) | BIOCHEMISTRY | 100 | T287
+VITAMIN-D (25-OH) | BIOCHEMISTRY | 100 | T288
+WESTERN BLOT TEST (HIV) | SEROLOGY | 100 | T289
+Widal Test - Slide | SEROLOGY | 100 | T290
+Widal Test - Slide (2) | SEROLOGY | 100 | T291
+WIDAL TEST - TUBE | SEROLOGY | 100 | T292
+Zinc | BIOCHEMISTRY | 440 | T293`;
 
-  // Blood Sugar
-  "Glucose Fasting":            { mlo:60,  mhi:110, flo:60,  fhi:110, u:"mg/dl", meth:"GOD POD" },
-  "Glucose Post Prandial":      { mlo:80,  mhi:140, flo:80,  fhi:140, u:"mg/dl", meth:"GOD POD" },
-  "BLOOD SUGAR FASTING (BSF)":  { mlo:60,  mhi:110, flo:60,  fhi:110, u:"mg/dl", meth:"GOD POD" },
+/* Parse catalog once */
+const CATALOG = RAW_CATALOG.trim().split('\n').map(line => {
+  const p = line.split('|').map(s => s.trim());
+  return { id: p[3], name: p[0], dept: p[1] };
+}).sort((a, b) => a.name.localeCompare(b.name));
 
-  // Cholesterol — HDL is gender-specific
-  "HDL Cholesterol":            { mlo:40,  mhi:999, flo:50,  fhi:999, u:"mg/dL", meth:"Serum, Direct measure-PEG" },
-  "LDL Cholesterol":            { mlo:0,   mhi:100, flo:0,   fhi:100, u:"mg/dl", meth:"Direct" },
-  "VLDL Cholesterol":           { mlo:5,   mhi:51,  flo:5,   fhi:51,  u:"mg/dL", meth:"Serum, Enzymatic" },
-  "Cholesterol-Total":          { mlo:0,   mhi:200, flo:0,   fhi:200, u:"mg/dl", meth:"Spectrophotometry" },
-
-  // Bilirubin
-  "Total Bilirubin":            { mlo:0,    mhi:1.0,  flo:0,    fhi:1.0,  u:"mg/dl" },
-  "Indirect Bilirubin":         { mlo:0,    mhi:0.7,  flo:0,    fhi:0.7,  u:"mg/dl" },
-  "Direct Bilirubin":           { mlo:0,    mhi:0.3,  flo:0,    fhi:0.3,  u:"mg/dl" },
-  "BILIRUBIN,TOTAL,SERUM":      { mlo:0.30, mhi:1.20, flo:0.30, fhi:1.20, u:"mg/dL" },
-
-  // Protein & Albumin
-  "Total Protein":              { mlo:6.0, mhi:8.5, flo:6.0, fhi:8.5, u:"g/dL" },
-  "Albumin":                    { mlo:3.2, mhi:5.0, flo:3.2, fhi:5.0, u:"g/dL" },
-
-  // Liver enzymes
-  "SGPT (ALT)":                 { mlo:5, mhi:40, flo:5, fhi:40, u:"IU/L", meth:"Spectrophotometry" },
-  "SGOT (AST)":                 { mlo:5, mhi:34, flo:5, fhi:34, u:"IU/L", meth:"Spectrophotometry" },
-
-  // Renal — Creatinine & Uric Acid are gender-specific
-  "Creatinine":                 { mlo:0.74, mhi:1.35, flo:0.59, fhi:1.04, u:"mg/dL" },
-  "Uric Acid":                  { mlo:3.5,  mhi:7.2,  flo:2.3,  fhi:6.1,  u:"mg/dL" },
-
-  /* ── SEROLOGY ── */
-  "Typhi O":      { mlo:null, mhi:null, flo:null, fhi:null, u:"" },
-  "Typhi H":      { mlo:null, mhi:null, flo:null, fhi:null, u:"" },
-  "Paratyphi AH": { mlo:null, mhi:null, flo:null, fhi:null, u:"" },
-  "Paratyphi BH": { mlo:null, mhi:null, flo:null, fhi:null, u:"" },
-};
-
-/* ─── TEST_PARAMS DATABASE ─── */
-const TEST_PARAMS=[
-
-  /* ── T067 ── BLOOD UREA NITROGEN (BUN) ── */
-  { testName:"BLOOD UREA NITROGEN (BUN)", dept:"BIOCHEMISTRY",
-    params:[
-      { name:"Blood Urea Nitrogen (BUN)", unit:"mg/dL", refRange:"9.81-20.00" }
-    ]
-  },
-
-  /* ── T066 ── BLOOD UREA LEVEL (BUL) ── */
-  { testName:"BLOOD UREA LEVEL (BUL)", dept:"BIOCHEMISTRY",
-    params:[
-      { name:"Blood Urea Level (BUL)", unit:"mg/dl", refRange:"12.6-42.6" }
-    ]
-  },
-
-  /* ── T064 ── BLOOD SUGAR LEVEL (F/PP) ── */
-  { testName:"BLOOD SUGAR LEVEL (F/PP)", dept:"BIOCHEMISTRY",
-    params:[
-      { name:"Glucose Fasting",             unit:"mg/dl", refRange:"60-110" },
-      { name:"Glucose Post Prandial",       unit:"mg/dl", refRange:"80-140" },
-      { name:"Urine Sugar Fasting",         unit:"",      refRange:"-" },
-      { name:"Urine Ketone Fasting",        unit:"",      refRange:"-" },
-      { name:"Urine Sugar Post Prandial",   unit:"",      refRange:"-" },
-      { name:"Urine Ketone Post Prandial",  unit:"",      refRange:"-" }
-    ]
-  },
-
-  /* ── T063 ── BLOOD SUGAR FASTING (BSF) ── */
-  { testName:"BLOOD SUGAR FASTING (BSF)", dept:"BIOCHEMISTRY",
-    params:[
-      { name:"BLOOD SUGAR FASTING (BSF)", unit:"mg/dl", refRange:"60-110" },
-      { name:"Urine Sugar",               unit:"",      refRange:"-" },
-      { name:"Urine Ketones",             unit:"",      refRange:"-" }
-    ]
-  },
-
-  /* ── T065 ── BLOOD SUGAR POST PRANDIAL (BSPP) ── */
-  { testName:"BLOOD SUGAR POST PRANDIAL (BSPP)", dept:"BIOCHEMISTRY",
-    params:[
-      { name:"Glucose Post Prandial", unit:"mg/dl", refRange:"80-140" },
-      { name:"Urine Sugar",           unit:"",      refRange:"-" },
-      { name:"Urine Ketones",         unit:"",      refRange:"-" }
-    ]
-  },
-
-  /* ── T149 ── HDL CHOLESTEROL ── */
-  { testName:"HDL CHOLESTEROL", dept:"BIOCHEMISTRY",
-    params:[
-      { name:"HDL Cholesterol", unit:"mg/dL", refRange:"> 40" }
-    ]
-  },
-
-  /* ── T184 ── LDL CHOLESTEROL ── */
-  { testName:"LDL CHOLESTEROL", dept:"BIOCHEMISTRY",
-    params:[
-      { name:"LDL Cholesterol", unit:"mg/dl", refRange:"< 100" }
-    ]
-  },
-
-  /* ── T019 ── VLDL CHOLESTEROL ── */
-  { testName:"VLDL CHOLESTEROL", dept:"BIOCHEMISTRY",
-    params:[
-      { name:"VLDL Cholesterol", unit:"mg/dL", refRange:"5-51" }
-    ]
-  },
-
-  /* ── T254 ── TOTAL CHOLESTEROL ── */
-  { testName:"TOTAL CHOLESTEROL", dept:"BIOCHEMISTRY",
-    params:[
-      { name:"Cholesterol-Total", unit:"mg/dl", refRange:"< 200" }
-    ]
-  },
-
-  /* ── T047 ── BILIRUBIN ── */
-  { testName:"BILIRUBIN", dept:"BIOCHEMISTRY",
-    params:[
-      { name:"Total Bilirubin",    unit:"mg/dl", refRange:"0-1"   },
-      { name:"Indirect Bilirubin", unit:"mg/dl", refRange:"0-0.7" },
-      { name:"Direct Bilirubin",   unit:"mg/dl", refRange:"0-0.3" }
-    ]
-  },
-
-  /* ── T048 ── BILIRUBIN, TOTAL, SERUM ── */
-  { testName:"BILIRUBIN, TOTAL, SERUM", dept:"BIOCHEMISTRY",
-    params:[
-      { name:"BILIRUBIN,TOTAL,SERUM", unit:"mg/dL", refRange:"0.30-1.20" }
-    ]
-  },
-
-  /* ── T256 ── TOTAL PROTEIN ── */
-  { testName:"TOTAL PROTEIN", dept:"HEMATOLOGY",
-    params:[
-      { name:"Total Protein", unit:"g/dL", refRange:"6.0-8.5" }
-    ]
-  },
-
-  /* ── T253 ── TOTAL ALBUMIN ── */
-  { testName:"TOTAL ALBUMIN", dept:"BIOCHEMISTRY",
-    params:[
-      { name:"Albumin", unit:"g/dL", refRange:"3.2-5.0" }
-    ]
-  },
-
-  /* ── T237 ── SGPT (ALT) ── */
-  { testName:"SGPT (ALT)", dept:"BIOCHEMISTRY",
-    params:[
-      { name:"SGPT (ALT)", unit:"IU/L", refRange:"5-40" }
-    ]
-  },
-
-  /* ── T236 ── SGOT (AST) ── */
-  { testName:"SGOT (AST)", dept:"BIOCHEMISTRY",
-    params:[
-      { name:"SGOT (AST)", unit:"IU/L", refRange:"5-34" }
-    ]
-  },
-
-  /* ── T081 ── CREATININE ── */
-  { testName:"CREATININE", dept:"BIOCHEMISTRY",
-    params:[
-      { name:"Creatinine", unit:"mg/dL", refRange:"0.60-1.10" }
-    ]
-  },
-
-  /* ── T264 ── URIC ACID ── */
-  { testName:"URIC ACID", dept:"BIOCHEMISTRY",
-    params:[
-      { name:"Uric Acid", unit:"mg/dL", refRange:"2.3-6.1" }
-    ]
-  },
-
-  /* ── T292 ── WIDAL TEST - TUBE ── */
-  { testName:"WIDAL TEST - TUBE", dept:"SEROLOGY",
-    params:[
-      { name:"Typhi O",      unit:"titre", refRange:"< 1:80" },
-      { name:"Typhi H",      unit:"titre", refRange:"< 1:80" },
-      { name:"Paratyphi AH", unit:"titre", refRange:"< 1:80" },
-      { name:"Paratyphi BH", unit:"titre", refRange:"< 1:80" }
-    ]
-  },
-
-];
-
-/* ─── HELPERS ─── */
-function parseRefRange(s){
-  if(!s) return{lo:null,hi:null};
-  s=String(s).trim();
-  const m=s.match(/([\d.]+)\s*[-–]\s*([\d.]+)/);
-  if(m) return{lo:parseFloat(m[1]),hi:parseFloat(m[2])};
-  const lt=s.match(/[<≤]\s*([\d.]+)/);
-  if(lt) return{lo:0,hi:parseFloat(lt[1])};
-  const gt=s.match(/[>≥]\s*([\d.]+)/);
-  if(gt){const v=parseFloat(gt[1]);return{lo:v,hi:v>0?v*5:v+100};}
-  return{lo:null,hi:null};
+/* ════════════════════════════════════════════════════════════
+   PARAMETER STORE  localStorage key: mc_test_params
+   Schema: [ { testId, testName, dept, params: [{name, unit, refRange, lo, hi}] } ]
+════════════════════════════════════════════════════════════ */
+const PARAM_KEY = 'mc_test_params';
+function loadParamStore() { try { return JSON.parse(localStorage.getItem(PARAM_KEY) || '[]'); } catch { return []; } }
+function saveParamStore(arr) { localStorage.setItem(PARAM_KEY, JSON.stringify(arr)); _updateParamCountBadge(); }
+function _updateParamCountBadge() {
+  const n = loadParamStore().length;
+  const el = document.getElementById('paramCountBadge');
+  if (el) el.textContent = n + ' Test' + (n !== 1 ? 's' : '') + ' Configured';
 }
-function isValidParam(p){
-  const n=(p.name||'').trim();
-  if(!n||n.length<2) return false;
-  if(/^[-\d)(\/\s.]+$/.test(n)) return false;
-  const skip=['dlc performed by','test description','referance range','reference range','remarks','report','advice','impression'];
-  if(skip.includes(n.toLowerCase())) return false;
+
+/* ════════════════════════════════════════════════════════════
+   PM STATE
+════════════════════════════════════════════════════════════ */
+let _pmCurrentTest = null; // { id, name, dept } currently loaded
+
+/* ── Open / Close ── */
+function openPM() {
+  document.getElementById('pmOverlay').classList.add('open');
+  pmClear();
+  pmRefreshSavedGrid();
+}
+function closePM() {
+  document.getElementById('pmOverlay').classList.remove('open');
+  if (_sel) { _expandedRows = buildExpandedRows(_sel); renderTestChips(); updateOverallProg(); }
+}
+
+/* ── Catalog search dropdown ── */
+function pmFilterCatalog() {
+  const q = document.getElementById('pmCatalogSearch').value.trim().toLowerCase();
+  const store = loadParamStore();
+  const configuredIds = new Set(store.map(t => t.testId));
+  const dd = document.getElementById('pmCatalogDropdown');
+  const matches = q.length < 1
+    ? CATALOG.slice(0, 60)
+    : CATALOG.filter(t => t.name.toLowerCase().includes(q) || t.dept.toLowerCase().includes(q) || t.id.toLowerCase().includes(q));
+  if (!matches.length) {
+    dd.innerHTML = '<div class="pm-dd-empty">No tests match your search</div>';
+  } else {
+    dd.innerHTML = matches.slice(0, 80).map(t => {
+      const isCfg = configuredIds.has(t.id);
+      return `<div class="pm-dd-item${isCfg ? ' configured' : ''}" onclick="pmSelectFromCatalog('${H(t.id)}')">
+        <div class="pm-dd-name">${H(t.name)}</div>
+        <span class="pm-dd-dept">${H(t.dept)}</span>
+        ${isCfg ? '<span class="pm-dd-configured">✓ Configured</span>' : ''}
+      </div>`;
+    }).join('');
+  }
+  dd.classList.add('open');
+}
+function pmOpenDropdown() {
+  pmFilterCatalog();
+  // close on outside click
+  setTimeout(() => {
+    document.addEventListener('click', pmOutsideClick, { once: true });
+  }, 10);
+}
+function pmOutsideClick(e) {
+  const dd = document.getElementById('pmCatalogDropdown');
+  const inp = document.getElementById('pmCatalogSearch');
+  if (!dd.contains(e.target) && e.target !== inp) dd.classList.remove('open');
+}
+
+/* ── Select a test from catalog ── */
+function pmSelectFromCatalog(testId) {
+  const test = CATALOG.find(t => t.id === testId);
+  if (!test) return;
+  _pmCurrentTest = test;
+  // Update search input display
+  document.getElementById('pmCatalogSearch').value = test.name;
+  document.getElementById('pmCatalogDropdown').classList.remove('open');
+  // Show selected test card
+  document.getElementById('pmSelTestName').textContent = test.name;
+  document.getElementById('pmSelTestId').textContent = test.id + ' · ' + test.dept;
+  document.getElementById('pmSelTestDept').textContent = test.dept;
+  document.getElementById('pmSelectedTest').classList.add('show');
+  // Load existing params if configured
+  const store = loadParamStore();
+  const existing = store.find(t => t.testId === testId);
+  if (existing) {
+    renderPMRows(existing.params || []);
+    showToast(`📂 Loaded saved params for "${test.name}"`, 'info');
+  } else {
+    renderPMRows([]);
+  }
+  // Highlight chip
+  document.querySelectorAll('.pm-saved-chip').forEach(c => {
+    c.classList.toggle('active-edit', c.dataset.tid === testId);
+  });
+}
+
+/* ── Render editable rows ── */
+function renderPMRows(params) {
+  const c = document.getElementById('pmRows');
+  if (!params.length) { c.innerHTML = ''; pmAddRow(); return; }
+  c.innerHTML = params.map((p, i) => buildPMRowHTML(i, p)).join('');
+}
+
+function buildPMRowHTML(i, p = {}) {
+  return `<div class="pm-row" id="pmr_${i}">
+    <div class="pm-row-num">${i + 1}</div>
+    <input type="text" placeholder="e.g. Haemoglobin" value="${H(p.name || '')}" data-f="name">
+    <input type="text" placeholder="g/dL" value="${H(p.unit || '')}" data-f="unit">
+    <input type="text" placeholder="e.g. 11.5–16.5 or &lt;200" value="${H(p.refRange || '')}" data-f="refRange">
+    <input type="number" step="any" placeholder="Lo" value="${p.lo != null ? p.lo : ''}" data-f="lo">
+    <input type="number" step="any" placeholder="Hi" value="${p.hi != null ? p.hi : ''}" data-f="hi">
+    <div class="pm-row-del"><button class="pm-del-btn" onclick="pmDelRow(${i})" title="Remove">✕</button></div>
+  </div>`;
+}
+
+function pmAddRow() {
+  const c = document.getElementById('pmRows');
+  const idx = c.children.length;
+  const div = document.createElement('div');
+  div.innerHTML = buildPMRowHTML(idx);
+  c.appendChild(div.firstElementChild);
+  const inp = c.lastElementChild.querySelector('input[data-f="name"]');
+  if (inp) inp.focus();
+}
+
+function pmDelRow(i) {
+  const c = document.getElementById('pmRows');
+  const row = document.getElementById(`pmr_${i}`);
+  if (row) row.remove();
+  [...c.children].forEach((r, idx) => {
+    r.id = `pmr_${idx}`;
+    r.querySelector('.pm-row-num').textContent = idx + 1;
+    r.querySelector('.pm-del-btn').setAttribute('onclick', `pmDelRow(${idx})`);
+  });
+}
+
+function pmHarvestRows() {
+  const rows = document.querySelectorAll('#pmRows .pm-row');
+  const params = [];
+  rows.forEach(row => {
+    const inp = row.querySelectorAll('input');
+    const name = inp[0].value.trim();
+    if (!name) return;
+    const unit = inp[1].value.trim();
+    const refRange = inp[2].value.trim();
+    const lo = inp[3].value !== '' ? parseFloat(inp[3].value) : null;
+    const hi = inp[4].value !== '' ? parseFloat(inp[4].value) : null;
+    params.push({ name, unit, refRange, lo, hi });
+  });
+  return params;
+}
+
+function pmSave() {
+  if (!_pmCurrentTest) { showToast('⚠️ Select a test from the catalog first', 'warning'); return; }
+  const params = pmHarvestRows();
+  if (!params.length) { showToast('⚠️ Add at least one parameter row', 'warning'); return; }
+  const store = loadParamStore();
+  const existIdx = store.findIndex(t => t.testId === _pmCurrentTest.id);
+  const entry = { testId: _pmCurrentTest.id, testName: _pmCurrentTest.name, dept: _pmCurrentTest.dept, params };
+  if (existIdx !== -1) store[existIdx] = entry;
+  else store.push(entry);
+  saveParamStore(store);
+  pmRefreshSavedGrid();
+  // Highlight chip
+  document.querySelectorAll('.pm-saved-chip').forEach(c => {
+    c.classList.toggle('active-edit', c.dataset.tid === _pmCurrentTest.id);
+  });
+  showToast(`✅ "${_pmCurrentTest.name}" saved — ${params.length} param(s)`, 'success');
+  document.getElementById('pmSaveCount').textContent = loadParamStore().length + ' test(s) configured';
+}
+
+function pmClear() {
+  _pmCurrentTest = null;
+  document.getElementById('pmCatalogSearch').value = '';
+  document.getElementById('pmCatalogDropdown').classList.remove('open');
+  document.getElementById('pmSelectedTest').classList.remove('show');
+  document.getElementById('pmRows').innerHTML = '';
+  pmAddRow();
+  document.querySelectorAll('.pm-saved-chip').forEach(c => c.classList.remove('active-edit'));
+}
+
+function pmDeleteTest(testId, e) {
+  e.stopPropagation();
+  const entry = loadParamStore().find(t => t.testId === testId);
+  if (!entry) return;
+  if (!confirm(`Delete all parameters for "${entry.testName}"?`)) return;
+  saveParamStore(loadParamStore().filter(t => t.testId !== testId));
+  if (_pmCurrentTest && _pmCurrentTest.id === testId) pmClear();
+  pmRefreshSavedGrid();
+  showToast(`🗑 "${entry.testName}" deleted`, 'info');
+}
+
+function pmRefreshSavedGrid() {
+  const store = loadParamStore();
+  const c = document.getElementById('pmSavedGrid');
+  document.getElementById('pmSaveCount').textContent = store.length + ' test(s) configured';
+  if (!store.length) { c.innerHTML = '<div class="pm-empty-saved">No tests configured yet. Select a test above and define its parameters.</div>'; return; }
+  c.innerHTML = store.map(t => `
+    <div class="pm-saved-chip${_pmCurrentTest && _pmCurrentTest.id === t.testId ? ' active-edit' : ''}" data-tid="${H(t.testId)}" onclick="pmSelectFromCatalog('${H(t.testId)}')">
+      <span>🧪</span>
+      <span style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${H(t.testName)}</span>
+      <span class="psc-count">${t.params.length} param${t.params.length !== 1 ? 's' : ''}</span>
+      <span class="psc-del" onclick="pmDeleteTest('${H(t.testId)}',event)" title="Delete">✕</span>
+    </div>`).join('');
+}
+
+/* Open PM pre-loaded with a specific test (called from unconfigured chip) */
+function openPMForTest(testName, testId) {
+  openPM();
+  setTimeout(() => {
+    // Try by testId first, fallback to name match
+    const found = testId
+      ? CATALOG.find(t => t.id === testId)
+      : CATALOG.find(t => t.name.toUpperCase() === testName.toUpperCase())
+        || CATALOG.find(t => t.name.toUpperCase().includes(testName.toUpperCase().slice(0, 12)));
+    if (found) {
+      document.getElementById('pmCatalogSearch').value = found.name;
+      pmSelectFromCatalog(found.id);
+    } else {
+      document.getElementById('pmCatalogSearch').value = testName;
+      pmFilterCatalog();
+    }
+  }, 120);
+}
+
+/* ════════════════════════════════════════════════════════════
+   RESULT ENTRY ENGINE
+════════════════════════════════════════════════════════════ */
+function parseRefRange(s) {
+  if (!s) return { lo: null, hi: null };
+  s = String(s).trim();
+  const m = s.match(/([\d.]+)\s*[-–]\s*([\d.]+)/);
+  if (m) return { lo: parseFloat(m[1]), hi: parseFloat(m[2]) };
+  const lt = s.match(/[<≤]\s*([\d.]+)/);
+  if (lt) return { lo: 0, hi: parseFloat(lt[1]) };
+  const gt = s.match(/[>≥]\s*([\d.]+)/);
+  if (gt) { const v = parseFloat(gt[1]); return { lo: v, hi: v > 0 ? v * 5 : v + 100 }; }
+  return { lo: null, hi: null };
+}
+
+function isValidParam(p) {
+  const n = (p.name || '').trim();
+  if (!n || n.length < 2) return false;
+  if (/^[-\d)(\/\s.]+$/.test(n)) return false;
+  const skip = ['dlc performed by','test description','referance range','reference range','remarks','report','advice','impression'];
+  if (skip.includes(n.toLowerCase())) return false;
   return true;
 }
-/* ─── MAIN2 CATALOG LOADER ─── */
-// Tries multiple localStorage keys that MAIN2 may use to store the test catalog
-let _catalogCache=null;
-function getCatalog(){
-  if(_catalogCache) return _catalogCache;
-  const keys=['medicore_catalog','labTests','testCatalog','medicore_tests','lab_catalog','tests_catalog'];
-  for(const k of keys){
-    const raw=localStorage.getItem(k);
-    if(raw){try{const d=JSON.parse(raw);if(Array.isArray(d)&&d.length){_catalogCache=d;return _catalogCache;}}catch{}}
+
+/* Find configured params for a booked test — tries testId first, then name matching */
+function findConfiguredTest(bookedTest) {
+  const store = loadParamStore();
+  // 1. Match by testId (most reliable — MAIN2 embeds id in booking)
+  if (bookedTest.id) {
+    const byId = store.find(t => t.testId === bookedTest.id);
+    if (byId) return byId;
   }
-  _catalogCache=[];return _catalogCache;
+  // 2. Exact name match (uppercase)
+  const n = (bookedTest.name || '').toUpperCase().trim();
+  const byName = store.find(t => t.testName.toUpperCase() === n);
+  if (byName) return byName;
+  // 3. Partial name match
+  const partial = store.find(t => n.includes(t.testName.toUpperCase()) || t.testName.toUpperCase().includes(n));
+  return partial || null;
 }
-function _toCatalogEntry(t,n){
-  return{testName:n,dept:t.dept||t.department||t.category||'Other',params:t.params||t.parameters||t.testParams||[]};
-}
-function findJsonTest(name){
-  const n=(name||'').toUpperCase().trim();
-  // 1. Hardcoded TEST_PARAMS exact match
-  let f=TEST_PARAMS.find(t=>t.testName===n);
-  if(f) return f;
-  // 2. Hardcoded TEST_PARAMS partial match
-  f=TEST_PARAMS.find(t=>n.includes(t.testName)||t.testName.includes(n));
-  if(f) return f;
-  // 3. MAIN2 catalog exact match
-  const cat=getCatalog();
-  f=cat.find(t=>(t.name||t.testName||'').toUpperCase().trim()===n);
-  if(f) return _toCatalogEntry(f,n);
-  // 4. MAIN2 catalog partial match
-  f=cat.find(t=>{const tn=(t.name||t.testName||'').toUpperCase().trim();return tn&&(n.includes(tn)||tn.includes(n));});
-  if(f) return _toCatalogEntry(f,n);
-  return null;
-}
-function getRef(name){
-  if(REF[name]) return REF[name];
-  const l=name.toLowerCase();
-  for(const[k,v] of Object.entries(REF)) if(k.toLowerCase().includes(l)||l.includes(k.toLowerCase())) return v;
-  return null;
-}
-function getGender(s){const l=(s||'').toLowerCase();return(l.includes('f')||l.includes('female'))?'F':'M';}
-// Fix #4: use dedicated patientGender field; fall back to patientAge for legacy data
-function resolveGender(booking){
-  if(booking.patientGender) return getGender(booking.patientGender);
-  return getGender(booking.patientAge||'');
-}
-function H(s){return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function N(v){if(v===null||v===undefined)return '';return v%1===0?v:parseFloat(v.toFixed(2));}
-function E(o){return JSON.stringify(o).replace(/"/g,'&quot;');}
 
-/* ─── BUILD EXPANDED ROWS ─── */
-function buildExpandedRows(booking){
-  const rows=[];
-  (booking.tests||[]).forEach((t,tIdx)=>{
-    const gender=resolveGender(booking);
-    // Tier 1: params embedded directly in the booking test object (MAIN2 may store them)
-    const embeddedParams=t.params||t.parameters||t.testParams||[];
-    // Tier 2: look up from TEST_PARAMS or MAIN2 catalog
-    const jt=findJsonTest(t.name);
-    // Use whichever source has params — embedded first, then catalog
-    const sourceParams=embeddedParams.length>0?embeddedParams:(jt?jt.params||[]:[]); 
-    const deptSrc=(jt?jt.dept:'') || t.dept || 'Other';
+function H(s) { return String(s || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function N(v) { if (v === null || v === undefined) return ''; return v % 1 === 0 ? v : parseFloat(v.toFixed(2)); }
 
-    if(sourceParams.length>0){
-      const seen=new Set();let pIdx=0;
-      sourceParams.forEach(p=>{
-        if(!isValidParam(p)) return;
-        const key=(p.name||'').toLowerCase().trim();
-        if(seen.has(key)) return;
+function buildExpandedRows(booking) {
+  const rows = [];
+  (booking.tests || []).forEach((t, tIdx) => {
+    const configured = findConfiguredTest(t);
+    const sourceParams = configured ? (configured.params || []) : (t.params || t.parameters || []);
+    const dept = (configured ? configured.dept : '') || t.dept || 'Other';
+    let pIdx = 0;
+    if (sourceParams.length > 0) {
+      const seen = new Set();
+      sourceParams.forEach(p => {
+        if (!isValidParam(p)) return;
+        const key = (p.name || '').toLowerCase().trim();
+        if (seen.has(key)) return;
         seen.add(key);
-        const refRangeStr=p.refRange||p.referenceRange||p.ref_range||'';
-        const{lo,hi}=parseRefRange(refRangeStr);
-        const rf=getRef(p.name);
-        const rlo=rf?(gender==='F'?rf.flo:rf.mlo)??lo:lo;
-        const rhi=rf?(gender==='F'?rf.fhi:rf.mhi)??hi:hi;
+        const refRangeStr = p.refRange || p.referenceRange || '';
+        let lo = (p.lo != null) ? p.lo : parseRefRange(refRangeStr).lo;
+        let hi = (p.hi != null) ? p.hi : parseRefRange(refRangeStr).hi;
+        const isTxt = (lo === null && hi === null);
         rows.push({
-          key:`p_${tIdx}_${pIdx}`,testIdx:tIdx,paramIdx:pIdx,
-          testName:t.name,paramName:p.name,
-          unit:p.unit||p.units||(rf?rf.u:''),refRangeStr,
-          lo:rlo,hi:rhi,cl:rf?rf.cl??null:null,ch:rf?rf.ch??null:null,
-          isTxt:false,dept:deptSrc,meth:rf?rf.meth||'':''
-        });pIdx++;
+          key: `p_${tIdx}_${pIdx}`, testIdx: tIdx, paramIdx: pIdx,
+          testName: t.name, testId: t.id || '', paramName: p.name,
+          unit: p.unit || '', refRangeStr, lo, hi, cl: null, ch: null,
+          isTxt, dept, meth: ''
+        });
+        pIdx++;
       });
-      if(!rows.length||rows[rows.length-1].testIdx!==tIdx) rows.push(_plainRow(t,tIdx,0,gender));
+      if (!rows.length || rows[rows.length - 1].testIdx !== tIdx)
+        rows.push({ key:`p_${tIdx}_${pIdx}`, testIdx:tIdx, paramIdx:pIdx, testName:t.name, testId:t.id||'', paramName:t.name, unit:'', refRangeStr:'', lo:null, hi:null, cl:null, ch:null, isTxt:true, dept, meth:'' });
     } else {
-      rows.push(_plainRow(t,tIdx,0,gender));
+      rows.push({ key:`p_${tIdx}_0`, testIdx:tIdx, paramIdx:0, testName:t.name, testId:t.id||'', paramName:'__UNCONFIGURED__', unit:'', refRangeStr:'', lo:null, hi:null, cl:null, ch:null, isTxt:false, dept:t.dept||'Other', meth:'', unconfigured:true });
     }
   });
   return rows;
 }
-function _plainRow(t,tIdx,pIdx,gender){
-  const r=getRef(t.name);
-  const lo=r?(gender==='F'?r.flo:r.mlo):null;
-  const hi=r?(gender==='F'?r.fhi:r.mhi):null;
-  const refStr=r?(lo!=null?lo:'')+(lo!=null&&hi!=null?' – ':'')+(hi!=null?hi:''):'';
-  return{key:`p_${tIdx}_${pIdx}`,testIdx:tIdx,paramIdx:pIdx,
-    testName:t.name,paramName:t.name,unit:r?r.u:'',refRangeStr:refStr,
-    lo,hi,cl:r?r.cl??null:null,ch:r?r.ch??null:null,
-    isTxt:r?!!r.txt:false,dept:t.dept||r?.dept||'Other',meth:r?r.meth||'':''};
-}
 
-/* ─── STATE ─── */
+/* ── STATE ── */
 let _bks=[], _filtered=[], _sel=null, _rv={}, _mo={}, _sf='all';
 let _expandedRows=[], _inputOrder=[];
-let _activeTestIdx=null; // which chip is open
-let _isDirty=false;      // Fix #8: unsaved-changes tracking
+let _activeTestIdx=null, _isDirty=false, _chipDebTimer=null;
+function _debouncedChipRender() { clearTimeout(_chipDebTimer); _chipDebTimer=setTimeout(renderTestChips,120); }
 
-// Fix #6: debounce helper to avoid re-rendering chips on every keystroke
-let _chipDebTimer=null;
-function _debouncedChipRender(){
-  clearTimeout(_chipDebTimer);
-  _chipDebTimer=setTimeout(renderTestChips,120);
-}
-
-/* ─── INIT ─── */
-document.addEventListener('DOMContentLoaded',()=>{
-  (function tick(){
-    const n=new Date();
-    const clkEl=document.getElementById('clk');
-    const dateEl=document.getElementById('dateBadge');
-    if(clkEl) clkEl.textContent=n.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-    if(dateEl) dateEl.textContent=n.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
-    setTimeout(tick,1000);
+/* ── INIT ── */
+document.addEventListener('DOMContentLoaded', () => {
+  (function tick() {
+    const n = new Date();
+    const clkEl = document.getElementById('clk');
+    const dateEl = document.getElementById('dateBadge');
+    if (clkEl) clkEl.textContent = n.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+    if (dateEl) dateEl.textContent = n.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+    setTimeout(tick, 1000);
   })();
+  _updateParamCountBadge();
   loadBks();
-  const p=new URLSearchParams(location.search).get('booking');
-  if(p) setTimeout(()=>{const b=_bks.find(x=>x.bookingId===p);if(b) selBk(b);},80);
-
-  // Fix #10: Ctrl+S / Cmd+S to save
-  document.addEventListener('keydown',e=>{
-    if((e.ctrlKey||e.metaKey)&&e.key==='s'){
+  const p = new URLSearchParams(location.search).get('booking');
+  if (p) setTimeout(() => { const b = _bks.find(x => x.bookingId === p); if (b) selBk(b); }, 80);
+  document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
       e.preventDefault();
-      if(_activeTestIdx!==null) saveTestPanel(_activeTestIdx);
-      else saveResults();
+      if (_activeTestIdx !== null) saveTestPanel(_activeTestIdx); else saveResults();
     }
   });
+  document.getElementById('step1').classList.add('active');
 });
 
-/* ─── LOAD & FILTER BOOKINGS ─── */
-function loadBks(){
-  _bks=JSON.parse(localStorage.getItem('testBookings')||'[]');
-  _bks.forEach(b=>{if(!b.status) b.status='Booked';});
-  document.getElementById('bkCountBadge').textContent=_bks.length+' Booking'+ (_bks.length!==1?'s':'');
-  document.getElementById('bkCount').textContent=_bks.length+' booking(s) total';
+/* ── LOAD & FILTER ── */
+function loadBks() {
+  _bks = JSON.parse(localStorage.getItem('testBookings') || '[]');
+  _bks.forEach(b => { if (!b.status) b.status = 'Booked'; });
+  document.getElementById('bkCountBadge').textContent = _bks.length + ' Booking' + (_bks.length !== 1 ? 's' : '');
+  document.getElementById('bkCount').textContent = _bks.length + ' booking(s) total';
   filterBks();
 }
-function setSF(v,btn){
-  _sf=v;
-  document.querySelectorAll('.fp').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on'); filterBks();
-}
-function filterBks(){
-  const q=document.getElementById('bkSearch').value.toLowerCase().trim();
-  _filtered=_bks.filter(b=>{
-    if(_sf!=='all'&&b.status!==_sf) return false;
-    return !q||[b.bookingId,b.patientName,b.patientMobile,b.refDoctor].join(' ').toLowerCase().includes(q);
+function setSF(v, btn) { _sf=v; document.querySelectorAll('.fp').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); filterBks(); }
+function filterBks() {
+  const q = document.getElementById('bkSearch').value.toLowerCase().trim();
+  _filtered = _bks.filter(b => {
+    if (_sf !== 'all' && b.status !== _sf) return false;
+    return !q || [b.bookingId, b.patientName, b.patientMobile, b.refDoctor].join(' ').toLowerCase().includes(q);
   });
   renderBkList();
 }
 
-/* ─── RENDER BOOKING LIST ─── */
-function renderBkList(){
-  const c=document.getElementById('bkList');
-  if(!_filtered.length){
-    c.innerHTML=`<div class="empty-state"><div class="ei">📋</div><h3>${_bks.length?'No matches found':'No bookings yet'}</h3></div>`;
+/* ── RENDER BOOKING LIST ── */
+function renderBkList() {
+  const c = document.getElementById('bkList');
+  if (!_filtered.length) {
+    c.innerHTML = `<div class="empty-state"><div class="ei">📋</div><h3>${_bks.length ? 'No matches found' : 'No bookings yet'}</h3></div>`;
     return;
   }
-  c.innerHTML=_filtered.map(b=>{
-    const ini=(b.patientName||'?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-    const ds=b.sampleDate?new Date(b.sampleDate+'T00:00:00').toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}):'—';
-    const st=(b.status||'Booked');
-    const sc=st.toLowerCase();
-    const tc=(b.tests||[]).length;
-    const sv=JSON.parse(localStorage.getItem(`results_${b.bookingId}`)||'{}');
-    const dc=Object.values(sv).filter(r=>r.value&&String(r.value).trim()).length;
-    // Fix #2: use stored total param count for accurate progress; fall back to test count
-    const storedTotal=parseInt(localStorage.getItem(`paramTotal_${b.bookingId}`)||'0',10)||tc;
-    const isSel=_sel&&_sel.bookingId===b.bookingId;
-    const pct=storedTotal?Math.round(dc/storedTotal*100):0;
-    let sbCls='sb-pending';
-    if(sc==='completed') sbCls='sb-completed';
-    else if(sc==='partial') sbCls='sb-partial';
-    let fillCls='fill-empty',fillIcon='○';
-    if(dc>0&&dc<storedTotal){fillCls='fill-part';fillIcon='◑';}
-    else if(dc>=storedTotal&&storedTotal>0){fillCls='fill-done';fillIcon='✓';}
-    // Fix #11: reference by ID instead of inlining JSON blob
+  c.innerHTML = _filtered.map(b => {
+    const ini = (b.patientName||'?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    const ds = b.sampleDate ? new Date(b.sampleDate+'T00:00:00').toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}) : '—';
+    const st = b.status || 'Booked';
+    const tc = (b.tests||[]).length;
+    const sv = JSON.parse(localStorage.getItem(`results_${b.bookingId}`) || '{}');
+    const dc = Object.values(sv).filter(r => r.value && String(r.value).trim()).length;
+    const storedTotal = parseInt(localStorage.getItem(`paramTotal_${b.bookingId}`)||'0',10) || tc;
+    const isSel = _sel && _sel.bookingId === b.bookingId;
+    const pct = storedTotal ? Math.round(dc/storedTotal*100) : 0;
+    let sbCls = 'sb-pending';
+    if (st.toLowerCase()==='completed') sbCls='sb-completed';
+    else if (st.toLowerCase()==='partial') sbCls='sb-partial';
+    let fillCls='fill-empty', fillIcon='○';
+    if (dc>0 && dc<storedTotal) { fillCls='fill-part'; fillIcon='◑'; }
+    else if (dc>=storedTotal && storedTotal>0) { fillCls='fill-done'; fillIcon='✓'; }
     return `<div class="bk-item${isSel?' selected':''}" onclick="selBkById('${H(b.bookingId)}')">
       <div class="bk-av">${ini}</div>
       <div class="bk-body">
-        <div class="bk-name">${H(b.patientName||'—')}${b.patientAge?` <span style="font-weight:500;color:var(--muted);font-size:10.5px;">· ${H(b.patientAge)}</span>`:''}</div>
+        <div class="bk-name">${H(b.patientName||'—')}${b.patientAge?` <span style="font-weight:500;color:var(--muted);font-size:10.5px;">· ${H(b.patientAge)}</span>`:''}${b.patientGender?` <span style="font-weight:500;color:var(--muted);font-size:10.5px;">${H(b.patientGender)}</span>`:''}</div>
         <div class="bk-meta">📅 ${ds} · 🧪 ${tc} test${tc!==1?'s':''}</div>
         <div class="bk-prog">
           <div class="bk-prog-bar"><div class="bk-prog-fill" style="width:${Math.min(pct,100)}%"></div></div>
@@ -1524,40 +1522,23 @@ function renderBkList(){
   }).join('');
 }
 
-// Fix #8: show/hide unsaved-changes dot in sticky bar
-function _updateDirtyIndicator(){
-  const hint=document.getElementById('sbHint');
-  if(!hint) return;
-  const dot=document.getElementById('dirtyDot');
-  if(_isDirty){
-    if(!dot){
-      const d=document.createElement('span');
-      d.id='dirtyDot';d.className='sb-dirty-dot';d.title='Unsaved changes';
-      hint.parentNode.insertBefore(d,hint);
-    }
-  } else {
-    if(dot) dot.remove();
-  }
+/* ── DIRTY INDICATOR ── */
+function _updateDirtyIndicator() {
+  const info = document.getElementById('sbInfo'); if (!info) return;
+  const existing = document.getElementById('dirtyDot');
+  if (_isDirty) {
+    if (!existing) { const d=document.createElement('span'); d.id='dirtyDot'; d.className='sb-dirty-dot'; d.title='Unsaved changes'; info.parentNode.insertBefore(d,info); }
+  } else { if (existing) existing.remove(); }
 }
 
-/* ─── SELECT BOOKING ─── */
-// Fix #11: look up booking by ID instead of passing JSON in onclick
-function selBkById(id){
-  const b=_bks.find(x=>x.bookingId===id);
-  if(b) selBk(b);
-}
-function selBk(b){
-  _sel=b;
-  _activeTestIdx=null;
-  _isDirty=false; // Fix #8: reset dirty on new selection
-  _catalogCache=null; // refresh MAIN2 catalog on each booking selection
+/* ── SELECT BOOKING ── */
+function selBkById(id) { const b=_bks.find(x=>x.bookingId===id); if(b) selBk(b); }
+function selBk(b) {
+  _sel=b; _activeTestIdx=null; _isDirty=false;
   _rv=JSON.parse(localStorage.getItem(`results_${b.bookingId}`)||'{}');
   _mo=JSON.parse(localStorage.getItem(`methods_${b.bookingId}`)||'{}');
   _expandedRows=buildExpandedRows(b);
-  renderBkList();
-  renderPatientHeader(b);
-  renderTestChips();
-  updateOverallProg();
+  renderBkList(); renderPatientHeader(b); renderTestChips(); updateOverallProg();
   document.getElementById('welcomeState').style.display='none';
   document.getElementById('resultPanel').style.display='block';
   document.getElementById('mainActionBar').style.display='flex';
@@ -1569,9 +1550,8 @@ function selBk(b){
   document.getElementById('step2').classList.add('active');
   setTimeout(()=>document.getElementById('resultPanel').scrollIntoView({behavior:'smooth',block:'start'}),80);
 }
-function clearSel(){
-  _sel=null;_rv={};_mo={};_expandedRows=[];_activeTestIdx=null;
-  _isDirty=false; _updateDirtyIndicator(); // Fix #8
+function clearSel() {
+  _sel=null; _rv={}; _mo={}; _expandedRows=[]; _activeTestIdx=null; _isDirty=false; _updateDirtyIndicator();
   document.getElementById('welcomeState').style.display='flex';
   document.getElementById('resultPanel').style.display='none';
   document.getElementById('mainActionBar').style.display='none';
@@ -1579,15 +1559,14 @@ function clearSel(){
   document.getElementById('stickyBar').classList.remove('vis');
   document.getElementById('step1').classList.add('active');
   document.getElementById('step2').classList.remove('active');
-  renderBkList();
-  window.scrollTo({top:0,behavior:'smooth'});
+  renderBkList(); window.scrollTo({top:0,behavior:'smooth'});
 }
 
-/* ─── PATIENT HEADER ─── */
-function renderPatientHeader(b){
+/* ── PATIENT HEADER ── */
+function renderPatientHeader(b) {
   const ini=(b.patientName||'?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
   const ds=b.sampleDate?new Date(b.sampleDate+'T00:00:00').toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}):'—';
-  const st=(b.status||'Booked');
+  const st=b.status||'Booked';
   let sbCls='sb-pending';
   if(st.toLowerCase()==='completed') sbCls='sb-completed';
   else if(st.toLowerCase()==='partial') sbCls='sb-partial';
@@ -1596,21 +1575,20 @@ function renderPatientHeader(b){
     <div class="pt-main">
       <div class="pt-name">${H(b.patientName||'—')}</div>
       <div class="pt-fields">
-        <div class="pt-field"><div class="pt-lbl">Age / Gender</div><div class="pt-val">${H(b.patientAge||'—')}</div></div>
+        ${b.patientAge?`<div class="pt-field"><div class="pt-lbl">Age</div><div class="pt-val">${H(b.patientAge)}</div></div>`:''}
+        ${b.patientGender?`<div class="pt-field"><div class="pt-lbl">Gender</div><div class="pt-val">${H(b.patientGender)}</div></div>`:''}
         <div class="pt-field"><div class="pt-lbl">Booking ID</div><div class="pt-val">${H(b.bookingId)}</div></div>
         <div class="pt-field"><div class="pt-lbl">Sample Date</div><div class="pt-val">${ds}</div></div>
         ${b.patientMobile?`<div class="pt-field"><div class="pt-lbl">Mobile</div><div class="pt-val">${H(b.patientMobile)}</div></div>`:''}
         ${b.refDoctor?`<div class="pt-field"><div class="pt-lbl">Ref. Doctor</div><div class="pt-val">${H(b.refDoctor)}</div></div>`:''}
       </div>
     </div>
-    <div class="pt-status">
-      <div class="status-badge ${sbCls}" style="font-size:11px;padding:5px 12px;"><span class="s-dot"></span>${st}</div>
-    </div>`;
+    <div class="pt-status"><div class="status-badge ${sbCls}" style="font-size:11px;padding:5px 12px;"><span class="s-dot"></span>${st}</div></div>`;
 }
 
-/* ─── OVERALL PROGRESS ─── */
-function updateOverallProg(){
-  const total=_expandedRows.length;
+/* ── OVERALL PROGRESS ── */
+function updateOverallProg() {
+  const total=_expandedRows.filter(r=>!r.unconfigured).length;
   const vals=Object.values(_rv);
   const done=vals.filter(r=>r.value&&String(r.value).trim()).length;
   const h=vals.filter(r=>r.flag==='H').length;
@@ -1631,20 +1609,18 @@ function updateOverallProg(){
   document.getElementById('sbHint').textContent=hints.join(' · ');
 }
 
-/* ─── TEST CHIPS ─── */
-function _getTestRows(tIdx){
-  return _expandedRows.filter(r=>r.testIdx===tIdx);
-}
-function _chipStatus(tIdx){
+/* ── TEST CHIPS ── */
+function _getTestRows(tIdx) { return _expandedRows.filter(r=>r.testIdx===tIdx); }
+function _chipStatus(tIdx) {
   const rows=_getTestRows(tIdx);
+  if(rows.length===1&&rows[0].unconfigured) return 'unconfigured';
   const filled=rows.filter(r=>(_rv[r.key]?.value||'').trim()).length;
   if(!rows.length) return 'empty';
   if(filled===rows.length) return 'done';
   if(filled>0) return 'partial';
   return 'empty';
 }
-
-function renderTestChips(){
+function renderTestChips() {
   if(!_sel) return;
   const tests=_sel.tests||[];
   const icons=['🧪','🩸','🧬','💊','🔬','🫀','🫁','🧫','🩺','💉'];
@@ -1652,13 +1628,18 @@ function renderTestChips(){
     const st=_chipStatus(i);
     const rows=_getTestRows(i);
     const filled=rows.filter(r=>(_rv[r.key]?.value||'').trim()).length;
-    const total=rows.length;
-    let chipCls='test-chip';
-    if(st==='done') chipCls+=' done';
-    else if(st==='partial') chipCls+=' partial';
-    if(_activeTestIdx===i) chipCls+=' active';
+    const total=rows.filter(r=>!r.unconfigured).length;
+    if(st==='unconfigured') {
+      return `<button class="chip-no-params" onclick="openPMForTest('${H(t.name)}','${H(t.id||'')}')">
+        ⚠️ ${H(t.name)} <span style="font-size:9px;opacity:.8;">→ Set up params</span>
+      </button>`;
+    }
+    let cls='test-chip';
+    if(st==='done') cls+=' done';
+    else if(st==='partial') cls+=' partial';
+    if(_activeTestIdx===i) cls+=' active';
     const icon=st==='done'?'✅':st==='partial'?'◑':(icons[i%icons.length]);
-    return `<button class="${chipCls}" onclick="toggleTestPanel(${i})" title="${H(t.name)}">
+    return `<button class="${cls}" onclick="toggleTestPanel(${i})">
       <span class="chip-icon">${icon}</span>
       <span class="chip-name">${H(t.name)}</span>
       <span class="chip-badge">${filled}/${total}</span>
@@ -1667,39 +1648,51 @@ function renderTestChips(){
   document.getElementById('testChips').innerHTML=html||'<span style="color:var(--muted);font-size:12px;">No tests booked</span>';
 }
 
-/* ─── TOGGLE TEST PANEL ─── */
-function toggleTestPanel(tIdx){
+/* ── TOGGLE & RENDER TEST PANEL ── */
+function toggleTestPanel(tIdx) {
   const wrap=document.getElementById('testPanelWrap');
-  if(_activeTestIdx===tIdx){
-    // close
-    _activeTestIdx=null;
-    wrap.style.display='none';
-    wrap.innerHTML='';
-    renderTestChips();
-    return;
-  }
-  // Fix #9: auto-save current panel before switching to a new one
-  if(_activeTestIdx!==null && _sel){
+  if(_activeTestIdx===tIdx) { _activeTestIdx=null; wrap.style.display='none'; wrap.innerHTML=''; renderTestChips(); return; }
+  if(_activeTestIdx!==null&&_sel) {
     localStorage.setItem(`results_${_sel.bookingId}`,JSON.stringify(_rv));
     localStorage.setItem(`methods_${_sel.bookingId}`,JSON.stringify(_mo));
-    localStorage.setItem(`paramTotal_${_sel.bookingId}`,String(_expandedRows.length));
+    localStorage.setItem(`paramTotal_${_sel.bookingId}`,String(_expandedRows.filter(r=>!r.unconfigured).length));
     _syncBookingStatus();
   }
-  _activeTestIdx=tIdx;
-  renderTestChips();
-  renderTestPanel(tIdx);
+  _activeTestIdx=tIdx; renderTestChips(); renderTestPanel(tIdx);
   setTimeout(()=>wrap.scrollIntoView({behavior:'smooth',block:'nearest'}),100);
 }
 
-/* ─── RENDER SINGLE TEST PANEL ─── */
-function renderTestPanel(tIdx){
+function renderTestPanel(tIdx) {
   const wrap=document.getElementById('testPanelWrap');
   const rows=_getTestRows(tIdx);
-  if(!rows.length){ wrap.style.display='none'; return; }
-  const testName=rows[0].testName;
-  const dept=rows[0].dept||'';
-  _inputOrder=[];
+  if(!rows.length) { wrap.style.display='none'; return; }
 
+  // Unconfigured
+  if(rows.length===1&&rows[0].unconfigured) {
+    const tn=rows[0].testName, tid=rows[0].testId||'';
+    wrap.style.display='block';
+    wrap.innerHTML=`<div class="test-panel" style="border-color:var(--amber);">
+      <div class="tp-header" style="background:linear-gradient(to right,#fffbeb,#fff7ed);border-bottom-color:#fed7aa;">
+        <span style="font-size:18px;">⚠️</span>
+        <div class="tp-title" style="color:#92400e;">Parameters not configured for "${H(tn)}"</div>
+        <button class="tp-close" onclick="toggleTestPanel(${tIdx})">✕</button>
+      </div>
+      <div style="padding:28px 24px;text-align:center;">
+        <div style="font-size:40px;margin-bottom:12px;">🧬</div>
+        <div style="font-size:15px;font-weight:800;color:var(--navy);margin-bottom:8px;">No Parameters Defined</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.7;max-width:400px;margin:0 auto 20px;">
+          Open the Parameter Manager, select this test from the catalog, and define its parameters. They'll appear here automatically for every patient.
+        </div>
+        <button class="btn" style="background:linear-gradient(135deg,#7c3aed,#6d28d9);color:white;border:none;" onclick="openPMForTest('${H(tn)}','${H(tid)}')">
+          🧬 Configure "${H(tn)}"
+        </button>
+      </div>
+    </div>`;
+    return;
+  }
+
+  const testName=rows[0].testName, dept=rows[0].dept||'';
+  _inputOrder=[];
   const filled=rows.filter(r=>(_rv[r.key]?.value||'').trim()).length;
   const total=rows.length;
   const pct=total?Math.round(filled/total*100):0;
@@ -1707,38 +1700,24 @@ function renderTestPanel(tIdx){
   let rowsHtml='';
   rows.forEach((row,i)=>{
     const sv=_rv[row.key]||{};
-    const val=sv.value||'',flag=sv.flag||'';
+    const val=sv.value||'', flag=sv.flag||'';
     const inpId=`inp_${row.key}`;
-    const lo=row.lo,hi=row.hi,cl=row.cl,ch=row.ch;
-    // Fix #5: include text inputs in keyboard navigation order
+    const {lo,hi,cl,ch}=row;
     _inputOrder.push(inpId);
+    // Gauge or ref range string
     const gaugeHtml=(!row.isTxt&&lo!=null&&hi!=null)
-      ?buildGauge(val,lo,hi,cl,ch,flag)
-      :`<span style="font-size:10px;color:var(--muted);white-space:normal;">${H(row.refRangeStr)||'—'}</span>`;
+      ? buildGauge(val,lo,hi,cl,ch,flag)
+      : `<span style="font-size:10px;color:var(--muted);white-space:normal;">${H(row.refRangeStr)||'—'}</span>`;
     const rowCls=flag?`has-val flag-${flag}`:val?'has-val':'';
     rowsHtml+=`<tr id="row_${row.key}" class="${rowCls}" data-key="${row.key}">
       <td class="td-num">${i+1}</td>
-      <td class="td-test" style="padding:0 10px;">
-        <span class="tn">${H(row.paramName)}</span>
-      </td>
-      <td style="padding:0 8px;vertical-align:middle;">
-        <span class="tu-cell">${H(row.unit)||'—'}</span>
-      </td>
-      <td class="td-gauge" id="gauge_${row.key}" style="padding:5px 10px;">${gaugeHtml}</td>
+      <td class="td-test"><span class="tn">${H(row.paramName)}</span></td>
+      <td style="padding:0 8px;vertical-align:middle;"><span class="tu-cell">${H(row.unit)||'—'}</span></td>
+      <td class="td-gauge" id="gauge_${row.key}">${gaugeHtml}</td>
       <td class="td-inp">
         ${row.isTxt
-          ?`<input class="ri-txt" type="text" id="${inpId}" value="${H(val)}"
-              placeholder="Enter result…" data-key="${row.key}"
-              onclick="this.select()" oninput="onTxt('${row.key}',this.value)">`
-          :`<input class="ri ${flag?'f-'+flag:''}" type="number" step="any"
-              id="${inpId}" value="${H(val)}" placeholder="—"
-              data-key="${row.key}"
-              data-lo="${lo??''}" data-hi="${hi??''}"
-              data-cl="${cl??''}" data-ch="${ch??''}"
-              data-refrange="${H(row.refRangeStr)}"
-              onclick="this.select()"
-              oninput="onRI(this)"
-              onkeydown="onKeyNav(event,this)">`
+          ?`<input class="ri-txt" type="text" id="${inpId}" value="${H(val)}" placeholder="Enter result…" data-key="${row.key}" onclick="this.select()" oninput="onTxt('${row.key}',this.value)">`
+          :`<input class="ri ${flag?'f-'+flag:''}" type="number" step="any" id="${inpId}" value="${H(val)}" placeholder="—" data-key="${row.key}" data-lo="${lo??''}" data-hi="${hi??''}" data-cl="${cl??''}" data-ch="${ch??''}" data-refrange="${H(row.refRangeStr)}" onclick="this.select()" oninput="onRI(this)" onkeydown="onKeyNav(event,this)">`
         }
       </td>
     </tr>`;
@@ -1750,27 +1729,27 @@ function renderTestPanel(tIdx){
       <span style="font-size:18px;">🧪</span>
       <div class="tp-title">${H(testName)}</div>
       ${dept?`<span class="tp-dept">${H(dept)}</span>`:''}
-      <button class="tp-close" onclick="toggleTestPanel(${tIdx})" title="Close">✕</button>
+      <button style="font-size:10px;padding:2px 8px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--blue);cursor:pointer;font-weight:700;" onclick="openPMForTest('${H(testName)}','${H(rows[0].testId||'')}')">✏️ Edit Params</button>
+      <button class="tp-close" onclick="toggleTestPanel(${tIdx})">✕</button>
     </div>
     <div class="kb-row">
-      <div class="kb-hint"><span class="kbd">Tab</span> Next</div>
-      <div class="kb-hint"><span class="kbd">Enter / ↓</span> Next row</div>
+      <div class="kb-hint"><span class="kbd">Enter/↓</span> Next</div>
       <div class="kb-hint"><span class="kbd">↑</span> Prev</div>
-      <div class="kb-hint"><span class="kbd">Shift+Tab</span> Back</div>
+      <div class="kb-hint"><span class="kbd">Ctrl+S</span> Save</div>
     </div>
-    <div class="grid-wrap" style="overflow-x:auto;">
-      <table class="xls" style="width:100%;border-collapse:collapse;font-size:12.5px;table-layout:fixed;">
+    <div class="grid-wrap">
+      <table class="xls" style="width:100%;border-collapse:collapse;table-layout:fixed;">
         <colgroup>
           <col style="width:36px">
           <col style="width:220px">
-          <col style="width:80px">
-          <col style="width:190px">
+          <col style="width:90px">
+          <col style="width:200px">
           <col style="width:130px">
         </colgroup>
         <thead><tr>
-          <th class="c-num" style="width:36px;">#</th>
-          <th>Parameters</th>
-          <th>Units</th>
+          <th class="c-num">#</th>
+          <th>Parameter</th>
+          <th>Unit</th>
           <th>Reference Range</th>
           <th style="text-align:right">Result Value</th>
         </tr></thead>
@@ -1783,24 +1762,23 @@ function renderTestPanel(tIdx){
         <div class="tp-prog-lbl" id="tpLbl_${tIdx}">${filled}/${total}</div>
       </div>
       <button class="btn btn-save btn-sm" onclick="saveTestPanel(${tIdx})">💾 Save</button>
-      <button class="btn" style="background:#f1f5f9;color:var(--muted);border:1.5px solid var(--border);" onclick="resetTestPanel(${tIdx})">↺ Reset</button>
+      <button class="btn btn-sm" style="background:#f1f5f9;color:var(--muted);border:1.5px solid var(--border);" onclick="resetTestPanel(${tIdx})">↺ Reset</button>
       <button class="btn btn-complete btn-sm" onclick="doneTestPanel(${tIdx})">✅ Done</button>
     </div>
   </div>`;
 }
 
-/* ─── TEST PANEL SAVE / RESET / DONE ─── */
-function saveTestPanel(tIdx){
+/* ── TEST PANEL SAVE / RESET / DONE ── */
+function saveTestPanel(tIdx) {
   if(!_sel) return;
   localStorage.setItem(`results_${_sel.bookingId}`,JSON.stringify(_rv));
   localStorage.setItem(`methods_${_sel.bookingId}`,JSON.stringify(_mo));
-  localStorage.setItem(`paramTotal_${_sel.bookingId}`,String(_expandedRows.length));
-  _syncBookingStatus();
-  _isDirty=false; _updateDirtyIndicator(); // Fix #8
+  localStorage.setItem(`paramTotal_${_sel.bookingId}`,String(_expandedRows.filter(r=>!r.unconfigured).length));
+  _syncBookingStatus(); _isDirty=false; _updateDirtyIndicator();
   loadBks(); renderPatientHeader(_sel); renderTestChips(); updateOverallProg();
   showToast(`💾 Saved — ${rows_testName(tIdx)}`,'success');
 }
-function resetTestPanel(tIdx){
+function resetTestPanel(tIdx) {
   const rows=_getTestRows(tIdx);
   showConf('Reset Test?',`Clear all entered values for ${rows_testName(tIdx)}?`,()=>{
     rows.forEach(r=>{
@@ -1810,25 +1788,16 @@ function resetTestPanel(tIdx){
       const row=document.getElementById(`row_${r.key}`);
       if(row) row.className='';
       const g=document.getElementById(`gauge_${r.key}`);
-      const lo=r.lo,hi=r.hi,cl=r.cl,ch=r.ch;
-      if(g) g.innerHTML=(lo!=null&&hi!=null)?buildGauge('',lo,hi,cl,ch,''):`<span style="font-size:10px;color:var(--muted);">${H(r.refRangeStr)||'—'}</span>`;
+      if(g) g.innerHTML=(r.lo!=null&&r.hi!=null)?buildGauge('',r.lo,r.hi,r.cl,r.ch,''):`<span style="font-size:10px;color:var(--muted);">${H(r.refRangeStr)||'—'}</span>`;
     });
-    _updateTpProg(tIdx);
-    updateOverallProg(); renderTestChips();
-    closeMod();
+    _updateTpProg(tIdx); updateOverallProg(); renderTestChips(); closeMod();
     showToast('↺ Reset done','info');
   });
 }
-function doneTestPanel(tIdx){
-  saveTestPanel(tIdx);
-  toggleTestPanel(tIdx);
-}
-function rows_testName(tIdx){
-  const rows=_getTestRows(tIdx);
-  return rows.length?rows[0].testName:'Test';
-}
-function _syncBookingStatus(){
-  const total=_expandedRows.length;
+function doneTestPanel(tIdx) { saveTestPanel(tIdx); toggleTestPanel(tIdx); }
+function rows_testName(tIdx) { const rows=_getTestRows(tIdx); return rows.length?rows[0].testName:'Test'; }
+function _syncBookingStatus() {
+  const total=_expandedRows.filter(r=>!r.unconfigured).length;
   const done=Object.values(_rv).filter(r=>r.value&&String(r.value).trim()).length;
   const all=JSON.parse(localStorage.getItem('testBookings')||'[]');
   const idx=all.findIndex(x=>x.bookingId===_sel.bookingId);
@@ -1839,19 +1808,17 @@ function _syncBookingStatus(){
     _sel.status=all[idx].status;
   }
 }
-function _updateTpProg(tIdx){
-  const rows=_getTestRows(tIdx);
+function _updateTpProg(tIdx) {
+  const rows=_getTestRows(tIdx).filter(r=>!r.unconfigured);
   const filled=rows.filter(r=>(_rv[r.key]?.value||'').trim()).length;
-  const total=rows.length;
-  const pct=total?Math.round(filled/total*100):0;
-  const f=document.getElementById(`tpFill_${tIdx}`);
-  const l=document.getElementById(`tpLbl_${tIdx}`);
+  const total=rows.length, pct=total?Math.round(filled/total*100):0;
+  const f=document.getElementById(`tpFill_${tIdx}`), l=document.getElementById(`tpLbl_${tIdx}`);
   if(f) f.style.width=pct+'%';
   if(l) l.textContent=`${filled}/${total}`;
 }
 
-/* ─── GAUGE ─── */
-function buildGauge(val,lo,hi,cl,ch,flag){
+/* ── GAUGE ── */
+function buildGauge(val,lo,hi,cl,ch,flag) {
   const rng=hi-lo;
   const dMin=(cl!=null&&cl!=='')?Math.min(cl,lo-rng*.25):lo-rng*.25;
   const dMax=(ch!=null&&ch!=='')?Math.max(ch,hi+rng*.25):hi+rng*.25;
@@ -1861,7 +1828,7 @@ function buildGauge(val,lo,hi,cl,ch,flag){
   const hiPct=((hi-dMin)/span*100).toFixed(1)+'%';
   const numV=parseFloat(val);
   const hasV=val!==''&&!isNaN(numV);
-  let nPct=50,nCls='gn-empty';
+  let nPct=50, nCls='gn-empty';
   if(hasV){nPct=Math.max(1,Math.min(99,(numV-dMin)/span*100));nCls=flag==='H'?'gn-H':flag==='L'?'gn-L':flag==='C'?'gn-C':'gn-ok';}
   const normLeft=((lo-dMin)/span*100).toFixed(1);
   const normRight=(100-((hi-dMin)/span*100)).toFixed(1);
@@ -1878,10 +1845,9 @@ function buildGauge(val,lo,hi,cl,ch,flag){
   </div>`;
 }
 
-/* ─── INPUT HANDLERS ─── */
-function onRI(el){
-  const k=el.dataset.key;
-  const v=parseFloat(el.value);
+/* ── INPUT HANDLERS ── */
+function onRI(el) {
+  const k=el.dataset.key, v=parseFloat(el.value);
   const lo=el.dataset.lo!==''?parseFloat(el.dataset.lo):null;
   const hi=el.dataset.hi!==''?parseFloat(el.dataset.hi):null;
   const cl=el.dataset.cl!==''?parseFloat(el.dataset.cl):null;
@@ -1902,71 +1868,64 @@ function onRI(el){
   if(gEl) gEl.innerHTML=(lo!=null&&hi!=null)?buildGauge(el.value,lo,hi,cl,ch,flag):`<span style="font-size:10px;color:var(--muted);">${el.dataset.refrange||'—'}</span>`;
   updateOverallProg();
   if(_activeTestIdx!==null) _updateTpProg(_activeTestIdx);
-  _isDirty=true; _updateDirtyIndicator(); // Fix #8
-  _debouncedChipRender(); // Fix #6
+  _isDirty=true; _updateDirtyIndicator(); _debouncedChipRender();
 }
-function onTxt(k,v){
-  if(!_rv[k])_rv[k]={};_rv[k].value=v;_rv[k].flag='';
-  const row=document.getElementById(`row_${k}`);if(row)row.className=v.trim()?'has-val':'';
+function onTxt(k,v) {
+  if(!_rv[k]) _rv[k]={}; _rv[k].value=v; _rv[k].flag='';
+  const row=document.getElementById(`row_${k}`); if(row) row.className=v.trim()?'has-val':'';
   updateOverallProg();
   if(_activeTestIdx!==null) _updateTpProg(_activeTestIdx);
-  _isDirty=true; _updateDirtyIndicator(); // Fix #8
-  _debouncedChipRender(); // Fix #6
+  _isDirty=true; _updateDirtyIndicator(); _debouncedChipRender();
 }
-function onRem(k,v){if(!_rv[k])_rv[k]={};_rv[k].remarks=v;}
-function onMeth(k,v){_mo[k]=v;}
 
-/* ─── KEYBOARD NAV ─── */
-function onKeyNav(e,el){
-  const id=el.id;const idx=_inputOrder.indexOf(id);if(idx===-1)return;
+/* ── KEYBOARD NAV ── */
+function onKeyNav(e,el) {
+  const id=el.id, idx=_inputOrder.indexOf(id); if(idx===-1) return;
   let next=null;
   if(e.key==='Enter'||e.key==='ArrowDown'){e.preventDefault();next=_inputOrder[idx+1];}
   else if(e.key==='ArrowUp'){e.preventDefault();next=_inputOrder[idx-1];}
   if(next){const el2=document.getElementById(next);if(el2){el2.focus();el2.select();}}
 }
 
-/* ─── SAVE ALL / COMPLETE ALL ─── */
-function saveResults(){
+/* ── SAVE ALL / COMPLETE ── */
+function saveResults() {
   if(!_sel){showToast('⚠️ No booking selected','warning');return;}
   localStorage.setItem(`results_${_sel.bookingId}`,JSON.stringify(_rv));
   localStorage.setItem(`methods_${_sel.bookingId}`,JSON.stringify(_mo));
-  // Fix #2: persist total param count so sidebar progress bar denominator is correct
-  localStorage.setItem(`paramTotal_${_sel.bookingId}`,String(_expandedRows.length));
+  localStorage.setItem(`paramTotal_${_sel.bookingId}`,String(_expandedRows.filter(r=>!r.unconfigured).length));
   _syncBookingStatus();
-  loadBks();renderPatientHeader(_sel);renderTestChips();updateOverallProg();
+  loadBks(); renderPatientHeader(_sel); renderTestChips(); updateOverallProg();
   _isDirty=false; _updateDirtyIndicator();
   showToast(`✅ Saved — ${_sel.patientName}`,'success');
 }
-function markComplete(){
-  if(!_sel)return;
+function markComplete() {
+  if(!_sel) return;
   const done=Object.values(_rv).filter(r=>r.value&&String(r.value).trim()).length;
-  const total=_expandedRows.length;
+  const total=_expandedRows.filter(r=>!r.unconfigured).length;
   if(done<total) showConf('Mark as Complete?',`Only ${done}/${total} values entered. Continue?`,()=>{doComplete();closeMod();});
   else doComplete();
 }
-function doComplete(){
+function doComplete() {
   saveResults();
   const all=JSON.parse(localStorage.getItem('testBookings')||'[]');
   const i=all.findIndex(x=>x.bookingId===_sel.bookingId);
   if(i!==-1){all[i].status='Completed';localStorage.setItem('testBookings',JSON.stringify(all));_sel.status='Completed';}
-  loadBks();renderPatientHeader(_sel);showToast('✅ Marked Completed','success');
+  loadBks(); renderPatientHeader(_sel); showToast('✅ Marked Completed','success');
 }
-/* ─── MODAL / TOAST ─── */
-function showConf(title,body,ok){
+
+/* ── MODAL / TOAST ── */
+function showConf(title,body,ok) {
   document.getElementById('confTitle').textContent=title;
   document.getElementById('confBody').textContent=body;
   document.getElementById('confOk').onclick=ok;
   document.getElementById('confModal').classList.add('open');
 }
-function closeMod(){document.getElementById('confModal').classList.remove('open');}
-function showToast(msg,type=''){
-  const c=document.getElementById('toastC'),t=document.createElement('div');
-  t.className=`toast ${type}`;t.textContent=msg;c.appendChild(t);
+function closeMod() { document.getElementById('confModal').classList.remove('open'); }
+function showToast(msg,type='') {
+  const c=document.getElementById('toastC'), t=document.createElement('div');
+  t.className=`toast ${type}`; t.textContent=msg; c.appendChild(t);
   setTimeout(()=>t.remove(),2800);
 }
-
-/* ─── STEP NAV INIT ─── */
-document.getElementById('step1').classList.add('active');
 </script>
 </body>
 </html>
