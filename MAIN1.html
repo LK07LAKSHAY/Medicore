@@ -1,0 +1,1703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patient Registration — MediCore</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0c1445;
+      --blue: #2563eb;
+      --blue-dark: #1e40af;
+      --blue-light: #3b82f6;
+      --blue-glow: rgba(37,99,235,0.15);
+      --cyan: #06b6d4;
+      --teal: #0d9488;
+      --green: #16a34a;
+      --amber: #d97706;
+      --red: #dc2626;
+      --bg: #f0f5ff;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --border-mid: #cbd5e1;
+      --input-bg: #f8faff;
+      --sidebar-w: 300px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      background-image:
+        radial-gradient(ellipse 80% 60% at 10% -10%, rgba(37,99,235,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 90% 110%, rgba(6,182,212,0.06) 0%, transparent 60%);
+    }
+
+    /* ── NAVBAR ── */
+    .navbar {
+      background: rgba(12,20,69,0.97);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+      position: sticky;
+      top: 0;
+      z-index: 300;
+    }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
+    }
+    .logo-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, #2563eb, #06b6d4);
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px;
+      box-shadow: 0 4px 14px rgba(37,99,235,0.4);
+    }
+    .logo-text { font-size: 18px; font-weight: 800; color: white; letter-spacing: -0.5px; }
+    .logo-text span { color: #06b6d4; }
+
+    .nav-right { display: flex; align-items: center; gap: 10px; }
+
+    .clock-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px; color: rgba(255,255,255,0.5);
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 5px 11px; border-radius: 7px; letter-spacing: 0.5px;
+    }
+
+    .btn-nav {
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.75);
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 7px 14px; border-radius: 8px;
+      font-size: 13px; font-weight: 600;
+      cursor: pointer; font-family: 'Outfit', sans-serif;
+      text-decoration: none;
+      display: inline-flex; align-items: center; gap: 5px;
+      transition: all 0.2s;
+    }
+    .btn-nav:hover { background: rgba(255,255,255,0.13); color: white; }
+
+    /* ── PAGE BANNER ── */
+    .page-banner {
+      background: linear-gradient(135deg, var(--navy) 0%, #1e3a8a 55%, #1d4ed8 100%);
+      padding: 24px 28px 20px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-banner::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 55% 80% at 85% 50%, rgba(6,182,212,0.16) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 60% at 5% 10%, rgba(37,99,235,0.22) 0%, transparent 50%);
+    }
+    .pb-inner {
+      position: relative; z-index: 1;
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    }
+    .pb-title { font-size: 26px; font-weight: 900; letter-spacing: -0.8px; margin-bottom: 3px; }
+    .pb-sub { font-size: 13px; opacity: 0.6; display: flex; align-items: center; gap: 6px; }
+    .live-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: #22c55e;
+      box-shadow: 0 0 0 2px rgba(34,197,94,0.3);
+      animation: livepulse 2s infinite;
+      flex-shrink: 0;
+    }
+    @keyframes livepulse {
+      0%,100% { box-shadow: 0 0 0 2px rgba(34,197,94,0.3); }
+      50% { box-shadow: 0 0 0 4px rgba(34,197,94,0.12); }
+    }
+    .pb-stats { display: flex; gap: 0; }
+    .pb-stat { text-align: center; padding: 4px 22px; border-right: 1px solid rgba(255,255,255,0.12); }
+    .pb-stat:last-child { border-right: none; padding-right: 0; }
+    .pb-stat-num { font-family: 'DM Mono', monospace; font-size: 20px; font-weight: 700; color: white; }
+    .pb-stat-num span { color: #22d3ee; }
+    .pb-stat-lbl { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; opacity: 0.45; margin-top: 1px; }
+
+    /* ── MAIN LAYOUT ── */
+    .main-layout {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 24px 56px;
+      display: grid;
+      grid-template-columns: 1fr var(--sidebar-w);
+      gap: 20px;
+      align-items: start;
+    }
+
+    /* ── FORM COLUMN ── */
+    .form-col { min-width: 0; }
+
+    /* ── SIDEBAR ── */
+    .sidebar { position: sticky; top: 80px; display: flex; flex-direction: column; gap: 14px; }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(12,20,69,0.07);
+      margin-bottom: 16px;
+    }
+    .card:last-child { margin-bottom: 0; }
+
+    .card-head {
+      background: linear-gradient(to right, #f8faff, #f0f5ff);
+      border-bottom: 1.5px solid var(--border);
+      padding: 15px 22px;
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    }
+    .card-head h2 {
+      font-size: 15px; font-weight: 800; color: var(--navy);
+      display: flex; align-items: center; gap: 8px; letter-spacing: -0.3px;
+    }
+    .ch-icon {
+      width: 28px; height: 28px; border-radius: 7px;
+      display: flex; align-items: center; justify-content: center; font-size: 14px;
+    }
+    .ch-blue { background: rgba(37,99,235,0.1); }
+    .ch-teal { background: rgba(6,182,212,0.1); }
+    .ch-amber { background: rgba(217,119,6,0.1); }
+    .ch-green { background: rgba(22,163,74,0.1); }
+    .ch-red { background: rgba(220,38,38,0.1); }
+
+    .card-body { padding: 20px 22px; }
+
+    /* ── SECTION TITLE ── */
+    .stitle {
+      font-size: 10px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 1.8px; color: var(--blue);
+      margin-bottom: 14px; margin-top: 4px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .stitle::after { content: ''; flex: 1; height: 1.5px; background: linear-gradient(to right, rgba(37,99,235,0.18), transparent); }
+
+    /* ── FORM GRID ── */
+    .fgrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px 18px; }
+    .fgrid .full { grid-column: span 2; }
+    .fgrid .third { grid-column: span 1; }
+
+    .field { display: flex; flex-direction: column; gap: 5px; }
+
+    label {
+      font-size: 12px; font-weight: 700; color: var(--navy); letter-spacing: 0.1px;
+    }
+    .req { color: var(--red); }
+
+    /* ── INPUTS ── */
+    .ctl {
+      width: 100%; border: 1.5px solid var(--border-mid);
+      border-radius: 9px; background: var(--input-bg);
+      color: var(--text); padding: 10px 13px;
+      font-size: 14px; font-family: 'Outfit', sans-serif; font-weight: 500;
+      min-height: 44px; transition: all 0.18s;
+    }
+    textarea.ctl { min-height: 72px; resize: vertical; }
+    .ctl:focus { outline: none; border-color: var(--blue); background: #fff; box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+    .ctl::placeholder { color: #94a3b8; font-weight: 400; }
+    .ctl.error { border-color: var(--red) !important; background: #fff5f5 !important; }
+    .error-text { color: var(--red); font-size: 11px; margin-top: 2px; font-weight: 600; }
+
+    .uppercase-input { text-transform: uppercase; }
+    .uppercase-input::placeholder { text-transform: none; }
+
+    /* ── RADIO PILLS ── */
+    .radio-group { display: flex; gap: 7px; min-height: 44px; align-items: center; flex-wrap: wrap; }
+    .radio-pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: var(--input-bg); border: 1.5px solid var(--border-mid);
+      border-radius: 8px; padding: 7px 13px; cursor: pointer;
+      font-size: 13px; font-weight: 600; color: var(--muted);
+      transition: all 0.18s; user-select: none;
+    }
+    .radio-pill input { display: none; }
+    .radio-pill:has(input:checked) { background: rgba(37,99,235,0.08); border-color: var(--blue); color: var(--blue); }
+
+    /* ── ROW ── */
+    .row { display: flex; gap: 8px; }
+
+    /* ── DIVIDER ── */
+    .divider { border: 0; border-top: 1.5px solid var(--border); margin: 18px 0; }
+
+    /* ── REFERRAL WRAP ── */
+    .ref-wrap {
+      background: linear-gradient(135deg, #f8fbff, #f0f7ff);
+      border: 1.5px solid #c7d9f5; border-radius: 14px; padding: 16px;
+    }
+    .ref-head {
+      display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 12px;
+    }
+    .ref-head h3 { font-size: 14px; font-weight: 800; color: var(--navy); display: flex; align-items: center; gap: 6px; }
+    .ref-grid { display: grid; grid-template-columns: 1fr auto; gap: 8px; margin-bottom: 10px; }
+    .ref-grid2 { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 10px; }
+
+    /* ── EDIT BANNER ── */
+    .edit-banner {
+      display: none; align-items: center; gap: 10px;
+      background: #fffbeb; border: 1.5px solid #fcd34d;
+      border-radius: 11px; padding: 11px 16px; margin-bottom: 16px;
+      font-size: 13px; font-weight: 700; color: #92400e;
+    }
+    .edit-banner .eb-right { margin-left: auto; }
+
+    /* ── ACTIONS BAR ── */
+    .actions {
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 10px; margin-top: 20px; flex-wrap: wrap;
+      padding: 14px 18px;
+      background: linear-gradient(to right, #f8faff, #f0f5ff);
+      border-radius: 13px; border: 1.5px solid var(--border);
+    }
+    .actions-right { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    /* ── BUTTONS ── */
+    .btn {
+      border: 1.5px solid transparent; border-radius: 9px;
+      font-size: 13px; font-weight: 700; padding: 9px 15px;
+      cursor: pointer; font-family: 'Outfit', sans-serif;
+      display: inline-flex; align-items: center; gap: 5px;
+      transition: all 0.2s; white-space: nowrap;
+    }
+    .btn-primary { background: linear-gradient(135deg, var(--blue), var(--blue-dark)); color: #fff; box-shadow: 0 4px 14px rgba(37,99,235,0.28); }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(37,99,235,0.38); }
+    .btn-muted { border-color: var(--border-mid); background: var(--card); color: var(--muted); }
+    .btn-muted:hover { border-color: var(--blue-light); color: var(--blue); background: #f0f5ff; }
+    .btn-danger { background: var(--red); color: #fff; border-color: var(--red); }
+    .btn-danger:hover { background: #b91c1c; }
+    .btn-success { background: var(--green); color: #fff; border-color: var(--green); }
+    .btn-success:hover { background: #15803d; }
+    .btn-teal { background: linear-gradient(135deg, #0891b2, var(--teal)); color: #fff; border-color: #0891b2; }
+    .btn-teal:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(8,145,178,0.3); }
+    .btn-amber { background: linear-gradient(135deg, #f59e0b, var(--amber)); color: #fff; border-color: #f59e0b; }
+    .btn-amber:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(245,158,11,0.3); }
+    .btn-sm { padding: 6px 10px; font-size: 12px; border-radius: 7px; }
+    .btn-full { width: 100%; justify-content: center; }
+
+    /* ── SIDEBAR CARDS ── */
+    .side-card {
+      background: var(--card); border: 1.5px solid var(--border);
+      border-radius: 16px; overflow: hidden;
+      box-shadow: 0 4px 18px rgba(12,20,69,0.06);
+    }
+    .side-card-head {
+      background: linear-gradient(to right, #f8faff, #f0f5ff);
+      border-bottom: 1.5px solid var(--border);
+      padding: 13px 18px; display: flex; align-items: center; gap: 8px;
+    }
+    .side-card-head h3 { font-size: 13px; font-weight: 800; color: var(--navy); }
+    .side-card-body { padding: 16px 18px; }
+
+    /* Quick Actions */
+    .qa-grid { display: flex; flex-direction: column; gap: 8px; }
+    .qa-btn {
+      display: flex; align-items: center; gap: 10px;
+      padding: 11px 14px; border-radius: 10px;
+      border: 1.5px solid var(--border); background: var(--input-bg);
+      cursor: pointer; font-family: 'Outfit', sans-serif;
+      font-size: 13px; font-weight: 600; color: var(--navy);
+      transition: all 0.18s; text-decoration: none;
+    }
+    .qa-btn:hover { border-color: var(--blue-light); background: #eef3ff; color: var(--blue); transform: translateX(2px); }
+    .qa-icon { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+
+    /* Stats mini */
+    .stat-row { display: flex; gap: 8px; }
+    .stat-tile {
+      flex: 1; background: var(--input-bg); border: 1.5px solid var(--border);
+      border-radius: 11px; padding: 12px 10px; text-align: center;
+    }
+    .stat-num { font-family: 'DM Mono', monospace; font-size: 22px; font-weight: 700; color: var(--blue); line-height: 1; }
+    .stat-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-top: 3px; }
+
+    /* Tip box */
+    .tip-box {
+      background: linear-gradient(135deg, rgba(37,99,235,0.05), rgba(6,182,212,0.05));
+      border: 1.5px solid rgba(37,99,235,0.15);
+      border-radius: 11px; padding: 13px 14px;
+    }
+    .tip-box p { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 6px; }
+    .tip-box p:last-child { margin-bottom: 0; }
+    .tip-box strong { color: var(--navy); }
+
+    /* Import/Export zone */
+    .io-zone { display: flex; flex-direction: column; gap: 8px; }
+    .io-btn {
+      display: flex; align-items: center; gap: 10px;
+      padding: 11px 14px; border-radius: 10px;
+      border: 1.5px solid var(--border); background: var(--input-bg);
+      cursor: pointer; font-family: 'Outfit', sans-serif;
+      font-size: 13px; font-weight: 600; color: var(--navy);
+      transition: all 0.18s; width: 100%; text-align: left;
+    }
+    .io-btn.export { border-color: rgba(37,99,235,0.3); background: rgba(37,99,235,0.04); color: var(--blue); }
+    .io-btn.export:hover { background: rgba(37,99,235,0.09); border-color: var(--blue); }
+    .io-btn.import { border-color: rgba(13,148,136,0.3); background: rgba(13,148,136,0.04); color: var(--teal); }
+    .io-btn.import:hover { background: rgba(13,148,136,0.09); border-color: var(--teal); }
+    .io-btn.template { border-color: rgba(217,119,6,0.3); background: rgba(217,119,6,0.04); color: var(--amber); }
+    .io-btn.template:hover { background: rgba(217,119,6,0.09); border-color: var(--amber); }
+    .io-icon { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+    .io-info { flex: 1; }
+    .io-label { font-size: 13px; font-weight: 700; }
+    .io-sub { font-size: 11px; opacity: 0.65; font-weight: 400; margin-top: 1px; }
+
+    /* ID Badge */
+    .patient-id-badge {
+      font-family: 'DM Mono', monospace; font-size: 11px;
+      background: rgba(37,99,235,0.08); color: var(--blue);
+      padding: 3px 8px; border-radius: 5px; font-weight: 600;
+    }
+
+    /* ── MODALS ── */
+    .modal {
+      position: fixed; inset: 0;
+      background: rgba(5,10,40,0.6);
+      backdrop-filter: blur(5px);
+      display: none; align-items: center; justify-content: center;
+      padding: 16px; z-index: 400;
+    }
+    .modal.open { display: flex; }
+
+    .modal-box {
+      width: min(980px, 100%); max-height: 90vh; overflow: auto;
+      background: var(--card); border-radius: 18px;
+      border: 1.5px solid var(--border);
+      box-shadow: 0 24px 64px rgba(0,0,0,0.2);
+      animation: modalSlide 0.22s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    @keyframes modalSlide {
+      from { opacity: 0; transform: translateY(28px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .modal-box.narrow { width: min(640px,100%); }
+
+    .modal-head {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 22px; border-bottom: 1.5px solid var(--border);
+      background: linear-gradient(to right, #f0f5ff, #e8efff);
+      position: sticky; top: 0; z-index: 2;
+    }
+    .modal-head h3 { margin: 0; font-size: 16px; font-weight: 800; color: var(--navy); display: flex; align-items: center; gap: 8px; }
+    .modal-body { padding: 20px 22px; }
+
+    /* ── TABLE ── */
+    .table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .table th {
+      background: linear-gradient(to bottom, #eef3fd, #e6edfc);
+      color: var(--blue-dark); font-size: 10.5px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.7px;
+      padding: 10px 12px; text-align: left;
+      border-bottom: 2px solid #c7d7f8; white-space: nowrap;
+    }
+    .table td {
+      border-bottom: 1px solid var(--border);
+      padding: 10px 12px; vertical-align: middle;
+      color: var(--text); font-weight: 500;
+    }
+    .table tbody tr:hover { background: #f8faff; }
+    .table tbody tr:last-child td { border-bottom: none; }
+
+    /* ── SEARCH WRAP ── */
+    .search-wrap { position: relative; margin-bottom: 14px; }
+    .search-wrap::before { content: '🔍'; position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 13px; pointer-events: none; }
+    .search-wrap input {
+      width: 100%; border: 1.5px solid var(--border-mid); border-radius: 10px;
+      padding: 10px 14px 10px 38px; font-size: 14px;
+      font-family: 'Outfit', sans-serif; background: var(--input-bg); color: var(--text);
+    }
+    .search-wrap input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+
+    /* ── DUPLICATE MODALS ── */
+    .dup-modal {
+      position: fixed; inset: 0;
+      background: rgba(5,10,40,0.65); backdrop-filter: blur(5px);
+      display: none; align-items: center; justify-content: center;
+      padding: 16px; z-index: 500;
+    }
+    .dup-box {
+      background: var(--card); border-radius: 18px;
+      width: min(580px, 100%); overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.2);
+      border: 1.5px solid var(--border);
+    }
+    .dup-header { background: linear-gradient(120deg, #f59e0b, #d97706); color: white; padding: 15px 20px; display: flex; align-items: center; gap: 10px; }
+    .dup-header h3 { margin: 0; font-size: 17px; font-weight: 800; }
+    .doc-dup-header { background: linear-gradient(120deg, var(--red), #b91c1c); color: white; padding: 15px 20px; display: flex; align-items: center; gap: 10px; }
+    .doc-dup-header h3 { margin: 0; font-size: 17px; font-weight: 800; }
+    .dup-body { padding: 18px 20px; }
+    .dup-body p { margin: 0 0 12px; font-size: 13px; color: var(--muted); }
+    .dup-detail {
+      background: #f8faff; border: 1.5px solid var(--border); border-radius: 11px;
+      padding: 13px; margin-bottom: 14px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 7px 14px; font-size: 13px;
+    }
+    .dup-detail .dl { color: #64748b; font-weight: 700; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .dup-detail .dv { color: var(--text); font-weight: 600; }
+    .dup-actions { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
+
+    /* ── DOCTOR FORM ── */
+    .doctor-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; }
+    .doctor-form-grid .full { grid-column: span 2; }
+
+    /* ── IMPORT MODAL SPECIFIC ── */
+    .import-zone {
+      border: 2.5px dashed var(--border-mid); border-radius: 14px;
+      padding: 32px 20px; text-align: center; cursor: pointer;
+      transition: all 0.2s; position: relative; overflow: hidden;
+    }
+    .import-zone:hover, .import-zone.drag-over {
+      border-color: var(--blue); background: rgba(37,99,235,0.04);
+    }
+    .import-zone input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+    .iz-icon { font-size: 40px; margin-bottom: 12px; }
+    .iz-title { font-size: 16px; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
+    .iz-sub { font-size: 13px; color: var(--muted); }
+
+    .import-preview {
+      margin-top: 16px; background: var(--input-bg); border: 1.5px solid var(--border);
+      border-radius: 12px; padding: 14px; display: none;
+    }
+    .import-preview.show { display: block; }
+    .preview-stats { display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+    .preview-stat {
+      flex: 1; min-width: 80px; background: var(--card); border: 1.5px solid var(--border);
+      border-radius: 9px; padding: 10px 12px; text-align: center;
+    }
+    .preview-stat .pn { font-family: 'DM Mono', monospace; font-size: 20px; font-weight: 700; color: var(--blue); }
+    .preview-stat .pl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-top: 2px; }
+    .import-mode { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+    .import-mode label {
+      flex: 1; display: flex; align-items: center; gap: 8px;
+      background: var(--card); border: 1.5px solid var(--border); border-radius: 9px;
+      padding: 10px 14px; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--muted);
+      transition: all 0.18s;
+    }
+    .import-mode label:has(input:checked) { border-color: var(--blue); background: rgba(37,99,235,0.06); color: var(--blue); }
+    .import-mode input { margin: 0; accent-color: var(--blue); }
+    .import-errors { background: #fff5f5; border: 1.5px solid #fca5a5; border-radius: 9px; padding: 10px 14px; margin-top: 10px; }
+    .import-errors p { font-size: 12px; font-weight: 600; color: #dc2626; margin: 0 0 4px; }
+    .import-errors ul { margin: 0; padding-left: 18px; font-size: 12px; color: #b91c1c; }
+
+    .schema-doc { background: var(--input-bg); border: 1.5px solid var(--border); border-radius: 11px; padding: 14px; font-size: 12px; line-height: 1.7; }
+    .schema-doc h4 { font-size: 13px; font-weight: 800; color: var(--navy); margin-bottom: 10px; }
+    .schema-doc code {
+      display: block; background: #0f172a; color: #e2e8f0; border-radius: 8px;
+      padding: 12px 14px; font-family: 'DM Mono', monospace; font-size: 11px;
+      line-height: 1.7; overflow-x: auto; white-space: pre; margin: 8px 0;
+    }
+    .schema-field { display: flex; gap: 6px; margin-bottom: 4px; }
+    .sf-name { color: var(--blue); font-family: 'DM Mono', monospace; font-weight: 600; font-size: 11.5px; white-space: nowrap; }
+    .sf-req { color: var(--red); font-size: 11px; font-weight: 700; }
+    .sf-opt { color: var(--muted); font-size: 11px; }
+    .sf-desc { color: var(--muted); font-size: 11.5px; }
+
+    /* ── IMPORT TABS ── */
+    .import-tabs { display: flex; gap: 0; border: 1.5px solid var(--border-mid); border-radius: 10px; overflow: hidden; margin-bottom: 14px; }
+    .import-tab {
+      flex: 1; padding: 9px 14px; font-size: 13px; font-weight: 700;
+      background: var(--input-bg); color: var(--muted);
+      border: none; cursor: pointer; font-family: 'Outfit', sans-serif;
+      transition: all 0.18s; display: flex; align-items: center; justify-content: center; gap: 6px;
+      border-right: 1.5px solid var(--border-mid);
+    }
+    .import-tab:last-child { border-right: none; }
+    .import-tab.active { background: var(--blue); color: #fff; }
+    .import-tab:not(.active):hover { background: #eef3ff; color: var(--blue); }
+
+    /* paste textarea */
+    .paste-zone {
+      width: 100%; min-height: 180px; border: 1.5px solid var(--border-mid);
+      border-radius: 12px; background: #0f172a; color: #e2e8f0;
+      font-family: 'DM Mono', monospace; font-size: 12px; line-height: 1.65;
+      padding: 14px 16px; resize: vertical; outline: none;
+      transition: border-color 0.18s;
+    }
+    .paste-zone:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+    .paste-zone::placeholder { color: #475569; font-family: 'DM Mono', monospace; }
+    .paste-actions { display: flex; gap: 8px; margin-top: 8px; justify-content: flex-end; align-items: center; }
+    .paste-hint { font-size: 11px; color: var(--muted); margin-right: auto; }
+
+    /* ── TOAST ── */
+    #toastArea { position: fixed; bottom: 22px; right: 22px; z-index: 9999; display: flex; flex-direction: column; gap: 7px; }
+    .toast-item {
+      background: var(--navy); color: white; border-radius: 11px;
+      padding: 12px 16px; font-size: 13px; font-weight: 600;
+      font-family: 'Outfit', sans-serif; display: flex; align-items: center; gap: 9px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.2); animation: toastIn 0.3s ease; max-width: 320px;
+    }
+    @keyframes toastIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    .toast-success { border-left: 4px solid #22c55e; }
+    .toast-danger  { border-left: 4px solid var(--red); }
+    .toast-warn    { border-left: 4px solid #f59e0b; }
+    .toast-info    { border-left: 4px solid var(--blue-light); }
+
+    /* BP Badges */
+    .bp-normal   { color: #16a34a; font-weight: 700; }
+    .bp-elevated { color: #d97706; font-weight: 700; }
+    .bp-stage1   { color: #ea580c; font-weight: 700; }
+    .bp-stage2   { color: #dc2626; font-weight: 700; }
+    .bp-crisis   { color: #7c3aed; font-weight: 700; }
+    .bp-low      { color: #0891b2; font-weight: 700; }
+
+    /* Table scroller */
+    .table-wrap { overflow: auto; max-height: 50vh; border-radius: 10px; border: 1.5px solid var(--border); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 960px) {
+      .main-layout { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+    }
+    @media (max-width: 720px) {
+      .fgrid, .ref-grid2, .doctor-form-grid { grid-template-columns: 1fr; }
+      .fgrid .full, .doctor-form-grid .full { grid-column: span 1; }
+      .ref-grid { grid-template-columns: 1fr auto; }
+      .actions { flex-direction: column; align-items: stretch; }
+      .actions-right { flex-direction: column; }
+      .navbar { padding: 0 14px; }
+      .pb-inner { flex-direction: column; align-items: flex-start; }
+      .stat-row { flex-wrap: wrap; }
+    }
+    @media (max-width: 480px) {
+      .dup-detail { grid-template-columns: 1fr; }
+      .import-mode { flex-direction: column; }
+      .main-layout { padding: 14px 12px 40px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="logo-icon">⚕️</div>
+    <span class="logo-text">Medi<span>Core</span></span>
+  </a>
+  <div class="nav-right">
+    <div class="clock-badge" id="clockBadge">--:--:--</div>
+    <a href="index.html" class="btn-nav">← Home</a>
+  </div>
+</nav>
+
+<!-- PAGE BANNER -->
+<div class="page-banner">
+  <div class="pb-inner">
+    <div>
+      <div class="pb-title">🧑‍⚕️ Patient Registration</div>
+      <div class="pb-sub"><span class="live-dot"></span> Pathology Management System v2.0</div>
+    </div>
+    <div class="pb-stats">
+      <div class="pb-stat">
+        <div class="pb-stat-num" id="hdrPatients">0</div>
+        <div class="pb-stat-lbl">Patients</div>
+      </div>
+      <div class="pb-stat">
+        <div class="pb-stat-num" id="hdrDoctors">0</div>
+        <div class="pb-stat-lbl">Doctors</div>
+      </div>
+      <div class="pb-stat">
+        <div class="pb-stat-num"><span>●</span></div>
+        <div class="pb-stat-lbl">Live</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="main-layout">
+
+  <!-- FORM COLUMN -->
+  <div class="form-col">
+
+    <div class="card">
+      <div class="card-head">
+        <h2><div class="ch-icon ch-blue">📋</div> Patient Details</h2>
+        <span id="formMode" style="font-size:11px;font-weight:800;color:var(--blue);background:rgba(37,99,235,0.08);padding:4px 10px;border-radius:6px;letter-spacing:0.3px;">NEW PATIENT</span>
+      </div>
+      <div class="card-body">
+        <form id="patientForm" novalidate>
+
+          <!-- Edit Banner -->
+          <div id="editBanner" class="edit-banner">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="#92400e" stroke-width="2" stroke-linecap="round"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="#92400e" stroke-width="2" stroke-linecap="round"/></svg>
+            ✏️ Editing: <span id="editBannerName"></span>
+            <button class="btn btn-muted btn-sm eb-right" type="button" onclick="cancelEdit()">Cancel Edit</button>
+          </div>
+
+          <p class="stitle">Personal Information</p>
+          <div class="fgrid">
+
+            <div class="field">
+              <label>Title <span class="req">*</span></label>
+              <select id="patientTitle" class="ctl" data-next="patientName">
+                <option value="">— Select —</option>
+                <option>Mr</option><option>Mrs</option><option>Ms</option>
+                <option>Dr</option><option>Master</option><option>Baby</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Full Name <span class="req">*</span></label>
+              <input id="patientName" class="ctl uppercase-input" type="text" maxlength="25" placeholder="Patient full name" autocomplete="off" data-next="ageMode" />
+            </div>
+
+            <div class="field">
+              <label>Age / Date of Birth <span class="req">*</span></label>
+              <div class="row">
+                <select id="ageMode" class="ctl" style="max-width:140px" data-next="ageYears">
+                  <option value="age">Age (Years)</option>
+                  <option value="dob">Date of Birth</option>
+                </select>
+                <input id="ageYears" class="ctl" type="number" min="0" max="200" placeholder="Years" data-next="patientMobile" />
+                <input id="patientDOB" class="ctl" type="date" style="display:none" data-next="patientMobile" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Mobile Number <span class="req">*</span></label>
+              <input id="patientMobile" class="ctl" type="tel" maxlength="10" placeholder="10-digit mobile" data-next="healthId" />
+            </div>
+
+            <div class="field">
+              <label>Gender <span class="req">*</span></label>
+              <div class="radio-group">
+                <label class="radio-pill"><input type="radio" name="gender" value="Male" checked /> ♂ Male</label>
+                <label class="radio-pill"><input type="radio" name="gender" value="Female" /> ♀ Female</label>
+                <label class="radio-pill"><input type="radio" name="gender" value="Other" /> Other</label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Health ID (ABHA)</label>
+              <input id="healthId" class="ctl uppercase-input" type="text" placeholder="ABHA / Health ID" data-next="patientEmail" />
+            </div>
+
+            <div class="field">
+              <label>Email Address</label>
+              <input id="patientEmail" class="ctl" type="email" placeholder="email@example.com" data-next="patientWeight" />
+            </div>
+
+            <div class="field">
+              <label>Weight (kg)</label>
+              <input id="patientWeight" class="ctl" type="number" placeholder="e.g. 70" data-next="bpCategory" />
+            </div>
+
+            <div class="field full">
+              <label>BP Category</label>
+              <select id="bpCategory" class="ctl" data-next="patientRemark">
+                <option value="">— Select BP Category —</option>
+                <optgroup label="Normal Range">
+                  <option value="Normal (120/80 mmHg)">Normal (120/80 mmHg)</option>
+                </optgroup>
+                <optgroup label="Elevated / Pre-Hypertension">
+                  <option value="Elevated BP (120–129/&lt;80 mmHg)">Elevated BP (120–129/&lt;80 mmHg)</option>
+                </optgroup>
+                <optgroup label="Hypertension Stages">
+                  <option value="HTN Stage 1 (130–139/80–89 mmHg)">HTN Stage 1 (130–139/80–89 mmHg)</option>
+                  <option value="HTN Stage 2 (≥140/≥90 mmHg)">HTN Stage 2 (≥140/≥90 mmHg)</option>
+                  <option value="Hypertensive Crisis (>180/>120 mmHg)">Hypertensive Crisis (&gt;180/&gt;120 mmHg)</option>
+                  <option value="Isolated Systolic HTN (≥140/&lt;90 mmHg)">Isolated Systolic HTN (≥140/&lt;90 mmHg)</option>
+                  <option value="Isolated Diastolic HTN (&lt;130/≥80 mmHg)">Isolated Diastolic HTN (&lt;130/≥80 mmHg)</option>
+                </optgroup>
+                <optgroup label="Hypotension">
+                  <option value="Low BP / Hypotension (&lt;90/&lt;60 mmHg)">Low BP / Hypotension (&lt;90/&lt;60 mmHg)</option>
+                  <option value="Orthostatic Hypotension">Orthostatic Hypotension</option>
+                </optgroup>
+                <optgroup label="Pregnancy Related">
+                  <option value="Gestational Hypertension">Gestational Hypertension</option>
+                  <option value="Pre-Eclampsia">Pre-Eclampsia</option>
+                </optgroup>
+              </select>
+            </div>
+
+            <div class="field full">
+              <label>Remarks / Clinical Notes</label>
+              <textarea id="patientRemark" class="ctl uppercase-input" placeholder="ANY SPECIFIC CLINICAL NOTES OR OBSERVATIONS..." data-next="patientAddress"></textarea>
+            </div>
+
+            <div class="field full">
+              <label>Full Address <span class="req">*</span></label>
+              <textarea id="patientAddress" class="ctl uppercase-input" placeholder="HOUSE NO, STREET, LANDMARK, CITY, PINCODE" data-next="savedReferrals"></textarea>
+            </div>
+
+          </div>
+
+          <hr class="divider" />
+
+          <p class="stitle">Referral Doctor</p>
+          <div class="ref-wrap">
+            <div class="ref-head">
+              <h3>👨‍⚕️ Refer Doctor Details</h3>
+              <div style="display:flex;gap:7px;">
+                <button class="btn btn-muted btn-sm" type="button" onclick="openReferralModal()">➕ Add Doctor</button>
+                <button class="btn btn-teal btn-sm" type="button" onclick="viewReferrals()">📋 View Doctors</button>
+              </div>
+            </div>
+            <div class="ref-grid">
+              <select id="savedReferrals" class="ctl" onchange="fillReferralDetails()" data-next="refMargin"></select>
+              <button class="btn btn-danger btn-sm" type="button" onclick="deleteReferral()">🗑</button>
+            </div>
+            <div class="ref-grid2">
+              <div class="field">
+                <label>Doctor Name</label>
+                <input id="refName" class="ctl" type="text" readonly style="background:#f0f5ff;cursor:not-allowed" />
+              </div>
+              <div class="field">
+                <label>Margin</label>
+                <input id="refMargin" class="ctl" type="number" min="0" placeholder="0" data-next="refMarginType" />
+              </div>
+              <div class="field">
+                <label>Margin Type</label>
+                <select id="refMarginType" class="ctl" data-next="saveBtn">
+                  <option value="fixed">₹ Fixed</option>
+                  <option value="percent">% Percentage</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="btn btn-muted" type="button" onclick="viewPatients()">👥 View All Patients</button>
+            <div class="actions-right">
+              <button class="btn btn-muted" type="reset">↺ Reset</button>
+              <button id="saveBtn" class="btn btn-primary" type="submit">💾 Save Patient</button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+  </div><!-- /form-col -->
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <!-- Live Stats -->
+    <div class="side-card">
+      <div class="side-card-head">
+        <div class="ch-icon ch-blue" style="font-size:13px;">📊</div>
+        <h3>Live Statistics</h3>
+      </div>
+      <div class="side-card-body">
+        <div class="stat-row">
+          <div class="stat-tile">
+            <div class="stat-num" id="sidePatients">0</div>
+            <div class="stat-lbl">Patients</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-num" id="sideDoctors">0</div>
+            <div class="stat-lbl">Doctors</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="side-card">
+      <div class="side-card-head">
+        <div class="ch-icon ch-teal" style="font-size:13px;">⚡</div>
+        <h3>Quick Actions</h3>
+      </div>
+      <div class="side-card-body">
+        <div class="qa-grid">
+          <button class="qa-btn" type="button" onclick="viewPatients()">
+            <div class="qa-icon" style="background:rgba(37,99,235,0.1)">👥</div>
+            <span>View All Patients</span>
+          </button>
+          <button class="qa-btn" type="button" onclick="viewReferrals()">
+            <div class="qa-icon" style="background:rgba(6,182,212,0.1)">👨‍⚕️</div>
+            <span>Referral Doctors</span>
+          </button>
+          <button class="qa-btn" type="button" onclick="openReferralModal()">
+            <div class="qa-icon" style="background:rgba(22,163,74,0.1)">➕</div>
+            <span>Add Doctor</span>
+          </button>
+          <a href="MAIN2.html" class="qa-btn">
+            <div class="qa-icon" style="background:rgba(217,119,6,0.1)">🧪</div>
+            <span>Lab Tests Module</span>
+          </a>
+          <a href="MAIN3.html" class="qa-btn">
+            <div class="qa-icon" style="background:rgba(124,58,237,0.1)">📅</div>
+            <span>Bookings Module</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Import / Export -->
+    <div class="side-card">
+      <div class="side-card-head">
+        <div class="ch-icon ch-amber" style="font-size:13px;">📦</div>
+        <h3>Bulk Data</h3>
+      </div>
+      <div class="side-card-body">
+        <div class="io-zone">
+          <button class="io-btn export" type="button" onclick="exportPatients()">
+            <div class="io-icon" style="background:rgba(37,99,235,0.1)">⬇️</div>
+            <div class="io-info">
+              <div class="io-label">Export Patients</div>
+              <div class="io-sub">Download all as JSON</div>
+            </div>
+          </button>
+          <button class="io-btn import" type="button" onclick="openImportModal()">
+            <div class="io-icon" style="background:rgba(13,148,136,0.1)">⬆️</div>
+            <div class="io-info">
+              <div class="io-label">Import Patients</div>
+              <div class="io-sub">Bulk import from JSON</div>
+            </div>
+          </button>
+          <button class="io-btn template" type="button" onclick="downloadTemplate()">
+            <div class="io-icon" style="background:rgba(217,119,6,0.1)">📄</div>
+            <div class="io-info">
+              <div class="io-label">Download Template</div>
+              <div class="io-sub">Sample JSON structure</div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tips -->
+    <div class="side-card">
+      <div class="side-card-head">
+        <div class="ch-icon ch-green" style="font-size:13px;">💡</div>
+        <h3>Tips</h3>
+      </div>
+      <div class="side-card-body">
+        <div class="tip-box">
+          <p><strong>Enter key</strong> moves to the next field for fast data entry.</p>
+          <p><strong>Title</strong> auto-selects gender — saves a click.</p>
+          <p><strong>Duplicate check</strong> runs on mobile number before saving.</p>
+          <p>Use <strong>Load &amp; Edit</strong> to update existing patient records.</p>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+</div><!-- /main-layout -->
+
+<!-- ═══ PATIENT LIST MODAL ═══ -->
+<div id="patientListModal" class="modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>👥 Saved Patients</h3>
+      <button class="btn btn-muted btn-sm" type="button" onclick="closePatientList()">✕ Close</button>
+    </div>
+    <div class="modal-body">
+      <div class="search-wrap">
+        <input type="text" id="patientSearch" placeholder="Search by name, mobile or ID…" oninput="filterPatients()" />
+      </div>
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Patient ID</th><th>Name</th><th>Age</th><th>Gender</th><th>Mobile</th><th>Referral</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="patientTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ DOCTOR LIST MODAL ═══ -->
+<div id="refListModal" class="modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>👨‍⚕️ Referral Doctors</h3>
+      <button class="btn btn-muted btn-sm" type="button" onclick="closeReferrals()">✕ Close</button>
+    </div>
+    <div class="modal-body">
+      <div class="search-wrap">
+        <input type="text" id="doctorSearch" placeholder="Search by name or mobile…" oninput="filterDoctors()" />
+      </div>
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr><th>#</th><th>Name</th><th>Type</th><th>Margin</th><th>Mobile</th><th>Email</th><th>Actions</th></tr>
+          </thead>
+          <tbody id="refTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ADD DOCTOR MODAL ═══ -->
+<div id="refModal" class="modal">
+  <div class="modal-box narrow">
+    <div class="modal-head">
+      <h3>➕ Add Referral Doctor</h3>
+      <button class="btn btn-muted btn-sm" type="button" onclick="closeReferralModal()">✕ Close</button>
+    </div>
+    <div class="modal-body">
+      <form id="referralForm" onsubmit="saveReferral(event)">
+        <div class="doctor-form-grid">
+          <div class="field">
+            <label>Title <span class="req">*</span></label>
+            <select id="title" class="ctl" required data-next="name">
+              <option value="">— Select —</option>
+              <option>Mr</option><option>Mrs</option><option>Miss</option>
+              <option>Dr</option><option>Lab</option><option>Hospital</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Doctor / Lab Name <span class="req">*</span></label>
+            <input id="name" class="ctl uppercase-input" type="text" placeholder="NAME" required data-next="refId" />
+          </div>
+          <div class="field">
+            <label>Reference ID</label>
+            <input id="refId" class="ctl uppercase-input" type="text" placeholder="REF ID (optional)" data-next="mobile" />
+          </div>
+          <div class="field">
+            <label>Mobile <span class="req">*</span></label>
+            <input id="mobile" class="ctl" type="tel" maxlength="10" placeholder="10-digit" data-next="email" />
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input id="email" class="ctl" type="email" placeholder="doctor@clinic.com" data-next="margin" />
+          </div>
+          <div class="field">
+            <label>Margin Value</label>
+            <input id="margin" class="ctl" type="number" min="0" value="0" data-next="address" />
+          </div>
+          <div class="field full">
+            <label>Margin Type</label>
+            <div class="radio-group">
+              <label class="radio-pill"><input type="radio" name="mtype" value="fixed" checked /> ₹ Fixed</label>
+              <label class="radio-pill"><input type="radio" name="mtype" value="percent" /> % Percent</label>
+            </div>
+          </div>
+          <div class="field full">
+            <label>Address</label>
+            <textarea id="address" class="ctl uppercase-input" placeholder="CLINIC / HOSPITAL ADDRESS" rows="2" data-next="refDoctorSaveBtn"></textarea>
+          </div>
+        </div>
+        <div style="margin-top:16px;display:flex;justify-content:flex-end;gap:8px">
+          <button class="btn btn-muted" type="button" onclick="closeReferralModal()">Cancel</button>
+          <button id="refDoctorSaveBtn" class="btn btn-primary" type="submit">💾 Save Doctor</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ BULK IMPORT MODAL ═══ -->
+<div id="importModal" class="modal">
+  <div class="modal-box" style="width:min(760px,100%)">
+    <div class="modal-head">
+      <h3>⬆️ Bulk Import Patients</h3>
+      <button class="btn btn-muted btn-sm" type="button" onclick="closeImportModal()">✕ Close</button>
+    </div>
+    <div class="modal-body">
+
+      <!-- Schema Docs -->
+      <div class="schema-doc" style="margin-bottom:16px;">
+        <h4>📋 JSON Structure Reference</h4>
+        <code>{
+  "patients": [
+    {
+      "title":       "Mr",             <span style="color:#94a3b8;">// required — Mr|Mrs|Ms|Dr|Master|Baby</span>
+      "name":        "JOHN DOE",       <span style="color:#94a3b8;">// required — uppercase, max 25 chars</span>
+      "gender":      "Male",           <span style="color:#94a3b8;">// required — Male|Female|Other</span>
+      "mobile":      "9876543210",     <span style="color:#94a3b8;">// required — 10 digits</span>
+      "address":     "123 MAIN ST",    <span style="color:#94a3b8;">// required</span>
+      "age":         "35",             <span style="color:#94a3b8;">// optional (use age OR dob)</span>
+      "dob":         "1989-04-15",     <span style="color:#94a3b8;">// optional — YYYY-MM-DD</span>
+      "email":       "john@email.com", <span style="color:#94a3b8;">// optional</span>
+      "healthId":    "AB1234",         <span style="color:#94a3b8;">// optional — ABHA number</span>
+      "weight":      "72",             <span style="color:#94a3b8;">// optional — kg</span>
+      "bpCategory":  "Normal (120/80 mmHg)", <span style="color:#94a3b8;">// optional</span>
+      "remark":      "DIABETIC",       <span style="color:#94a3b8;">// optional</span>
+      "referral": {                    <span style="color:#94a3b8;">// optional</span>
+        "name":   "Dr. Smith",
+        "margin": 50,
+        "type":   "fixed"             <span style="color:#94a3b8;">// fixed | percent</span>
+      }
+    }
+  ]
+}</code>
+        <p style="font-size:11px;color:var(--muted);margin-top:6px;">ℹ️ The file must be a JSON object with a <code style="background:#f0f5ff;padding:1px 5px;border-radius:4px;font-family:'DM Mono',monospace;font-size:10px;color:var(--blue)">patients</code> array. Fields marked required must be present for a row to import.</p>
+      </div>
+
+      <!-- Input Tabs -->
+      <div class="import-tabs">
+        <button class="import-tab active" id="tabFile" onclick="switchImportTab('file')">📂 Upload File</button>
+        <button class="import-tab" id="tabPaste" onclick="switchImportTab('paste')">📋 Paste JSON</button>
+      </div>
+
+      <!-- File Tab -->
+      <div id="importFilePanel">
+        <div class="import-zone" id="importZone">
+          <input type="file" id="importFileInput" accept=".json" onchange="handleImportFile(event)" />
+          <div class="iz-icon">📂</div>
+          <div class="iz-title">Drop JSON file here or click to browse</div>
+          <div class="iz-sub">Accepts .json files with the structure above</div>
+        </div>
+      </div>
+
+      <!-- Paste Tab -->
+      <div id="importPastePanel" style="display:none">
+        <textarea class="paste-zone" id="jsonPasteArea" spellcheck="false" placeholder='Paste your JSON here…
+
+{ "patients": [ { "title": "Mr", "name": "JOHN DOE", "gender": "Male", "mobile": "9876543210", "address": "123 MAIN ST" } ] }'></textarea>
+        <div class="paste-actions">
+          <span class="paste-hint">Paste a full JSON object or just a patients array</span>
+          <button class="btn btn-muted btn-sm" type="button" onclick="clearPaste()">✕ Clear</button>
+          <button class="btn btn-teal btn-sm" type="button" onclick="parsePastedJSON()">▶ Parse &amp; Preview</button>
+        </div>
+      </div>
+
+      <!-- Preview -->
+      <div class="import-preview" id="importPreview">
+        <div class="preview-stats" id="previewStats"></div>
+        <div class="import-mode" id="importModeWrap">
+          <label>
+            <input type="radio" name="importMode" value="merge" checked />
+            🔀 Merge — add new, skip duplicates (by mobile)
+          </label>
+          <label>
+            <input type="radio" name="importMode" value="replace" />
+            🔁 Replace — overwrite ALL existing patients
+          </label>
+        </div>
+        <div id="importErrors" class="import-errors" style="display:none"></div>
+        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px">
+          <button class="btn btn-muted" type="button" onclick="resetImport()">↺ Start Over</button>
+          <button class="btn btn-primary" id="confirmImportBtn" type="button" onclick="confirmImport()">✅ Import Patients</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══ DUPLICATE PATIENT ═══ -->
+<div id="dupPatientModal" class="dup-modal">
+  <div class="dup-box">
+    <div class="dup-header">
+      <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="rgba(255,255,255,0.2)"/><path d="M12 8v4m0 4h.01" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>
+      <h3>Patient Already Registered</h3>
+    </div>
+    <div class="dup-body">
+      <p>A patient with this <strong>mobile number</strong> already exists.</p>
+      <div class="dup-detail" id="dupPatientDetail"></div>
+      <div class="dup-actions">
+        <button class="btn btn-muted" onclick="closeDupPatient()">Cancel</button>
+        <button class="btn btn-success" onclick="loadDupPatient()">✏️ Load &amp; Edit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ DUPLICATE DOCTOR ═══ -->
+<div id="dupDoctorModal" class="dup-modal">
+  <div class="dup-box">
+    <div class="doc-dup-header">
+      <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="rgba(255,255,255,0.2)"/><path d="M12 8v4m0 4h.01" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>
+      <h3>Doctor Already Registered</h3>
+    </div>
+    <div class="dup-body">
+      <p>A referral doctor with the same <strong>name</strong> or <strong>mobile</strong> already exists.</p>
+      <div class="dup-detail" id="dupDoctorDetail"></div>
+      <div class="dup-actions">
+        <button class="btn btn-muted" onclick="closeDupDoctor()">Cancel</button>
+        <button class="btn btn-primary" onclick="selectDupDoctor()">Select This Doctor</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toastArea"></div>
+
+<script>
+  const $ = id => document.getElementById(id);
+
+  let referrals = JSON.parse(localStorage.getItem("referrals") || "[]");
+  let genderEditedAfterTitle = false;
+  let _dupPatient = null;
+  let _dupDoctorIdx = null;
+  let _editingPatientId = null;
+  let _allPatients = [];
+  let _allDoctorsForView = [];
+  let _importData = null;
+
+  /* ── CLOCK ── */
+  function updateClock() {
+    $("clockBadge").textContent = new Date().toLocaleTimeString("en-IN", { hour12: false });
+  }
+  updateClock(); setInterval(updateClock, 1000);
+
+  /* ── STATS ── */
+  function updateStats() {
+    const patients = JSON.parse(localStorage.getItem("patients") || "[]");
+    $("hdrPatients").textContent = patients.length;
+    $("hdrDoctors").textContent = referrals.length;
+    $("sidePatients").textContent = patients.length;
+    $("sideDoctors").textContent = referrals.length;
+  }
+  updateStats();
+
+  /* ── TOAST ── */
+  function showToast(msg, type = "info") {
+    const icons = { success:"✅", danger:"❌", warn:"⚠️", info:"💡" };
+    const t = document.createElement("div");
+    t.className = `toast-item toast-${type}`;
+    t.innerHTML = `<span>${icons[type]||"ℹ️"}</span>${msg}`;
+    $("toastArea").appendChild(t);
+    setTimeout(() => { t.style.opacity="0"; t.style.transform="translateX(100%)"; t.style.transition="all 0.3s"; setTimeout(()=>t.remove(),300); }, 2800);
+  }
+
+  /* ── HELPERS ── */
+  function generatePatientId() {
+    let n = localStorage.getItem("lastPatientNumber");
+    n = n ? parseInt(n,10)+1 : 1;
+    localStorage.setItem("lastPatientNumber", String(n));
+    return "BHC" + String(n).padStart(7,"0");
+  }
+  function formatDisplayName(ref) {
+    if (!ref) return "";
+    if (ref.title==="Lab"||ref.title==="Hospital") return ref.name||"";
+    return (ref.title?ref.title+" ":"")+(ref.name||"");
+  }
+  function normalize(s) { return (s||"").trim().toLowerCase().replace(/\s+/g," "); }
+
+  function setError(el, msg) {
+    el.classList.add("error");
+    let err = el.parentElement.querySelector(".error-text");
+    if (!err) { err=document.createElement("div"); err.className="error-text"; el.parentElement.appendChild(err); }
+    err.textContent = msg;
+  }
+  function clearError(el) {
+    el.classList.remove("error");
+    const e=el.parentElement.querySelector(".error-text"); if(e) e.remove();
+  }
+
+  /* ── UPPERCASE ── */
+  document.querySelectorAll(".uppercase-input").forEach(el => {
+    el.addEventListener("input", function() {
+      const pos = this.selectionStart;
+      this.value = this.value.toUpperCase();
+      try { this.setSelectionRange(pos,pos); } catch(e) {}
+    });
+  });
+
+  /* ── ENTER KEY NAV ── */
+  document.addEventListener("keydown", function(e) {
+    if (e.key !== "Enter") return;
+    const a = document.activeElement;
+    if (!a) return;
+    if (a.tagName==="BUTTON"||a.type==="submit") return;
+    if (a.tagName==="TEXTAREA") return;
+    const nextId = a.dataset.next;
+    if (nextId) { e.preventDefault(); const n=$(nextId); if(n){n.focus();return;} }
+    if (a.classList.contains("ctl")||a.tagName==="SELECT"||a.tagName==="INPUT") {
+      e.preventDefault();
+      const focusable = Array.from(document.querySelectorAll('input:not([disabled]):not([type=hidden]):not([style*="display:none"]),select:not([disabled]),textarea:not([disabled]),button:not([disabled])')).filter(el=>el.offsetParent!==null);
+      const idx = focusable.indexOf(a);
+      if (idx>=0&&idx<focusable.length-1) focusable[idx+1].focus();
+    }
+  });
+
+  /* ── VALIDATE ── */
+  function validatePatientForm() {
+    let valid = true;
+    [{ el:$("patientTitle"), msg:"Select title" },
+     { el:$("patientName"),  msg:"Enter patient name" },
+     { el:$("patientMobile"),msg:"Enter 10-digit mobile" },
+     { el:$("patientAddress"),msg:"Enter address" }
+    ].forEach(f => { if (!String(f.el.value||"").trim()){setError(f.el,f.msg);valid=false;} else clearError(f.el); });
+
+    if ($("ageMode").value==="age") {
+      if (!$("ageYears").value){setError($("ageYears"),"Enter age");valid=false;} else clearError($("ageYears"));
+    } else {
+      if (!$("patientDOB").value){setError($("patientDOB"),"Select DOB");valid=false;} else clearError($("patientDOB"));
+    }
+    if ($("patientMobile").value.length!==10){setError($("patientMobile"),"Mobile must be 10 digits");valid=false;}
+    return valid;
+  }
+
+  /* ── DUPLICATE CHECKS ── */
+  function checkDuplicatePatient(mobile) {
+    return JSON.parse(localStorage.getItem("patients")||"[]").find(p=>p.mobile===mobile)||null;
+  }
+  function checkDuplicateDoctor(name, mobile) {
+    return referrals.findIndex(r=>{
+      const sameName = normalize(formatDisplayName(r))===normalize(name);
+      const sameMobile = mobile&&r.mobile&&normalize(r.mobile)===normalize(mobile);
+      return sameName||sameMobile;
+    });
+  }
+
+  /* ── DUPLICATE PATIENT POPUP ── */
+  function showDupPatient(p) {
+    _dupPatient = p;
+    $("dupPatientDetail").innerHTML = `<div class="dl">Patient ID</div><div class="dv">${p.id}</div><div class="dl">Name</div><div class="dv">${p.title} ${p.name}</div><div class="dl">Mobile</div><div class="dv">${p.mobile}</div><div class="dl">Address</div><div class="dv">${p.address||"-"}</div>`;
+    $("dupPatientModal").style.display="flex";
+  }
+  function closeDupPatient() { $("dupPatientModal").style.display="none"; _dupPatient=null; }
+  function loadDupPatient() { if(!_dupPatient)return; fillPatientFormData(_dupPatient); setEditMode(_dupPatient.id,_dupPatient.title+" "+_dupPatient.name); closeDupPatient(); showToast("Patient loaded — edit and click Update Patient","info"); }
+
+  /* ── DUPLICATE DOCTOR POPUP ── */
+  function showDupDoctor(idx) {
+    _dupDoctorIdx=idx;
+    const r=referrals[idx];
+    $("dupDoctorDetail").innerHTML=`<div class="dl">Name</div><div class="dv">${formatDisplayName(r)}</div><div class="dl">Mobile</div><div class="dv">${r.mobile||"-"}</div><div class="dl">Margin</div><div class="dv">${r.margin||0} (${r.type||"fixed"})</div>`;
+    $("dupDoctorModal").style.display="flex";
+  }
+  function closeDupDoctor() { $("dupDoctorModal").style.display="none"; _dupDoctorIdx=null; }
+  function selectDupDoctor() { if(_dupDoctorIdx===null)return; $("savedReferrals").value=String(_dupDoctorIdx); fillReferralDetails(); closeDupDoctor(); closeReferralModal(); }
+
+  /* ── REFERRALS ── */
+  function getSelectedReferralSnapshot() {
+    const idx=$("savedReferrals").value;
+    if(idx==="self") return {name:"Self",margin:0,type:"fixed"};
+    const ref=referrals[Number(idx)];
+    if(!ref) return {name:"Self",margin:0,type:"fixed"};
+    return { name:formatDisplayName(ref), margin:$("refMargin").value||ref.margin||0, type:$("refMarginType").value||ref.type||"fixed", id:ref.id||"" };
+  }
+  function saveReferralsToStorage() { localStorage.setItem("referrals",JSON.stringify(referrals)); }
+  function updateReferralDropdown() {
+    const sel=$("savedReferrals"), prev=sel.value;
+    sel.innerHTML='<option value="self">Self</option>';
+    referrals.forEach((r,i)=>{ const op=document.createElement("option"); op.value=String(i); op.textContent=formatDisplayName(r); sel.appendChild(op); });
+    if(prev&&sel.querySelector(`option[value="${prev}"]`)) sel.value=prev; else sel.value="self";
+    fillReferralDetails(); updateStats();
+  }
+  function fillReferralDetails() {
+    const val=$("savedReferrals").value;
+    if(val==="self"){ $("refName").value="Self"; $("refMargin").value=0; $("refMarginType").value="fixed"; return; }
+    const ref=referrals[Number(val)]; if(!ref)return;
+    $("refName").value=formatDisplayName(ref); $("refMargin").value=ref.margin||0; $("refMarginType").value=ref.type||"fixed";
+  }
+  function openReferralModal() { $("refModal").classList.add("open"); }
+  function closeReferralModal() { $("refModal").classList.remove("open"); }
+  function saveReferral(e) {
+    e.preventDefault();
+    const mobileVal=$("mobile").value.trim();
+    if(mobileVal&&mobileVal.length!==10){ showToast("Mobile must be 10 digits","warn"); return; }
+    const newName=($("title").value==="Lab"||$("title").value==="Hospital")?$("name").value.trim():($("title").value+" "+$("name").value.trim());
+    const dupIdx=checkDuplicateDoctor(newName,mobileVal);
+    if(dupIdx>=0){ showDupDoctor(dupIdx); return; }
+    const referral={ title:$("title").value, name:$("name").value.trim(), id:$("refId").value.trim(), margin:$("margin").value||0, type:document.querySelector('input[name="mtype"]:checked').value, mobile:mobileVal, email:$("email").value.trim(), address:$("address").value.trim() };
+    referrals.push(referral); saveReferralsToStorage(); updateReferralDropdown(); closeReferralModal(); $("referralForm").reset(); showToast("✅ Referral doctor saved","success");
+  }
+  function deleteReferral() {
+    const val=$("savedReferrals").value;
+    if(val==="self"||val===""){ showToast("Self cannot be deleted","warn"); return; }
+    if(!confirm("Delete this referral doctor?"))return;
+    referrals.splice(Number(val),1); saveReferralsToStorage(); updateReferralDropdown(); showToast("Doctor removed","danger");
+  }
+
+  /* ── DOCTOR LIST ── */
+  function viewReferrals() { _allDoctorsForView=[...referrals]; renderDoctorTable(_allDoctorsForView); $("doctorSearch").value=""; $("refListModal").classList.add("open"); }
+  function renderDoctorTable(list) {
+    const tbody=$("refTableBody"); tbody.innerHTML="";
+    if(!list.length){ tbody.innerHTML="<tr><td colspan='7' style='text-align:center;padding:20px;color:#94a3b8;font-style:italic'>No referral doctors saved</td></tr>"; return; }
+    list.forEach((r,i)=>{
+      const realIdx=referrals.indexOf(r);
+      tbody.innerHTML+=`<tr><td><span class="patient-id-badge">${realIdx+1}</span></td><td><strong>${formatDisplayName(r)}</strong></td><td>${r.type==="percent"?"%":"₹"} ${r.type==="percent"?"Percent":"Fixed"}</td><td>${r.margin||0}</td><td>${r.mobile||"-"}</td><td>${r.email||"-"}</td><td style="display:flex;gap:5px;flex-wrap:wrap"><button class="btn btn-muted btn-sm" onclick="pickReferral(${realIdx})">Select</button><button class="btn btn-danger btn-sm" onclick="deleteReferralFromList(${realIdx})">🗑</button></td></tr>`;
+    });
+  }
+  function filterDoctors() {
+    const q=$("doctorSearch").value.toLowerCase();
+    renderDoctorTable(referrals.filter(r=>formatDisplayName(r).toLowerCase().includes(q)||(r.mobile||"").includes(q)));
+  }
+  function deleteReferralFromList(idx) {
+    if(!confirm(`Delete "${formatDisplayName(referrals[idx])}"?`))return;
+    referrals.splice(idx,1); saveReferralsToStorage(); updateReferralDropdown(); renderDoctorTable(referrals); showToast("Doctor deleted","danger");
+  }
+  function closeReferrals() { $("refListModal").classList.remove("open"); }
+  function pickReferral(i) { $("savedReferrals").value=String(i); fillReferralDetails(); closeReferrals(); showToast("Doctor selected","success"); }
+
+  /* ── PATIENT LIST ── */
+  function viewPatients() {
+    _allPatients=JSON.parse(localStorage.getItem("patients")||"[]");
+    $("patientSearch").value="";
+    renderPatientTable(_allPatients);
+    $("patientListModal").classList.add("open");
+  }
+  function renderPatientTable(list) {
+    const tbody=$("patientTableBody"); tbody.innerHTML="";
+    if(!list.length){ tbody.innerHTML="<tr><td colspan='7' style='text-align:center;padding:20px;color:#94a3b8;font-style:italic'>No patients saved yet</td></tr>"; return; }
+    list.forEach(p=>{
+      tbody.innerHTML+=`<tr><td><span class="patient-id-badge">${p.id||"—"}</span></td><td><strong>${p.title||""} ${p.name}</strong></td><td>${p.age||p.dob||"-"}</td><td>${p.gender}</td><td>${p.mobile}</td><td>${(p.referral&&p.referral.name)||"Self"}</td><td style="display:flex;gap:5px;flex-wrap:wrap"><button class="btn btn-muted btn-sm" onclick="loadPatient('${p.id}')">✏️ Load</button><button class="btn btn-danger btn-sm" onclick="deletePatient('${p.id}')">🗑</button></td></tr>`;
+    });
+  }
+  function filterPatients() {
+    const q=$("patientSearch").value.toLowerCase();
+    renderPatientTable(_allPatients.filter(p=>(p.name||"").toLowerCase().includes(q)||(p.mobile||"").includes(q)||(p.id||"").toLowerCase().includes(q)));
+  }
+  function closePatientList() { $("patientListModal").classList.remove("open"); }
+  function loadPatient(id) {
+    const p=JSON.parse(localStorage.getItem("patients")||"[]").find(x=>x.id===id); if(!p)return;
+    fillPatientFormData(p); setEditMode(p.id,p.title+" "+p.name); closePatientList(); showToast("Patient loaded — edit and click Update Patient","info");
+  }
+  function fillPatientFormData(p) {
+    $("patientTitle").value=p.title||""; $("patientName").value=p.name||""; $("patientMobile").value=p.mobile||"";
+    $("patientEmail").value=p.email||""; $("healthId").value=p.healthId||""; $("patientWeight").value=p.weight||"";
+    $("patientRemark").value=p.remark||""; $("patientAddress").value=p.address||""; $("bpCategory").value=p.bpCategory||"";
+    document.querySelectorAll("input[name='gender']").forEach(r=>r.checked=(r.value===(p.gender||"Male")));
+    if(p.dob){ $("ageMode").value="dob"; $("patientDOB").style.display=""; $("ageYears").style.display="none"; $("patientDOB").value=p.dob; }
+    else { $("ageMode").value="age"; $("ageYears").style.display=""; $("patientDOB").style.display="none"; $("ageYears").value=p.age||""; }
+    if(p.referral&&p.referral.name&&p.referral.name!=="Self") {
+      const idx=referrals.findIndex(r=>formatDisplayName(r)===p.referral.name);
+      $("savedReferrals").value=idx>=0?String(idx):"self";
+    } else { $("savedReferrals").value="self"; }
+    fillReferralDetails();
+    if(p.referral){ $("refMargin").value=p.referral.margin||0; $("refMarginType").value=p.referral.type||"fixed"; $("refName").value=p.referral.name||"Self"; }
+  }
+  function deletePatient(id) {
+    if(!confirm("Permanently delete this patient?"))return;
+    let pts=JSON.parse(localStorage.getItem("patients")||"[]");
+    pts=pts.filter(p=>p.id!==id); localStorage.setItem("patients",JSON.stringify(pts));
+    _allPatients=pts; renderPatientTable(pts); updateStats(); showToast("Patient deleted","danger");
+  }
+
+  /* ── EDIT MODE ── */
+  function setEditMode(id, name) {
+    _editingPatientId=id;
+    const banner=$("editBanner"), formMode=$("formMode");
+    if(id){
+      banner.style.display="flex"; $("editBannerName").textContent=(name||"")+"  ["+id+"]";
+      $("saveBtn").textContent="💾 Update Patient";
+      formMode.textContent="EDIT MODE"; formMode.style.background="rgba(217,119,6,0.1)"; formMode.style.color="#d97706";
+    } else {
+      banner.style.display="none"; $("saveBtn").textContent="💾 Save Patient";
+      formMode.textContent="NEW PATIENT"; formMode.style.background="rgba(37,99,235,0.08)"; formMode.style.color="var(--blue)";
+    }
+  }
+  function cancelEdit() { setEditMode(null); $("patientForm").reset(); $("ageMode").value="age"; $("ageYears").style.display=""; $("patientDOB").style.display="none"; updateReferralDropdown(); }
+
+  /* ── EVENT LISTENERS ── */
+  document.querySelectorAll("input[name='gender']").forEach(r=>r.addEventListener("change",()=>{ genderEditedAfterTitle=true; }));
+  $("patientTitle").addEventListener("change",()=>{
+    const t=$("patientTitle").value;
+    if(!genderEditedAfterTitle){ if(["Mr","Dr","Master"].includes(t)) document.querySelector("input[value='Male']").checked=true; else if(["Mrs","Ms","Baby"].includes(t)) document.querySelector("input[value='Female']").checked=true; }
+    genderEditedAfterTitle=false;
+  });
+  $("ageMode").addEventListener("change",()=>{
+    if($("ageMode").value==="dob"){ $("ageYears").style.display="none"; $("patientDOB").style.display=""; $("ageYears").value=""; }
+    else { $("ageYears").style.display=""; $("patientDOB").style.display="none"; $("patientDOB").value=""; }
+  });
+  $("patientMobile").addEventListener("input",e=>{ e.target.value=e.target.value.replace(/\D/g,"").slice(0,10); });
+  $("mobile").addEventListener("input",e=>{ e.target.value=e.target.value.replace(/\D/g,"").slice(0,10); });
+  $("patientName").addEventListener("input",e=>{ const pos=e.target.selectionStart; e.target.value=e.target.value.replace(/[^a-zA-Z\s.]/g,"").toUpperCase().slice(0,25); try{e.target.setSelectionRange(pos,pos);}catch(x){} });
+  $("ageYears").addEventListener("input",e=>{ const n=parseInt(e.target.value,10); if(isNaN(n))return; if(n<0)e.target.value=0; if(n>200)e.target.value=200; });
+  $("patientDOB").addEventListener("change",()=>{
+    const dob=new Date($("patientDOB").value); if(!dob.getTime())return;
+    const today=new Date(); let age=today.getFullYear()-dob.getFullYear();
+    const m=today.getMonth()-dob.getMonth();
+    if(m<0||(m===0&&today.getDate()<dob.getDate()))age--;
+    $("ageYears").value=Math.max(0,Math.min(age,200));
+  });
+
+  /* ── FORM SUBMIT ── */
+  $("patientForm").addEventListener("submit", e=>{
+    e.preventDefault(); if(!validatePatientForm())return;
+    const mobile=$("patientMobile").value;
+    const patientData={
+      title:$("patientTitle").value, name:$("patientName").value.trim().toUpperCase(),
+      gender:document.querySelector("input[name='gender']:checked").value,
+      age:$("ageYears").value, dob:$("ageMode").value==="dob"?$("patientDOB").value:"",
+      mobile, email:$("patientEmail").value.trim(), healthId:$("healthId").value.trim().toUpperCase(),
+      weight:$("patientWeight").value, bpCategory:$("bpCategory").value,
+      address:$("patientAddress").value.trim().toUpperCase(),
+      remark:$("patientRemark").value.trim().toUpperCase(),
+      referral:getSelectedReferralSnapshot()
+    };
+    let patients=JSON.parse(localStorage.getItem("patients")||"[]");
+    if(_editingPatientId){
+      const idx=patients.findIndex(p=>p.id===_editingPatientId);
+      if(idx>=0){ patientData.id=_editingPatientId; patients[idx]=patientData; localStorage.setItem("patients",JSON.stringify(patients)); showToast("✅ Patient updated!","success"); }
+      setEditMode(null);
+    } else {
+      const existing=checkDuplicatePatient(mobile); if(existing){showDupPatient(existing);return;}
+      patientData.id=generatePatientId(); patients.push(patientData); localStorage.setItem("patients",JSON.stringify(patients)); showToast("✅ Patient saved — ID: "+patientData.id,"success");
+    }
+    $("patientForm").reset(); $("ageMode").value="age"; $("ageYears").style.display=""; $("patientDOB").style.display="none"; updateReferralDropdown(); updateStats();
+  });
+
+  $("patientForm").addEventListener("reset",()=>{
+    setTimeout(()=>{ setEditMode(null); updateReferralDropdown(); },0);
+  });
+
+  /* ── CLICK OUTSIDE TO CLOSE ── */
+  window.addEventListener("click", e=>{
+    if(e.target===$("patientListModal")) closePatientList();
+    if(e.target===$("refModal"))          closeReferralModal();
+    if(e.target===$("refListModal"))      closeReferrals();
+    if(e.target===$("importModal"))       closeImportModal();
+    if(e.target===$("dupPatientModal"))   closeDupPatient();
+    if(e.target===$("dupDoctorModal"))    closeDupDoctor();
+  });
+
+  /* ── ESCAPE KEY ── */
+  document.addEventListener("keydown", e=>{
+    if(e.key!=="Escape")return;
+    closePatientList(); closeReferrals(); closeReferralModal(); closeImportModal();
+  });
+
+  /* ════════════════════════════════════════
+     BULK EXPORT
+  ════════════════════════════════════════ */
+  function exportPatients() {
+    const patients = JSON.parse(localStorage.getItem("patients")||"[]");
+    if (!patients.length) { showToast("No patients to export","warn"); return; }
+    const payload = { _version: 1, _exportedAt: new Date().toISOString(), _count: patients.length, patients };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    const d = new Date();
+    a.download = `medicore-patients-${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}.json`;
+    a.click(); URL.revokeObjectURL(a.href);
+    showToast(`✅ Exported ${patients.length} patient${patients.length!==1?"s":""}`, "success");
+  }
+
+  /* ── Download Template ── */
+  function downloadTemplate() {
+    const template = {
+      "_note": "MediCore Patient Import Template — fill in the patients array below. Required fields: title, name, gender, mobile, address.",
+      "patients": [
+        {
+          "title": "Mr",
+          "name": "JOHN DOE",
+          "gender": "Male",
+          "mobile": "9876543210",
+          "address": "123 MAIN STREET, CITY, PINCODE",
+          "age": "35",
+          "dob": "",
+          "email": "john@example.com",
+          "healthId": "",
+          "weight": "70",
+          "bpCategory": "Normal (120/80 mmHg)",
+          "remark": "",
+          "referral": { "name": "Self", "margin": 0, "type": "fixed" }
+        },
+        {
+          "title": "Mrs",
+          "name": "JANE SMITH",
+          "gender": "Female",
+          "mobile": "9123456789",
+          "address": "456 PARK AVENUE, CITY, PINCODE",
+          "age": "",
+          "dob": "1985-06-15",
+          "email": "",
+          "healthId": "AB12345",
+          "weight": "60",
+          "bpCategory": "",
+          "remark": "DIABETIC PATIENT",
+          "referral": { "name": "Dr. Sharma", "margin": 50, "type": "fixed" }
+        }
+      ]
+    };
+    const blob = new Blob([JSON.stringify(template, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "medicore-import-template.json";
+    a.click(); URL.revokeObjectURL(a.href);
+    showToast("📄 Template downloaded","info");
+  }
+
+  /* ════════════════════════════════════════
+     BULK IMPORT
+  ════════════════════════════════════════ */
+  function openImportModal() { $("importModal").classList.add("open"); }
+  function closeImportModal() { $("importModal").classList.remove("open"); resetImport(); }
+
+  /* ── IMPORT TAB SWITCHING ── */
+  let _activeImportTab = "file";
+
+  function switchImportTab(tab) {
+    _activeImportTab = tab;
+    $("tabFile").classList.toggle("active", tab === "file");
+    $("tabPaste").classList.toggle("active", tab === "paste");
+    $("importFilePanel").style.display = tab === "file" ? "" : "none";
+    $("importPastePanel").style.display = tab === "paste" ? "" : "none";
+    // Reset preview when switching tabs
+    _importData = null;
+    $("importPreview").classList.remove("show");
+  }
+
+  function resetImport() {
+    _importData = null;
+    $("importPreview").classList.remove("show");
+    $("importFileInput").value = "";
+    $("importZone").style.display = "";
+    // reset tabs to file
+    switchImportTab("file");
+    if ($("jsonPasteArea")) $("jsonPasteArea").value = "";
+  }
+
+  function clearPaste() {
+    $("jsonPasteArea").value = "";
+    _importData = null;
+    $("importPreview").classList.remove("show");
+  }
+
+  function parsePastedJSON() {
+    const raw_text = $("jsonPasteArea").value.trim();
+    if (!raw_text) { showToast("Paste some JSON first","warn"); return; }
+    try {
+      const parsed = JSON.parse(raw_text);
+      processImportData(parsed, "pasted text");
+    } catch(err) {
+      showToast("Invalid JSON — check syntax and try again","danger");
+      $("jsonPasteArea").style.borderColor = "var(--red)";
+      setTimeout(() => { $("jsonPasteArea").style.borderColor = ""; }, 1800);
+    }
+  }
+
+  // Drag and drop on file zone
+  const iz = $("importZone");
+  iz.addEventListener("dragover", e=>{ e.preventDefault(); iz.classList.add("drag-over"); });
+  iz.addEventListener("dragleave", ()=>iz.classList.remove("drag-over"));
+  iz.addEventListener("drop", e=>{ e.preventDefault(); iz.classList.remove("drag-over"); const f=e.dataTransfer.files[0]; if(f) processImportFile(f); });
+
+  function handleImportFile(e) {
+    const f = e.target.files[0]; if (f) processImportFile(f);
+  }
+
+  function processImportFile(file) {
+    if (!file.name.endsWith(".json")) { showToast("Please upload a .json file","warn"); return; }
+    const reader = new FileReader();
+    reader.onload = ev => {
+      try {
+        const data = JSON.parse(ev.target.result);
+        processImportData(data, file.name);
+      } catch(err) {
+        showToast("Failed to parse JSON file — check format","danger");
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  function processImportData(data, sourceName) {
+    const raw = data.patients || (Array.isArray(data) ? data : null);
+    if (!raw) { showToast(`Invalid JSON — missing 'patients' array`,"danger"); return; }
+
+    const VALID_TITLES = ["Mr","Mrs","Ms","Dr","Master","Baby"];
+    const VALID_GENDERS = ["Male","Female","Other"];
+    const valid = [], errors = [], skipped = [];
+
+    raw.forEach((p, i) => {
+      const rowNum = i + 1;
+      const rowErrors = [];
+      if (!p.title || !VALID_TITLES.includes(p.title)) rowErrors.push(`Row ${rowNum}: invalid title "${p.title||""}"`);
+      if (!p.name || !String(p.name).trim()) rowErrors.push(`Row ${rowNum}: missing name`);
+      if (!p.gender || !VALID_GENDERS.includes(p.gender)) rowErrors.push(`Row ${rowNum}: invalid gender "${p.gender||""}"`);
+      if (!p.mobile || String(p.mobile).replace(/\D/g,"").length!==10) rowErrors.push(`Row ${rowNum}: invalid mobile "${p.mobile||""}"`);
+      if (!p.address || !String(p.address).trim()) rowErrors.push(`Row ${rowNum}: missing address`);
+      if (rowErrors.length) { errors.push(...rowErrors); skipped.push(rowNum); }
+      else valid.push(p);
+    });
+
+    _importData = { valid, errors, total: raw.length, skipped: skipped.length };
+
+    const existingPatients = JSON.parse(localStorage.getItem("patients")||"[]");
+    const existingMobiles = new Set(existingPatients.map(p=>p.mobile));
+    const willAdd = valid.filter(p=>!existingMobiles.has(String(p.mobile).replace(/\D/g,""))).length;
+    const willSkip = valid.length - willAdd;
+
+    $("previewStats").innerHTML = `
+      <div class="preview-stat"><div class="pn">${raw.length}</div><div class="pl">Total Rows</div></div>
+      <div class="preview-stat"><div class="pn" style="color:var(--green)">${valid.length}</div><div class="pl">Valid</div></div>
+      <div class="preview-stat"><div class="pn" style="color:var(--amber)">${willAdd}</div><div class="pl">Will Add</div></div>
+      <div class="preview-stat"><div class="pn" style="color:var(--muted)">${willSkip}</div><div class="pl">Duplicates</div></div>
+      ${skipped.length ? `<div class="preview-stat"><div class="pn" style="color:var(--red)">${skipped.length}</div><div class="pl">Invalid</div></div>` : ""}
+    `;
+
+    const errDiv = $("importErrors");
+    if (errors.length) {
+      errDiv.style.display = "block";
+      errDiv.innerHTML = `<p>⚠️ ${errors.length} validation issue${errors.length!==1?"s":""} found (those rows will be skipped):</p><ul>${errors.slice(0,10).map(e=>`<li>${e}</li>`).join("")}${errors.length>10?`<li>...and ${errors.length-10} more</li>`:""}</ul>`;
+    } else {
+      errDiv.style.display = "none";
+    }
+
+    // Hide the input panels, show preview
+    $("importZone").style.display = "none";
+    $("importPastePanel").style.display = "none";
+    $("importPreview").classList.add("show");
+  }
+
+  function confirmImport() {
+    if (!_importData || !_importData.valid.length) { showToast("No valid patients to import","warn"); return; }
+    const mode = document.querySelector("input[name='importMode']:checked").value;
+    let patients = JSON.parse(localStorage.getItem("patients")||"[]");
+
+    let added = 0, skipped = 0;
+
+    if (mode === "replace") {
+      // Replace all — assign new IDs
+      patients = [];
+      _importData.valid.forEach(p => {
+        const sanitized = sanitizeImportedPatient(p);
+        sanitized.id = generatePatientId();
+        patients.push(sanitized);
+        added++;
+      });
+    } else {
+      // Merge — skip duplicates by mobile
+      const existingMobiles = new Set(patients.map(p=>p.mobile));
+      _importData.valid.forEach(p => {
+        const mobile = String(p.mobile).replace(/\D/g,"");
+        if (existingMobiles.has(mobile)) { skipped++; return; }
+        const sanitized = sanitizeImportedPatient(p);
+        sanitized.id = generatePatientId();
+        patients.push(sanitized);
+        existingMobiles.add(mobile);
+        added++;
+      });
+    }
+
+    localStorage.setItem("patients", JSON.stringify(patients));
+    updateStats();
+    closeImportModal();
+    showToast(`✅ Imported ${added} patient${added!==1?"s":""}${skipped?` · ${skipped} skipped (duplicates)`:""}`, "success");
+  }
+
+  function sanitizeImportedPatient(p) {
+    return {
+      title:      String(p.title||"").trim(),
+      name:       String(p.name||"").trim().toUpperCase(),
+      gender:     String(p.gender||"Male"),
+      mobile:     String(p.mobile||"").replace(/\D/g,"").slice(0,10),
+      address:    String(p.address||"").trim().toUpperCase(),
+      age:        String(p.age||"").trim(),
+      dob:        String(p.dob||"").trim(),
+      email:      String(p.email||"").trim(),
+      healthId:   String(p.healthId||"").trim().toUpperCase(),
+      weight:     String(p.weight||"").trim(),
+      bpCategory: String(p.bpCategory||"").trim(),
+      remark:     String(p.remark||"").trim().toUpperCase(),
+      referral:   p.referral && p.referral.name ? { name: String(p.referral.name), margin: Number(p.referral.margin)||0, type: String(p.referral.type||"fixed") } : { name:"Self", margin:0, type:"fixed" }
+    };
+  }
+
+  /* ── INIT ── */
+  updateReferralDropdown();
+</script>
+</body>
+</html>

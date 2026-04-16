@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Booking Dashboard — MediCore</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+/* ══════════════════════════════════════
+   PRINT
+══════════════════════════════════════ */
+@media print {
+  .navbar, .page-header, .filter-bar, .action-btns, #toastContainer,
+  .modal-overlay, .btn, .tag-btn, .detail-action-row { display: none !important; }
+  body { background: white !important; }
+  .container { padding: 8px !important; }
+  .booking-card { break-inside: avoid; box-shadow: none !important; border: 1px solid #ccc !important; }
+}
+
+/* ══════════════════════════════════════
+   ROOT / RESET
+══════════════════════════════════════ */
+:root {
+  --navy:        #0c1445;
+  --blue:        #2563eb;
+  --blue-dark:   #1e40af;
+  --blue-light:  #3b82f6;
+  --blue-pale:   #dbeafe;
+  --cyan:        #06b6d4;
+  --teal:        #0d9488;
+  --green:       #16a34a;
+  --green-light: #dcfce7;
+  --amber:       #d97706;
+  --amber-light: #fef3c7;
+  --orange:      #ea580c;
+  --red:         #dc2626;
+  --red-light:   #fee2e2;
+  --purple:      #7c3aed;
+  --purple-light:#ede9fe;
+  --bg:          #f0f5ff;
+  --card:        #ffffff;
+  --text:        #0f172a;
+  --muted:       #475569;
+  --border:      #cbd5e1;
+  --border-light:#e2e8f0;
+  --input-bg:    #f8faff;
+  --radius:      16px;
+  --radius-sm:   10px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 10% -10%, rgba(37,99,235,0.09) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 90% 110%, rgba(6,182,212,0.07) 0%, transparent 60%);
+}
+
+/* ══════════════════════════════════════
+   NAVBAR
+══════════════════════════════════════ */
+.navbar {
+  background: rgba(12,20,69,0.97);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 62px;
+  position: sticky;
+  top: 0;
+  z-index: 300;
+}
+.nav-logo { display: flex; align-items: center; gap: 11px; text-decoration: none; }
+.logo-icon {
+  width: 38px; height: 38px;
+  background: linear-gradient(135deg, #2563eb, #06b6d4);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  box-shadow: 0 4px 14px rgba(37,99,235,0.4);
+}
+.logo-text { font-size: 19px; font-weight: 800; color: white; letter-spacing: -0.5px; }
+.logo-text span { color: #06b6d4; }
+.nav-right { display: flex; align-items: center; gap: 10px; }
+.clock-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px; color: rgba(255,255,255,0.55);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 6px 12px; border-radius: 8px; letter-spacing: 0.5px;
+}
+.btn-home {
+  background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.8);
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 8px 14px; border-radius: 9px;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  font-family: 'Outfit', sans-serif; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s;
+}
+.btn-home:hover { background: rgba(255,255,255,0.13); color: white; }
+.nav-badge {
+  background: var(--red); color: white;
+  font-size: 10px; font-weight: 800;
+  padding: 2px 6px; border-radius: 20px;
+  font-family: 'DM Mono', monospace;
+  min-width: 18px; text-align: center;
+}
+
+/* ══════════════════════════════════════
+   PAGE HEADER
+══════════════════════════════════════ */
+.page-header {
+  background: linear-gradient(135deg, var(--navy) 0%, #1e3a8a 60%, #1d4ed8 100%);
+  padding: 28px 32px 24px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+.page-header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 80% at 80% 50%, rgba(6,182,212,0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 60% at 10% 10%, rgba(37,99,235,0.2) 0%, transparent 50%);
+}
+.ph-inner {
+  position: relative; z-index: 1;
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+}
+.ph-left h1 { font-size: 28px; font-weight: 900; letter-spacing: -0.8px; margin-bottom: 3px; }
+.ph-left p { font-size: 14px; opacity: 0.6; }
+.ph-stats { display: flex; gap: 0; }
+.ph-stat { text-align: center; padding: 4px 24px; border-right: 1px solid rgba(255,255,255,0.12); }
+.ph-stat:last-child { border-right: none; padding-right: 0; }
+.ph-stat-num { font-family: 'DM Mono', monospace; font-size: 20px; font-weight: 700; }
+.ph-stat-num.cyan { color: #22d3ee; }
+.ph-stat-num.green { color: #4ade80; }
+.ph-stat-num.amber { color: #fbbf24; }
+.ph-stat-num.red { color: #f87171; }
+.ph-stat-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; opacity: 0.5; margin-top: 1px; }
+
+/* ══════════════════════════════════════
+   STATUS PIPELINE BAR
+══════════════════════════════════════ */
+.pipeline-bar {
+  background: white;
+  border-bottom: 1.5px solid var(--border-light);
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  position: sticky;
+  top: 62px;
+  z-index: 200;
+  box-shadow: 0 2px 12px rgba(12,20,69,0.06);
+}
+.pipeline-bar::-webkit-scrollbar { display: none; }
+.pipeline-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 20px;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  position: relative;
+  user-select: none;
+}
+.pipeline-step:hover { color: var(--text); background: rgba(37,99,235,0.03); }
+.pipeline-step.active { color: var(--blue); border-bottom-color: var(--blue); }
+.pipeline-step .ps-icon { font-size: 15px; }
+.pipeline-step .ps-count {
+  background: var(--blue-pale);
+  color: var(--blue);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; font-weight: 700;
+  padding: 1px 7px; border-radius: 20px;
+  min-width: 22px; text-align: center;
+}
+.pipeline-step.active .ps-count { background: var(--blue); color: white; }
+.pipeline-step.ps-all .ps-count { background: rgba(15,23,42,0.08); color: var(--text); }
+.pipeline-step.ps-all.active .ps-count { background: var(--navy); color: white; }
+.pipe-divider { width: 1px; height: 28px; background: var(--border-light); flex-shrink: 0; }
+
+/* ══════════════════════════════════════
+   CONTAINER
+══════════════════════════════════════ */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 24px 60px;
+}
+
+/* ══════════════════════════════════════
+   FILTER BAR
+══════════════════════════════════════ */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+}
+.search-wrap::before {
+  content: '🔍';
+  position: absolute;
+  left: 12px; top: 50%; transform: translateY(-50%);
+  font-size: 14px; pointer-events: none;
+}
+.search-input {
+  width: 100%;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 9px 12px 9px 36px;
+  font-size: 13px; font-family: 'Outfit', sans-serif;
+  background: white; outline: none; transition: border-color 0.2s;
+}
+.search-input:focus { border-color: var(--blue); }
+.filter-select {
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 9px 12px;
+  font-size: 13px; font-family: 'Outfit', sans-serif;
+  background: white; outline: none; cursor: pointer;
+  transition: border-color 0.2s;
+}
+.filter-select:focus { border-color: var(--blue); }
+.btn-sm {
+  padding: 9px 16px; border-radius: 10px;
+  font-size: 13px; font-weight: 700; font-family: 'Outfit', sans-serif;
+  cursor: pointer; border: none; transition: all 0.15s;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.btn-primary { background: var(--blue); color: white; box-shadow: 0 3px 10px rgba(37,99,235,0.3); }
+.btn-primary:hover { background: var(--blue-dark); }
+.btn-outline { background: white; color: var(--text); border: 1.5px solid var(--border); }
+.btn-outline:hover { border-color: var(--blue); color: var(--blue); }
+.btn-danger { background: var(--red); color: white; }
+.btn-danger:hover { background: #b91c1c; }
+.btn-green { background: var(--green); color: white; box-shadow: 0 3px 10px rgba(22,163,74,0.3); }
+.btn-green:hover { background: #15803d; }
+.btn-amber { background: var(--amber); color: white; }
+
+/* ══════════════════════════════════════
+   SUMMARY CARDS
+══════════════════════════════════════ */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 14px;
+  margin-bottom: 22px;
+}
+.sum-card {
+  background: white;
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  box-shadow: 0 2px 10px rgba(12,20,69,0.05);
+  transition: transform 0.15s;
+}
+.sum-card:hover { transform: translateY(-2px); }
+.sum-card-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; }
+.sum-card-val {
+  font-family: 'DM Mono', monospace;
+  font-size: 22px; font-weight: 700;
+}
+.sum-card-sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
+.sc-blue .sum-card-val { color: var(--blue); }
+.sc-green .sum-card-val { color: var(--green); }
+.sc-amber .sum-card-val { color: var(--amber); }
+.sc-red .sum-card-val { color: var(--red); }
+.sc-purple .sum-card-val { color: var(--purple); }
+.sc-cyan .sum-card-val { color: var(--cyan); }
+
+/* ══════════════════════════════════════
+   BOOKING CARDS
+══════════════════════════════════════ */
+.bookings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.booking-card {
+  background: white;
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(12,20,69,0.05);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.booking-card:hover {
+  border-color: rgba(37,99,235,0.25);
+  box-shadow: 0 6px 24px rgba(37,99,235,0.1);
+  transform: translateY(-1px);
+}
+.booking-card-inner {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+.bc-status-stripe {
+  width: 5px;
+  flex-shrink: 0;
+}
+.bc-main {
+  flex: 1;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.bc-avatar {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 800; color: white;
+  flex-shrink: 0;
+  font-family: 'DM Mono', monospace;
+}
+.bc-info { flex: 1; min-width: 160px; }
+.bc-name { font-size: 15px; font-weight: 700; color: var(--text); }
+.bc-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.bc-tests { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+.bc-test-tag {
+  font-size: 11px; font-weight: 600;
+  background: var(--blue-pale); color: var(--blue);
+  padding: 2px 8px; border-radius: 20px;
+}
+.bc-test-more {
+  font-size: 11px; font-weight: 600;
+  background: var(--border-light); color: var(--muted);
+  padding: 2px 8px; border-radius: 20px;
+}
+.bc-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 16px 18px 16px 0;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.bc-amount {
+  font-family: 'DM Mono', monospace;
+  font-size: 17px; font-weight: 700;
+  color: var(--text);
+}
+.bc-amount-disc { font-size: 11px; color: var(--red); font-family: 'DM Mono', monospace; }
+.bc-status-badge {
+  font-size: 11px; font-weight: 700;
+  padding: 4px 10px; border-radius: 20px;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+.bc-booking-id {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; color: var(--muted);
+}
+.bc-payment-badge {
+  font-size: 10px; font-weight: 700;
+  padding: 2px 8px; border-radius: 20px;
+  text-transform: uppercase; letter-spacing: 0.3px;
+}
+
+/* Status colours */
+.status-booked      { background: #dbeafe; color: #1d4ed8; }
+.stripe-booked      { background: #2563eb; }
+.avatar-booked      { background: linear-gradient(135deg, #2563eb, #3b82f6); }
+
+.status-collected   { background: #fef3c7; color: #92400e; }
+.stripe-collected   { background: #d97706; }
+.avatar-collected   { background: linear-gradient(135deg, #d97706, #f59e0b); }
+
+.status-processing  { background: #ede9fe; color: #5b21b6; }
+.stripe-processing  { background: #7c3aed; }
+.avatar-processing  { background: linear-gradient(135deg, #7c3aed, #8b5cf6); }
+
+.status-ready       { background: #d1fae5; color: #065f46; }
+.stripe-ready       { background: #059669; }
+.avatar-ready       { background: linear-gradient(135deg, #059669, #10b981); }
+
+.status-delivered   { background: #f0fdf4; color: #166534; }
+.stripe-delivered   { background: #16a34a; }
+.avatar-delivered   { background: linear-gradient(135deg, #16a34a, #22c55e); }
+
+.status-cancelled   { background: #fee2e2; color: #991b1b; }
+.stripe-cancelled   { background: #dc2626; }
+.avatar-cancelled   { background: linear-gradient(135deg, #dc2626, #ef4444); }
+
+/* Payment badges */
+.pay-paid    { background: #d1fae5; color: #065f46; }
+.pay-partial { background: #fef3c7; color: #92400e; }
+.pay-unpaid  { background: #fee2e2; color: #991b1b; }
+
+/* ══════════════════════════════════════
+   EMPTY STATE
+══════════════════════════════════════ */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--muted);
+  background: white;
+  border-radius: var(--radius);
+  border: 1.5px dashed var(--border);
+}
+.empty-state .es-icon { font-size: 52px; margin-bottom: 12px; }
+.empty-state h3 { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.empty-state p { font-size: 14px; }
+.empty-state a { color: var(--blue); text-decoration: none; font-weight: 600; }
+
+/* ══════════════════════════════════════
+   DETAIL MODAL
+══════════════════════════════════════ */
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(12,20,69,0.65);
+  backdrop-filter: blur(6px);
+  z-index: 800;
+  align-items: center; justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: white;
+  border-radius: 20px;
+  width: 100%; max-width: 680px;
+  max-height: 90vh;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(12,20,69,0.25);
+  animation: slideUp 0.25s ease;
+}
+@keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.modal-head {
+  padding: 22px 26px 18px;
+  border-bottom: 1px solid var(--border-light);
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+}
+.modal-head-left { flex: 1; }
+.modal-title { font-size: 18px; font-weight: 800; color: var(--text); }
+.modal-subtitle { font-size: 13px; color: var(--muted); margin-top: 3px; }
+.modal-close {
+  background: var(--border-light); border: none; color: var(--text);
+  width: 30px; height: 30px; border-radius: 8px; font-size: 15px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s; flex-shrink: 0; margin-top: 2px;
+}
+.modal-close:hover { background: var(--border); }
+.modal-body { flex: 1; overflow-y: auto; padding: 20px 26px; }
+.modal-section-title {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--muted); margin: 18px 0 10px;
+}
+.modal-section-title:first-child { margin-top: 0; }
+.detail-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+}
+.detail-item { display: flex; flex-direction: column; gap: 3px; }
+.detail-label { font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.detail-val { font-size: 14px; font-weight: 600; color: var(--text); }
+.detail-val.mono { font-family: 'DM Mono', monospace; }
+.test-rows-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 13px; margin-top: 4px;
+}
+.test-rows-table th {
+  text-align: left; padding: 8px 10px;
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.8px; color: var(--muted);
+  border-bottom: 1.5px solid var(--border-light);
+}
+.test-rows-table td { padding: 9px 10px; border-bottom: 1px solid var(--border-light); }
+.test-rows-table tr:last-child td { border-bottom: none; }
+.test-rows-table .td-price { font-family: 'DM Mono', monospace; text-align: right; }
+.test-dept-chip {
+  font-size: 10px; font-weight: 700;
+  background: var(--blue-pale); color: var(--blue);
+  padding: 2px 7px; border-radius: 20px;
+  display: inline-block;
+}
+.total-row td { font-weight: 800; background: var(--input-bg); }
+.detail-action-row {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  padding: 16px 26px;
+  border-top: 1px solid var(--border-light);
+  background: var(--input-bg);
+}
+
+/* ══════════════════════════════════════
+   STATUS CHANGE SECTION
+══════════════════════════════════════ */
+.status-pipeline-row {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px;
+}
+.status-btn {
+  padding: 7px 14px; border-radius: 20px;
+  font-size: 12px; font-weight: 700; font-family: 'Outfit', sans-serif;
+  cursor: pointer; border: 2px solid transparent;
+  transition: all 0.15s;
+}
+.status-btn:hover { transform: translateY(-1px); }
+.status-btn.active { opacity: 1; }
+.status-btn.inactive { opacity: 0.45; }
+.sb-booked     { background: #dbeafe; color: #1d4ed8; border-color: #93c5fd; }
+.sb-collected  { background: #fef3c7; color: #92400e; border-color: #fcd34d; }
+.sb-processing { background: #ede9fe; color: #5b21b6; border-color: #c4b5fd; }
+.sb-ready      { background: #d1fae5; color: #065f46; border-color: #6ee7b7; }
+.sb-delivered  { background: #f0fdf4; color: #166534; border-color: #86efac; }
+.sb-cancelled  { background: #fee2e2; color: #991b1b; border-color: #fca5a5; }
+
+/* ══════════════════════════════════════
+   PAYMENT SECTION
+══════════════════════════════════════ */
+.payment-row {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 6px;
+}
+.payment-input {
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 14px; font-family: 'Outfit', sans-serif;
+  width: 140px; outline: none; transition: border-color 0.2s;
+}
+.payment-input:focus { border-color: var(--blue); }
+.pay-mode-select {
+  border: 1.5px solid var(--border); border-radius: 8px;
+  padding: 8px 10px; font-size: 13px; font-family: 'Outfit', sans-serif;
+  background: white; outline: none; cursor: pointer;
+}
+.pay-summary {
+  background: var(--input-bg); border-radius: 10px;
+  padding: 12px 14px; margin-top: 8px;
+  display: flex; gap: 16px; flex-wrap: wrap;
+}
+.pay-sum-item { display: flex; flex-direction: column; gap: 2px; }
+.pay-sum-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); }
+.pay-sum-val { font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 700; }
+
+/* ══════════════════════════════════════
+   TOAST
+══════════════════════════════════════ */
+.toast-container {
+  position: fixed; bottom: 24px; right: 24px;
+  display: flex; flex-direction: column; gap: 8px;
+  z-index: 999;
+}
+.toast {
+  background: var(--navy); color: white;
+  padding: 12px 18px; border-radius: 10px;
+  font-size: 13px; font-weight: 600;
+  box-shadow: 0 8px 24px rgba(12,20,69,0.25);
+  animation: toastIn 0.3s ease;
+  max-width: 320px;
+}
+.toast.success { background: #15803d; }
+.toast.warning { background: #b45309; }
+.toast.error   { background: var(--red); }
+@keyframes toastIn { from { transform: translateX(40px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+/* ══════════════════════════════════════
+   DAILY REPORT MODAL
+══════════════════════════════════════ */
+.report-modal-box {
+  background: white; border-radius: 20px;
+  width: 100%; max-width: 780px;
+  max-height: 90vh; display: flex; flex-direction: column;
+  overflow: hidden; box-shadow: 0 30px 80px rgba(12,20,69,0.25);
+  animation: slideUp 0.25s ease;
+}
+.report-head {
+  background: linear-gradient(135deg, var(--navy), #1e3a8a);
+  padding: 22px 26px; color: white;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.report-head h2 { font-size: 18px; font-weight: 800; }
+.report-head p { font-size: 13px; opacity: 0.6; margin-top: 2px; }
+.report-close {
+  background: rgba(255,255,255,0.1); border: none; color: white;
+  width: 30px; height: 30px; border-radius: 8px; font-size: 15px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+}
+.report-close:hover { background: rgba(255,255,255,0.2); }
+.report-body { flex: 1; overflow-y: auto; padding: 22px 26px; }
+.report-summary-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 22px;
+}
+.rs-card {
+  border-radius: 12px; padding: 14px 16px; text-align: center;
+}
+.rs-card.blue   { background: var(--blue-pale); }
+.rs-card.green  { background: var(--green-light); }
+.rs-card.amber  { background: var(--amber-light); }
+.rs-num { font-family: 'DM Mono', monospace; font-size: 24px; font-weight: 800; }
+.rs-card.blue .rs-num   { color: var(--blue); }
+.rs-card.green .rs-num  { color: var(--green); }
+.rs-card.amber .rs-num  { color: var(--amber); }
+.rs-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-top: 3px; }
+.report-table {
+  width: 100%; border-collapse: collapse; font-size: 13px;
+}
+.report-table th {
+  text-align: left; padding: 9px 12px;
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.8px; color: var(--muted);
+  border-bottom: 2px solid var(--border-light);
+  background: var(--input-bg);
+}
+.report-table td {
+  padding: 10px 12px; border-bottom: 1px solid var(--border-light);
+}
+.report-table tr:last-child td { border-bottom: none; }
+.report-footer {
+  padding: 16px 26px; border-top: 1px solid var(--border-light);
+  display: flex; gap: 8px; justify-content: flex-end;
+}
+
+/* ══════════════════════════════════════
+   CONFIRM DELETE MODAL
+══════════════════════════════════════ */
+.confirm-modal-box {
+  background: white; border-radius: 20px;
+  width: 100%; max-width: 420px;
+  overflow: hidden; box-shadow: 0 30px 80px rgba(12,20,69,0.25);
+  animation: slideUp 0.25s ease;
+  text-align: center;
+}
+.confirm-modal-icon { font-size: 48px; padding: 28px 0 8px; }
+.confirm-modal-box h3 { font-size: 18px; font-weight: 800; padding: 0 24px; }
+.confirm-modal-box p { font-size: 13px; color: var(--muted); padding: 8px 24px 20px; }
+.confirm-modal-footer { display: flex; gap: 10px; padding: 0 24px 24px; }
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════ */
+@media (max-width: 768px) {
+  .navbar { padding: 0 16px; }
+  .page-header { padding: 20px 16px; }
+  .ph-inner { flex-direction: column; gap: 12px; }
+  .ph-stats { flex-wrap: wrap; }
+  .ph-stat { padding: 4px 16px; }
+  .container { padding: 16px 12px 48px; }
+  .summary-grid { grid-template-columns: repeat(2, 1fr); }
+  .detail-grid { grid-template-columns: 1fr; }
+  .bc-main { flex-wrap: wrap; }
+  .report-summary-grid { grid-template-columns: 1fr; }
+}
+  </style>
+</head>
+<body>
+
+<!-- ══ NAVBAR ══ -->
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="logo-icon">⚕️</div>
+    <span class="logo-text">Medi<span>Core</span></span>
+  </a>
+  <div class="nav-right">
+    <div class="clock-badge" id="clockBadge">--:--:--</div>
+    <a href="MAIN2.html" class="btn-home">🧪 New Booking</a>
+    <a href="index.html" class="btn-home">← Home</a>
+  </div>
+</nav>
+
+<!-- ══ PAGE HEADER ══ -->
+<div class="page-header">
+  <div class="ph-inner">
+    <div class="ph-left">
+      <h1>📋 Booking Dashboard</h1>
+      <p id="headerDate">Loading…</p>
+    </div>
+    <div class="ph-stats">
+      <div class="ph-stat">
+        <div class="ph-stat-num cyan" id="hdrTotal">0</div>
+        <div class="ph-stat-label">Total Today</div>
+      </div>
+      <div class="ph-stat">
+        <div class="ph-stat-num green" id="hdrRevenue">₹0</div>
+        <div class="ph-stat-label">Today Revenue</div>
+      </div>
+      <div class="ph-stat">
+        <div class="ph-stat-num amber" id="hdrPending">0</div>
+        <div class="ph-stat-label">Pending</div>
+      </div>
+      <div class="ph-stat">
+        <div class="ph-stat-num red" id="hdrUnpaid">₹0</div>
+        <div class="ph-stat-label">Unpaid</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PIPELINE TAB BAR ══ -->
+<div class="pipeline-bar" id="pipelineBar">
+  <div class="pipeline-step ps-all active" onclick="filterByStatus('All')" data-status="All">
+    <span class="ps-icon">📋</span> All
+    <span class="ps-count" id="cnt-All">0</span>
+  </div>
+  <div class="pipe-divider"></div>
+  <div class="pipeline-step" onclick="filterByStatus('Booked')" data-status="Booked">
+    <span class="ps-icon">🔵</span> Booked
+    <span class="ps-count" id="cnt-Booked">0</span>
+  </div>
+  <div class="pipe-divider"></div>
+  <div class="pipeline-step" onclick="filterByStatus('Sample Collected')" data-status="Sample Collected">
+    <span class="ps-icon">🟡</span> Collected
+    <span class="ps-count" id="cnt-Sample Collected">0</span>
+  </div>
+  <div class="pipe-divider"></div>
+  <div class="pipeline-step" onclick="filterByStatus('Processing')" data-status="Processing">
+    <span class="ps-icon">🟣</span> Processing
+    <span class="ps-count" id="cnt-Processing">0</span>
+  </div>
+  <div class="pipe-divider"></div>
+  <div class="pipeline-step" onclick="filterByStatus('Ready')" data-status="Ready">
+    <span class="ps-icon">🟢</span> Ready
+    <span class="ps-count" id="cnt-Ready">0</span>
+  </div>
+  <div class="pipe-divider"></div>
+  <div class="pipeline-step" onclick="filterByStatus('Delivered')" data-status="Delivered">
+    <span class="ps-icon">✅</span> Delivered
+    <span class="ps-count" id="cnt-Delivered">0</span>
+  </div>
+  <div class="pipe-divider"></div>
+  <div class="pipeline-step" onclick="filterByStatus('Cancelled')" data-status="Cancelled">
+    <span class="ps-icon">🔴</span> Cancelled
+    <span class="ps-count" id="cnt-Cancelled">0</span>
+  </div>
+</div>
+
+<!-- ══ MAIN CONTENT ══ -->
+<div class="container">
+
+  <!-- SUMMARY CARDS -->
+  <div class="summary-grid" id="summaryGrid">
+    <div class="sum-card sc-blue">
+      <div class="sum-card-label">📅 Today's Bookings</div>
+      <div class="sum-card-val" id="scTodayCount">0</div>
+      <div class="sum-card-sub">vs all time: <span id="scAllCount">0</span></div>
+    </div>
+    <div class="sum-card sc-green">
+      <div class="sum-card-label">💰 Today's Revenue</div>
+      <div class="sum-card-val" id="scTodayRev">₹0</div>
+      <div class="sum-card-sub">collected</div>
+    </div>
+    <div class="sum-card sc-amber">
+      <div class="sum-card-label">⏳ Amount Pending</div>
+      <div class="sum-card-val" id="scPendingRev">₹0</div>
+      <div class="sum-card-sub">unpaid / partial</div>
+    </div>
+    <div class="sum-card sc-purple">
+      <div class="sum-card-label">🔬 Tests Ordered</div>
+      <div class="sum-card-val" id="scTestsOrdered">0</div>
+      <div class="sum-card-sub">across all bookings</div>
+    </div>
+    <div class="sum-card sc-cyan">
+      <div class="sum-card-label">👤 Unique Patients</div>
+      <div class="sum-card-val" id="scUniquePatients">0</div>
+      <div class="sum-card-sub">today</div>
+    </div>
+    <div class="sum-card sc-red">
+      <div class="sum-card-label">📦 Avg Bill Size</div>
+      <div class="sum-card-val" id="scAvgBill">₹0</div>
+      <div class="sum-card-sub">net per booking</div>
+    </div>
+  </div>
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar">
+    <div class="search-wrap">
+      <input type="text" class="search-input" id="searchInput" placeholder="Search by name, ID, mobile, booking ID, test…" oninput="renderBookings()">
+    </div>
+    <select class="filter-select" id="dateFilter" onchange="renderBookings()">
+      <option value="all">All Dates</option>
+      <option value="today" selected>Today</option>
+      <option value="week">This Week</option>
+      <option value="month">This Month</option>
+    </select>
+    <select class="filter-select" id="payFilter" onchange="renderBookings()">
+      <option value="all">All Payments</option>
+      <option value="Paid">Paid</option>
+      <option value="Partial">Partial</option>
+      <option value="Unpaid">Unpaid</option>
+    </select>
+    <select class="filter-select" id="sortFilter" onchange="renderBookings()">
+      <option value="newest">Newest First</option>
+      <option value="oldest">Oldest First</option>
+      <option value="amount_high">Amount: High → Low</option>
+      <option value="amount_low">Amount: Low → High</option>
+      <option value="name">Patient Name A→Z</option>
+    </select>
+    <button class="btn-sm btn-outline" onclick="openReportModal()">📊 Daily Report</button>
+    <button class="btn-sm btn-primary" onclick="refreshAll()">🔄 Refresh</button>
+  </div>
+
+  <!-- BOOKINGS LIST -->
+  <div class="bookings-list" id="bookingsList"></div>
+
+</div>
+
+<!-- ══ BOOKING DETAIL MODAL ══ -->
+<div class="modal-overlay" id="detailModal" onclick="if(event.target===this)closeDetailModal()">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-head-left">
+        <div class="modal-title" id="dmTitle">Booking Detail</div>
+        <div class="modal-subtitle" id="dmSubtitle"></div>
+      </div>
+      <button class="modal-close" onclick="closeDetailModal()">✕</button>
+    </div>
+    <div class="modal-body" id="dmBody"></div>
+    <div class="detail-action-row" id="dmActions"></div>
+  </div>
+</div>
+
+<!-- ══ DAILY REPORT MODAL ══ -->
+<div class="modal-overlay" id="reportModal" onclick="if(event.target===this)closeReportModal()">
+  <div class="report-modal-box">
+    <div class="report-head">
+      <div>
+        <h2>📊 Daily Report</h2>
+        <p id="reportDate">Today</p>
+      </div>
+      <button class="report-close" onclick="closeReportModal()">✕</button>
+    </div>
+    <div class="report-body" id="reportBody"></div>
+    <div class="report-footer">
+      <button class="btn-sm btn-outline" onclick="closeReportModal()">Close</button>
+      <button class="btn-sm btn-primary" onclick="printReport()">🖨️ Print</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CONFIRM DELETE MODAL ══ -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="confirm-modal-box">
+    <div class="confirm-modal-icon">🗑️</div>
+    <h3>Delete Booking?</h3>
+    <p id="confirmText">This action cannot be undone.</p>
+    <div class="confirm-modal-footer">
+      <button class="btn-sm btn-outline" style="flex:1" onclick="closeConfirmModal()">Cancel</button>
+      <button class="btn-sm btn-danger" style="flex:1" id="confirmDeleteBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+// ═══════════════════════════════════════════
+//  CLOCK
+// ═══════════════════════════════════════════
+(function clock() {
+  function tick() {
+    const now = new Date();
+    document.getElementById('clockBadge').textContent =
+      now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+  }
+  tick(); setInterval(tick, 1000);
+})();
+
+// ═══════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════
+let allBookings = [];
+let currentStatusFilter = 'All';
+let _detailBookingId = null;
+
+const STATUSES = ['Booked', 'Sample Collected', 'Processing', 'Ready', 'Delivered', 'Cancelled'];
+const STATUS_KEY = {
+  'Booked':           { cls: 'booked',     label: '🔵 Booked' },
+  'Sample Collected': { cls: 'collected',  label: '🟡 Collected' },
+  'Processing':       { cls: 'processing', label: '🟣 Processing' },
+  'Ready':            { cls: 'ready',      label: '🟢 Ready' },
+  'Delivered':        { cls: 'delivered',  label: '✅ Delivered' },
+  'Cancelled':        { cls: 'cancelled',  label: '🔴 Cancelled' },
+};
+
+// ═══════════════════════════════════════════
+//  LOAD DATA
+// ═══════════════════════════════════════════
+function loadBookings() {
+  allBookings = JSON.parse(localStorage.getItem('testBookings') || '[]');
+  // Ensure payment fields exist
+  allBookings.forEach(b => {
+    if (!b.paymentStatus) b.paymentStatus = 'Unpaid';
+    if (b.amountPaid === undefined) b.amountPaid = 0;
+    if (!b.paymentMode) b.paymentMode = '';
+    if (!b.status) b.status = 'Booked';
+  });
+  return allBookings;
+}
+
+function saveBookings() {
+  localStorage.setItem('testBookings', JSON.stringify(allBookings));
+}
+
+// ═══════════════════════════════════════════
+//  DATE HELPERS
+// ═══════════════════════════════════════════
+function isToday(dateStr) {
+  const d = new Date(dateStr);
+  const t = new Date();
+  return d.getFullYear()===t.getFullYear() && d.getMonth()===t.getMonth() && d.getDate()===t.getDate();
+}
+function isThisWeek(dateStr) {
+  const d = new Date(dateStr);
+  const now = new Date();
+  const startOfWeek = new Date(now); startOfWeek.setDate(now.getDate() - now.getDay()); startOfWeek.setHours(0,0,0,0);
+  return d >= startOfWeek;
+}
+function isThisMonth(dateStr) {
+  const d = new Date(dateStr);
+  const t = new Date();
+  return d.getMonth()===t.getMonth() && d.getFullYear()===t.getFullYear();
+}
+function fmtDate(dateStr) {
+  if (!dateStr) return '—';
+  return new Date(dateStr).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+}
+function fmtTime(dateStr) {
+  if (!dateStr) return '—';
+  return new Date(dateStr).toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', hour12:true });
+}
+
+// ═══════════════════════════════════════════
+//  FILTER & SORT
+// ═══════════════════════════════════════════
+function getFilteredBookings() {
+  let list = [...allBookings];
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  const dateF = document.getElementById('dateFilter').value;
+  const payF  = document.getElementById('payFilter').value;
+  const sortF = document.getElementById('sortFilter').value;
+
+  // Status filter
+  if (currentStatusFilter !== 'All') list = list.filter(b => b.status === currentStatusFilter);
+
+  // Search
+  if (q) list = list.filter(b =>
+    (b.patientName||'').toLowerCase().includes(q) ||
+    (b.patientMobile||'').includes(q) ||
+    (b.bookingId||'').toLowerCase().includes(q) ||
+    (b.refDoctor||'').toLowerCase().includes(q) ||
+    (b.tests||[]).some(t => t.name.toLowerCase().includes(q))
+  );
+
+  // Date
+  if (dateF === 'today')  list = list.filter(b => isToday(b.bookedAt));
+  if (dateF === 'week')   list = list.filter(b => isThisWeek(b.bookedAt));
+  if (dateF === 'month')  list = list.filter(b => isThisMonth(b.bookedAt));
+
+  // Payment
+  if (payF !== 'all') list = list.filter(b => b.paymentStatus === payF);
+
+  // Sort
+  if (sortF === 'newest')      list.sort((a,b) => new Date(b.bookedAt) - new Date(a.bookedAt));
+  if (sortF === 'oldest')      list.sort((a,b) => new Date(a.bookedAt) - new Date(b.bookedAt));
+  if (sortF === 'amount_high') list.sort((a,b) => b.totalNet - a.totalNet);
+  if (sortF === 'amount_low')  list.sort((a,b) => a.totalNet - b.totalNet);
+  if (sortF === 'name')        list.sort((a,b) => (a.patientName||'').localeCompare(b.patientName||''));
+
+  return list;
+}
+
+// ═══════════════════════════════════════════
+//  PIPELINE COUNTS
+// ═══════════════════════════════════════════
+function updatePipelineCounts() {
+  const all = allBookings;
+  document.getElementById('cnt-All').textContent = all.length;
+  STATUSES.forEach(s => {
+    const el = document.getElementById('cnt-' + s);
+    if (el) el.textContent = all.filter(b => b.status === s).length;
+  });
+}
+
+// ═══════════════════════════════════════════
+//  HEADER STATS
+// ═══════════════════════════════════════════
+function updateHeaderStats() {
+  const today = allBookings.filter(b => isToday(b.bookedAt));
+  const todayRev = today.reduce((s,b) => s + (b.amountPaid||0), 0);
+  const pending = allBookings.filter(b => b.paymentStatus !== 'Paid' && b.status !== 'Cancelled');
+  const unpaidAmt = pending.reduce((s,b) => s + (b.totalNet - (b.amountPaid||0)), 0);
+
+  document.getElementById('hdrTotal').textContent = today.length;
+  document.getElementById('hdrRevenue').textContent = '₹' + todayRev.toLocaleString();
+  document.getElementById('hdrPending').textContent = pending.length;
+  document.getElementById('hdrUnpaid').textContent = '₹' + unpaidAmt.toLocaleString();
+
+  // Header date
+  document.getElementById('headerDate').textContent =
+    new Date().toLocaleDateString('en-IN', { weekday:'long', day:'2-digit', month:'long', year:'numeric' });
+}
+
+// ═══════════════════════════════════════════
+//  SUMMARY CARDS
+// ═══════════════════════════════════════════
+function updateSummaryCards() {
+  const today = allBookings.filter(b => isToday(b.bookedAt));
+  const todayRev = today.reduce((s,b) => s + (b.amountPaid||0), 0);
+  const pending = allBookings.filter(b => b.paymentStatus !== 'Paid' && b.status !== 'Cancelled');
+  const pendingAmt = pending.reduce((s,b) => s + (b.totalNet - (b.amountPaid||0)), 0);
+  const totalTests = allBookings.reduce((s,b) => s + (b.tests||[]).length, 0);
+  const uniqueToday = new Set(today.map(b => b.patientMobile || b.patientName)).size;
+  const avgBill = allBookings.length ? Math.round(allBookings.reduce((s,b) => s + b.totalNet, 0) / allBookings.length) : 0;
+
+  document.getElementById('scTodayCount').textContent = today.length;
+  document.getElementById('scAllCount').textContent = allBookings.length;
+  document.getElementById('scTodayRev').textContent = '₹' + todayRev.toLocaleString();
+  document.getElementById('scPendingRev').textContent = '₹' + pendingAmt.toLocaleString();
+  document.getElementById('scTestsOrdered').textContent = totalTests;
+  document.getElementById('scUniquePatients').textContent = uniqueToday;
+  document.getElementById('scAvgBill').textContent = '₹' + avgBill.toLocaleString();
+}
+
+// ═══════════════════════════════════════════
+//  RENDER BOOKING CARDS
+// ═══════════════════════════════════════════
+function renderBookings() {
+  const list = getFilteredBookings();
+  const container = document.getElementById('bookingsList');
+
+  if (list.length === 0) {
+    const msg = allBookings.length === 0
+      ? `<div class="empty-state">
+           <div class="es-icon">📋</div>
+           <h3>No Bookings Yet</h3>
+           <p>Start by <a href="MAIN2.html">booking a test</a> for a patient.</p>
+         </div>`
+      : `<div class="empty-state">
+           <div class="es-icon">🔍</div>
+           <h3>No Results Found</h3>
+           <p>Try adjusting your search or filters.</p>
+         </div>`;
+    container.innerHTML = msg;
+    return;
+  }
+
+  container.innerHTML = list.map(b => {
+    const sk = STATUS_KEY[b.status] || STATUS_KEY['Booked'];
+    const initials = (b.patientName||'?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    const tests = b.tests || [];
+    const visibleTests = tests.slice(0, 3);
+    const extraCount = tests.length - 3;
+    const payBadge = b.paymentStatus === 'Paid'
+      ? '<span class="bc-payment-badge pay-paid">✓ Paid</span>'
+      : b.paymentStatus === 'Partial'
+      ? '<span class="bc-payment-badge pay-partial">~ Partial</span>'
+      : '<span class="bc-payment-badge pay-unpaid">✗ Unpaid</span>';
+    const discLine = b.totalDisc > 0
+      ? `<div class="bc-amount-disc">- ₹${b.totalDisc.toLocaleString()} disc</div>` : '';
+
+    return `<div class="booking-card" onclick="openDetailModal('${b.bookingId}')">
+      <div class="booking-card-inner">
+        <div class="bc-status-stripe stripe-${sk.cls}"></div>
+        <div class="bc-main">
+          <div class="bc-avatar avatar-${sk.cls}">${initials}</div>
+          <div class="bc-info">
+            <div class="bc-name">${b.patientName || '—'}${b.patientAge ? ' <span style="font-weight:500;font-size:13px;color:var(--muted)">· ' + b.patientAge + '</span>' : ''}</div>
+            <div class="bc-meta">
+              📱 ${b.patientMobile || '—'} &nbsp;|&nbsp;
+              🩺 ${b.refDoctor || '—'} &nbsp;|&nbsp;
+              📅 ${fmtDate(b.sampleDate || b.bookedAt)} &nbsp;|&nbsp;
+              🆔 ${b.bookingId}
+            </div>
+            <div class="bc-tests">
+              ${visibleTests.map(t => `<span class="bc-test-tag">${t.name}</span>`).join('')}
+              ${extraCount > 0 ? `<span class="bc-test-more">+${extraCount} more</span>` : ''}
+            </div>
+          </div>
+        </div>
+        <div class="bc-right">
+          <div>
+            <div class="bc-amount">₹${(b.totalNet||0).toLocaleString()}</div>
+            ${discLine}
+          </div>
+          <span class="bc-status-badge status-${sk.cls}">${sk.label}</span>
+          ${payBadge}
+          <div class="bc-booking-id">${fmtTime(b.bookedAt)}</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════
+//  FILTER BY STATUS (pipeline tab)
+// ═══════════════════════════════════════════
+function filterByStatus(status) {
+  currentStatusFilter = status;
+  document.querySelectorAll('.pipeline-step').forEach(el => {
+    el.classList.toggle('active', el.dataset.status === status);
+  });
+  renderBookings();
+}
+
+// ═══════════════════════════════════════════
+//  DETAIL MODAL
+// ═══════════════════════════════════════════
+function openDetailModal(bookingId) {
+  const b = allBookings.find(x => x.bookingId === bookingId);
+  if (!b) return;
+  _detailBookingId = bookingId;
+  const sk = STATUS_KEY[b.status] || STATUS_KEY['Booked'];
+
+  document.getElementById('dmTitle').textContent = b.patientName || 'Booking Detail';
+  document.getElementById('dmSubtitle').innerHTML =
+    `<span class="bc-status-badge status-${sk.cls}" style="font-size:11px;">${sk.label}</span>
+     &nbsp; <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);">${b.bookingId}</span>`;
+
+  // ── Body ──
+  const tests = b.tests || [];
+  const totalPrice = b.totalPrice || 0;
+  const totalDisc  = b.totalDisc  || 0;
+  const totalNet   = b.totalNet   || 0;
+  const amountPaid = b.amountPaid || 0;
+  const balance    = totalNet - amountPaid;
+
+  document.getElementById('dmBody').innerHTML = `
+    <div class="modal-section-title">Patient Information</div>
+    <div class="detail-grid">
+      <div class="detail-item">
+        <div class="detail-label">Full Name</div>
+        <div class="detail-val">${b.patientName || '—'}</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">Age / Gender</div>
+        <div class="detail-val">${b.patientAge || '—'}</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">Mobile</div>
+        <div class="detail-val mono">${b.patientMobile || '—'}</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">Referring Doctor</div>
+        <div class="detail-val">${b.refDoctor || '—'}</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">Sample Date</div>
+        <div class="detail-val">${fmtDate(b.sampleDate)}</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">Booked At</div>
+        <div class="detail-val">${fmtDate(b.bookedAt)} ${fmtTime(b.bookedAt)}</div>
+      </div>
+    </div>
+
+    <div class="modal-section-title">Tests Ordered (${tests.length})</div>
+    <table class="test-rows-table">
+      <thead>
+        <tr>
+          <th>#</th><th>Test</th><th>Department</th><th>Sample</th>
+          <th class="td-price">Price</th><th class="td-price">Disc</th><th class="td-price">Net</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${tests.map((t,i) => `
+          <tr>
+            <td style="color:var(--muted);font-size:12px;">${i+1}</td>
+            <td><strong>${t.name}</strong></td>
+            <td><span class="test-dept-chip">${t.dept||'—'}</span></td>
+            <td style="color:var(--muted);font-size:12px;">${t.sample||'—'}</td>
+            <td class="td-price">₹${(t.price||0).toLocaleString()}</td>
+            <td class="td-price" style="color:var(--red);">${t.discValue>0 ? '-₹'+t.discValue.toLocaleString() : '—'}</td>
+            <td class="td-price"><strong>₹${(t.net||0).toLocaleString()}</strong></td>
+          </tr>`).join('')}
+        <tr class="total-row">
+          <td colspan="4" style="text-align:right;">TOTAL</td>
+          <td class="td-price">₹${totalPrice.toLocaleString()}</td>
+          <td class="td-price" style="color:var(--red);">${totalDisc>0?'-₹'+totalDisc.toLocaleString():'—'}</td>
+          <td class="td-price">₹${totalNet.toLocaleString()}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="modal-section-title">Payment</div>
+    <div class="pay-summary">
+      <div class="pay-sum-item">
+        <div class="pay-sum-label">Net Bill</div>
+        <div class="pay-sum-val" style="color:var(--text)">₹${totalNet.toLocaleString()}</div>
+      </div>
+      <div class="pay-sum-item">
+        <div class="pay-sum-label">Paid</div>
+        <div class="pay-sum-val" style="color:var(--green)">₹${amountPaid.toLocaleString()}</div>
+      </div>
+      <div class="pay-sum-item">
+        <div class="pay-sum-label">Balance</div>
+        <div class="pay-sum-val" style="color:${balance>0?'var(--red)':'var(--green)'}">₹${balance.toLocaleString()}</div>
+      </div>
+      <div class="pay-sum-item">
+        <div class="pay-sum-label">Status</div>
+        <div class="pay-sum-val"><span class="bc-payment-badge pay-${(b.paymentStatus||'Unpaid').toLowerCase()}">${b.paymentStatus||'Unpaid'}</span></div>
+      </div>
+      ${b.paymentMode ? `<div class="pay-sum-item"><div class="pay-sum-label">Mode</div><div class="pay-sum-val" style="font-size:13px;">${b.paymentMode}</div></div>` : ''}
+    </div>
+    <div class="payment-row" style="margin-top:10px;">
+      <input type="number" class="payment-input" id="payAmount" placeholder="₹ Amount" min="0" max="${totalNet}" value="${amountPaid||''}">
+      <select class="pay-mode-select" id="payMode">
+        <option value="">Mode</option>
+        <option value="Cash" ${b.paymentMode==='Cash'?'selected':''}>💵 Cash</option>
+        <option value="UPI" ${b.paymentMode==='UPI'?'selected':''}>📱 UPI</option>
+        <option value="Card" ${b.paymentMode==='Card'?'selected':''}>💳 Card</option>
+        <option value="NEFT" ${b.paymentMode==='NEFT'?'selected':''}>🏦 NEFT</option>
+        <option value="Cheque" ${b.paymentMode==='Cheque'?'selected':''}>📝 Cheque</option>
+      </select>
+      <button class="btn-sm btn-green" onclick="savePayment('${bookingId}')">💾 Save Payment</button>
+    </div>
+
+    <div class="modal-section-title">Update Status</div>
+    <div class="status-pipeline-row">
+      ${STATUSES.map(s => {
+        const sk2 = STATUS_KEY[s];
+        const isActive = b.status === s;
+        return `<button class="status-btn sb-${sk2.cls} ${isActive?'active':'inactive'}" onclick="updateStatus('${bookingId}','${s}')">${sk2.label}</button>`;
+      }).join('')}
+    </div>
+  `;
+
+  // ── Action buttons ──
+  document.getElementById('dmActions').innerHTML = `
+    <button class="btn-sm btn-outline" onclick="whatsappBooking('${bookingId}')">📲 WhatsApp</button>
+    <button class="btn-sm btn-outline" onclick="printBooking('${bookingId}')">🖨️ Print</button>
+    <button class="btn-sm btn-danger" onclick="confirmDelete('${bookingId}')">🗑 Delete</button>
+    <button class="btn-sm btn-outline" onclick="closeDetailModal()" style="margin-left:auto;">Close</button>
+  `;
+
+  document.getElementById('detailModal').classList.add('open');
+}
+
+function closeDetailModal() {
+  document.getElementById('detailModal').classList.remove('open');
+  _detailBookingId = null;
+}
+
+// ═══════════════════════════════════════════
+//  UPDATE STATUS
+// ═══════════════════════════════════════════
+function updateStatus(bookingId, newStatus) {
+  const b = allBookings.find(x => x.bookingId === bookingId);
+  if (!b) return;
+  b.status = newStatus;
+  saveBookings();
+  refreshAll();
+  // Re-open modal with updated data
+  openDetailModal(bookingId);
+  showToast(`✓ Status updated to: ${newStatus}`, 'success');
+}
+
+// ═══════════════════════════════════════════
+//  SAVE PAYMENT
+// ═══════════════════════════════════════════
+function savePayment(bookingId) {
+  const b = allBookings.find(x => x.bookingId === bookingId);
+  if (!b) return;
+  const amtEl = document.getElementById('payAmount');
+  const modeEl = document.getElementById('payMode');
+  const amt = parseFloat(amtEl.value) || 0;
+  const mode = modeEl.value;
+
+  if (amt < 0) { showToast('⚠️ Amount cannot be negative', 'warning'); return; }
+  if (amt > b.totalNet) { showToast('⚠️ Amount exceeds bill total', 'warning'); return; }
+
+  b.amountPaid = amt;
+  b.paymentMode = mode;
+  b.paymentStatus = amt === 0 ? 'Unpaid' : amt >= b.totalNet ? 'Paid' : 'Partial';
+  saveBookings();
+  refreshAll();
+  openDetailModal(bookingId);
+  showToast(`✓ Payment saved: ₹${amt.toLocaleString()} (${b.paymentStatus})`, 'success');
+}
+
+// ═══════════════════════════════════════════
+//  DELETE
+// ═══════════════════════════════════════════
+let _pendingDeleteId = null;
+function confirmDelete(bookingId) {
+  const b = allBookings.find(x => x.bookingId === bookingId);
+  _pendingDeleteId = bookingId;
+  document.getElementById('confirmText').textContent =
+    `Delete booking ${bookingId} for ${b ? b.patientName : ''}? This cannot be undone.`;
+  document.getElementById('confirmDeleteBtn').onclick = () => executeDelete();
+  document.getElementById('confirmModal').classList.add('open');
+}
+function executeDelete() {
+  if (!_pendingDeleteId) return;
+  allBookings = allBookings.filter(b => b.bookingId !== _pendingDeleteId);
+  saveBookings();
+  closeConfirmModal();
+  closeDetailModal();
+  refreshAll();
+  showToast('Booking deleted', 'warning');
+  _pendingDeleteId = null;
+}
+function closeConfirmModal() {
+  document.getElementById('confirmModal').classList.remove('open');
+}
+
+// ═══════════════════════════════════════════
+//  WHATSAPP
+// ═══════════════════════════════════════════
+function whatsappBooking(bookingId) {
+  const b = allBookings.find(x => x.bookingId === bookingId);
+  if (!b) return;
+  const tests = (b.tests||[]).map(t => t.name).join(', ');
+  const msg = `Dear ${b.patientName},\n\nYour lab test booking is confirmed!\n\n` +
+    `📋 Booking ID: ${b.bookingId}\n🧪 Tests: ${tests}\n` +
+    `📅 Date: ${fmtDate(b.sampleDate||b.bookedAt)}\n💰 Total: ₹${(b.totalNet||0).toLocaleString()}\n\n` +
+    `Thank you for choosing MediCore Labs.`;
+  const phone = (b.patientMobile||'').replace(/\D/g,'');
+  const url = `https://wa.me/${phone ? '91'+phone : ''}?text=${encodeURIComponent(msg)}`;
+  window.open(url, '_blank');
+}
+
+// ═══════════════════════════════════════════
+//  PRINT SINGLE BOOKING
+// ═══════════════════════════════════════════
+function printBooking(bookingId) {
+  const b = allBookings.find(x => x.bookingId === bookingId);
+  if (!b) return;
+  const tests = (b.tests||[]).map((t,i) =>
+    `<tr><td>${i+1}</td><td>${t.name}</td><td>${t.dept||'—'}</td><td>${t.sample||'—'}</td><td style="text-align:right">₹${(t.price||0).toLocaleString()}</td><td style="text-align:right;color:#dc2626">${t.discValue>0?'-₹'+t.discValue.toLocaleString():'—'}</td><td style="text-align:right"><strong>₹${(t.net||0).toLocaleString()}</strong></td></tr>`
+  ).join('');
+  const pw = window.open('', '_blank');
+  pw.document.write(`<!DOCTYPE html><html><head><title>Booking ${b.bookingId}</title>
+  <style>body{font-family:Arial,sans-serif;padding:24px;max-width:800px;margin:0 auto}
+  h1{font-size:22px;margin-bottom:4px}p{font-size:13px;color:#666;margin:0 0 16px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+  .item label{font-size:10px;text-transform:uppercase;color:#999;display:block}
+  .item span{font-size:14px;font-weight:600}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{background:#f0f5ff;padding:8px;text-align:left;font-size:11px;text-transform:uppercase}
+  td{padding:8px;border-bottom:1px solid #e2e8f0}
+  .total-row td{font-weight:800;background:#f8faff}
+  .footer{margin-top:24px;text-align:center;font-size:11px;color:#94a3b8}
+  @media print{button{display:none}}</style></head><body>
+  <h1>⚕️ MediCore Labs — Test Booking</h1>
+  <p>Booking Slip · ${b.bookingId}</p>
+  <div class="grid">
+    <div class="item"><label>Patient Name</label><span>${b.patientName||'—'}</span></div>
+    <div class="item"><label>Age / Gender</label><span>${b.patientAge||'—'}</span></div>
+    <div class="item"><label>Mobile</label><span>${b.patientMobile||'—'}</span></div>
+    <div class="item"><label>Ref. Doctor</label><span>${b.refDoctor||'—'}</span></div>
+    <div class="item"><label>Sample Date</label><span>${fmtDate(b.sampleDate||b.bookedAt)}</span></div>
+    <div class="item"><label>Status</label><span>${b.status||'Booked'}</span></div>
+  </div>
+  <table><thead><tr><th>#</th><th>Test</th><th>Dept</th><th>Sample</th><th>Price</th><th>Disc</th><th>Net</th></tr></thead>
+  <tbody>${tests}<tr class="total-row"><td colspan="4" style="text-align:right">TOTAL</td>
+  <td style="text-align:right">₹${(b.totalPrice||0).toLocaleString()}</td>
+  <td style="text-align:right;color:#dc2626">${b.totalDisc>0?'-₹'+b.totalDisc.toLocaleString():'—'}</td>
+  <td style="text-align:right">₹${(b.totalNet||0).toLocaleString()}</td></tr></tbody></table>
+  <div class="footer">Printed on ${new Date().toLocaleString('en-IN')} · MediCore Lab Management System</div>
+  <br><button onclick="window.print()">🖨️ Print</button>
+  </body></html>`);
+  pw.document.close();
+}
+
+// ═══════════════════════════════════════════
+//  DAILY REPORT MODAL
+// ═══════════════════════════════════════════
+function openReportModal() {
+  const today = allBookings.filter(b => isToday(b.bookedAt));
+  const totalRev = today.reduce((s,b) => s + b.totalNet, 0);
+  const collected = today.reduce((s,b) => s + (b.amountPaid||0), 0);
+  const balance = totalRev - collected;
+  const testCounts = {};
+  today.forEach(b => (b.tests||[]).forEach(t => { testCounts[t.name] = (testCounts[t.name]||0)+1; }));
+  const topTests = Object.entries(testCounts).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  const statusCounts = {};
+  STATUSES.forEach(s => { statusCounts[s] = today.filter(b=>b.status===s).length; });
+
+  document.getElementById('reportDate').textContent =
+    new Date().toLocaleDateString('en-IN', { weekday:'long', day:'2-digit', month:'long', year:'numeric' });
+
+  document.getElementById('reportBody').innerHTML = `
+    <div class="report-summary-grid">
+      <div class="rs-card blue">
+        <div class="rs-num">${today.length}</div>
+        <div class="rs-label">Total Bookings</div>
+      </div>
+      <div class="rs-card green">
+        <div class="rs-num">₹${totalRev.toLocaleString()}</div>
+        <div class="rs-label">Gross Revenue</div>
+      </div>
+      <div class="rs-card amber">
+        <div class="rs-num">₹${collected.toLocaleString()}</div>
+        <div class="rs-label">Amount Collected</div>
+      </div>
+    </div>
+
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px;">By Status</div>
+    <table class="report-table" style="margin-bottom:20px;">
+      <thead><tr><th>Status</th><th>Count</th><th>% of Today</th></tr></thead>
+      <tbody>
+        ${STATUSES.map(s => {
+          const cnt = statusCounts[s] || 0;
+          const pct = today.length ? ((cnt/today.length)*100).toFixed(0) : 0;
+          const sk = STATUS_KEY[s];
+          return `<tr><td><span class="bc-status-badge status-${sk.cls}">${sk.label}</span></td>
+            <td><strong>${cnt}</strong></td><td>${pct}%</td></tr>`;
+        }).join('')}
+      </tbody>
+    </table>
+
+    ${topTests.length ? `
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px;">Most Ordered Tests Today</div>
+    <table class="report-table" style="margin-bottom:20px;">
+      <thead><tr><th>#</th><th>Test Name</th><th>Orders</th></tr></thead>
+      <tbody>
+        ${topTests.map(([name,cnt],i) => `<tr><td>${i+1}</td><td>${name}</td><td><strong>${cnt}</strong></td></tr>`).join('')}
+      </tbody>
+    </table>` : ''}
+
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px;">Today's Bookings</div>
+    <table class="report-table">
+      <thead><tr><th>Booking ID</th><th>Patient</th><th>Tests</th><th>Net</th><th>Paid</th><th>Status</th></tr></thead>
+      <tbody>
+        ${today.length === 0
+          ? '<tr><td colspan="6" style="text-align:center;color:var(--muted);font-style:italic;padding:20px">No bookings today yet</td></tr>'
+          : today.map(b => {
+              const sk = STATUS_KEY[b.status] || STATUS_KEY['Booked'];
+              return `<tr>
+                <td class="mono" style="font-size:11px">${b.bookingId}</td>
+                <td><strong>${b.patientName||'—'}</strong><br><span style="font-size:11px;color:var(--muted)">${b.patientMobile||''}</span></td>
+                <td style="font-size:12px">${(b.tests||[]).map(t=>t.name).join(', ')}</td>
+                <td class="mono">₹${(b.totalNet||0).toLocaleString()}</td>
+                <td class="mono" style="color:var(--green)">₹${(b.amountPaid||0).toLocaleString()}</td>
+                <td><span class="bc-status-badge status-${sk.cls}" style="font-size:10px">${sk.label}</span></td>
+              </tr>`;
+            }).join('')}
+        ${today.length > 0 ? `<tr style="background:var(--input-bg)">
+          <td colspan="3"><strong>TOTALS</strong></td>
+          <td class="mono"><strong>₹${totalRev.toLocaleString()}</strong></td>
+          <td class="mono" style="color:var(--green)"><strong>₹${collected.toLocaleString()}</strong></td>
+          <td style="color:var(--red);font-weight:700;font-size:12px">Balance: ₹${balance.toLocaleString()}</td>
+        </tr>` : ''}
+      </tbody>
+    </table>
+  `;
+  document.getElementById('reportModal').classList.add('open');
+}
+
+function closeReportModal() {
+  document.getElementById('reportModal').classList.remove('open');
+}
+
+function printReport() {
+  window.print();
+}
+
+// ═══════════════════════════════════════════
+//  REFRESH ALL
+// ═══════════════════════════════════════════
+function refreshAll() {
+  loadBookings();
+  updatePipelineCounts();
+  updateHeaderStats();
+  updateSummaryCards();
+  renderBookings();
+}
+
+// ═══════════════════════════════════════════
+//  TOAST
+// ═══════════════════════════════════════════
+function showToast(msg, type='') {
+  const c = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(() => t.remove(), 2800);
+}
+
+// ═══════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════
+refreshAll();
+
+// Storage change listener (cross-tab sync)
+window.addEventListener('storage', e => {
+  if (e.key === 'testBookings') refreshAll();
+});
+</script>
+</body>
+</html>

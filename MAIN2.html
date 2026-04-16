@@ -1,0 +1,4148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lab Test Details — MediCore</title>
+  <style>
+  @media print {
+    .navbar, .page-header, .tab-bar, .search-row, .pagination-row,
+    .specimen-selector-bar, .card-header .btn, .delete-btn, .add-btn,
+    .btn-home, .clock-badge, #toastContainer, #stickyBillBar,
+    .section-label, #panel-packages, #panel-prices, .patient-info-bar > .patient-info-field:not(:first-child) { display: none !important; }
+    body { background: white !important; }
+    .container { padding: 8px !important; max-width: 100% !important; }
+    .card { box-shadow: none !important; border: 1px solid #ccc !important; }
+    .table-wrapper { max-height: none !important; overflow: visible !important; }
+    #panel-catalog { display: block !important; }
+    .card:first-child { display: none !important; }
+  }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --navy: #0c1445;
+  --blue: #2563eb;
+  --blue-dark: #1e40af;
+  --blue-light: #3b82f6;
+  --blue-pale: #dbeafe;
+  --cyan: #06b6d4;
+  --teal: #0d9488;
+  --green: #16a34a;
+  --green-light: #dcfce7;
+  --amber: #d97706;
+  --amber-light: #fef3c7;
+  --red: #dc2626;
+  --red-light: #fee2e2;
+  --bg: #f0f5ff;
+  --card: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --border: #cbd5e1;
+  --border-light: #e2e8f0;
+  --input-bg: #f8faff;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 20px rgba(12,20,69,0.07);
+  --shadow-lg: 0 10px 40px rgba(12,20,69,0.12);
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 10% -10%, rgba(37,99,235,0.09) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 90% 110%, rgba(6,182,212,0.07) 0%, transparent 60%);
+}
+
+/* ── NAVBAR ── */
+.navbar {
+  background: rgba(12,20,69,0.97);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 62px;
+  position: sticky;
+  top: 0;
+  z-index: 300;
+}
+
+.nav-logo { display: flex; align-items: center; gap: 11px; text-decoration: none; }
+.logo-icon {
+  width: 38px; height: 38px;
+  background: linear-gradient(135deg, #2563eb, #06b6d4);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  box-shadow: 0 4px 14px rgba(37,99,235,0.4);
+}
+.logo-text { font-size: 19px; font-weight: 800; color: white; letter-spacing: -0.5px; }
+.logo-text span { color: #06b6d4; }
+
+.nav-right { display: flex; align-items: center; gap: 12px; }
+
+.clock-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  color: rgba(255,255,255,0.55);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 6px 12px;
+  border-radius: 8px;
+  letter-spacing: 0.5px;
+}
+
+.btn-home {
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.8);
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 8px 16px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+.btn-home:hover { background: rgba(255,255,255,0.13); color: white; }
+
+/* ── PAGE HEADER ── */
+.page-header {
+  background: linear-gradient(135deg, var(--navy) 0%, #1e3a8a 60%, #1d4ed8 100%);
+  padding: 28px 32px 24px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+.page-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 80% at 80% 50%, rgba(6,182,212,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 60% at 10% 10%, rgba(37,99,235,0.22) 0%, transparent 50%);
+}
+.ph-inner {
+  position: relative; z-index: 1;
+  max-width: 1280px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+}
+.ph-left h1 { font-size: 28px; font-weight: 900; letter-spacing: -1px; margin-bottom: 4px; }
+.ph-left p { font-size: 14px; opacity: 0.6; font-weight: 400; }
+.ph-stats { display: flex; gap: 0; }
+.ph-stat { text-align: center; padding: 6px 28px; border-right: 1px solid rgba(255,255,255,0.12); }
+.ph-stat:last-child { border-right: none; }
+.ph-stat-num { font-family: 'DM Mono', monospace; font-size: 22px; font-weight: 700; color: white; }
+.ph-stat-num.accent { color: #22d3ee; }
+.ph-stat-num.green { color: #4ade80; }
+.ph-stat-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; opacity: 0.5; margin-top: 2px; }
+
+.status-dot {
+  display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+  background: #22c55e; margin-right: 4px;
+  box-shadow: 0 0 0 2px rgba(34,197,94,0.25);
+  animation: pulse-dot 2s infinite;
+}
+@keyframes pulse-dot {
+  0%,100% { box-shadow: 0 0 0 2px rgba(34,197,94,0.25); }
+  50% { box-shadow: 0 0 0 4px rgba(34,197,94,0.1); }
+}
+
+/* ── CONTAINER ── */
+.container { max-width: 1280px; margin: 0 auto; padding: 28px 24px 48px; }
+
+/* ── TAB BAR ── */
+.tab-bar {
+  display: flex;
+  gap: 2px;
+  background: white;
+  border-radius: 14px;
+  padding: 5px;
+  margin-bottom: 28px;
+  border: 1.5px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+  width: 100%;
+}
+.tab-btn {
+  flex: 1;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--muted);
+  background: transparent;
+  transition: all 0.18s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  white-space: nowrap;
+  letter-spacing: -0.2px;
+}
+.tab-btn:hover { color: var(--blue); background: rgba(37,99,235,0.06); }
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+  color: white;
+  box-shadow: 0 4px 14px rgba(37,99,235,0.3);
+}
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── CATALOG UNIFIED SEARCH BAR ── */
+.catalog-search-bar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 16px 22px;
+  background: linear-gradient(to right, #f8fbff, #f0f5ff);
+  border-bottom: 1.5px solid var(--border-light);
+  flex-wrap: wrap;
+}
+.catalog-search-main {
+  position: relative;
+  flex: 1;
+  min-width: 220px;
+}
+.catalog-search-main .s-icon {
+  position: absolute; left: 13px; top: 50%; transform: translateY(-50%);
+  font-size: 14px; pointer-events: none;
+}
+.catalog-search-main input {
+  width: 100%;
+  padding: 10px 36px 10px 38px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 500;
+  color: var(--text);
+  background: white;
+  transition: all 0.18s;
+}
+.catalog-search-main input::placeholder { color: #94a3b8; font-weight: 400; }
+.catalog-search-main input:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+}
+.catalog-search-main .s-clear {
+  position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; cursor: pointer;
+  font-size: 13px; color: var(--muted); padding: 3px 5px;
+  border-radius: 5px; display: none; line-height: 1;
+}
+.catalog-search-main .s-clear:hover { background: var(--border-light); }
+
+/* ── PATIENT ORDER — COMPACT FORM ── */
+.patient-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+  padding: 14px 22px;
+  background: #f8fbff;
+  border-bottom: 1.5px solid var(--border-light);
+}
+.patient-selector-row {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed var(--border-light);
+  margin-bottom: 2px;
+}
+.patient-form-field { display: flex; flex-direction: column; gap: 4px; }
+.patient-form-field label {
+  font-size: 10.5px; font-weight: 700; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.8px;
+}
+.patient-form-field input {
+  padding: 7px 10px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  color: var(--text);
+  background: white;
+  transition: all 0.15s;
+}
+.patient-form-field input:focus {
+  outline: none; border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+}
+
+/* ── SPECIMEN BAR COMPACT ── */
+.specimen-bar-compact {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 22px;
+  background: linear-gradient(to right, #f0f9f0, #f8feff);
+  border-bottom: 1.5px solid var(--border-light);
+  flex-wrap: wrap;
+}
+.specimen-bar-compact label {
+  font-size: 12px; font-weight: 700; color: var(--muted);
+  white-space: nowrap; flex-shrink: 0;
+}
+
+/* ── PATIENT SUMMARY FOOTER ── */
+.patient-summary-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 22px;
+  background: linear-gradient(to right, #eef3fd, #e8f0ff);
+  border-top: 2px solid var(--border-light);
+  flex-wrap: wrap;
+}
+.psf-totals { display: flex; gap: 0; align-items: center; }
+.psf-stat {
+  padding: 0 20px;
+  border-right: 1.5px solid rgba(37,99,235,0.15);
+  text-align: center;
+}
+.psf-stat:first-child { padding-left: 0; }
+.psf-stat:last-child { border-right: none; }
+.psf-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 2px; }
+.psf-value { font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 800; color: var(--navy); }
+.psf-value.disc { color: var(--red); }
+.psf-value.net  { color: var(--green); font-size: 17px; }
+
+/* ── SECTION LABEL ── */
+
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1.5px;
+  background: linear-gradient(to right, rgba(37,99,235,0.2), transparent);
+}
+
+/* ── CARDS ── */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  margin-bottom: 24px;
+  border: 1.5px solid var(--border-light);
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+.card:hover { box-shadow: 0 6px 28px rgba(12,20,69,0.1); }
+
+.card-header {
+  padding: 16px 22px 14px;
+  border-bottom: 1.5px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(to right, #f0f5ff, #e8efff);
+  position: relative;
+}
+.card-header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+.card-header h3 {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: -0.3px;
+}
+
+.card-body { padding: 20px 22px; }
+
+/* ── SEARCH ROW ── */
+.search-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.search-field { position: relative; flex: 1; min-width: 160px; }
+.search-field .search-icon {
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  font-size: 14px; pointer-events: none; color: var(--muted);
+}
+.search-field input {
+  width: 100%;
+  padding: 10px 32px 10px 36px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 500;
+  color: var(--text);
+  background: var(--input-bg);
+  transition: all 0.18s;
+}
+.search-field input::placeholder { color: #94a3b8; font-weight: 400; }
+.search-field input:focus {
+  outline: none;
+  border-color: var(--blue);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+}
+.search-clear {
+  position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; cursor: pointer;
+  font-size: 13px; color: var(--muted); padding: 3px 5px;
+  border-radius: 5px; display: none; line-height: 1;
+}
+.search-clear:hover { background: var(--border-light); }
+
+.dept-filter {
+  padding: 10px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 500;
+  color: var(--text);
+  background: var(--input-bg);
+  cursor: pointer;
+  transition: all 0.18s;
+  min-width: 160px;
+}
+.dept-filter:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+
+/* ── TABLE ── */
+.table-wrapper {
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border-light);
+  overflow: auto;
+  max-height: 380px;
+  background: white;
+}
+
+table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+
+thead th {
+  background: linear-gradient(to bottom, #eef3fd, #e6edfc);
+  color: var(--blue-dark);
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  padding: 11px 12px;
+  text-align: left;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  border-bottom: 2px solid #c7d7f8;
+  white-space: nowrap;
+  font-family: 'Outfit', sans-serif;
+}
+thead th:first-child { width: 46px; text-align: center; }
+thead th.center { text-align: center; }
+
+tbody tr { border-bottom: 1px solid var(--border-light); transition: background 0.12s; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: #f5f8ff; }
+tbody td {
+  padding: 10px 12px;
+  color: var(--muted);
+  vertical-align: middle;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 500;
+}
+tbody td:first-child {
+  text-align: center;
+  color: #94a3b8;
+  font-size: 12px;
+  font-family: 'DM Mono', monospace;
+  font-weight: 500;
+}
+
+.test-name { font-weight: 700; color: var(--text); }
+
+/* dept badge */
+.dept-badge {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  background: rgba(37,99,235,0.08);
+  color: var(--blue);
+  white-space: nowrap;
+  letter-spacing: 0.2px;
+}
+
+.price-val {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* discount inputs */
+.disc-input {
+  width: 72px;
+  padding: 6px 8px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: 'DM Mono', monospace;
+  font-weight: 600;
+  text-align: right;
+  background: var(--input-bg);
+  transition: all 0.15s;
+  color: var(--text);
+}
+.disc-input:focus {
+  outline: none;
+  border-color: var(--cyan);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(6,182,212,0.12);
+}
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 16px;
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s;
+  white-space: nowrap;
+  letter-spacing: -0.1px;
+}
+.btn:active { transform: scale(0.97); }
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+  color: white;
+  box-shadow: 0 4px 14px rgba(37,99,235,0.3);
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(37,99,235,0.4); }
+
+.btn-accent {
+  background: linear-gradient(135deg, #0891b2, var(--cyan));
+  color: white;
+  box-shadow: 0 4px 12px rgba(8,145,178,0.3);
+}
+.btn-accent:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(8,145,178,0.4); }
+
+.btn-success {
+  background: var(--green);
+  color: white;
+  box-shadow: 0 4px 12px rgba(22,163,74,0.25);
+}
+.btn-success:hover { background: #15803d; transform: translateY(-1px); }
+
+.btn-warning {
+  background: var(--amber);
+  color: white;
+  box-shadow: 0 4px 12px rgba(217,119,6,0.2);
+}
+.btn-warning:hover { background: #b45309; transform: translateY(-1px); }
+
+.btn-danger {
+  background: white;
+  color: var(--red);
+  border-color: #fca5a5;
+  box-shadow: var(--shadow-sm);
+}
+.btn-danger:hover { background: var(--red); color: white; border-color: var(--red); }
+
+.btn-muted {
+  background: var(--card);
+  color: var(--muted);
+  border-color: var(--border);
+}
+.btn-muted:hover { border-color: var(--blue); color: var(--blue); background: rgba(37,99,235,0.04); }
+
+.btn-sm { padding: 6px 12px; font-size: 12.5px; border-radius: 8px; }
+.btn-icon { padding: 7px 9px; font-size: 13px; }
+
+/* Add button in catalog */
+.add-btn {
+  background: linear-gradient(135deg, #0891b2, var(--cyan));
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+  box-shadow: 0 3px 8px rgba(8,145,178,0.25);
+  letter-spacing: -0.1px;
+}
+.add-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(8,145,178,0.4); }
+.add-btn.added { background: var(--green); cursor: default; box-shadow: none; }
+.add-btn.added:hover { transform: none; }
+
+/* delete btn */
+.delete-btn {
+  background: none;
+  border: 1.5px solid #fca5a5;
+  color: var(--red);
+  padding: 5px 9px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Outfit', sans-serif;
+}
+.delete-btn:hover { background: var(--red); color: white; border-color: var(--red); }
+
+/* sample cell */
+.sample-cell {
+  cursor: pointer;
+  color: var(--cyan);
+  font-weight: 700;
+  font-size: 12.5px;
+  transition: color 0.15s;
+  white-space: nowrap;
+  font-family: 'Outfit', sans-serif;
+}
+.sample-cell:hover { color: var(--blue); text-decoration: underline; }
+.sample-cell.has-sample { color: var(--green); }
+.sample-cell.has-sample::before { content: '✓ '; }
+
+/* ── PAGINATION ── */
+.pagination-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 22px;
+  border-top: 1.5px solid var(--border-light);
+  background: #fafbff;
+}
+.page-info { font-size: 13px; color: var(--muted); font-weight: 500; }
+.page-info strong { color: var(--blue); }
+.page-controls { display: flex; gap: 6px; align-items: center; }
+
+.page-btn {
+  padding: 6px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: white;
+  font-size: 13px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.page-btn:hover:not(:disabled) { border-color: var(--blue); color: var(--blue); background: rgba(37,99,235,0.05); }
+.page-btn:disabled { opacity: 0.35; cursor: default; }
+.page-btn.active { background: var(--blue); color: white; border-color: var(--blue); }
+
+/* ── SUMMARY ROW ── */
+.summary-row { background: linear-gradient(to right, #eef3fd, #f0f9ff); border-top: 2px solid var(--border); }
+.summary-row td { font-weight: 800 !important; color: var(--blue-dark) !important; font-size: 13.5px; padding: 13px 12px !important; }
+.grand-total { font-size: 15px !important; color: var(--green) !important; font-family: 'DM Mono', monospace; }
+
+/* ── EMPTY STATE ── */
+.empty-state { text-align: center; padding: 40px 20px; color: var(--muted); }
+.empty-state .icon { font-size: 40px; margin-bottom: 10px; opacity: 0.4; }
+.empty-state p { font-size: 14px; }
+
+/* ── PATIENT TABLE HEADER ── */
+.patient-header-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.patient-count-badge {
+  background: rgba(37,99,235,0.1);
+  color: var(--blue);
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+/* ── SPECIMEN SELECTOR BAR ── */
+.specimen-selector-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 22px;
+  background: linear-gradient(to right, #f0f5ff, #f8faff);
+  border-bottom: 1.5px solid var(--border-light);
+  flex-wrap: wrap;
+}
+.specimen-selector-bar label {
+  font-size: 13px; font-weight: 700; color: var(--muted); white-space: nowrap;
+}
+
+/* ── MULTISELECT ── */
+.multiselect-wrapper { position: relative; flex: 1; min-width: 220px; max-width: 480px; }
+.multiselect-trigger {
+  width: 100%;
+  padding: 9px 36px 9px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: white;
+  font-size: 13.5px;
+  font-family: 'Outfit', sans-serif;
+  color: var(--muted);
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  min-height: 40px;
+  transition: all 0.15s;
+  position: relative;
+}
+.multiselect-trigger:hover { border-color: var(--blue); }
+.multiselect-trigger .placeholder { color: #94a3b8; font-size: 13.5px; font-weight: 400; }
+.multiselect-trigger .arrow {
+  position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+  font-size: 11px; color: var(--muted); transition: transform 0.2s; pointer-events: none;
+}
+.multiselect-trigger.open .arrow { transform: translateY(-50%) rotate(180deg); }
+.multiselect-trigger.open { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+
+.ms-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: rgba(37,99,235,0.1);
+  color: var(--blue);
+  border-radius: 20px; padding: 2px 8px;
+  font-size: 12px; font-weight: 700; white-space: nowrap;
+  font-family: 'Outfit', sans-serif;
+}
+.ms-chip-remove {
+  cursor: pointer; font-size: 11px; line-height: 1; opacity: 0.7;
+  margin-left: 1px; background: none; border: none; color: var(--blue); padding: 0;
+}
+.ms-chip-remove:hover { opacity: 1; }
+
+.multiselect-panel {
+  display: none;
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  width: 100%;
+  min-width: 260px;
+  background: white;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg);
+  z-index: 500;
+  overflow: hidden;
+  animation: dropDown 0.15s ease;
+}
+.multiselect-panel.open { display: block; }
+
+@keyframes dropDown {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.ms-search { padding: 10px 12px; border-bottom: 1px solid var(--border-light); }
+.ms-search input {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: 'Outfit', sans-serif;
+  transition: all 0.15s;
+}
+.ms-search input:focus { outline: none; border-color: var(--cyan); }
+.ms-options { max-height: 220px; overflow-y: auto; padding: 4px 0; }
+.ms-option {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 14px;
+  cursor: pointer; font-size: 13.5px; color: var(--muted);
+  transition: background 0.1s;
+  font-family: 'Outfit', sans-serif;
+}
+.ms-option:hover { background: rgba(37,99,235,0.04); }
+.ms-option.selected { background: rgba(37,99,235,0.07); color: var(--blue); font-weight: 700; }
+.ms-option input[type=checkbox] { accent-color: var(--blue); width: 14px; height: 14px; flex-shrink: 0; cursor: pointer; }
+.ms-footer {
+  padding: 8px 12px;
+  border-top: 1px solid var(--border-light);
+  display: flex; justify-content: space-between; align-items: center;
+  background: #fafbff;
+  font-size: 12px; color: var(--muted);
+}
+.ms-footer button {
+  font-size: 12px; font-family: 'Outfit', sans-serif; font-weight: 700;
+  border: none; background: none; cursor: pointer;
+  color: var(--red); padding: 3px 6px; border-radius: 5px; transition: background 0.12s;
+}
+.ms-footer button:hover { background: var(--red-light); }
+
+.apply-to-all-btn {
+  padding: 9px 16px;
+  background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(37,99,235,0.25);
+}
+.apply-to-all-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(37,99,235,0.35); }
+
+/* ── POPUP OVERLAYS ── */
+.popup-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(5,10,40,0.55);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  backdrop-filter: blur(4px);
+}
+.popup-box {
+  background: white;
+  width: 440px;
+  max-height: 82vh;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  border: 1.5px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: popIn 0.2s ease;
+}
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.93) translateY(10px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.popup-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1.5px solid var(--border-light);
+  background: linear-gradient(to right, #f0f5ff, #e8efff);
+}
+.popup-header h3 { font-size: 15px; font-weight: 800; color: var(--navy); }
+.popup-close {
+  background: none; border: none; cursor: pointer;
+  font-size: 18px; line-height: 1; color: var(--muted);
+  padding: 5px 7px; border-radius: 7px; transition: all 0.15s;
+}
+.popup-close:hover { background: var(--border-light); color: var(--text); }
+.popup-search { padding: 14px 20px 10px; border-bottom: 1px solid var(--border-light); }
+.popup-search input {
+  width: 100%;
+  padding: 9px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  font-family: 'Outfit', sans-serif;
+  transition: all 0.18s;
+}
+.popup-search input:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(6,182,212,0.12); }
+.specimen-list {
+  overflow-y: auto;
+  flex: 1;
+  padding: 10px 20px;
+}
+.specimen-list label {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13.5px; color: var(--muted);
+  transition: background 0.12s;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 500;
+}
+.specimen-list label:hover { background: rgba(37,99,235,0.05); }
+.specimen-list label input[type="checkbox"] { accent-color: var(--blue); width: 15px; height: 15px; cursor: pointer; flex-shrink: 0; }
+.popup-footer {
+  padding: 14px 20px;
+  border-top: 1.5px solid var(--border-light);
+  display: flex; gap: 10px; justify-content: flex-end;
+  background: #fafbff;
+}
+
+/* ── PRICE EDIT POPUP ── */
+.price-edit-popup {
+  display: none; position: fixed; inset: 0;
+  background: rgba(5,10,40,0.55);
+  justify-content: center; align-items: center;
+  z-index: 9999; backdrop-filter: blur(4px);
+}
+.price-edit-box {
+  background: white;
+  width: 380px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  border: 1.5px solid var(--border-light);
+  overflow: hidden;
+  animation: popIn 0.2s ease;
+}
+.price-edit-header {
+  padding: 16px 20px;
+  border-bottom: 1.5px solid var(--border-light);
+  background: linear-gradient(to right, #f0f5ff, #e8efff);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.price-edit-header h3 { font-size: 15px; font-weight: 800; color: var(--navy); }
+.price-edit-body { padding: 20px; }
+.price-edit-test-name { font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.price-edit-dept { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.price-edit-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.price-edit-row label { font-size: 13px; font-weight: 700; color: var(--muted); min-width: 90px; }
+.price-edit-row input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-family: 'DM Mono', monospace;
+  font-weight: 700;
+  color: var(--text);
+  background: var(--input-bg);
+  transition: all 0.15s;
+}
+.price-edit-row input:focus { outline: none; border-color: var(--blue); background: white; box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+.price-edit-footer {
+  padding: 14px 20px;
+  border-top: 1.5px solid var(--border-light);
+  display: flex; justify-content: flex-end; gap: 10px;
+  background: #fafbff;
+}
+.price-clickable {
+  cursor: pointer;
+  border-bottom: 1.5px dashed var(--cyan);
+  transition: color 0.15s;
+}
+.price-clickable:hover { color: var(--cyan); }
+.price-clickable:hover::after { content: ' ✏️'; font-size: 10px; }
+
+/* ── TOAST ── */
+.toast-container {
+  position: fixed; bottom: 24px; right: 24px;
+  z-index: 9998; display: flex; flex-direction: column; gap: 8px;
+}
+.toast {
+  background: var(--navy);
+  color: white;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-size: 13.5px;
+  font-weight: 600;
+  font-family: 'Outfit', sans-serif;
+  box-shadow: var(--shadow-lg);
+  animation: toastIn 0.25s ease, toastOut 0.3s ease 2.4s forwards;
+  display: flex; align-items: center; gap: 8px;
+  max-width: 340px;
+}
+.toast.success { border-left: 4px solid #22c55e; }
+.toast.warning { border-left: 4px solid #f59e0b; }
+.toast.danger  { border-left: 4px solid var(--red); }
+@keyframes toastIn  { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes toastOut { to   { opacity: 0; transform: translateY(8px); } }
+
+/* ── PACKAGES ── */
+.pkg-builder {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+@media (max-width: 860px) { .pkg-builder { grid-template-columns: 1fr; } }
+
+.pkg-form-section {
+  background: var(--input-bg);
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 18px;
+}
+
+.pkg-form-section h4 {
+  font-size: 11px; font-weight: 800;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin-bottom: 14px;
+}
+.pkg-field { margin-bottom: 12px; }
+.pkg-field label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+.pkg-field input, .pkg-field select {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 500;
+  color: var(--text);
+  background: var(--input-bg);
+  transition: all 0.15s;
+}
+.pkg-field input:focus, .pkg-field select:focus {
+  outline: none; border-color: var(--blue); background: white;
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+}
+.pkg-test-search { padding: 8px 10px; border-bottom: 1px solid var(--border-light); }
+.pkg-test-search input {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: 'Outfit', sans-serif;
+}
+.pkg-test-search input:focus { outline: none; border-color: var(--cyan); }
+.pkg-test-list { max-height: 360px; overflow-y: auto; padding: 4px 0; }
+.pkg-test-option {
+  display: flex; align-items: center; gap: 9px;
+  padding: 7px 12px;
+  cursor: pointer; font-size: 13px;
+  color: var(--muted); transition: background 0.1s;
+  font-family: 'Outfit', sans-serif; font-weight: 500;
+}
+.pkg-test-option:hover { background: rgba(37,99,235,0.04); }
+.pkg-test-option.checked { background: rgba(37,99,235,0.07); color: var(--blue); font-weight: 700; }
+.pkg-test-option input { accent-color: var(--blue); width: 14px; height: 14px; flex-shrink: 0; cursor: pointer; }
+.pkg-test-option .opt-dept { font-size: 11px; color: #94a3b8; margin-left: auto; }
+.pkg-selected-chips {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  min-height: 48px; max-height: 120px; overflow-y: auto;
+  padding: 8px 10px;
+  border: 1.5px dashed var(--border);
+  border-radius: var(--radius-sm);
+  background: white;
+  margin-bottom: 12px;
+}
+.pkg-selected-chips .empty-hint { font-size: 12.5px; color: #94a3b8; align-self: center; }
+.pkg-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(37,99,235,0.1); color: var(--blue);
+  border-radius: 20px; padding: 3px 10px;
+  font-size: 12px; font-weight: 700;
+  font-family: 'Outfit', sans-serif;
+}
+.pkg-chip-remove {
+  background: none; border: none; cursor: pointer;
+  color: var(--blue); font-size: 12px; padding: 0; opacity: 0.7; line-height: 1;
+}
+.pkg-chip-remove:hover { opacity: 1; }
+.packages-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 18px;
+  padding-bottom: 32px;
+}
+.pkg-card {
+  background: white;
+  border: 1.5px solid var(--border-light);
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.pkg-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+}
+.pkg-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: rgba(37,99,235,0.2); }
+.pkg-card-name { font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.pkg-card-dept { font-size: 11.5px; color: var(--muted); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+.pkg-card-tests { font-size: 12px; color: var(--muted); margin-bottom: 12px; line-height: 1.6; }
+.pkg-card-tests strong { color: var(--blue); font-size: 11px; }
+.pkg-card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border-light); }
+.pkg-price { font-size: 17px; font-weight: 800; font-family: 'DM Mono', monospace; color: var(--green); }
+.pkg-orig-price { font-size: 11.5px; color: #94a3b8; text-decoration: line-through; font-family: 'DM Mono', monospace; }
+.pkg-actions { display: flex; gap: 6px; }
+.pkg-add-btn {
+  background: linear-gradient(135deg, #0891b2, var(--cyan));
+  color: white; border: none;
+  padding: 6px 12px; border-radius: 7px;
+  font-size: 12px; font-family: 'Outfit', sans-serif;
+  font-weight: 700; cursor: pointer;
+  transition: all 0.14s;
+}
+.pkg-add-btn:hover { transform: translateY(-1px); }
+.pkg-edit-btn {
+  background: var(--amber-light); color: var(--amber);
+  border: 1.5px solid #fde68a;
+  padding: 5px 10px; border-radius: 7px;
+  font-size: 12px; cursor: pointer; transition: all 0.14s;
+  font-family: 'Outfit', sans-serif; font-weight: 700;
+}
+.pkg-edit-btn:hover { background: var(--amber); color: white; }
+.pkg-del-btn {
+  background: var(--red-light); color: var(--red);
+  border: 1.5px solid #fca5a5;
+  padding: 5px 8px; border-radius: 7px;
+  font-size: 12px; cursor: pointer; transition: all 0.14s;
+}
+.pkg-del-btn:hover { background: var(--red); color: white; }
+.pkg-empty { text-align: center; padding: 48px 20px; color: var(--muted); grid-column: 1/-1; }
+.pkg-empty .icon { font-size: 44px; margin-bottom: 12px; opacity: 0.35; }
+.pkg-empty p { font-size: 14px; }
+
+/* ── PRICE TAB ── */
+.price-tab-controls {
+  display: flex; gap: 10px; align-items: center; margin-bottom: 14px; flex-wrap: wrap;
+}
+.price-tab-controls input {
+  flex: 1; min-width: 180px;
+  padding: 9px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  font-family: 'Outfit', sans-serif; font-weight: 500;
+  background: var(--input-bg); color: var(--text);
+}
+.price-tab-controls input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+.price-modified-badge {
+  display: inline-block;
+  background: var(--amber-light); color: var(--amber);
+  border-radius: 20px; padding: 2px 9px;
+  font-size: 11.5px; font-weight: 800;
+  margin-left: 6px; font-family: 'Outfit', sans-serif;
+}
+
+/* ── HIGHLIGHT ── */
+.highlight { background: #fef08a; border-radius: 2px; }
+.no-results td { text-align: center; padding: 30px !important; color: var(--muted); font-style: italic; }
+
+
+/* patient-info-bar replaced by patient-form-grid above */
+
+/* ── STICKY BILL BAR ── */
+/* ── PATIENT SELECTOR BUTTON ── */
+.select-patient-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #2563eb, #06b6d4);
+  color: white;
+  border: none;
+  padding: 9px 18px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: 'Outfit', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 14px rgba(37,99,235,0.3);
+  letter-spacing: 0.2px;
+}
+.select-patient-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(37,99,235,0.4); }
+.select-patient-btn .sp-icon { font-size: 15px; }
+
+.selected-patient-chip {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, rgba(37,99,235,0.08), rgba(6,182,212,0.08));
+  border: 1.5px solid rgba(37,99,235,0.25);
+  border-radius: 10px;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--blue);
+}
+.selected-patient-chip.visible { display: flex; }
+.selected-patient-chip .chip-name { font-size: 14px; font-weight: 700; color: var(--text); }
+.selected-patient-chip .chip-detail { font-size: 11px; color: var(--muted); font-weight: 500; }
+.chip-change-btn {
+  background: none; border: none; cursor: pointer;
+  color: var(--blue); font-size: 11px; font-weight: 700;
+  padding: 3px 8px; border-radius: 6px;
+  background: rgba(37,99,235,0.1);
+  transition: all 0.15s;
+}
+.chip-change-btn:hover { background: rgba(37,99,235,0.2); }
+
+/* ── PATIENT SELECT MODAL ── */
+.ps-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(12,20,69,0.65);
+  backdrop-filter: blur(6px);
+  z-index: 800;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.ps-modal-overlay.open { display: flex; }
+.ps-modal {
+  background: white;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 760px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(12,20,69,0.25);
+  animation: slideUp 0.25s ease;
+}
+@keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.ps-modal-head {
+  background: linear-gradient(135deg, var(--navy) 0%, #1e3a8a 100%);
+  padding: 22px 28px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ps-modal-head h2 { font-size: 18px; font-weight: 800; }
+.ps-modal-head p { font-size: 13px; opacity: 0.6; margin-top: 2px; }
+.ps-close-btn {
+  background: rgba(255,255,255,0.1); border: none; color: white;
+  width: 32px; height: 32px; border-radius: 8px; font-size: 16px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+}
+.ps-close-btn:hover { background: rgba(255,255,255,0.2); }
+.ps-search-bar {
+  padding: 16px 24px 12px;
+  border-bottom: 1px solid var(--border-light);
+  background: var(--input-bg);
+}
+.ps-search-input {
+  width: 100%;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px 10px 38px;
+  font-size: 14px;
+  font-family: 'Outfit', sans-serif;
+  background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") no-repeat 12px center;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.ps-search-input:focus { border-color: var(--blue); }
+.ps-patient-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 16px 16px;
+}
+.ps-patient-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border: 1.5px solid var(--border-light);
+  border-radius: 12px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: white;
+}
+.ps-patient-card:hover {
+  border-color: var(--blue);
+  background: rgba(37,99,235,0.03);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(37,99,235,0.1);
+}
+.ps-avatar {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #2563eb, #06b6d4);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 800; color: white;
+  flex-shrink: 0;
+}
+.ps-patient-info { flex: 1; min-width: 0; }
+.ps-patient-name { font-size: 15px; font-weight: 700; color: var(--text); }
+.ps-patient-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.ps-patient-id-badge {
+  font-size: 11px; font-weight: 700;
+  background: var(--blue-pale);
+  color: var(--blue);
+  padding: 3px 9px; border-radius: 20px;
+  font-family: 'DM Mono', monospace;
+  flex-shrink: 0;
+}
+.ps-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--muted);
+}
+.ps-empty .ps-empty-icon { font-size: 40px; margin-bottom: 10px; }
+.ps-empty p { font-size: 14px; font-weight: 500; }
+.ps-empty small { font-size: 12px; opacity: 0.6; }
+
+/* ── BOOK TEST BUTTON ── */
+.book-test-btn {
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  color: white;
+  border: none;
+  padding: 11px 24px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 800;
+  font-family: 'Outfit', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 16px rgba(22,163,74,0.35);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: 0.2px;
+}
+.book-test-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(22,163,74,0.45); }
+.book-test-btn:active { transform: translateY(0); }
+.book-test-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* ── BOOKING CONFIRM MODAL ── */
+.booking-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(12,20,69,0.65);
+  backdrop-filter: blur(6px);
+  z-index: 900;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.booking-modal-overlay.open { display: flex; }
+.booking-modal {
+  background: white;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 520px;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(12,20,69,0.25);
+  animation: slideUp 0.25s ease;
+}
+.booking-modal-head {
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  padding: 24px 28px 20px;
+  color: white;
+  text-align: center;
+}
+.booking-success-icon {
+  font-size: 48px;
+  margin-bottom: 8px;
+  display: block;
+}
+.booking-modal-head h2 { font-size: 20px; font-weight: 800; }
+.booking-modal-head p { font-size: 13px; opacity: 0.75; margin-top: 4px; }
+.booking-modal-body { padding: 24px 28px; }
+.booking-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-light);
+  font-size: 14px;
+}
+.booking-detail-row:last-child { border-bottom: none; }
+.booking-detail-row .bd-label { color: var(--muted); font-weight: 500; }
+.booking-detail-row .bd-val { font-weight: 700; color: var(--text); text-align: right; }
+.booking-id-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #dcfce7, #d1fae5);
+  color: #16a34a;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  border: 1.5px solid rgba(22,163,74,0.25);
+}
+.booking-modal-footer {
+  padding: 0 28px 24px;
+  display: flex;
+  gap: 10px;
+}
+.btn-booking-close {
+  flex: 1;
+  padding: 11px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: 'Outfit', sans-serif;
+  cursor: pointer;
+  border: 1.5px solid var(--border);
+  background: white;
+  color: var(--muted);
+  transition: all 0.15s;
+}
+.btn-booking-close:hover { background: var(--input-bg); }
+.btn-booking-new {
+  flex: 1;
+  padding: 11px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: 'Outfit', sans-serif;
+  cursor: pointer;
+  border: none;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: white;
+  transition: all 0.15s;
+  box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+}
+.btn-booking-new:hover { box-shadow: 0 6px 18px rgba(37,99,235,0.4); }
+
+.sticky-bill-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(135deg, #0c1445 0%, #1e3a8a 100%);
+  color: white;
+  padding: 12px 28px;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  z-index: 200;
+  box-shadow: 0 -6px 30px rgba(12,20,69,0.25);
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.sticky-bill-bar.visible { display: flex; }
+.sticky-bill-stats { display: flex; align-items: center; gap: 0; }
+.sticky-bill-stat { padding: 0 20px; border-right: 1px solid rgba(255,255,255,0.12); }
+.sticky-bill-stat:first-child { padding-left: 0; }
+.sticky-bill-stat:last-child { border-right: none; }
+.sticky-bill-stat .s-label { font-size: 10px; font-weight: 700; opacity: 0.5; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+.sticky-bill-stat .s-val { font-family: 'DM Mono', monospace; font-size: 18px; font-weight: 700; }
+.sticky-bill-stat .s-val.accent { color: #22d3ee; }
+.sticky-bill-stat .s-val.red { color: #f87171; }
+.sticky-bill-stat .s-val.green { color: #4ade80; }
+.bill-bar-actions { display: flex; gap: 8px; }
+.btn-print {
+  background: white; color: #0c1445;
+  border: none; padding: 9px 18px;
+  border-radius: 9px; font-size: 13px;
+  font-family: 'Outfit', sans-serif; font-weight: 800;
+  cursor: pointer; transition: all 0.15s;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+}
+.btn-print:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+.btn-clear-all {
+  background: rgba(220,38,38,0.2); color: #fca5a5;
+  border: 1.5px solid rgba(220,38,38,0.3);
+  padding: 8px 14px; border-radius: 9px;
+  font-size: 13px; font-family: 'Outfit', sans-serif;
+  font-weight: 700; cursor: pointer; transition: all 0.15s;
+}
+.btn-clear-all:hover { background: rgba(220,38,38,0.5); color: white; }
+
+/* ── TEST DETAIL MODAL ── */
+.test-detail-modal {
+  display: none; position: fixed; inset: 0;
+  background: rgba(5,10,40,0.65); backdrop-filter: blur(5px);
+  justify-content: center; align-items: center;
+  z-index: 9999;
+}
+.test-detail-box {
+  background: white; width: 580px; max-width: 96vw;
+  max-height: 88vh; border-radius: 18px;
+  box-shadow: 0 24px 60px rgba(12,20,69,0.35);
+  border: 1.5px solid var(--border-light);
+  display: flex; flex-direction: column; overflow: hidden;
+  animation: popIn 0.22s ease;
+}
+.test-detail-head {
+  padding: 20px 22px 18px;
+  background: linear-gradient(135deg, #0c1445, #1d4ed8);
+  color: white; position: relative;
+}
+.test-detail-head .td-dept-badge {
+  display: inline-block; background: rgba(255,255,255,0.18);
+  color: white; border-radius: 20px; padding: 3px 10px;
+  font-size: 11px; font-weight: 700; margin-bottom: 8px;
+  letter-spacing: 0.2px;
+}
+.test-detail-head h2 { font-size: 17px; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 6px; line-height: 1.3; }
+.test-detail-head p { font-size: 12.5px; opacity: 0.72; line-height: 1.55; }
+.td-close-btn {
+  position: absolute; top: 14px; right: 14px;
+  background: rgba(255,255,255,0.15); border: none;
+  color: white; font-size: 15px; padding: 5px 9px;
+  border-radius: 8px; cursor: pointer; transition: background 0.15s;
+}
+.td-close-btn:hover { background: rgba(255,255,255,0.25); }
+.test-detail-body { overflow-y: auto; padding: 18px 22px; flex: 1; }
+.td-section-title {
+  font-size: 10px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 1.3px; color: var(--blue); margin-bottom: 10px; margin-top: 20px;
+  display: flex; align-items: center; gap: 7px;
+}
+.td-section-title:first-child { margin-top: 0; }
+.td-section-title::after { content: ''; flex: 1; height: 1.5px; background: linear-gradient(to right, rgba(37,99,235,0.15), transparent); }
+.td-param-card {
+  background: var(--input-bg); border: 1.5px solid var(--border-light);
+  border-radius: 10px; padding: 10px 14px; margin-bottom: 8px;
+}
+.td-param-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 4px; }
+.td-param-name { font-size: 13.5px; font-weight: 700; color: var(--text); }
+.td-param-range {
+  font-family: 'DM Mono', monospace; font-size: 12.5px;
+  font-weight: 700; color: var(--green);
+  background: var(--green-light); padding: 3px 10px;
+  border-radius: 6px; white-space: nowrap; flex-shrink: 0;
+}
+.td-param-unit { font-size: 11.5px; color: var(--muted); font-family: 'DM Mono', monospace; }
+.td-param-note { font-size: 11.5px; color: #64748b; margin-top: 5px; font-style: italic; }
+.td-covers { display: flex; flex-wrap: wrap; gap: 6px; }
+.td-cover-tag {
+  background: rgba(37,99,235,0.08); color: var(--blue);
+  border-radius: 20px; padding: 4px 12px;
+  font-size: 12px; font-weight: 700;
+}
+.td-specimen-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 600; color: var(--teal);
+  background: rgba(13,148,136,0.08); padding: 8px 14px;
+  border-radius: 10px; border: 1.5px solid rgba(13,148,136,0.2);
+  font-family: 'Outfit', sans-serif;
+}
+.test-detail-footer {
+  padding: 14px 22px; border-top: 1.5px solid var(--border-light);
+  display: flex; justify-content: flex-end; gap: 10px; background: #fafbff;
+}
+
+/* ── INFO BUTTON ── */
+.info-btn {
+  background: none; border: none; cursor: pointer;
+  font-size: 12px; opacity: 0.5;
+  padding: 2px 4px; border-radius: 5px; transition: all 0.12s;
+  vertical-align: middle; margin-left: 4px;
+}
+.info-btn:hover { opacity: 1; background: rgba(37,99,235,0.08); }
+
+/* ── SAMPLE REPORT MODAL ── */
+.sr-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(5,10,40,0.7); backdrop-filter: blur(6px);
+  justify-content: center; align-items: center;
+  z-index: 99999; padding: 20px;
+}
+.sr-overlay.open { display: flex; }
+.sr-box {
+  background: #f3f4f6; width: 760px; max-width: 98vw;
+  max-height: 92vh; border-radius: 18px;
+  box-shadow: 0 32px 80px rgba(5,10,40,0.45);
+  display: flex; flex-direction: column; overflow: hidden;
+  animation: popIn 0.22s ease;
+}
+.sr-toolbar {
+  background: linear-gradient(135deg, #0c1445, #1e3a8a);
+  padding: 12px 18px; display: flex;
+  align-items: center; justify-content: space-between;
+  flex-shrink: 0;
+}
+.sr-toolbar-title { font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.85); }
+.sr-toolbar-btn {
+  background: rgba(255,255,255,0.12); color: white;
+  border: 1px solid rgba(255,255,255,0.18); padding: 7px 14px;
+  border-radius: 8px; font-size: 12.5px; font-weight: 700;
+  font-family: 'Outfit', sans-serif; cursor: pointer; transition: all 0.15s;
+}
+.sr-toolbar-btn:hover { background: rgba(255,255,255,0.22); }
+.sr-close-btn {
+  background: rgba(220,38,38,0.2); color: #fca5a5;
+  border: 1px solid rgba(220,38,38,0.3); padding: 7px 12px;
+  border-radius: 8px; font-size: 14px; cursor: pointer;
+  font-family: 'Outfit', sans-serif; font-weight: 700; transition: all 0.15s;
+}
+.sr-close-btn:hover { background: rgba(220,38,38,0.5); color: white; }
+.sr-scroll-area { overflow-y: auto; flex: 1; padding: 20px; background: #e8edf4; }
+
+/* ── REPORT PAPER ── */
+.sr-report {
+  background: white; max-width: 700px; margin: 0 auto;
+  border-radius: 8px; overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  position: relative;
+}
+.sr-watermark {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%) rotate(-35deg);
+  font-size: 72px; font-weight: 900; color: rgba(37,99,235,0.04);
+  letter-spacing: -2px; pointer-events: none;
+  white-space: nowrap; z-index: 0; font-family: 'Outfit', sans-serif;
+}
+.sr-report > * { position: relative; z-index: 1; }
+
+/* Report header */
+.sr-header {
+  background: linear-gradient(135deg, #0c1445 0%, #1d4ed8 100%);
+  padding: 22px 28px 18px; color: white;
+}
+.sr-header-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
+.sr-lab-name { font-size: 22px; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 2px; }
+.sr-lab-sub { font-size: 11.5px; opacity: 0.65; }
+.sr-report-badge {
+  background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px; padding: 8px 14px; text-align: right; flex-shrink: 0;
+}
+.sr-report-badge .badge-label { font-size: 9px; font-weight: 700; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px; }
+.sr-report-badge .badge-val { font-family: 'DM Mono', monospace; font-size: 14px; font-weight: 700; margin-top: 2px; }
+.sr-header-divider { border: none; border-top: 1px solid rgba(255,255,255,0.15); margin: 14px 0; }
+.sr-patient-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+}
+.sr-patient-field { display: flex; flex-direction: column; gap: 2px; }
+.sr-patient-field .pf-label { font-size: 9px; font-weight: 700; opacity: 0.55; text-transform: uppercase; letter-spacing: 1px; }
+.sr-patient-field .pf-val { font-size: 13px; font-weight: 700; }
+
+/* Test info bar */
+.sr-test-bar {
+  background: #f0f5ff; border-bottom: 2px solid #c7d7f8;
+  padding: 12px 28px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+}
+.sr-test-name { font-size: 16px; font-weight: 900; color: #0c1445; flex: 1; letter-spacing: -0.3px; }
+.sr-test-dept {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(37,99,235,0.1); color: var(--blue);
+  border-radius: 20px; padding: 4px 12px; font-size: 11.5px; font-weight: 700;
+}
+.sr-specimen-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(13,148,136,0.1); color: #0d9488;
+  border-radius: 20px; padding: 4px 12px; font-size: 11.5px; font-weight: 700;
+}
+
+/* Results table */
+.sr-results-section { padding: 20px 28px; }
+.sr-results-title {
+  font-size: 10px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 1.5px; color: var(--blue);
+  margin-bottom: 12px; padding-bottom: 8px;
+  border-bottom: 2px solid #e8efff;
+  display: flex; align-items: center; gap: 8px;
+}
+.sr-results-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.sr-results-table thead th {
+  background: linear-gradient(to bottom, #eef3fd, #e6edfc);
+  color: #1e40af; font-weight: 800; font-size: 10.5px;
+  text-transform: uppercase; letter-spacing: 0.6px;
+  padding: 9px 12px; text-align: left;
+  border-bottom: 2px solid #c7d7f8;
+  font-family: 'Outfit', sans-serif;
+}
+.sr-results-table tbody tr { border-bottom: 1px solid #f0f5ff; }
+.sr-results-table tbody tr:last-child { border-bottom: none; }
+.sr-results-table tbody tr:hover { background: #fafbff; }
+.sr-results-table td { padding: 10px 12px; vertical-align: middle; font-family: 'Outfit', sans-serif; }
+.sr-param-name { font-weight: 700; color: #0f172a; }
+.sr-param-result {
+  font-family: 'DM Mono', monospace; font-size: 14px; font-weight: 700;
+  color: #0c1445;
+}
+.sr-param-result.high { color: #dc2626; }
+.sr-param-result.low  { color: #2563eb; }
+.sr-param-result.normal { color: #16a34a; }
+.sr-flag {
+  display: inline-block; font-size: 10px; font-weight: 800;
+  padding: 2px 7px; border-radius: 10px; margin-left: 6px;
+  vertical-align: middle;
+}
+.sr-flag.H { background: #fee2e2; color: #dc2626; }
+.sr-flag.L { background: #dbeafe; color: #2563eb; }
+.sr-flag.N { background: #dcfce7; color: #16a34a; }
+.sr-ref-range { font-size: 12px; color: #64748b; font-family: 'DM Mono', monospace; }
+.sr-unit { font-size: 11.5px; color: #94a3b8; font-family: 'DM Mono', monospace; }
+
+/* Interpretation */
+.sr-interp-section { padding: 0 28px 20px; }
+.sr-interp-box {
+  background: linear-gradient(135deg, #f0f9ff, #e8f5ff);
+  border: 1.5px solid rgba(37,99,235,0.15);
+  border-left: 4px solid var(--blue);
+  border-radius: 10px; padding: 14px 16px;
+}
+.sr-interp-title { font-size: 11px; font-weight: 800; color: var(--blue); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.sr-interp-text { font-size: 13px; color: #374151; line-height: 1.65; }
+
+/* Footer */
+.sr-footer {
+  background: #f8faff; border-top: 1.5px solid #e2e8f0;
+  padding: 14px 28px;
+}
+.sr-footer-row { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+.sr-footer-note { font-size: 10.5px; color: #94a3b8; line-height: 1.5; flex: 1; }
+.sr-sig-block { text-align: right; }
+.sr-sig-line { width: 130px; border-top: 1.5px solid #cbd5e1; margin: 0 0 4px auto; }
+.sr-sig-label { font-size: 10.5px; color: #64748b; font-weight: 700; }
+.sr-sample-badge {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border: 1.5px solid #f59e0b; color: #92400e;
+  display: inline-block; font-size: 10px; font-weight: 800;
+  padding: 3px 10px; border-radius: 20px; letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+@media print {
+  .sr-toolbar { display: none !important; }
+  .sr-overlay { position: static !important; padding: 0 !important; background: none !important; }
+  .sr-box { border-radius: 0 !important; max-height: none !important; box-shadow: none !important; background: white !important; }
+  .sr-scroll-area { overflow: visible !important; padding: 0 !important; background: white !important; }
+  .sr-report { box-shadow: none !important; }
+}
+
+/* ── DEPT BADGE COLORS ── */
+.dept-badge.hema   { background: rgba(220,38,38,0.08);   color: #dc2626; }
+.dept-badge.bio    { background: rgba(13,148,136,0.08);  color: #0d9488; }
+.dept-badge.sero   { background: rgba(124,58,237,0.08);  color: #7c3aed; }
+.dept-badge.micro  { background: rgba(217,119,6,0.08);   color: #d97706; }
+.dept-badge.path   { background: rgba(37,99,235,0.08);   color: #2563eb; }
+.dept-badge.cyto   { background: rgba(6,182,212,0.08);   color: #0891b2; }
+.dept-badge.immuno { background: rgba(22,163,74,0.08);   color: #16a34a; }
+.dept-badge.clin   { background: rgba(236,72,153,0.08);  color: #db2777; }
+.dept-badge.gen    { background: rgba(100,116,139,0.08); color: #475569; }
+
+/* pad body for sticky bar */
+body { padding-bottom: 70px; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .navbar { padding: 0 16px; }
+  .container { padding: 16px 12px 40px; }
+  .search-row { flex-wrap: wrap; }
+  .popup-box { width: 96vw; }
+  table { font-size: 12px; }
+  thead th, tbody td { padding: 8px; }
+  .tab-bar { width: 100%; overflow-x: auto; }
+  .tab-btn { padding: 8px 10px; font-size: 12.5px; }
+  .ph-inner { flex-direction: column; align-items: flex-start; }
+  .ph-stats { flex-wrap: wrap; }
+  .ph-stat { padding: 6px 16px; }
+  .catalog-layout { grid-template-columns: 1fr; }
+  .catalog-right { position: static; }
+}
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="logo-icon">⚕️</div>
+    <span class="logo-text">Medi<span>Core</span></span>
+  </a>
+  <div class="nav-right">
+    <div class="clock-badge" id="clockBadge">--:--:--</div>
+    <a href="index.html" class="btn-home">← Home</a>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="ph-inner">
+    <div class="ph-left">
+      <h1>🔬 Lab Test Details</h1>
+      <p><span class="status-dot"></span>Pathology Management System v2.0</p>
+    </div>
+    <div class="ph-stats">
+      <div class="ph-stat">
+        <div class="ph-stat-num" id="statTotal">0</div>
+        <div class="ph-stat-label">Total Tests</div>
+      </div>
+      <div class="ph-stat">
+        <div class="ph-stat-num accent" id="statAdded">0</div>
+        <div class="ph-stat-label">Added</div>
+      </div>
+      <div class="ph-stat">
+        <div class="ph-stat-num green" id="statBill">₹0</div>
+        <div class="ph-stat-label">Bill Amount</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- TAB BAR -->
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('catalog')" id="tab-catalog">📋 Test Catalog</button>
+    <button class="tab-btn" onclick="switchTab('packages')" id="tab-packages">📦 Packages</button>
+    <button class="tab-btn" onclick="switchTab('prices')" id="tab-prices">💰 Edit Prices</button>
+  </div>
+
+  <!-- ══ TAB: TEST CATALOG ══ -->
+  <div class="tab-panel active" id="panel-catalog">
+
+    <!-- ── CATALOG CARD ── -->
+    <p class="section-label">Test Catalog</p>
+    <div class="card">
+      <div class="card-header">
+        <h3>📋 Test Catalog</h3>
+        <span id="filteredCount" style="font-size:13px;color:var(--muted);font-weight:600;"></span>
+      </div>
+      <!-- UNIFIED SEARCH BAR -->
+      <div class="catalog-search-bar">
+        <div class="catalog-search-main">
+          <span class="s-icon">🔍</span>
+          <input type="text" id="searchName" placeholder="Search by test name or department..." oninput="onCatalogSearch(this)">
+          <button class="s-clear" id="clearSearch" onclick="clearCatalogSearch()">✕</button>
+        </div>
+        <select class="dept-filter" id="deptFilter" onchange="searchTest()" style="min-width:190px;">
+          <option value="">All Departments</option>
+        </select>
+      </div>
+      <!-- TABLE -->
+      <div class="table-wrapper" style="max-height:400px;">
+        <table id="testTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Test Name</th>
+              <th>Department</th>
+              <th class="center">Price (₹)</th>
+              <th class="center">Action</th>
+            </tr>
+          </thead>
+          <tbody id="testTbody"></tbody>
+        </table>
+      </div>
+      <!-- PAGINATION -->
+      <div class="pagination-row">
+        <div class="page-info">
+          Showing <strong id="pageRangeStart">1</strong>–<strong id="pageRangeEnd">12</strong>
+          of <strong id="pageTotalItems">0</strong> tests
+        </div>
+        <div class="page-controls">
+          <button class="page-btn" id="prevBtn" onclick="prevPage()" disabled>← Prev</button>
+          <span id="pageInfo" style="font-size:13px;color:var(--muted);font-weight:700;padding:0 6px;"></span>
+          <button class="page-btn" id="nextBtn" onclick="nextPage()">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PATIENT ORDER CARD ── -->
+    <p class="section-label">Patient Order</p>
+    <div class="card">
+      <!-- HEADER -->
+      <div class="card-header">
+        <h3>🩺 Patient Test List <span class="patient-count-badge" id="patientCountBadge">0 tests</span></h3>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button class="book-test-btn" id="bookTestBtn" onclick="initiateBooking()" disabled>
+            📋 Book Test
+          </button>
+        </div>
+      </div>
+
+      <!-- PATIENT FORM GRID -->
+      <div class="patient-form-grid">
+        <div class="patient-selector-row">
+          <button class="select-patient-btn" onclick="openPatientSelector()">
+            <span class="sp-icon">👤</span> Select Saved Patient
+          </button>
+          <div class="selected-patient-chip" id="selectedPatientChip">
+            <span style="font-size:20px;">👤</span>
+            <div>
+              <div class="chip-name" id="chipName">—</div>
+              <div class="chip-detail" id="chipDetail">—</div>
+            </div>
+            <button class="chip-change-btn" onclick="openPatientSelector()">Change</button>
+            <button class="chip-change-btn" onclick="clearSelectedPatient()" style="color:var(--red);background:rgba(220,38,38,0.08);">✕</button>
+          </div>
+          <span id="noSavedPatientNote" style="font-size:12px;color:var(--muted);display:none;">
+            💡 No patients found. Register in <strong>Patient Registration</strong> first.
+          </span>
+        </div>
+        <div class="patient-form-field">
+          <label>Patient Name</label>
+          <input type="text" id="patientName" placeholder="Full name">
+        </div>
+        <div class="patient-form-field">
+          <label>Age / Gender</label>
+          <input type="text" id="patientAge" placeholder="e.g. 35 / M">
+        </div>
+        <div class="patient-form-field">
+          <label>Mobile</label>
+          <input type="text" id="patientMobile" placeholder="10-digit number">
+        </div>
+        <div class="patient-form-field">
+          <label>Ref. Doctor</label>
+          <input type="text" id="patientDoctor" placeholder="Dr. Name">
+        </div>
+        <div class="patient-form-field">
+          <label>Sample Date</label>
+          <input type="date" id="patientDate">
+        </div>
+      </div>
+
+      <!-- SPECIMEN BAR -->
+      <div class="specimen-bar-compact">
+        <label>🧫 Specimen Type:</label>
+        <div class="multiselect-wrapper" id="globalSpecimenWrapper" style="max-width:400px;">
+          <button type="button" class="multiselect-trigger" id="globalSpecimenTrigger" onclick="toggleSpecimenDropdown()">
+            <span class="placeholder" id="globalSpecimenPlaceholder">Select specimen(s)...</span>
+            <span class="arrow">▼</span>
+          </button>
+          <div class="multiselect-panel" id="globalSpecimenPanel">
+            <div class="ms-search">
+              <input type="text" id="globalSpecimenSearch" placeholder="Search specimen..." oninput="filterGlobalSpecimens()">
+            </div>
+            <div class="ms-options" id="globalSpecimenOptions"></div>
+            <div class="ms-footer">
+              <span id="globalSpecimenCount">0 selected</span>
+              <button onclick="clearGlobalSpecimen()">Clear all</button>
+            </div>
+          </div>
+        </div>
+        <button class="apply-to-all-btn" onclick="applySpecimenToAll()">Apply to All</button>
+      </div>
+
+      <!-- TEST TABLE -->
+      <div class="table-wrapper" style="border:none; max-height:460px; overflow-y:auto;">
+        <table id="patientTable">
+          <thead>
+            <tr>
+              <th style="width:36px;">#</th>
+              <th>Test Name</th>
+              <th>Dept</th>
+              <th class="center">Price (₹)</th>
+              <th class="center">Sample</th>
+              <th class="center">Disc ₹</th>
+              <th class="center">Disc %</th>
+              <th class="center">Net (₹)</th>
+              <th class="center" style="width:44px;">✕</th>
+            </tr>
+          </thead>
+          <tbody id="patientTbody">
+            <tr>
+              <td colspan="9">
+                <div class="empty-state">
+                  <div class="icon">🔬</div>
+                  <p>No tests added yet. Search the catalog above and click <strong>+ Add</strong>.</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- SUMMARY FOOTER -->
+      <div class="patient-summary-footer" id="patientSummaryFooter" style="display:none;">
+        <div class="psf-totals">
+          <div class="psf-stat">
+            <div class="psf-label">Subtotal</div>
+            <div class="psf-value" id="sumPrice">₹0</div>
+          </div>
+          <div class="psf-stat">
+            <div class="psf-label">Discount</div>
+            <div class="psf-value disc" id="sumDisc">—</div>
+          </div>
+          <div class="psf-stat">
+            <div class="psf-label">Net Bill</div>
+            <div class="psf-value net" id="sumNet">₹0</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-danger btn-sm" onclick="clearAllTests()">🗑 Clear All</button>
+          <button class="btn btn-muted btn-sm" onclick="printBill()">🖨️ Print Bill</button>
+        </div>
+      </div>
+
+      <!-- hidden summaryTable for JS compatibility -->
+      <table style="display:none;" id="summaryTable"><tbody><tr class="summary-row">
+        <td></td><td colspan="2"><strong>TOTAL</strong></td>
+        <td class="center"></td><td></td><td class="center"></td>
+        <td></td><td class="center"></td><td></td>
+      </tr></tbody></table>
+
+    </div><!-- /patient order card -->
+  </div><!-- /panel-catalog -->
+
+
+
+  <!-- ══ TAB: PACKAGES ══ -->
+  <div class="tab-panel" id="panel-packages">
+    <p class="section-label">Test Packages</p>
+    <div class="card">
+      <div class="card-header">
+        <h3>📦 Create New Package</h3>
+        <span id="pkgCountLabel" style="font-size:13px;color:var(--muted);font-weight:600;">0 packages</span>
+      </div>
+      <div class="card-body">
+        <div class="pkg-builder">
+          <!-- LEFT: form -->
+          <div class="pkg-form-section">
+            <h4>Package Details</h4>
+            <div class="pkg-field">
+              <label>Package Name *</label>
+              <input type="text" id="pkgName" placeholder="e.g. Full Body Checkup">
+            </div>
+            <div class="pkg-field">
+              <label>Department / Category</label>
+              <input type="text" id="pkgDept" placeholder="e.g. PREVENTIVE HEALTH" list="deptSuggestions">
+              <datalist id="deptSuggestions"></datalist>
+            </div>
+            <div class="pkg-field">
+              <label>Package Price (₹) <span style="color:#94a3b8;font-weight:400;font-size:11px;">— overrides individual sum</span></label>
+              <input type="number" id="pkgPrice" placeholder="0" min="0">
+            </div>
+            <div class="pkg-field">
+              <label>Selected Tests <span id="pkgTestCount" style="color:#94a3b8;font-weight:400;">(0 tests selected)</span></label>
+              <div class="pkg-selected-chips" id="pkgSelectedChips">
+                <span class="empty-hint">Select tests from the list →</span>
+              </div>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <button class="btn btn-primary" onclick="savePackage()" id="pkgSaveBtn">💾 Save Package</button>
+              <button class="btn btn-muted btn-sm" onclick="confirmResetPackageForm()">✕ Clear</button>
+            </div>
+          </div>
+          <!-- RIGHT: test picker -->
+          <div class="pkg-form-section">
+            <h4>Pick Tests</h4>
+            <div style="border:1.5px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;background:white;">
+              <div class="pkg-test-search">
+                <input type="text" id="pkgTestSearch" placeholder="Search tests to add..." oninput="filterPkgTests()">
+              </div>
+              <div class="pkg-test-list" id="pkgTestList"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SAVED PACKAGES -->
+    <p class="section-label" style="margin-top:8px;">Saved Packages</p>
+    <div class="packages-grid" id="packagesGrid">
+      <div class="pkg-empty">
+        <div class="icon">📦</div>
+        <p>No packages yet. Create your first package above.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TAB: EDIT PRICES ══ -->
+  <div class="tab-panel" id="panel-prices">
+    <p class="section-label">Edit Test Prices</p>
+    <div class="card">
+      <div class="card-header">
+        <h3>💰 Test Price Manager</h3>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span id="modifiedCount" style="font-size:13px;color:var(--muted);font-weight:600;"></span>
+          <button class="btn btn-danger btn-sm" onclick="resetAllPrices()">Reset All to ₹0</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="price-tab-controls">
+          <input type="text" id="priceSearch" placeholder="🔍 Search test name or department..." oninput="renderPriceTable()">
+          <select class="dept-filter" id="priceDeptFilter" onchange="renderPriceTable()" style="min-width:150px;">
+            <option value="">All Departments</option>
+          </select>
+          <label style="font-size:13px;font-weight:700;color:var(--muted);display:flex;align-items:center;gap:6px;cursor:pointer;">
+            <input type="checkbox" id="showModifiedOnly" onchange="renderPriceTable()" style="accent-color:var(--blue);width:14px;height:14px;">
+            Modified only
+          </label>
+        </div>
+        <div class="table-wrapper" style="max-height:480px;">
+          <table id="priceTable">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Test Name</th>
+                <th>Department</th>
+                <th class="center">Current Price (₹)</th>
+                <th class="center">Status</th>
+              </tr>
+            </thead>
+            <tbody id="priceTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ PRICE EDIT POPUP ══ -->
+<div class="price-edit-popup" id="priceEditPopup">
+  <div class="price-edit-box">
+    <div class="price-edit-header">
+      <h3>✏️ Edit Test Price</h3>
+      <button class="popup-close" onclick="closePriceEdit()">✕</button>
+    </div>
+    <div class="price-edit-body">
+      <div class="price-edit-test-name" id="peTestName"></div>
+      <div class="price-edit-dept" id="peTestDept"></div>
+      <div class="price-edit-row">
+        <label>New Price (₹)</label>
+        <input type="number" id="peNewPrice" min="0" placeholder="0" oninput="livePreviewPrice()">
+      </div>
+      <!-- UX3 fix: live preview of net bill impact -->
+      <div id="pePreview" style="display:none;font-size:12.5px;background:linear-gradient(to right,#f0f9f0,#f0f5ff);padding:10px 12px;border-radius:10px;border:1.5px solid var(--border-light);margin-bottom:8px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
+          <span style="color:var(--muted);font-weight:600;">Net bill impact:</span>
+          <span id="pePreviewVal" style="font-family:'DM Mono',monospace;font-weight:800;color:var(--green);font-size:14px;"></span>
+        </div>
+        <div id="pePreviewDetail" style="font-size:11px;color:var(--muted);margin-top:4px;"></div>
+      </div>
+      <div style="font-size:12.5px;color:var(--muted);background:var(--input-bg);padding:10px 12px;border-radius:10px;border:1.5px solid var(--border-light);">
+        💡 Price is saved to localStorage and persists across sessions. Click "Reset to ₹0" to remove the custom price.
+      </div>
+    </div>
+    <div class="price-edit-footer">
+      <button class="btn btn-muted btn-sm" onclick="resetSinglePrice()">Reset to ₹0</button>
+      <button class="btn btn-success btn-sm" onclick="savePriceEdit()">✓ Save Price</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SPECIMEN POPUP ══ -->
+<div class="popup-overlay" id="specimenPopup">
+  <div class="popup-box">
+    <div class="popup-header">
+      <h3>🧫 Select Specimen Type</h3>
+      <button class="popup-close" onclick="closeSpecimenPopup()">✕</button>
+    </div>
+    <div class="popup-search">
+      <input type="text" id="specimenSearch" placeholder="Search specimen..." oninput="filterSpecimens()">
+    </div>
+    <div class="specimen-list" id="specimenList"></div>
+    <div class="popup-footer">
+      <button class="btn btn-muted btn-sm" onclick="clearSpecimenSelection()">Clear</button>
+      <button class="btn btn-success btn-sm" onclick="applySpecimenSelection()">✓ Apply Selection</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ STICKY BILL BAR ══ -->
+<div class="sticky-bill-bar" id="stickyBillBar">
+  <div class="sticky-bill-stats">
+    <div class="sticky-bill-stat">
+      <div class="s-label">Tests</div>
+      <div class="s-val accent" id="stickyTestCount">0</div>
+    </div>
+    <div class="sticky-bill-stat">
+      <div class="s-label">Subtotal</div>
+      <div class="s-val" id="stickySubtotal">₹0</div>
+    </div>
+    <div class="sticky-bill-stat">
+      <div class="s-label">Discount</div>
+      <div class="s-val red" id="stickyDiscount">₹0</div>
+    </div>
+    <div class="sticky-bill-stat">
+      <div class="s-label">Net Bill</div>
+      <div class="s-val green" id="stickyNet">₹0</div>
+    </div>
+  </div>
+  <div class="bill-bar-actions">
+    <button class="btn-clear-all" onclick="clearAllTests()">🗑 Clear All</button>
+    <button class="btn-print" onclick="printBill()">🖨️ Print Bill</button>
+    <button class="book-test-btn" id="stickyBookBtn" onclick="initiateBooking()" style="padding:8px 18px;font-size:13px;">
+      📋 Book Test
+    </button>
+  </div>
+</div>
+
+<!-- ══ TEST DETAIL MODAL ══ -->
+<div class="test-detail-modal" id="testDetailModal" onclick="if(event.target===this)closeTestDetail()">
+  <div class="test-detail-box">
+    <div class="test-detail-head">
+      <button class="td-close-btn" onclick="closeTestDetail()">✕</button>
+      <div class="td-dept-badge" id="tdDept"></div>
+      <h2 id="tdName"></h2>
+      <p id="tdDesc"></p>
+    </div>
+    <div class="test-detail-body">
+      <div class="td-section-title">🧫 Specimen Required</div>
+      <div id="tdSpecimen"></div>
+      <div class="td-section-title" id="tdParamsTitle">📊 Reference Ranges</div>
+      <div id="tdParams"></div>
+      <div class="td-section-title" id="tdCoversTitle">✅ Test Covers</div>
+      <div class="td-covers" id="tdCovers"></div>
+    </div>
+    <div class="test-detail-footer">
+      <button class="btn btn-muted btn-sm" onclick="closeTestDetail()">Close</button>
+      <button class="btn btn-accent btn-sm" id="tdSampleReportBtn" onclick="openSampleReport()">📄 Sample Report</button>
+      <button class="btn btn-primary btn-sm" id="tdAddBtn" onclick="addFromDetail()">+ Add to Patient</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SAMPLE REPORT MODAL ══ -->
+<div class="sr-overlay" id="sampleReportModal" onclick="if(event.target===this)closeSampleReport()">
+  <div class="sr-box">
+    <div class="sr-toolbar">
+      <span class="sr-toolbar-title">📄 Sample Lab Report Preview</span>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button class="sr-toolbar-btn" onclick="printSampleReport()">🖨️ Print</button>
+        <button class="sr-close-btn" onclick="closeSampleReport()">✕</button>
+      </div>
+    </div>
+    <div class="sr-scroll-area" id="srScrollArea">
+      <div class="sr-report" id="srReport">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PATIENT SELECTOR MODAL ══ -->
+<div class="ps-modal-overlay" id="patientSelectorModal" onclick="if(event.target===this)closePatientSelector()">
+  <div class="ps-modal">
+    <div class="ps-modal-head">
+      <div>
+        <h2>👤 Select Patient</h2>
+        <p>Choose from registered patients</p>
+      </div>
+      <button class="ps-close-btn" onclick="closePatientSelector()">✕</button>
+    </div>
+    <div class="ps-search-bar">
+      <input type="text" class="ps-search-input" id="psSearchInput" placeholder="Search by name, ID or mobile…" oninput="filterPsPatients()">
+    </div>
+    <div class="ps-patient-list" id="psPatientList">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- ══ BOOKING CONFIRMATION MODAL ══ -->
+<div class="booking-modal-overlay" id="bookingModal" onclick="if(event.target===this)closeBookingModal()">
+  <div class="booking-modal">
+    <div class="booking-modal-head">
+      <span class="booking-success-icon">✅</span>
+      <h2>Test Booked Successfully!</h2>
+      <p>Booking has been saved for processing</p>
+    </div>
+    <div class="booking-modal-body" id="bookingModalBody">
+      <!-- Populated by JS -->
+    </div>
+    <div class="booking-modal-footer">
+      <button class="btn-booking-close" onclick="closeBookingModal()">Close</button>
+      <button class="btn-booking-new" onclick="startNewBooking()">+ New Booking</button>
+      <button class="btn-booking-new" style="background:linear-gradient(135deg,#0d9488,#0891b2);" onclick="goToResultEntry()">🔬 Enter Results</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+// ═══════════════════════════════════════════
+//  CLOCK
+// ═══════════════════════════════════════════
+function updateClock() {
+  document.getElementById('clockBadge').textContent = new Date().toLocaleTimeString('en-IN', { hour12: false });
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+// ═══════════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════════
+const SPECIMENS = [
+  "Blood","Urine","Serum","Stool","EDTA Blood","Plasma","Semen",
+  "Sodium Citrate Plasma","Heparin Plasma","Pleural Fluid","CSF",
+  "Synovial Fluid","Sodium Fluoride Plasma","Sputum","Serum Plasma",
+  "Citrate Plasma","Fluoride Plasma","Nasopharyngeal Swab","Throat Swab",
+  "WB EDTA","PLASMA (NaF)","PLASMA (NaCit)","WB (NaCit)","Pus","Swab",
+  "Ascitic Fluid","Body Fluid","Bone Marrow"
+];
+
+const rawTests = `CHIKUNGUNYA VIRUS ANTIBODY | SEROLOGY | 100 | T001
+HERPES SIMPLEX VIRUS 1 & 2 IGM | SEROLOGY | 100 | T002
+HIV (I) PCR REPORT - QUANTITATIVE | SEROLOGY | 100 | T003
+HIV 1-DNA PCR - QUALITATIVE | SEROLOGY | 100 | T004
+RUBELLA VIRUS ANTIBODY - IGM | SEROLOGY | 100 | T005
+STOOL HANGING DROP | CLINICAL PATHOLOGY | 100 | T006
+TOXOPLASMA - IGM | SEROLOGY | 100 | T007
+TOXOPLASMA - IGM & IGG | HEMATOLOGY | 100 | T008
+Unary HCG | IMMUNOLOGY | 100 | T009
+Urine 24 hours test | BIOCHEMISTRY | 100 | T010
+URINE ACETONE - POST PRANDIAL | CLINICAL PATHOLOGY | 100 | T011
+URINE ALBUMIN | CLINICAL PATHOLOGY | 100 | T012
+URINE FOR BENCE - JONES (B-J) PROTEINS | CLINICAL PATHOLOGY | 100 | T013
+URINE FOR PH | CLINICAL PATHOLOGY | 100 | T014
+URINE GLUCOSE - FASTING | CLINICAL PATHOLOGY | 100 | T015
+URINE GLUCOSE - PRE DINNER | CLINICAL PATHOLOGY | 100 | T016
+URINE OSMOLALITY | CLINICAL PATHOLOGY | 100 | T017
+VARICELLA ZOSTER IgG & IgM ANTIBODY | SEROLOGY | 100 | T018
+VLDL Cholesterol | BIOCHEMISTRY | 100 | T019
+Zincovit Test | BIOCHEMISTRY | 100 | T020
+ABSOLUTE EOSINOPHIL COUNT (AEC) | HEMATOLOGY | 0 | T021
+ACE (ANGIOTENSIN CONVERTING ENZYME) | HEMATOLOGY | 100 | T022
+Aldosterone | BIOCHEMISTRY | 0 | T023
+Aldosterone & Plasma Renin Ratio | BIOCHEMISTRY | 0 | T024
+Aldosterone, 24 Hrs Urine | BIOCHEMISTRY | 250 | T025
+Alkaline Phosphatase (ALP) | BIOCHEMISTRY | 0 | T026
+AMMONIA | BIOCHEMISTRY | 100 | T027
+AMYLASE | BIOCHEMISTRY | 350 | T028
+ANA IGG TEST REPORT | SEROLOGY | 100 | T029
+ANTI CARDIOLIPIN ANTIBODY - IgM | HEMATOLOGY | 100 | T030
+ANTI CARDIOLIPIN ANTIBODY IGM | HEMATOLOGY | 100 | T031
+ANTI HCV (ELISA) | SEROLOGY | 100 | T032
+ANTI HEV IGM (ELISA) | SEROLOGY | 100 | T033
+ANTI MULLERIAN HORMONE (AMH) | HEMATOLOGY | 0 | T034
+ANTI PHOSPHOLIPID ANTIBODIES (IgG & IgM) | HEMATOLOGY | 0 | T035
+Anti Streptolysin O (ASO), Quantitative | BIOCHEMISTRY | 700 | T036
+Anti-LKM Antibody Test Report | SEROLOGY | 100 | T037
+Anti-Nuclear Antibody (ANA) IFA | HEMATOLOGY | 2900 | T038
+Anti-Smooth Muscle Antibody (SMA) Test Report | SEROLOGY | 100 | T039
+APTT | HEMATOLOGY | 100 | T040
+Arterial Blood Gas (ABG) report | BIOCHEMISTRY | 100 | T041
+ARTERIAL BLOOD GASES (ABG) | BIOCHEMISTRY | 100 | T042
+Ascitic Fluid Analysis | CLINICAL PATHOLOGY | 100 | T043
+BETA HCG | ROUTINE (PATHOLOGY) | 0 | T044
+Bicarbonate Serum Test | BIOCHEMISTRY | 350 | T045
+BILE SALT AND PIGMENTS - URINE | CLINICAL PATHOLOGY | 100 | T046
+BILIRUBIN | BIOCHEMISTRY | 100 | T047
+BILIRUBIN, TOTAL, SERUM | BIOCHEMISTRY | 100 | T048
+BLEEDING TIME (BT) & CLOTTING TIME (CT) | HEMATOLOGY | 300 | T049
+BLOOD CULTURE AND SENSITIVITY | BIOCHEMISTRY | 100 | T050
+Blood Glucose - (After 75 gms of Glucose) | BIOCHEMISTRY | 100 | T051
+Blood Glucose - PG (1 hr After 75 gms of Glucose) | BIOCHEMISTRY | 100 | T052
+Blood Glucose - PG (3 hr After 75 gms of Glucose) | BIOCHEMISTRY | 100 | T053
+Blood Glucose - PG (2 hrs After 100 gms of Glucose) | BIOCHEMISTRY | 50 | T054
+Blood Glucose - PG (2 hrs After 75 gms of Glucose) | BIOCHEMISTRY | 100 | T055
+BLOOD GLUCOSE - PRE DINNER | BIOCHEMISTRY | 0 | T056
+BLOOD GLUCOSE FASTING | BIOCHEMISTRY | 100 | T057
+BLOOD GLUCOSE LEVEL (PG AFTER 1 HR) | BIOCHEMISTRY | 100 | T058
+BLOOD GLUCOSE LEVEL (PG AFTER 2 HR) | BIOCHEMISTRY | 100 | T059
+BLOOD GLUCOSE LEVEL (PG AFTER 3 HR) | BIOCHEMISTRY | 100 | T060
+BLOOD GLUCOSE LEVEL - PP (POST PRANDIAL) | BIOCHEMISTRY | 100 | T061
+BLOOD GROUP | HEMATOLOGY | 90 | T062
+BLOOD SUGAR FASTING (BSF) | BIOCHEMISTRY | 100 | T063
+BLOOD SUGAR LEVEL (F/PP) | BIOCHEMISTRY | 800 | T064
+BLOOD SUGAR POST PRANDIAL (BSPP) | BIOCHEMISTRY | 50 | T065
+Blood Urea Level (BUL) | BIOCHEMISTRY | 100 | T066
+BLOOD UREA NITROGEN (BUN) | BIOCHEMISTRY | 100 | T067
+BRUCELLA ANTIBODY IGM | SEROLOGY | 100 | T068
+CA -125 (OVARIAN CANCER MARKER) | HEMATOLOGY | 100 | T069
+CA 19.9 | BIOCHEMISTRY | 1900 | T070
+CALCIUM | BIOCHEMISTRY | 100 | T071
+CBC/GBP | HEMATOLOGY | 100 | T072
+CBNAAT Test | BIOCHEMISTRY | 100 | T073
+CCP - CYCLIC CITRULLINATED PEPTIDE ANTIBODY | HEMATOLOGY | 2400 | T074
+CHIKUNGUNYA ANTIBODIES IGM (SPOT) | SEROLOGY | 1500 | T075
+Chikungunya Test Report | SEROLOGY | 100 | T076
+CMV (CYTOMEGALO VIRUS) - IGM | SEROLOGY | 1200 | T077
+Complete Blood Count - CBC | HEMATOLOGY | 400 | T078
+Complete Blood Count - CBC WITH ESR | HEMATOLOGY | 400 | T079
+Creatine Kinase (CK), MB | PATHOLOGY | 1800 | T080
+CREATININE | BIOCHEMISTRY | 50 | T081
+CREATININE CLEARANCE (24 HRS URINE) | CLINICAL PATHOLOGY | 300 | T082
+CREATININE PHOSPHOKINASE - CPK NAC | BIOCHEMISTRY | 0 | T083
+CROMOSOMAL STUDY - BLOOD | BIOCHEMISTRY | 100 | T084
+CRP (QUANTITATIVE) | SEROLOGY | 100 | T085
+CRP (QUALITATIVE) | SEROLOGY | 100 | T086
+Cryptococcus Antigen CSF Test | BIOCHEMISTRY | 100 | T087
+CSF ADA Test Report | BIOCHEMISTRY | 100 | T088
+CSF AFB Test Report | BIOCHEMISTRY | 100 | T089
+CSF Biochemical Analysis | BIOCHEMISTRY | 550 | T090
+CSF Routine And Microscopic Examination Test Report | BIOCHEMISTRY | 100 | T091
+Culture, Urine | MICROBIOLOGY | 100 | T092
+D - DIMER | SEROLOGY | 1700 | T093
+Dengue IgG & IgM Antibody And NS1 Antigen (Card Test) | SEROLOGY | 300 | T094
+DENGUE IgM & IgG Antibodies (Card Test) | SEROLOGY | 100 | T095
+DENGUE IgM & IgG Antibodies (ELISA) | SEROLOGY | 100 | T096
+DENGUE IGM & IGG ANTIBODIES (RAPID) | SEROLOGY | 1400 | T097
+DENGUE IGM & IGG ANTIBODIES AND NS1 ANTIGEN (RAPID) | SEROLOGY | 100 | T098
+Dengue Ns1 Antigen Card Test | SEROLOGY | 0 | T099
+Dengue Ns1 Antigen Test (ELISA) | BIOCHEMISTRY | 1500 | T100
+Dengue Ns1 Antigen Test (ELISA) | SEROLOGY | 1500 | T101
+Dihydrotestosterone (DHT) | PATHOLOGY | 100 | T102
+Direct Coombs Test | HEMATOLOGY | 100 | T103
+Double Marker Test | PATHOLOGY | 2500 | T104
+EGFR (GLOMERULAR FILTRATION RATE, ESTIMATED) | BIOCHEMISTRY | 0 | T105
+ELECTROLYTES | BIOCHEMISTRY | 200 | T106
+EPSTEIN BARR VIRUS (VCA) - IGM ANTIBODIES | SEROLOGY | 1800 | T107
+ESR (ERYTHROCYTE SEDIMENTATION RATE) | HEMATOLOGY | 100 | T108
+ESTRADIOL (E2) | BIOCHEMISTRY | 100 | T109
+ET Culture | BIOCHEMISTRY | 100 | T110
+Factor 8 Test | HEMATOLOGY | 100 | T111
+Factor 9 Test | HEMATOLOGY | 100 | T112
+FERRITIN Test | CLINICAL PATHOLOGY | 100 | T113
+FERTILITY PROFILE III | BIOCHEMISTRY | 100 | T114
+Fibrinogen Level | HEMATOLOGY | 100 | T115
+Filaria Antibody Detection | SEROLOGY | 1400 | T116
+FINE NEEDLE ASPIRATION CYTOLOGY (FNAC) | CYTOPATHOLOGY | 100 | T117
+Fine Needle Aspiration Cytology (FNAC) 2 | CYTOPATHOLOGY | 100 | T118
+Fluid Cytology | HEMATOLOGY | 100 | T119
+Fluid For ADA | BIOCHEMISTRY | 880 | T120
+Folic Acid | BIOCHEMISTRY | 100 | T121
+FOLLICLE STIMULATING HORMONE (FSH) | BIOCHEMISTRY | 0 | T122
+Free PSA | BIOCHEMISTRY | 1200 | T123
+FREE T3 (TRI-IODOTHYRONINE - FREE) | BIOCHEMISTRY | 100 | T124
+Free T3 (FT3) | BIOCHEMISTRY | 100 | T125
+Free T4 (FT4) | BIOCHEMISTRY | 100 | T126
+FREE T4 (THYROXINE - FREE) | BIOCHEMISTRY | 100 | T127
+FREE THYROID PANEL | BIOCHEMISTRY | 100 | T128
+Free Thyroid Profile | ROUTINE (PATHOLOGY) | 100 | T129
+FSH / LH / PRL | BIOCHEMISTRY | 1800 | T130
+FUNGUS ROUTINE EXAMINATION | SEROLOGY | 200 | T131
+GAMMA GLUTAMYL TRANSPEPTIDASE (GGT) | BIOCHEMISTRY | 800 | T132
+GBP Test | PATHOLOGY | 500 | T133
+GBP Test Report | BIOCHEMISTRY | 500 | T134
+General Blood Picture | HEMATOLOGY | 0 | T135
+GFRE (Glomerular Filtration Rate - Estimated) | BIOCHEMISTRY | 0 | T136
+Glucose 6 Phosphate Dehydrogenase (G6PD Quantitative) | BIOCHEMISTRY | 100 | T137
+Glucose Challenge Test (GCT) | BIOCHEMISTRY | 150 | T138
+Glucose Tolerance Test (GTT) | BIOCHEMISTRY | 150 | T139
+Glucose Tolerance Test ORAL (OGTT) | BIOCHEMISTRY | 600 | T140
+GLYCOSYLATED HAEMOGLOBIN (GHB / HBA1c) | BIOCHEMISTRY | 100 | T141
+Gram Stain Test | MICROBIOLOGY | 100 | T142
+GVP Test | PATHOLOGY | 500 | T143
+HBA1C Test | BIOCHEMISTRY | 100 | T144
+HBsAg-ELISA | SEROLOGY | 100 | T145
+HBV DNA Viral Load Test (Quantitative) | SEROLOGY | 100 | T146
+HCG Beta, Total, Quantitative, Random Urine | BIOCHEMISTRY | 1200 | T147
+HCV RNA Viral Load Test (Quantitative PCR) Report | SEROLOGY | 2500 | T148
+HDL Cholesterol | BIOCHEMISTRY | 500 | T149
+HELICOBACTER PYLORI IGG & IGM ANTIBODY | SEROLOGY | 600 | T150
+Hemoglobin | HEMATOLOGY | 100 | T151
+HEPATITIS A | SEROLOGY | 2000 | T152
+HEPATITIS A VIRUS - IGG (HAV - IGG) | SEROLOGY | 100 | T153
+HEPATITIS A VIRUS - IGM (HAV - IGM) | SEROLOGY | 100 | T154
+HEPATITIS B SURFACE ANTIGEN (HBSAG) RAPID CARD | SEROLOGY | 100 | T155
+Hepatitis B Virus (HBV) ELISA | SEROLOGY | 100 | T156
+HEPATITIS B VIRUS CORE ANTIBODY (HBcAb) | SEROLOGY | 1100 | T157
+Hepatitis B Virus DNA Detector Qualitative | SEROLOGY | 100 | T158
+HEPATITIS B VIRUS ENVELOPE ANTIBODY (HBeAb) | SEROLOGY | 800 | T159
+HEPATITIS B VIRUS ENVELOPE ANTIGEN (HBeAg) | SEROLOGY | 1000 | T160
+HEPATITIS C VIRUS (HCV) Card Test | SEROLOGY | 450 | T161
+HEPATITIS C VIRUS (HCV) ELISA | SEROLOGY | 100 | T162
+HEPATITIS E VIRUS - IGM (HEV IGM) | SEROLOGY | 100 | T163
+HIV 1 & 2 ANTIBODY (CARD TEST) | SEROLOGY | 100 | T164
+HIV 1 & 2 ANTIBODY (ELISA) | SEROLOGY | 100 | T165
+HIV And Hepatitis B Surface Antigen (HBsAg) | SEROLOGY | 100 | T166
+HIV ANTIBODY, RAPID CARD | SEROLOGY | 100 | T167
+HLA - B 27 Flowcytometry | HEMATOLOGY | 3200 | T168
+HLA - B 27 PCR | SEROLOGY | 100 | T169
+HMPV RTPCR Test | MICROBIOLOGY | 3500 | T170
+Homa IR | BIOCHEMISTRY | 1200 | T171
+Homocysteine Test | BIOCHEMISTRY | 100 | T172
+HPLC Test | PATHOLOGY | 1550 | T173
+Hydroxy Vitamin D- Serum | BIOCHEMISTRY | 1500 | T174
+Immunoglobulin IGM | SEROLOGY | 850 | T175
+Indirect Coombs Test (ICT) | HEMATOLOGY | 850 | T176
+IRON | BIOCHEMISTRY | 0 | T177
+IRON (FE) | BIOCHEMISTRY | 100 | T178
+Iron Profile Test | BIOCHEMISTRY | 100 | T179
+KARYOTYPING (PERIPHERAL BLOOD) | BIOCHEMISTRY | 100 | T180
+KIDNEY FUNCTION TEST (KFT) | CLINICAL BIOCHEMISTRY | 600 | T181
+KIDNEY FUNCTION TEST WITH ELECTROLYTES | CLINICAL BIOCHEMISTRY | 200 | T182
+Lactate Dehydrogenase (LDH) | BIOCHEMISTRY | 1500 | T183
+LDL CHOLESTEROL | BIOCHEMISTRY | 100 | T184
+LEPTOSPIRA ANTIBODY IGM & IGG | SEROLOGY | 2000 | T185
+LEPTOSPIRA IGM | HEMATOLOGY | 100 | T186
+LIPASE | BIOCHEMISTRY | 350 | T187
+LIPID PROFILE | BIOCHEMISTRY | 800 | T188
+Lithium Test | BIOCHEMISTRY | 100 | T189
+Liver Function Test (LFT) | BIOCHEMISTRY | 300 | T190
+LUTEINISING HORMONE (LH) | BIOCHEMISTRY | 0 | T191
+Magnesium | BIOCHEMISTRY | 350 | T192
+Malaria ELISA Test | SEROLOGY | 1150 | T193
+Malaria Paracheck Antigen Test | HEMATOLOGY | 100 | T194
+Malarial Parasite (MP) Smear | HEMATOLOGY | 200 | T195
+Malignant Cell | CYTOLOGY | 1200 | T196
+MANTOUX MX TEST | SEROLOGY | 100 | T197
+Methamphetamine Screen | BIOCHEMISTRY | 100 | T198
+MICROALBUMIN / CREATININE RATIO - URINE | CLINICAL PATHOLOGY | 100 | T199
+MP (Antigen) Test | SEROLOGY/IMMUNOLOGY | 100 | T200
+Nicotine Urine Test | CLINICAL BIOCHEMISTRY | 555 | T201
+NT-PROBNP | PATHOLOGY | 3500 | T202
+PAP Smear | CYTOLOGY | 100 | T203
+Parathyroid Hormone, Intact (iPTH) | BIOCHEMISTRY | 0 | T204
+PBS FOR MALARIAL PARASITE | HEMATOLOGY | 350 | T205
+Peripheral Blood Smear (PBS) | HEMATOLOGY | 100 | T206
+Phosphorus | HEMATOLOGY | 100 | T207
+Platelet Count | HEMATOLOGY | 100 | T208
+PLATELETS COUNT | HEMATOLOGY | 100 | T209
+PLEURAL FLUID EXAMINATION | HEMATOLOGY | 250 | T210
+Plural Fluid Examination | CLINICAL PATHOLOGY | 100 | T211
+POTASSIUM | BIOCHEMISTRY | 100 | T212
+Pregnancy Test | CLINICAL PATHOLOGY | 100 | T213
+Procalcitonin | SEROLOGY | 2200 | T214
+PROGESTERONE | HEMATOLOGY | 100 | T215
+PROLACTIN | BIOCHEMISTRY | 0 | T216
+Prostate Specific Antigen (PSA) | BIOCHEMISTRY | 100 | T217
+PROTHROMBINE TIME (PT) | HEMATOLOGY | 100 | T218
+Pus Culture | BIOCHEMISTRY | 100 | T219
+QuantiFERON-TB Gold (QFT) | HEMATOLOGY | 2500 | T220
+RA FACTOR (QUALITATIVE) | SEROLOGY | 200 | T221
+RA Factor (Quantitative) | SEROLOGY | 600 | T222
+RAPID MALARIA TEST (RMT) | HEMATOLOGY | 100 | T223
+RBC Count Test | HEMATOLOGY | 100 | T224
+RBS BLOOD GLUCOSE LEVEL (RANDOM) | BIOCHEMISTRY | 100 | T225
+RENAL PROFILE | BIOCHEMISTRY | 300 | T226
+Reticulocyte Count | HEMATOLOGY | 100 | T227
+Rh Factor Test | SEROLOGY | 500 | T228
+ROTA VIRUS ANTIGEN DETECTION (STOOL) | CLINICAL PATHOLOGY | 0 | T229
+Salmonella Typhi IgG & IgM (Card Test) | SEROLOGY | 100 | T230
+Scrub Typhus | SEROLOGY | 1200 | T231
+Scrub Typhus IgG Antibody | SEROLOGY | 1200 | T232
+Scrub Typhus IgM Antibody | SEROLOGY | 1200 | T233
+SEMEN ANALYSIS REPORT | CLINICAL PATHOLOGY | 200 | T234
+Serum IgE (Immunoglobulin E) | SEROLOGY | 550 | T235
+SGOT (AST) | BIOCHEMISTRY | 100 | T236
+SGPT (ALT) | BIOCHEMISTRY | 100 | T237
+Sodium (Na) | BIOCHEMISTRY | 100 | T238
+Spot Urine Microalbumin Test Report | PATHOLOGY | 100 | T239
+Sputum AFB Test | HEMATOLOGY | 100 | T240
+Sputum for Acid-Fast Bacilli (AFB) Test | MICROBIOLOGY | 100 | T241
+Stone Analysis | BIOCHEMISTRY | 100 | T242
+STOOL EXAMINATION | PATHOLOGY | 100 | T243
+STOOL FOR OCCULT BLOOD | HEMATOLOGY | 300 | T244
+TB GOLD | SEROLOGY | 2800 | T245
+TESTOSTERONE (TOTAL) | PATHOLOGY | 0 | T246
+TESTOSTERONE - FREE | PATHOLOGY | 100 | T247
+THYROID FUNCTION TEST (TFT) | ROUTINE (PATHOLOGY) | 100 | T248
+Thyroid Profile II | BIOCHEMISTRY | 100 | T249
+TISSUE TRANSGLUTAMINASE - IgA (TTGA) | SEROLOGY | 1380 | T250
+TORCH-5 PARA (IGG) | HEMATOLOGY | 100 | T251
+TORCH-5 PARA (IGM) | HEMATOLOGY | 100 | T252
+Total Albumin | BIOCHEMISTRY | 100 | T253
+Total Cholesterol | BIOCHEMISTRY | 0 | T254
+Total IgE Test | BIOCHEMISTRY | 100 | T255
+Total Protein | HEMATOLOGY | 200 | T256
+TROPONIN I | SEROLOGY | 0 | T257
+TROPONIN T | HEMATOLOGY | 0 | T258
+TROPONIN T | IMMUNOLOGY | 1400 | T259
+TSH (THYROID STIMULATING HORMONE) | ROUTINE (PATHOLOGY) | 100 | T260
+Typhidot Test | SEROLOGY | 350 | T261
+Typhoid Antibody | SEROLOGY | 300 | T262
+UREA | BIOCHEMISTRY | 100 | T263
+Uric Acid | BIOCHEMISTRY | 100 | T264
+Urinary Copper 24 Hours | BIOCHEMISTRY | 2800 | T265
+Urinary HCG | IMMUNOLOGY | 100 | T266
+Urinary Sodium (Na) | HEMATOLOGY | 100 | T267
+URINE ACETONE - RANDOM | CLINICAL PATHOLOGY | 150 | T268
+URINE ACETONE - FASTING | CLINICAL PATHOLOGY | 50 | T269
+Urine ACR | PATHOLOGY | 100 | T270
+URINE ALBUMIN CREATININE RATIO | CLINICAL PATHOLOGY | 100 | T271
+URINE ALBUMIN CREATININE RATIO | GENERAL | 1200 | T272
+URINE FOR HAEMOGLOBINURIA | CLINICAL PATHOLOGY | 100 | T273
+URINE GLUCOSE - POST PRANDIAL (USPP) | CLINICAL PATHOLOGY | 100 | T274
+URINE MICRO ALBUMIN | CLINICAL PATHOLOGY | 100 | T275
+URINE MICROALBUMIN | CLINICAL PATHOLOGY | 100 | T276
+URINE PROTEIN & CREATININE RATIO | CLINICAL PATHOLOGY | 0 | T277
+URINE ROUTINE EXAMINATION REPORT | CLINICAL PATHOLOGY | 100 | T278
+URINE ROUTINE EXAMINATION REPORT (CUE) | CLINICAL PATHOLOGY | 100 | T279
+Urine Spot Creatinine | BIOCHEMISTRY | 850 | T280
+VARICELLA ZOSTER IGM ANTIBODY | SEROLOGY | 100 | T281
+VDRL (RPR) | SEROLOGY | 0 | T282
+Viral Markers (Rapid Card) | SEROLOGY | 100 | T283
+VITAMIN B - 12 | BIOCHEMISTRY | 850 | T284
+VITAMIN B6 | BIOCHEMISTRY | 100 | T285
+VITAMIN D (25-HYDROXYCHOLECALCIFEROL) | HEMATOLOGY | 100 | T286
+VITAMIN D3 (1,25 DIHYDROXYCHOLECALCIFEROL) | BIOCHEMISTRY | 100 | T287
+VITAMIN-D (25-OH) | BIOCHEMISTRY | 100 | T288
+WESTERN BLOT TEST (HIV) | SEROLOGY | 100 | T289
+Widal Test - Slide | SEROLOGY | 100 | T290
+Widal Test - Slide (2) | SEROLOGY | 100 | T291
+WIDAL TEST - TUBE | SEROLOGY | 100 | T292
+Zinc | BIOCHEMISTRY | 440 | T293
+`;
+
+// ═══════════════════════════════════════════
+//  PARSE TESTS
+// ═══════════════════════════════════════════
+const tests = rawTests.trim().split('\n').map((line, i) => {
+  const parts = line.split('|').map(s => s.trim());
+  return { id: parts[3], name: parts[0], dept: parts[1], defaultPrice: parseInt(parts[2]) || 0 };
+}).sort((a, b) => a.name.localeCompare(b.name));
+
+// Keys are stable string IDs like "T001" — no numeric conversion needed
+const customPrices = JSON.parse(localStorage.getItem('mc_customPrices') || '{}');
+function getPrice(testId) {
+  if (customPrices[testId] !== undefined) return customPrices[testId];
+  const t = tests.find(t => t.id === testId);
+  return t ? t.defaultPrice : 0;
+}
+
+// ═══════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════
+let filteredTests = [...tests];
+let currentPage = 1;
+const ROWS_PER_PAGE = 12;
+const addedIds = new Set();
+const patientRows = [];
+let packages = JSON.parse(localStorage.getItem('mc_packages') || '[]');
+let pkgEditId = null;
+let pkgSelectedTestIds = new Set();
+
+// ═══════════════════════════════════════════
+//  TABS
+// ═══════════════════════════════════════════
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  document.getElementById('panel-' + name).classList.add('active');
+  if (name === 'prices') renderPriceTable();
+  if (name === 'packages') { renderPackageTestPicker(); renderPackagesGrid(); }
+}
+
+// ═══════════════════════════════════════════
+//  BUILD DEPT FILTERS
+// ═══════════════════════════════════════════
+(function buildDeptFilters() {
+  const depts = [...new Set(tests.map(t => t.dept))].sort();
+  const sel  = document.getElementById('deptFilter');
+  const psel = document.getElementById('priceDeptFilter');
+  const ds   = document.getElementById('deptSuggestions');
+  depts.forEach(d => {
+    const o1 = document.createElement('option'); o1.value = d; o1.textContent = d; sel.appendChild(o1);
+    const o2 = document.createElement('option'); o2.value = d; o2.textContent = d; psel.appendChild(o2);
+    const o3 = document.createElement('option'); o3.value = d; ds.appendChild(o3);
+  });
+})();
+
+// ═══════════════════════════════════════════
+//  BUILD SPECIMEN LIST
+// ═══════════════════════════════════════════
+(function buildSpecimenList() {
+  const list = document.getElementById('specimenList');
+  SPECIMENS.forEach(s => {
+    const label = document.createElement('label');
+    label.innerHTML = `<input type="checkbox" value="${s}"> ${s}`;
+    list.appendChild(label);
+  });
+})();
+
+(function buildGlobalSpecimenOptions() {
+  const container = document.getElementById('globalSpecimenOptions');
+  SPECIMENS.forEach(s => {
+    const div = document.createElement('div');
+    div.className = 'ms-option';
+    div.dataset.value = s;
+    div.innerHTML = `<input type="checkbox" value="${s}" onchange="onGlobalSpecimenChange(this)"> ${s}`;
+    div.addEventListener('click', e => { if (e.target.tagName !== 'INPUT') div.querySelector('input').click(); });
+    container.appendChild(div);
+  });
+})();
+
+// ═══════════════════════════════════════════
+//  DEPT COLOR HELPER
+// ═══════════════════════════════════════════
+function deptClass(dept) {
+  const d = (dept || '').toUpperCase();
+  if (d.includes('HEMAT'))   return 'hema';
+  if (d.includes('BIOCHEM') || d.includes('CLINICAL BIOCHEM')) return 'bio';
+  if (d.includes('SEROL'))   return 'sero';
+  if (d.includes('MICRO'))   return 'micro';
+  if (d.includes('CYTOP') || d.includes('CYTOL') || d.includes('PATH')) return 'cyto';
+  if (d.includes('IMMUN'))   return 'immuno';
+  if (d.includes('CLIN'))    return 'clin';
+  if (d.includes('GENERAL')) return 'gen';
+  return '';
+}
+
+// ═══════════════════════════════════════════
+//  CLEAR ALL TESTS
+// ═══════════════════════════════════════════
+function clearAllTests() {
+  if (patientRows.length === 0) return;
+  if (!confirm('Clear all tests from the patient list?')) return;
+  patientRows.length = 0;
+  addedIds.clear();
+  renderPatientTable();
+  renderTests();
+  showToast('Patient list cleared', 'warning');
+}
+
+// ═══════════════════════════════════════════
+//  PRINT BILL
+// ═══════════════════════════════════════════
+function printBill() {
+  if (patientRows.length === 0) { showToast('No tests to print', 'warning'); return; }
+  const name   = document.getElementById('patientName').value || '—';
+  const age    = document.getElementById('patientAge').value || '—';
+  const doctor = document.getElementById('patientDoctor').value || '—';
+  const date   = document.getElementById('patientDate').value
+    ? new Date(document.getElementById('patientDate').value).toLocaleDateString('en-IN', {day:'2-digit',month:'short',year:'numeric'})
+    : new Date().toLocaleDateString('en-IN', {day:'2-digit',month:'short',year:'numeric'});
+  const totalP = patientRows.reduce((s,r)=>s+r.price,0);
+  const totalD = patientRows.reduce((s,r)=>s+r.discValue,0);
+  const totalN = patientRows.reduce((s,r)=>s+r.net,0);
+
+  const rows = patientRows.map((r,i) => {
+    const t = tests.find(t=>t.id===r.testId);
+    return `<tr>
+      <td>${i+1}</td>
+      <td>${t.name}</td>
+      <td>${t.dept}</td>
+      <td style="text-align:right">₹${r.price.toLocaleString()}</td>
+      <td style="text-align:right">${r.discValue>0?'−₹'+r.discValue.toLocaleString():''}</td>
+      <td style="text-align:right;font-weight:800;color:#16a34a">₹${r.net.toLocaleString()}</td>
+    </tr>`;
+  }).join('');
+
+  const w = window.open('', '_blank', 'width=800,height=700');
+  w.document.write(`<!DOCTYPE html><html><head>
+  <title>Lab Bill — MediCore</title>
+  <style>
+    body{font-family:Arial,sans-serif;margin:0;padding:24px;color:#0f172a;font-size:13px;}
+    .header{text-align:center;border-bottom:2px solid #2563eb;padding-bottom:12px;margin-bottom:16px;}
+    .header h1{font-size:22px;color:#2563eb;margin:0;}
+    .header p{margin:2px 0;font-size:12px;color:#475569;}
+    .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:#f0f5ff;border-radius:8px;padding:12px;margin-bottom:16px;}
+    .info-row{font-size:12px;} .info-row span{font-weight:700;color:#0c1445;}
+    table{width:100%;border-collapse:collapse;font-size:12px;}
+    th{background:#2563eb;color:white;padding:8px 10px;text-align:left;}
+    td{padding:7px 10px;border-bottom:1px solid #e2e8f0;}
+    .total-row td{font-weight:800;background:#f0f5ff;font-size:13px;}
+    .footer{margin-top:20px;text-align:center;font-size:11px;color:#94a3b8;}
+    @media print{button{display:none}}
+  </style></head><body>
+  <div class="header">
+    <h1>⚕️ MediCore Pathology Lab</h1>
+    <p>Lab Test Bill / Invoice</p>
+  </div>
+  <div class="info-grid">
+    <div class="info-row">Patient: <span>${name}</span></div>
+    <div class="info-row">Age / Gender: <span>${age}</span></div>
+    <div class="info-row">Ref. Doctor: <span>${doctor}</span></div>
+    <div class="info-row">Sample Date: <span>${date}</span></div>
+  </div>
+  <table>
+    <thead><tr><th>#</th><th>Test Name</th><th>Department</th><th style="text-align:right">Price</th><th style="text-align:right">Discount</th><th style="text-align:right">Net</th></tr></thead>
+    <tbody>${rows}</tbody>
+    <tfoot>
+      <tr class="total-row">
+        <td colspan="3">TOTAL</td>
+        <td style="text-align:right">₹${totalP.toLocaleString()}</td>
+        <td style="text-align:right;color:#dc2626">${totalD>0?'−₹'+totalD.toLocaleString():''}</td>
+        <td style="text-align:right;color:#16a34a">₹${totalN.toLocaleString()}</td>
+      </tr>
+    </tfoot>
+  </table>
+  <div class="footer">Generated by MediCore — ${new Date().toLocaleString('en-IN')}</div>
+  <br><button onclick="window.print()" style="padding:10px 24px;background:#2563eb;color:white;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;margin-top:12px;">🖨️ Print</button>
+  </body></html>`);
+  w.document.close();
+}
+
+// ═══════════════════════════════════════════
+//  TEST DETAIL MODAL (uses JSON reference data)
+// ═══════════════════════════════════════════
+// Embedded reference data from JSON (key tests with rich info)
+const testRefData = {};
+let activeDetailTestId = null;
+
+function openTestDetail(testId) {
+  activeDetailTestId = testId;
+  const test = tests.find(t => t.id === testId);
+  const ref  = testRefData[test.name.toUpperCase()] || null;
+
+  document.getElementById('tdDept').textContent = test.dept;
+  document.getElementById('tdName').textContent = test.name;
+  document.getElementById('tdDesc').textContent = ref ? ref.description : 'Reference details not available for this test.';
+
+  // Specimen
+  const specEl = document.getElementById('tdSpecimen');
+  const specimen = ref ? ref.specimen : (test.dept.includes('URINE') || test.name.toUpperCase().includes('URINE') ? 'Urine' : test.dept.includes('HEMAT') ? 'EDTA Blood' : 'Serum');
+  specEl.innerHTML = `<div class="td-specimen-pill">🧪 ${specimen}</div>`;
+
+  // Params
+  const paramsEl = document.getElementById('tdParams');
+  const paramsTitle = document.getElementById('tdParamsTitle');
+  if (ref && ref.parameters && ref.parameters.length) {
+    paramsTitle.style.display = '';
+    paramsEl.innerHTML = ref.parameters.map(p => {
+      const range = typeof p.reference_range === 'object'
+        ? Object.entries(p.reference_range).map(([k,v])=>`<span style="display:block;font-size:11px;color:var(--muted);">${k}: <strong style="color:var(--green)">${v}</strong></span>`).join('')
+        : (p.reference_range || '');
+      const rangeHtml = typeof p.reference_range === 'object'
+        ? `<div style="text-align:right">${range}</div>`
+        : `<div class="td-param-range">${range}</div>`;
+      return `<div class="td-param-card">
+        <div class="td-param-top">
+          <div>
+            <div class="td-param-name">${p.field}</div>
+            <div class="td-param-unit">${p.unit || ''}</div>
+          </div>
+          ${rangeHtml}
+        </div>
+        ${p.notes ? `<div class="td-param-note">💡 ${p.notes}</div>` : ''}
+      </div>`;
+    }).join('');
+  } else {
+    paramsTitle.style.display = 'none';
+    paramsEl.innerHTML = '';
+  }
+
+  // Covers
+  const coversEl = document.getElementById('tdCovers');
+  const coversTitle = document.getElementById('tdCoversTitle');
+  if (ref && ref.covers && ref.covers.length) {
+    coversTitle.style.display = '';
+    coversEl.innerHTML = ref.covers.map(c => `<span class="td-cover-tag">${c}</span>`).join('');
+  } else {
+    coversTitle.style.display = 'none';
+    coversEl.innerHTML = '';
+  }
+
+  // Add button state
+  const addBtn = document.getElementById('tdAddBtn');
+  if (addedIds.has(testId)) {
+    addBtn.textContent = '✓ Already Added';
+    addBtn.disabled = true;
+  } else {
+    addBtn.textContent = '+ Add to Patient';
+    addBtn.disabled = false;
+  }
+
+  document.getElementById('testDetailModal').style.display = 'flex';
+}
+
+function closeTestDetail() {
+  document.getElementById('testDetailModal').style.display = 'none';
+  activeDetailTestId = null;
+}
+
+function addFromDetail() {
+  if (activeDetailTestId !== null) {
+    addToPatient(activeDetailTestId);
+    document.getElementById('tdAddBtn').textContent = '✓ Already Added';
+    document.getElementById('tdAddBtn').disabled = true;
+  }
+}
+
+// ═══════════════════════════════════════════
+//  TEST CATALOG TABLE
+// ═══════════════════════════════════════════
+function renderTests() {
+  const tbody = document.getElementById('testTbody');
+  tbody.innerHTML = '';
+
+  const nameQ = document.getElementById('searchName').value.toLowerCase().trim();
+  const dept  = document.getElementById('deptFilter').value;
+
+  filteredTests = tests.filter(t =>
+    (t.name.toLowerCase().includes(nameQ) || t.dept.toLowerCase().includes(nameQ))
+    && (!dept || t.dept === dept)
+  );
+
+  document.getElementById('pageTotalItems').textContent = filteredTests.length;
+  document.getElementById('filteredCount').textContent =
+    filteredTests.length === tests.length
+      ? `${tests.length} tests`
+      : `${filteredTests.length} of ${tests.length} shown`;
+
+  const totalPages = Math.max(1, Math.ceil(filteredTests.length / ROWS_PER_PAGE));
+  if (currentPage > totalPages) currentPage = totalPages;
+
+  const start = (currentPage - 1) * ROWS_PER_PAGE;
+  const end   = Math.min(start + ROWS_PER_PAGE, filteredTests.length);
+  const page  = filteredTests.slice(start, end);
+
+  document.getElementById('pageRangeStart').textContent = filteredTests.length ? start + 1 : 0;
+  document.getElementById('pageRangeEnd').textContent   = end;
+  document.getElementById('pageInfo').textContent       = `${currentPage} / ${totalPages}`;
+  document.getElementById('prevBtn').disabled = currentPage <= 1;
+  document.getElementById('nextBtn').disabled = currentPage >= totalPages;
+
+  if (!page.length) {
+    tbody.innerHTML = `<tr class="no-results"><td colspan="5">No tests found matching your search.</td></tr>`;
+    return;
+  }
+
+  const frag = document.createDocumentFragment();
+  page.forEach((test, idx) => {
+    const alreadyAdded = addedIds.has(test.id);
+    const price = getPrice(test.id);
+    const tr = document.createElement('tr');
+    const dc = deptClass(test.dept);
+    tr.innerHTML = `
+      <td>${start + idx + 1}</td>
+      <td class="test-name">${highlightText(test.name, nameQ)} <button class="info-btn" onclick="openTestDetail('${test.id}')" title="View details">ℹ️</button></td>
+      <td><span class="dept-badge ${dc}">${test.dept}</span></td>
+      <td class="center">
+        <span class="price-val price-clickable" onclick="openPriceEdit('${test.id}')" title="Click to edit price">
+          ₹ ${price.toLocaleString()}
+        </span>
+      </td>
+      <td class="center">
+        <button class="add-btn ${alreadyAdded ? 'added' : ''}" data-id="${test.id}"
+                ${alreadyAdded ? 'disabled title="Already in patient list"' : ''}>
+          ${alreadyAdded ? '✓ Added' : '+ Add'}
+        </button>
+      </td>
+    `;
+    frag.appendChild(tr);
+  });
+  tbody.appendChild(frag);
+  updateHeaderStats();
+}
+
+function highlightText(text, query) {
+  if (!query) return text;
+  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return text.replace(new RegExp(`(${escaped})`, 'gi'), '<mark class="highlight">$1</mark>');
+}
+
+// ═══════════════════════════════════════════
+//  SEARCH & FILTER
+// ═══════════════════════════════════════════
+function searchTest() { currentPage = 1; renderTests(); }
+function onCatalogSearch(input) {
+  const clearBtn = document.getElementById('clearSearch');
+  if (clearBtn) clearBtn.style.display = input.value ? 'block' : 'none';
+  searchTest();
+}
+function clearCatalogSearch() {
+  const inp = document.getElementById('searchName');
+  if (inp) inp.value = '';
+  const clearBtn = document.getElementById('clearSearch');
+  if (clearBtn) clearBtn.style.display = 'none';
+  searchTest();
+}
+// legacy aliases so any remaining references don't crash
+function onSearchInput(input) { onCatalogSearch(input); }
+function clearSearch(inputId, btnId) { clearCatalogSearch(); }
+
+// ═══════════════════════════════════════════
+//  PAGINATION
+// ═══════════════════════════════════════════
+function nextPage() { const tp = Math.ceil(filteredTests.length / ROWS_PER_PAGE); if (currentPage < tp) { currentPage++; renderTests(); } }
+function prevPage() { if (currentPage > 1) { currentPage--; renderTests(); } }
+
+// ═══════════════════════════════════════════
+//  ADD TO PATIENT
+// ═══════════════════════════════════════════
+document.getElementById('testTbody').addEventListener('click', e => {
+  const btn = e.target.closest('.add-btn');
+  if (!btn || btn.disabled) return;
+  addToPatient(btn.dataset.id);
+});
+
+function addToPatient(id, overridePrice) {
+  if (addedIds.has(id)) { showToast('Test already in patient list', 'warning'); return; }
+  const test  = tests.find(t => t.id === id);
+  const price = overridePrice !== undefined ? overridePrice : getPrice(id);
+  addedIds.add(id);
+  patientRows.push({ testId: id, price, discValue: 0, discPct: 0, net: price, sample: '' });
+  renderPatientTable();
+  renderTests();
+  showToast(`✓ ${test.name} added`, 'success');
+  setTimeout(() => {
+    document.getElementById('patientTbody').closest('.card')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 120);
+}
+
+// ═══════════════════════════════════════════
+//  PATIENT TABLE
+// ═══════════════════════════════════════════
+function renderPatientTable() {
+  const tbody = document.getElementById('patientTbody');
+  tbody.innerHTML = '';
+
+  if (patientRows.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="9">
+          <div class="empty-state">
+            <div class="icon">🔬</div>
+            <p>No tests added yet. Browse the catalog above and click <strong>Add</strong>.</p>
+          </div>
+        </td>
+      </tr>`;
+  document.getElementById('summaryTable').style.display = 'none'; // always hidden; footer used instead
+  document.getElementById('patientCountBadge').textContent = '0 tests';
+  const footer = document.getElementById('patientSummaryFooter');
+  if (footer) footer.style.display = 'none';
+  updateHeaderStats();
+  return;
+  }
+
+  document.getElementById('summaryTable').style.display = 'none';
+  const footer = document.getElementById('patientSummaryFooter');
+  if (footer) footer.style.display = '';
+  document.getElementById('patientCountBadge').textContent = `${patientRows.length} test${patientRows.length > 1 ? 's' : ''}`;
+
+  const frag = document.createDocumentFragment();
+  patientRows.forEach((row, idx) => {
+    const test = tests.find(t => t.id === row.testId);
+    const tr = document.createElement('tr');
+    tr.dataset.rowIdx = idx;
+    const pdc = deptClass(test.dept);
+    tr.innerHTML = `
+      <td>${idx + 1}</td>
+      <td class="test-name">${test.name}</td>
+      <td><span class="dept-badge ${pdc}">${test.dept}</span></td>
+      <td class="center"><span class="price-val">₹ ${row.price.toLocaleString()}</span></td>
+      <td class="center">
+        <span class="sample-cell ${row.sample ? 'has-sample' : ''}" onclick="openSpecimenPopup(${idx})">
+          ${row.sample || 'Select Sample'}
+        </span>
+      </td>
+      <td class="center">
+        <input type="number" class="disc-input" data-row="${idx}" data-type="value"
+               value="${row.discValue || ''}" min="0" max="${row.price}" placeholder="0"
+               oninput="onDiscountInput(this)">
+      </td>
+      <td class="center">
+        <input type="number" class="disc-input" data-row="${idx}" data-type="pct"
+               value="${row.discPct || ''}" min="0" max="100" placeholder="0"
+               oninput="onDiscountInput(this)">
+      </td>
+      <td class="center" id="net-${idx}">
+        <span class="price-val" style="color:var(--green);font-weight:800;">₹ ${row.net.toLocaleString()}</span>
+      </td>
+      <td class="center">
+        <button class="delete-btn" onclick="deletePatientRow(${idx})">✕</button>
+      </td>
+    `;
+    frag.appendChild(tr);
+  });
+  tbody.appendChild(frag);
+  updateSummary();
+  updateHeaderStats();
+}
+
+function deletePatientRow(idx) {
+  addedIds.delete(patientRows[idx].testId);
+  patientRows.splice(idx, 1);
+  renderPatientTable();
+  renderTests();
+}
+
+// ═══════════════════════════════════════════
+//  DISCOUNT LOGIC
+// ═══════════════════════════════════════════
+function onDiscountInput(input) {
+  const idx   = parseInt(input.dataset.row);
+  const type  = input.dataset.type;
+  const row   = patientRows[idx];
+  const price = row.price;
+  let val = parseFloat(input.value) || 0;
+  if (val < 0) val = 0;
+
+  if (type === 'value') {
+    if (val > price) { val = price; input.value = val; }
+    row.discValue = val;
+    row.discPct   = price > 0 ? Math.round((val / price) * 10000) / 100 : 0;
+    const pctInput = input.closest('tr').querySelector('[data-type="pct"]');
+    if (pctInput && document.activeElement !== pctInput) pctInput.value = row.discPct || '';
+  } else {
+    if (val > 100) { val = 100; input.value = val; }
+    row.discPct   = val;
+    row.discValue = Math.round((val / 100) * price * 100) / 100;
+    const valInput = input.closest('tr').querySelector('[data-type="value"]');
+    if (valInput && document.activeElement !== valInput) valInput.value = row.discValue || '';
+  }
+  row.net = Math.max(0, price - row.discValue);
+
+  const netCell = document.getElementById(`net-${idx}`);
+  if (netCell) netCell.innerHTML = `<span class="price-val" style="color:var(--green);font-weight:800;">₹ ${row.net.toLocaleString()}</span>`;
+  updateSummary();
+  updateHeaderStats();
+}
+
+// ═══════════════════════════════════════════
+//  SUMMARY
+// ═══════════════════════════════════════════
+function updateSummary() {
+  const totalPrice = patientRows.reduce((s, r) => s + r.price, 0);
+  const totalDisc  = patientRows.reduce((s, r) => s + r.discValue, 0);
+  const totalNet   = patientRows.reduce((s, r) => s + r.net, 0);
+  const elPrice = document.getElementById('sumPrice');
+  const elDisc  = document.getElementById('sumDisc');
+  const elNet   = document.getElementById('sumNet');
+  if (elPrice) elPrice.textContent = `₹${totalPrice.toLocaleString()}`;
+  if (elNet)   elNet.textContent   = `₹${totalNet.toLocaleString()}`;
+  if (elDisc)  elDisc.textContent  = totalDisc > 0 ? `−₹${totalDisc.toLocaleString()}` : '—';
+}
+
+// ═══════════════════════════════════════════
+//  HEADER STATS
+// ═══════════════════════════════════════════
+function updateHeaderStats() {
+  document.getElementById('statTotal').textContent = tests.length;
+  document.getElementById('statAdded').textContent = patientRows.length;
+  const totalNet = patientRows.reduce((s, r) => s + r.net, 0);
+  document.getElementById('statBill').textContent  = `₹${totalNet.toLocaleString()}`;
+  updateStickyBar();
+}
+
+function updateStickyBar() {
+  const bar = document.getElementById('stickyBillBar');
+  if (patientRows.length === 0) { bar.classList.remove('visible'); updateBookBtn(); return; }
+  bar.classList.add('visible');
+  const totalP = patientRows.reduce((s,r)=>s+r.price,0);
+  const totalD = patientRows.reduce((s,r)=>s+r.discValue,0);
+  const totalN = patientRows.reduce((s,r)=>s+r.net,0);
+  document.getElementById('stickyTestCount').textContent = patientRows.length;
+  document.getElementById('stickySubtotal').textContent  = '₹'+totalP.toLocaleString();
+  document.getElementById('stickyDiscount').textContent  = totalD>0 ? '−₹'+totalD.toLocaleString() : '₹0';
+  document.getElementById('stickyNet').textContent       = '₹'+totalN.toLocaleString();
+  updateBookBtn();
+}
+
+// ═══════════════════════════════════════════
+//  PRICE EDIT POPUP
+// ═══════════════════════════════════════════
+let priceEditTestId = null;
+
+function openPriceEdit(testId) {
+  priceEditTestId = testId;
+  const test = tests.find(t => t.id === testId);
+  document.getElementById('peTestName').textContent = test.name;
+  document.getElementById('peTestDept').textContent = test.dept;
+  document.getElementById('peNewPrice').value = getPrice(testId) || '';
+  document.getElementById('priceEditPopup').style.display = 'flex';
+  setTimeout(() => document.getElementById('peNewPrice').focus(), 50);
+}
+function closePriceEdit() {
+  document.getElementById('priceEditPopup').style.display = 'none';
+  priceEditTestId = null;
+}
+function livePreviewPrice() {
+  // UX3 fix: was a no-op — now shows real-time net bill impact
+  if (priceEditTestId === null) return;
+  const newPrice = parseFloat(document.getElementById('peNewPrice').value) || 0;
+  const oldPrice = getPrice(priceEditTestId);
+  const preview  = document.getElementById('pePreview');
+  const previewVal    = document.getElementById('pePreviewVal');
+  const previewDetail = document.getElementById('pePreviewDetail');
+  if (!preview) return;
+
+  // Check if this test is in the current patient list
+  const rowsAffected = patientRows.filter(r => r.testId === priceEditTestId);
+  if (rowsAffected.length > 0) {
+    const oldNet = patientRows.reduce((s, r) => s + r.net, 0);
+    const delta  = (newPrice - oldPrice) * rowsAffected.length;
+    const newNet = oldNet + delta;
+    preview.style.display = 'block';
+    previewVal.textContent = `₹${newNet.toLocaleString()}`;
+    previewVal.style.color = delta < 0 ? 'var(--green)' : delta > 0 ? 'var(--red)' : 'var(--muted)';
+    const sign = delta > 0 ? '+' : '';
+    previewDetail.textContent = delta !== 0
+      ? `Current bill ₹${oldNet.toLocaleString()} → ${sign}₹${delta.toLocaleString()} change`
+      : 'No change to current bill';
+  } else {
+    // Test not in patient list — just confirm the new price
+    preview.style.display = newPrice !== oldPrice ? 'block' : 'none';
+    previewVal.textContent = `₹${newPrice.toLocaleString()}`;
+    previewVal.style.color = 'var(--blue)';
+    previewDetail.textContent = `Was ₹${oldPrice.toLocaleString()} · not in current patient list`;
+  }
+}
+function savePriceEdit() {
+  if (priceEditTestId === null) return;
+  const val = parseFloat(document.getElementById('peNewPrice').value) || 0;
+  customPrices[priceEditTestId] = val;
+  localStorage.setItem('mc_customPrices', JSON.stringify(customPrices));
+  patientRows.forEach(r => {
+    if (r.testId === priceEditTestId) { r.price = val; r.discValue = 0; r.discPct = 0; r.net = val; }
+  });
+  closePriceEdit();
+  renderTests();
+  renderPatientTable();
+  renderPriceTable();
+  showToast(`✓ Price updated to ₹${val.toLocaleString()}`, 'success');
+}
+function resetSinglePrice() {
+  if (priceEditTestId === null) return;
+  const test = tests.find(t => t.id === priceEditTestId);
+  const defaultPrice = test ? test.defaultPrice : 0;
+  delete customPrices[priceEditTestId];
+  localStorage.setItem('mc_customPrices', JSON.stringify(customPrices));
+  patientRows.forEach(r => {
+    if (r.testId === priceEditTestId) { r.price = defaultPrice; r.discValue = 0; r.discPct = 0; r.net = defaultPrice; }
+  });
+  closePriceEdit();
+  renderTests();
+  renderPatientTable();
+  renderPriceTable();
+  showToast(`↩ Price reset to default ₹${defaultPrice.toLocaleString()}`, 'warning');
+}
+
+document.getElementById('priceEditPopup').addEventListener('click', e => {
+  if (e.target.id === 'priceEditPopup') closePriceEdit();
+});
+document.getElementById('peNewPrice').addEventListener('keydown', e => {
+  if (e.key === 'Enter') savePriceEdit();
+  if (e.key === 'Escape') closePriceEdit();
+});
+
+// ═══════════════════════════════════════════
+//  PRICE TABLE TAB
+// ═══════════════════════════════════════════
+function renderPriceTable() {
+  const tbody   = document.getElementById('priceTbody');
+  tbody.innerHTML = '';
+  const q       = (document.getElementById('priceSearch').value || '').toLowerCase();
+  const dept    = document.getElementById('priceDeptFilter').value;
+  const modOnly = document.getElementById('showModifiedOnly').checked;
+
+  const modCount = Object.keys(customPrices).length;
+  document.getElementById('modifiedCount').textContent =
+    modCount > 0 ? `${modCount} price${modCount > 1 ? 's' : ''} customised` : 'No custom prices set';
+
+  const list = tests.filter(t => {
+    const nameMatch = t.name.toLowerCase().includes(q) || t.dept.toLowerCase().includes(q);
+    const deptMatch = !dept || t.dept === dept;
+    const modMatch  = !modOnly || customPrices[t.id] !== undefined;
+    return nameMatch && deptMatch && modMatch;
+  });
+
+  if (!list.length) {
+    tbody.innerHTML = `<tr class="no-results"><td colspan="5">No tests found.</td></tr>`;
+    return;
+  }
+
+  const frag = document.createDocumentFragment();
+  list.forEach((test, idx) => {
+    const price      = getPrice(test.id);
+    const isModified = customPrices[test.id] !== undefined;
+    const tr = document.createElement('tr');
+    const pdc = deptClass(test.dept);
+    tr.innerHTML = `
+      <td>${idx + 1}</td>
+      <td class="test-name">${test.name}</td>
+      <td><span class="dept-badge ${pdc}">${test.dept}</span></td>
+      <td class="center">
+        <span class="price-val price-clickable" onclick="openPriceEdit(${test.id})" title="Click to edit">
+          ₹ ${price.toLocaleString()}
+        </span>
+      </td>
+      <td class="center">
+        ${isModified
+          ? `<span class="price-modified-badge">✏️ Modified</span>`
+          : `<span style="font-size:12px;color:#94a3b8;font-weight:500;">Default (₹0)</span>`}
+      </td>
+    `;
+    frag.appendChild(tr);
+  });
+  tbody.appendChild(frag);
+}
+
+function resetAllPrices() {
+  if (!confirm('Reset ALL custom prices to their defaults?')) return;
+  Object.keys(customPrices).forEach(k => delete customPrices[k]);
+  localStorage.setItem('mc_customPrices', JSON.stringify(customPrices));
+  patientRows.forEach(r => {
+    const test = tests.find(t => t.id === r.testId);
+    const dp = test ? test.defaultPrice : 0;
+    r.price = dp; r.discValue = 0; r.discPct = 0; r.net = dp;
+  });
+  renderTests();
+  renderPatientTable();
+  renderPriceTable();
+  showToast('All prices reset to defaults', 'warning');
+}
+
+// ═══════════════════════════════════════════
+//  PACKAGES
+// ═══════════════════════════════════════════
+function renderPackageTestPicker() {
+  const q = (document.getElementById('pkgTestSearch').value || '').toLowerCase();
+  const list = document.getElementById('pkgTestList');
+  list.innerHTML = '';
+
+  const filtered = tests.filter(t => t.name.toLowerCase().includes(q) || t.dept.toLowerCase().includes(q));
+  const frag = document.createDocumentFragment();
+  filtered.forEach(test => {
+    const isChecked = pkgSelectedTestIds.has(test.id);
+    const div = document.createElement('div');
+    div.className = `pkg-test-option ${isChecked ? 'checked' : ''}`;
+    div.dataset.id = test.id;
+    div.innerHTML = `
+      <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="togglePkgTest(${test.id}, this)">
+      <span>${test.name}</span>
+      <span class="opt-dept">${test.dept}</span>
+    `;
+    div.addEventListener('click', e => { if (e.target.tagName !== 'INPUT') div.querySelector('input').click(); });
+    frag.appendChild(div);
+  });
+
+  if (!filtered.length) {
+    list.innerHTML = `<div style="padding:16px;text-align:center;color:#94a3b8;font-size:13px;">No tests match your search.</div>`;
+  } else {
+    list.appendChild(frag);
+  }
+}
+
+function filterPkgTests() { renderPackageTestPicker(); }
+
+function togglePkgTest(id, cb) {
+  if (cb.checked) pkgSelectedTestIds.add(id);
+  else pkgSelectedTestIds.delete(id);
+  cb.closest('.pkg-test-option').classList.toggle('checked', cb.checked);
+  renderPkgChips();
+}
+
+function renderPkgChips() {
+  const container = document.getElementById('pkgSelectedChips');
+  container.innerHTML = '';
+  document.getElementById('pkgTestCount').textContent = `(${pkgSelectedTestIds.size} test${pkgSelectedTestIds.size !== 1 ? 's' : ''} selected)`;
+  if (pkgSelectedTestIds.size === 0) { container.innerHTML = '<span class="empty-hint">Select tests from the list →</span>'; return; }
+  pkgSelectedTestIds.forEach(id => {
+    const test = tests.find(t => t.id === id);
+    if (!test) return;
+    const chip = document.createElement('span');
+    chip.className = 'pkg-chip';
+    chip.innerHTML = `${test.name} <button class="pkg-chip-remove" onclick="removePkgChip(${id})">✕</button>`;
+    container.appendChild(chip);
+  });
+}
+
+function removePkgChip(id) {
+  pkgSelectedTestIds.delete(id);
+  const opt = document.querySelector(`#pkgTestList [data-id="${id}"]`);
+  if (opt) { opt.querySelector('input').checked = false; opt.classList.remove('checked'); }
+  renderPkgChips();
+}
+
+function savePackage() {
+  const name  = document.getElementById('pkgName').value.trim();
+  const dept  = document.getElementById('pkgDept').value.trim();
+  const price = parseFloat(document.getElementById('pkgPrice').value) || 0;
+  if (!name) { showToast('Please enter a package name', 'warning'); document.getElementById('pkgName').focus(); return; }
+  if (pkgSelectedTestIds.size === 0) { showToast('Please select at least one test', 'warning'); return; }
+  const testIds  = [...pkgSelectedTestIds];
+  const sumPrice = testIds.reduce((s, id) => s + getPrice(id), 0);
+  if (pkgEditId !== null) {
+    const pkg = packages.find(p => p.id === pkgEditId);
+    Object.assign(pkg, { name, dept, price, testIds, sumPrice });
+    showToast(`✓ Package "${name}" updated`, 'success');
+  } else {
+    packages.push({ id: Date.now(), name, dept, price, testIds, sumPrice });
+    showToast(`✓ Package "${name}" created`, 'success');
+  }
+  localStorage.setItem('mc_packages', JSON.stringify(packages));
+  resetPackageForm();
+  renderPackagesGrid();
+}
+
+function confirmResetPackageForm() {
+  const hasWork = document.getElementById('pkgName').value.trim() || pkgSelectedTestIds.size > 0;
+  if (hasWork && !confirm('Clear the form? Unsaved changes will be lost.')) return;
+  resetPackageForm();
+}
+
+function resetPackageForm() {
+  pkgEditId = null;
+  pkgSelectedTestIds.clear();
+  document.getElementById('pkgName').value  = '';
+  document.getElementById('pkgDept').value  = '';
+  document.getElementById('pkgPrice').value = '';
+  document.getElementById('pkgTestSearch').value = '';
+  document.getElementById('pkgSaveBtn').textContent = '💾 Save Package';
+  renderPackageTestPicker();
+  renderPkgChips();
+}
+
+function renderPackagesGrid() {
+  const grid = document.getElementById('packagesGrid');
+  document.getElementById('pkgCountLabel').textContent = `${packages.length} package${packages.length !== 1 ? 's' : ''}`;
+  if (packages.length === 0) {
+    grid.innerHTML = `<div class="pkg-empty"><div class="icon">📦</div><p>No packages yet. Create your first package above.</p></div>`;
+    return;
+  }
+  grid.innerHTML = '';
+  packages.forEach(pkg => {
+    const testNames    = pkg.testIds.map(id => tests.find(t => t.id === id)?.name).filter(Boolean);
+    const displayNames = testNames.slice(0, 4).join(', ') + (testNames.length > 4 ? ` +${testNames.length - 4} more` : '');
+    const savings      = pkg.sumPrice - pkg.price;
+    const card = document.createElement('div');
+    card.className = 'pkg-card';
+    card.innerHTML = `
+      <div class="pkg-card-name">${pkg.name}</div>
+      <div class="pkg-card-dept">
+        <span class="dept-badge">${pkg.dept || 'General'}</span>
+        <span>${pkg.testIds.length} test${pkg.testIds.length !== 1 ? 's' : ''}</span>
+      </div>
+      <div class="pkg-card-tests"><strong>Includes:</strong> ${displayNames}</div>
+      <div class="pkg-card-footer">
+        <div>
+          <div class="pkg-price">₹ ${pkg.price.toLocaleString()}</div>
+          ${savings > 0 ? `<div class="pkg-orig-price">₹ ${pkg.sumPrice.toLocaleString()}</div>` : ''}
+        </div>
+        <div class="pkg-actions">
+          <button class="pkg-add-btn" onclick="addPackageToPatient(${pkg.id})">+ Add</button>
+          <button class="pkg-edit-btn" onclick="editPackage(${pkg.id})">✏️</button>
+          <button class="pkg-del-btn" onclick="deletePackage(${pkg.id})">🗑</button>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function addPackageToPatient(pkgId) {
+  const pkg = packages.find(p => p.id === pkgId);
+  let added = 0;
+
+  // W7 fix: distribute package price proportionally across its tests
+  // If package has a set price (< sumPrice), each test gets a proportional share
+  const eligibleIds = pkg.testIds.filter(id => !addedIds.has(id));
+  if (eligibleIds.length === 0) { showToast('All tests in this package are already added', 'warning'); return; }
+
+  const sumOfEligible = eligibleIds.reduce((s, id) => s + getPrice(id), 0);
+  // Proportion of the package price that covers the eligible tests
+  const pkgPriceToApply = (pkg.price > 0 && pkg.sumPrice > 0)
+    ? pkg.price * (sumOfEligible / pkg.sumPrice)
+    : sumOfEligible;
+
+  eligibleIds.forEach(id => {
+    addedIds.add(id);
+    const individualPrice = getPrice(id);
+    // Each test's share = (its individual price / sum of eligible) * package price to apply
+    const proportionalPrice = (sumOfEligible > 0)
+      ? Math.round((individualPrice / sumOfEligible) * pkgPriceToApply * 100) / 100
+      : individualPrice;
+    patientRows.push({ testId: id, price: proportionalPrice, discValue: 0, discPct: 0, net: proportionalPrice, sample: '' });
+    added++;
+  });
+  renderPatientTable();
+  renderTests();
+  showToast(`✓ Package "${pkg.name}" — ${added} test${added > 1 ? 's' : ''} added`, 'success');
+  switchTab('catalog');
+  setTimeout(() => {
+    document.getElementById('patientTbody').closest('.card')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 200);
+}
+
+function editPackage(pkgId) {
+  const pkg = packages.find(p => p.id === pkgId);
+  pkgEditId = pkgId;
+  pkgSelectedTestIds = new Set(pkg.testIds);
+  document.getElementById('pkgName').value  = pkg.name;
+  document.getElementById('pkgDept').value  = pkg.dept;
+  document.getElementById('pkgPrice').value = pkg.price;
+  document.getElementById('pkgSaveBtn').textContent = '💾 Update Package';
+  document.getElementById('pkgTestSearch').value = '';
+  renderPackageTestPicker();
+  renderPkgChips();
+  document.getElementById('panel-packages').querySelector('.card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function deletePackage(pkgId) {
+  const pkg = packages.find(p => p.id === pkgId);
+  if (!confirm(`Delete package "${pkg.name}"?`)) return;
+  packages = packages.filter(p => p.id !== pkgId);
+  localStorage.setItem('mc_packages', JSON.stringify(packages));
+  renderPackagesGrid();
+  showToast(`Package "${pkg.name}" deleted`, 'danger');
+}
+
+// ═══════════════════════════════════════════
+//  SPECIMEN POPUP
+// ═══════════════════════════════════════════
+let activeSpecimenRow = null;
+
+function openSpecimenPopup(rowIdx) {
+  activeSpecimenRow = rowIdx;
+  document.getElementById('specimenSearch').value = '';
+  filterSpecimens();
+  const existing = patientRows[rowIdx].sample ? patientRows[rowIdx].sample.split(',').map(s => s.trim()) : [];
+  document.querySelectorAll('#specimenList input[type=checkbox]').forEach(cb => { cb.checked = existing.includes(cb.value); });
+  document.getElementById('specimenPopup').style.display = 'flex';
+}
+function closeSpecimenPopup() {
+  document.getElementById('specimenPopup').style.display = 'none';
+  activeSpecimenRow = null;
+}
+function applySpecimenSelection() {
+  const checked = [...document.querySelectorAll('#specimenList input:checked')].map(c => c.value);
+  if (activeSpecimenRow !== null) {
+    patientRows[activeSpecimenRow].sample = checked.join(', ');
+    renderPatientTable();
+  }
+  closeSpecimenPopup();
+}
+function clearSpecimenSelection() {
+  document.querySelectorAll('#specimenList input[type=checkbox]').forEach(cb => cb.checked = false);
+}
+function filterSpecimens() {
+  const q = document.getElementById('specimenSearch').value.toLowerCase();
+  document.querySelectorAll('#specimenList label').forEach(lbl => {
+    lbl.style.display = lbl.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+document.getElementById('specimenPopup').addEventListener('click', e => {
+  if (e.target.id === 'specimenPopup') closeSpecimenPopup();
+});
+
+// ═══════════════════════════════════════════
+//  GLOBAL SPECIMEN MULTI-SELECT
+// ═══════════════════════════════════════════
+let globalSpecimenSelected = new Set();
+
+function toggleSpecimenDropdown() {
+  const panel   = document.getElementById('globalSpecimenPanel');
+  const trigger = document.getElementById('globalSpecimenTrigger');
+  const isOpen  = panel.classList.contains('open');
+  if (isOpen) { panel.classList.remove('open'); trigger.classList.remove('open'); }
+  else {
+    document.getElementById('globalSpecimenSearch').value = '';
+    filterGlobalSpecimens();
+    panel.classList.add('open');
+    trigger.classList.add('open');
+    document.getElementById('globalSpecimenSearch').focus();
+  }
+}
+function filterGlobalSpecimens() {
+  const q = document.getElementById('globalSpecimenSearch').value.toLowerCase();
+  document.querySelectorAll('#globalSpecimenOptions .ms-option').forEach(opt => {
+    opt.style.display = opt.dataset.value.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+function onGlobalSpecimenChange(cb) {
+  cb.checked ? globalSpecimenSelected.add(cb.value) : globalSpecimenSelected.delete(cb.value);
+  cb.closest('.ms-option').classList.toggle('selected', cb.checked);
+  renderGlobalSpecimenTrigger();
+}
+function renderGlobalSpecimenTrigger() {
+  const trigger     = document.getElementById('globalSpecimenTrigger');
+  const placeholder = document.getElementById('globalSpecimenPlaceholder');
+  trigger.querySelectorAll('.ms-chip').forEach(c => c.remove());
+  if (globalSpecimenSelected.size === 0) {
+    placeholder.style.display = '';
+    document.getElementById('globalSpecimenCount').textContent = '0 selected';
+  } else {
+    placeholder.style.display = 'none';
+    document.getElementById('globalSpecimenCount').textContent = `${globalSpecimenSelected.size} selected`;
+    [...globalSpecimenSelected].forEach(val => {
+      const chip = document.createElement('span');
+      chip.className = 'ms-chip';
+      chip.dataset.val = val;
+      chip.innerHTML = `${val} <button class="ms-chip-remove" onclick="removeGlobalSpecimen(this)">✕</button>`;
+      trigger.insertBefore(chip, trigger.querySelector('.arrow'));
+    });
+  }
+}
+function removeGlobalSpecimen(btn) {
+  const chip = btn.closest('.ms-chip');
+  const val  = chip.dataset.val;
+  globalSpecimenSelected.delete(val);
+  document.querySelectorAll('#globalSpecimenOptions .ms-option').forEach(opt => {
+    if (opt.dataset.value === val) { opt.querySelector('input').checked = false; opt.classList.remove('selected'); }
+  });
+  renderGlobalSpecimenTrigger();
+}
+function clearGlobalSpecimen() {
+  globalSpecimenSelected.clear();
+  document.querySelectorAll('#globalSpecimenOptions input').forEach(cb => { cb.checked = false; cb.closest('.ms-option').classList.remove('selected'); });
+  renderGlobalSpecimenTrigger();
+}
+function applySpecimenToAll() {
+  if (globalSpecimenSelected.size === 0) { showToast('Please select at least one specimen first', 'warning'); return; }
+  if (patientRows.length === 0) { showToast('No tests in the patient list yet', 'warning'); return; }
+  const joined = [...globalSpecimenSelected].join(', ');
+  patientRows.forEach(r => r.sample = joined);
+  renderPatientTable();
+  showToast(`✓ Specimen applied to all ${patientRows.length} test(s)`, 'success');
+  setTimeout(() => {
+    document.getElementById('patientTbody').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 100);
+}
+document.addEventListener('click', e => {
+  const wrapper = document.getElementById('globalSpecimenWrapper');
+  if (wrapper && !wrapper.contains(e.target)) {
+    document.getElementById('globalSpecimenPanel').classList.remove('open');
+    document.getElementById('globalSpecimenTrigger').classList.remove('open');
+  }
+});
+
+// ═══════════════════════════════════════════
+//  PATIENT SELECTOR
+// ═══════════════════════════════════════════
+let _selectedPatient = null;
+let _allSavedPatients = [];
+
+function openPatientSelector() {
+  _allSavedPatients = JSON.parse(localStorage.getItem('patients') || '[]');
+  const overlay = document.getElementById('patientSelectorModal');
+  overlay.classList.add('open');
+  document.getElementById('psSearchInput').value = '';
+  renderPsPatients(_allSavedPatients);
+  setTimeout(() => document.getElementById('psSearchInput').focus(), 100);
+}
+
+function closePatientSelector() {
+  document.getElementById('patientSelectorModal').classList.remove('open');
+}
+
+function filterPsPatients() {
+  const q = document.getElementById('psSearchInput').value.toLowerCase().trim();
+  if (!q) { renderPsPatients(_allSavedPatients); return; }
+  const filtered = _allSavedPatients.filter(p =>
+    (p.name||'').toLowerCase().includes(q) ||
+    (p.id||'').toLowerCase().includes(q) ||
+    (p.mobile||'').includes(q)
+  );
+  renderPsPatients(filtered);
+}
+
+function renderPsPatients(list) {
+  const container = document.getElementById('psPatientList');
+  if (!list.length) {
+    const msg = _allSavedPatients.length === 0
+      ? '<p>No patients registered yet.</p><small>Go to Patient Registration (MAIN1) to add patients.</small>'
+      : '<p>No patients match your search.</p>';
+    container.innerHTML = `<div class="ps-empty"><div class="ps-empty-icon">👥</div>${msg}</div>`;
+    return;
+  }
+  container.innerHTML = list.map(p => {
+    const initials = (p.name||'?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    const age = p.age ? `${p.age}Y` : '—';
+    const gender = p.gender ? p.gender.charAt(0).toUpperCase() : '—';
+    const mobile = p.mobile || '—';
+    return `<div class="ps-patient-card" onclick="selectPatient(${JSON.stringify(p).replace(/"/g,'&quot;')})">
+      <div class="ps-avatar">${initials}</div>
+      <div class="ps-patient-info">
+        <div class="ps-patient-name">${p.title ? p.title + ' ' : ''}${p.name||'—'}</div>
+        <div class="ps-patient-meta">Age: ${age} &nbsp;|&nbsp; ${gender} &nbsp;|&nbsp; 📱 ${mobile}${p.address ? ' &nbsp;|&nbsp; ' + p.address : ''}</div>
+      </div>
+      <div class="ps-patient-id-badge">${p.id||'—'}</div>
+    </div>`;
+  }).join('');
+}
+
+function selectPatient(p) {
+  _selectedPatient = p;
+  // Fill form fields
+  document.getElementById('patientName').value = (p.title ? p.title + ' ' : '') + (p.name || '');
+  const age = p.age ? p.age : '';
+  const gender = p.gender ? p.gender.charAt(0).toUpperCase() : '';
+  document.getElementById('patientAge').value = age && gender ? `${age} / ${gender}` : age || gender || '';
+  const mobileEl = document.getElementById('patientMobile');
+  if (mobileEl) mobileEl.value = p.mobile || '';
+  if (p.referral && p.referral.name) {
+    document.getElementById('patientDoctor').value = p.referral.name;
+  }
+  // Show chip
+  const chip = document.getElementById('selectedPatientChip');
+  chip.classList.add('visible');
+  document.getElementById('chipName').textContent = (p.title ? p.title + ' ' : '') + (p.name || '—');
+  const ageTxt = p.age ? `${p.age}Y` : '';
+  const genTxt = p.gender ? p.gender.charAt(0).toUpperCase() : '';
+  document.getElementById('chipDetail').textContent = [p.id, ageTxt && genTxt ? `${ageTxt} / ${genTxt}` : ageTxt || genTxt, p.mobile].filter(Boolean).join(' · ');
+  closePatientSelector();
+  updateBookBtn();
+  showToast(`✓ Patient selected: ${p.name}`, 'success');
+}
+
+function clearSelectedPatient() {
+  _selectedPatient = null;
+  document.getElementById('selectedPatientChip').classList.remove('visible');
+  document.getElementById('patientName').value = '';
+  document.getElementById('patientAge').value = '';
+  const mobileEl = document.getElementById('patientMobile');
+  if (mobileEl) mobileEl.value = '';
+  updateBookBtn();
+}
+
+// ═══════════════════════════════════════════
+//  BOOK TEST
+// ═══════════════════════════════════════════
+function updateBookBtn() {
+  const hasPatient = !!document.getElementById('patientName').value.trim();
+  const hasTests = patientRows.length > 0;
+  const enabled = hasPatient && hasTests;
+  ['bookTestBtn','stickyBookBtn'].forEach(id => {
+    const btn = document.getElementById(id);
+    if (btn) btn.disabled = !enabled;
+  });
+}
+
+function generateBookingId() {
+  const now = new Date();
+  const prefix = 'BK';
+  const date = now.getFullYear().toString().slice(2) +
+    String(now.getMonth()+1).padStart(2,'0') +
+    String(now.getDate()).padStart(2,'0');
+  const bookings = JSON.parse(localStorage.getItem('testBookings') || '[]');
+  const todayBookings = bookings.filter(b => b.bookingId && b.bookingId.includes(date));
+  const seq = String(todayBookings.length + 1).padStart(3,'0');
+  return `${prefix}${date}${seq}`;
+}
+
+function initiateBooking() {
+  const name = document.getElementById('patientName').value.trim();
+  if (!name) { showToast('⚠️ Please enter or select a patient first', 'warning'); return; }
+  if (patientRows.length === 0) { showToast('⚠️ No tests added yet', 'warning'); return; }
+
+  const bookingId = generateBookingId();
+  const dateVal = document.getElementById('patientDate').value;
+  const doctor = document.getElementById('patientDoctor').value.trim();
+  const mobileEl = document.getElementById('patientMobile');
+  const mobile = mobileEl ? mobileEl.value.trim() : (_selectedPatient ? _selectedPatient.mobile : '');
+
+  const totalPrice = patientRows.reduce((s,r)=>s+r.price,0);
+  const totalDisc  = patientRows.reduce((s,r)=>s+r.discValue,0);
+  const totalNet   = patientRows.reduce((s,r)=>s+r.net,0);
+
+  const booking = {
+    bookingId,
+    bookedAt: new Date().toISOString(),
+    sampleDate: dateVal,
+    patient: _selectedPatient || {
+      name,
+      age: document.getElementById('patientAge').value,
+      mobile
+    },
+    patientName: name,
+    patientAge: document.getElementById('patientAge').value,
+    patientMobile: mobile,
+    refDoctor: doctor,
+    tests: patientRows.map(r => {
+      const t = tests.find(t => t.id === r.testId);
+      return {
+        id: r.testId,
+        name: t ? t.name : '',
+        dept: t ? t.dept : '',
+        price: r.price,
+        discValue: r.discValue,
+        net: r.net,
+        sample: r.sample || ''
+      };
+    }),
+    totalPrice,
+    totalDisc,
+    totalNet,
+    status: 'Booked'
+  };
+
+  // Save to localStorage
+  const bookings = JSON.parse(localStorage.getItem('testBookings') || '[]');
+  bookings.push(booking);
+  localStorage.setItem('testBookings', JSON.stringify(bookings));
+
+  // Show confirmation modal
+  showBookingModal(booking);
+}
+
+function showBookingModal(booking) {
+  _lastBookingId = booking.bookingId; // W1 fix: remember for "Enter Results" button
+  const dateStr = booking.sampleDate
+    ? new Date(booking.sampleDate).toLocaleDateString('en-IN', {day:'2-digit',month:'short',year:'numeric'})
+    : new Date().toLocaleDateString('en-IN', {day:'2-digit',month:'short',year:'numeric'});
+  const bookedAt = new Date(booking.bookedAt).toLocaleString('en-IN', {day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+
+  document.getElementById('bookingModalBody').innerHTML = `
+    <div class="booking-detail-row">
+      <span class="bd-label">Booking ID</span>
+      <span class="bd-val"><span class="booking-id-badge">${booking.bookingId}</span></span>
+    </div>
+    <div class="booking-detail-row">
+      <span class="bd-label">Patient</span>
+      <span class="bd-val">${booking.patientName}${booking.patientAge ? ' · ' + booking.patientAge : ''}</span>
+    </div>
+    ${booking.patientMobile ? `<div class="booking-detail-row"><span class="bd-label">Mobile</span><span class="bd-val">📱 ${booking.patientMobile}</span></div>` : ''}
+    ${booking.refDoctor ? `<div class="booking-detail-row"><span class="bd-label">Ref. Doctor</span><span class="bd-val">🩺 ${booking.refDoctor}</span></div>` : ''}
+    <div class="booking-detail-row">
+      <span class="bd-label">Sample Date</span>
+      <span class="bd-val">📅 ${dateStr}</span>
+    </div>
+    <div class="booking-detail-row">
+      <span class="bd-label">Tests Booked</span>
+      <span class="bd-val">${booking.tests.length} test(s)</span>
+    </div>
+    <div class="booking-detail-row">
+      <span class="bd-label">Total Amount</span>
+      <span class="bd-val" style="color:var(--blue);font-size:16px;font-family:'DM Mono',monospace;">₹${booking.totalNet.toFixed(2)}</span>
+    </div>
+    ${booking.totalDisc > 0 ? `<div class="booking-detail-row"><span class="bd-label">Discount Applied</span><span class="bd-val" style="color:var(--red);">- ₹${booking.totalDisc.toFixed(2)}</span></div>` : ''}
+    <div class="booking-detail-row">
+      <span class="bd-label">Booked At</span>
+      <span class="bd-val" style="font-size:12px;color:var(--muted);">${bookedAt}</span>
+    </div>
+  `;
+  document.getElementById('bookingModal').classList.add('open');
+}
+
+function closeBookingModal() {
+  document.getElementById('bookingModal').classList.remove('open');
+}
+
+// W1 fix: track last booking so "Enter Results" button can deep-link
+let _lastBookingId = null;
+function goToResultEntry() {
+  if (_lastBookingId) window.open(`MAIN4-1.html?booking=${_lastBookingId}`, '_blank');
+  else closeBookingModal();
+}
+
+function startNewBooking() {
+  closeBookingModal();
+  // Clear patient fields
+  clearSelectedPatient();
+  document.getElementById('patientDoctor').value = '';
+  // Reset sample date to today (B4 fix: was retaining previous booking's date)
+  const dateEl = document.getElementById('patientDate');
+  if (dateEl) dateEl.value = new Date().toISOString().slice(0, 10);
+  // Clear tests
+  patientRows.length = 0;
+  addedIds.clear();
+  renderPatientTable();
+  updateStickyBar();
+  updateBookBtn();
+  showToast('Ready for new booking', 'info');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ═══════════════════════════════════════════
+//  UTILITIES
+// ═══════════════════════════════════════════
+function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+function showToast(msg, type = '') {
+  const c = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(() => t.remove(), 2700);
+}
+
+// ═══════════════════════════════════════════
+//  SAMPLE REPORT MODAL
+// ═══════════════════════════════════════════
+
+// Fixed sample patient for all reports
+const SAMPLE_PATIENT = { name: 'Lakshay', age: '19 / M', refDoc: 'Dr. Parmod' };
+
+// Generate a value strictly within the safe/normal reference range
+function parseMockValue(rangeStr, unit) {
+  if (!rangeStr || typeof rangeStr !== 'string') return null;
+  rangeStr = rangeStr.trim();
+  if (/negative/i.test(rangeStr)) return { value: 'Negative', flag: 'N', display: 'Negative' };
+  const ltMatch = rangeStr.match(/^[<≤]\s*(\d+\.?\d*)/);
+  if (ltMatch) {
+    const max = parseFloat(ltMatch[1]);
+    // Stay well within safe limit: 30–70% of max
+    const v = +(max * (0.30 + Math.random() * 0.40)).toFixed(2);
+    return { value: v, flag: 'N', display: String(v) };
+  }
+  const gtMatch = rangeStr.match(/^[>≥]\s*(\d+\.?\d*)/);
+  if (gtMatch) {
+    const min = parseFloat(gtMatch[1]);
+    // Stay just above minimum: 105–130% of min
+    const v = +(min * (1.05 + Math.random() * 0.25)).toFixed(2);
+    return { value: v, flag: 'N', display: String(v) };
+  }
+  const rangeMatch = rangeStr.match(/(\d+\.?\d*)\s*[-–to]+\s*(\d+\.?\d*)/i);
+  if (rangeMatch) {
+    const lo = parseFloat(rangeMatch[1]);
+    const hi = parseFloat(rangeMatch[2]);
+    // Always pick a value in the safe middle 25–75% of the range
+    const v_raw = lo + (hi - lo) * (0.25 + Math.random() * 0.50);
+    const range = hi - lo;
+    const decimals = range < 1 ? 2 : range < 20 ? 1 : 0;
+    const v = +v_raw.toFixed(decimals);
+    return { value: v, flag: 'N', display: String(v) };
+  }
+  return null;
+}
+
+// Build interpretation — always all-normal now
+function buildInterpretation(params, testName) {
+  return `All parameters of <strong>${testName}</strong> are within the normal reference range. No abnormal findings detected in this sample. This report is generated for demonstration purposes only.`;
+}
+
+// Derive specimen from test name/dept when ref data not available
+function guessSpecimen(test) {
+  const n = test.name.toUpperCase();
+  const d = test.dept.toUpperCase();
+  if (n.includes('URINE') || d.includes('URINE')) return 'Urine';
+  if (n.includes('STOOL') || n.includes('FAEC'))  return 'Stool';
+  if (n.includes('SPUTUM'))                        return 'Sputum';
+  if (n.includes('CSF'))                           return 'CSF';
+  if (n.includes('SEMEN'))                         return 'Semen';
+  if (d.includes('HEMAT'))                         return 'EDTA Blood';
+  if (d.includes('MICRO'))                         return 'Blood / Swab';
+  return 'Serum';
+}
+
+// Generic reference ranges for common tests without ref data
+const GENERIC_PARAMS = {
+  'HEMATOLOGY': [
+    { field: 'Haemoglobin', unit: 'g/dL',   reference_range: '13 - 17' },
+    { field: 'WBC Count',   unit: 'cells/μL', reference_range: '4000 - 11000' },
+    { field: 'Platelets',   unit: 'lakh/μL', reference_range: '1.5 - 4.5' },
+    { field: 'PCV/Hematocrit', unit: '%',    reference_range: '38 - 52' },
+    { field: 'MCV',         unit: 'fL',      reference_range: '80 - 100' },
+  ],
+  'BIOCHEMISTRY': [
+    { field: 'Result',      unit: '',         reference_range: '70 - 120' },
+    { field: 'Interpretation', unit: '',      reference_range: '< 5.7' },
+  ],
+  'SEROLOGY': [
+    { field: 'IgM Antibody', unit: 'IU/mL',  reference_range: '< 10' },
+    { field: 'IgG Antibody', unit: 'IU/mL',  reference_range: '< 10' },
+  ],
+  'CLINICAL PATHOLOGY': [
+    { field: 'Colour',      unit: '',         reference_range: 'Pale Yellow' },
+    { field: 'Clarity',     unit: '',         reference_range: 'Clear' },
+    { field: 'pH',          unit: '',         reference_range: '4.5 - 8.0' },
+    { field: 'Specific Gravity', unit: '',    reference_range: '1.005 - 1.030' },
+  ],
+};
+
+function openSampleReport() {
+  if (activeDetailTestId === null) return;
+  const test = tests.find(t => t.id === activeDetailTestId);
+  const ref  = testRefData[test.name.toUpperCase()] || null;
+
+  const sp = SAMPLE_PATIENT;
+
+  // Determine specimen
+  const specimen = ref ? ref.specimen : guessSpecimen(test);
+
+  // Determine parameters
+  let params = (ref && ref.parameters && ref.parameters.length)
+    ? JSON.parse(JSON.stringify(ref.parameters))
+    : (GENERIC_PARAMS[test.dept] || GENERIC_PARAMS['BIOCHEMISTRY']).slice(0, 4);
+
+  // Attach mock values — always normal
+  params.forEach(p => {
+    let range = p.reference_range;
+    if (typeof range === 'object') range = Object.values(range)[0] || '';
+    const mock = parseMockValue(String(range), p.unit);
+    p._mock   = mock;
+    p._flag   = 'N';  // always normal
+    if (mock) mock.flag = 'N';
+    p._refStr = typeof p.reference_range === 'object'
+      ? Object.entries(p.reference_range).map(([k,v])=>`${k}: ${v}`).join(' / ')
+      : (p.reference_range || '—');
+  });
+
+  // Build interpretation
+  const interp = buildInterpretation(params, test.name);
+
+  // Render report
+  const report = document.getElementById('srReport');
+  report.innerHTML = `
+    <div class="sr-watermark">SAMPLE</div>
+
+    <!-- HEADER -->
+    <div class="sr-header">
+      <div class="sr-header-top">
+        <div>
+          <div class="sr-lab-name">⚕️ PatLabs Diagnostics</div>
+          <div class="sr-lab-sub">MediCore Pathology & Laboratory Services · NABL Accredited</div>
+        </div>
+      </div>
+      <hr class="sr-header-divider">
+      <div class="sr-patient-grid" style="grid-template-columns:repeat(2,1fr);gap:12px;">
+        <div class="sr-patient-field">
+          <span class="pf-label">Patient Name</span>
+          <span class="pf-val">${sp.name}</span>
+        </div>
+        <div class="sr-patient-field">
+          <span class="pf-label">Age / Gender</span>
+          <span class="pf-val">${sp.age}</span>
+        </div>
+        <div class="sr-patient-field">
+          <span class="pf-label">Ref. Doctor</span>
+          <span class="pf-val">${sp.refDoc}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEST BAR -->
+    <div class="sr-test-bar">
+      <div class="sr-test-name">${test.name}</div>
+      <span class="sr-test-dept">🏥 ${test.dept}</span>
+      <span class="sr-specimen-pill">🧫 ${specimen}</span>
+      <span class="sr-sample-badge">Sample Report</span>
+    </div>
+
+    <!-- RESULTS TABLE -->
+    <div class="sr-results-section">
+      <div class="sr-results-title">📊 Test Results</div>
+      <table class="sr-results-table">
+        <thead>
+          <tr>
+            <th style="width:38%">Parameter</th>
+            <th style="width:20%;text-align:center;">Result</th>
+            <th style="width:12%;text-align:center;">Flag</th>
+            <th style="width:18%;text-align:center;">Reference Range</th>
+            <th style="width:12%;text-align:center;">Unit</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${params.map(p => {
+            const mock = p._mock;
+            let resultHtml, flagHtml;
+            if (mock) {
+              resultHtml = `<span class="sr-param-result normal">${mock.display}</span>`;
+              flagHtml   = `<span class="sr-flag N">N</span>`;
+            } else {
+              resultHtml = `<span class="sr-param-result normal">—</span>`;
+              flagHtml   = `<span class="sr-flag N">N</span>`;
+            }
+            return `<tr>
+              <td><div class="sr-param-name">${p.field}</div>${p.notes ? `<div style="font-size:10.5px;color:#94a3b8;margin-top:2px;font-style:italic;">${p.notes}</div>` : ''}</td>
+              <td style="text-align:center;">${resultHtml}</td>
+              <td style="text-align:center;">${flagHtml}</td>
+              <td style="text-align:center;"><span class="sr-ref-range">${p._refStr}</span></td>
+              <td style="text-align:center;"><span class="sr-unit">${p.unit || '—'}</span></td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+      <div style="margin-top:12px;display:flex;gap:16px;font-size:11.5px;color:#64748b;">
+        <span>Flag Legend:</span>
+        <span><strong style="color:#16a34a;">N</strong> = Normal</span>
+        <span><strong style="color:#dc2626;">H</strong> = High</span>
+        <span><strong style="color:#2563eb;">L</strong> = Low</span>
+      </div>
+    </div>
+
+    <!-- INTERPRETATION -->
+    <div class="sr-interp-section">
+      <div class="sr-interp-box">
+        <div class="sr-interp-title">🩺 Clinical Interpretation</div>
+        <div class="sr-interp-text">${interp}</div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="sr-footer">
+      <div class="sr-footer-row">
+        <div class="sr-footer-note">
+          ⚠️ <strong>This is a SAMPLE REPORT for demonstration purposes only.</strong> Values shown are generated for preview and do not represent actual diagnostic results.<br>
+          Results should be interpreted in clinical context by a qualified physician.
+        </div>
+        <div class="sr-sig-block">
+          <div class="sr-sig-line"></div>
+          <div class="sr-sig-label">Pathologist / Lab Director</div>
+          <div style="font-size:10px;color:#94a3b8;margin-top:2px;">Dr. M. Verma, MD (Pathology)</div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('sampleReportModal').classList.add('open');
+}
+
+function closeSampleReport() {
+  document.getElementById('sampleReportModal').classList.remove('open');
+}
+
+function printSampleReport() {
+  const report = document.getElementById('srReport').innerHTML;
+  const w = window.open('', '_blank', 'width=800,height=900');
+  w.document.write(`<!DOCTYPE html><html><head>
+    <title>Sample Report — MediCore</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+      *{box-sizing:border-box;margin:0;padding:0;}
+      body{font-family:'Outfit',sans-serif;background:white;color:#0f172a;font-size:13px;}
+      .sr-report{max-width:700px;margin:0 auto;background:white;position:relative;}
+      .sr-watermark{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-35deg);font-size:72px;font-weight:900;color:rgba(37,99,235,0.04);pointer-events:none;white-space:nowrap;font-family:'Outfit',sans-serif;}
+      .sr-header{background:linear-gradient(135deg,#0c1445 0%,#1d4ed8 100%);padding:22px 28px 18px;color:white;}
+      .sr-header-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px;}
+      .sr-lab-name{font-size:22px;font-weight:900;letter-spacing:-0.5px;margin-bottom:2px;}
+      .sr-lab-sub{font-size:11.5px;opacity:0.65;}
+      .sr-report-badge{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:8px 14px;text-align:right;}
+      .badge-label{font-size:9px;font-weight:700;opacity:0.6;text-transform:uppercase;letter-spacing:1px;}
+      .badge-val{font-family:'DM Mono',monospace;font-size:14px;font-weight:700;margin-top:2px;}
+      .sr-header-divider{border:none;border-top:1px solid rgba(255,255,255,0.15);margin:14px 0;}
+      .sr-patient-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+      .sr-patient-field{display:flex;flex-direction:column;gap:2px;}
+      .pf-label{font-size:9px;font-weight:700;opacity:0.55;text-transform:uppercase;letter-spacing:1px;}
+      .pf-val{font-size:13px;font-weight:700;}
+      .sr-test-bar{background:#f0f5ff;border-bottom:2px solid #c7d7f8;padding:12px 28px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+      .sr-test-name{font-size:16px;font-weight:900;color:#0c1445;flex:1;letter-spacing:-0.3px;}
+      .sr-test-dept{display:inline-flex;align-items:center;background:rgba(37,99,235,0.1);color:#2563eb;border-radius:20px;padding:4px 12px;font-size:11.5px;font-weight:700;}
+      .sr-specimen-pill{display:inline-flex;align-items:center;background:rgba(13,148,136,0.1);color:#0d9488;border-radius:20px;padding:4px 12px;font-size:11.5px;font-weight:700;}
+      .sr-sample-badge{background:linear-gradient(135deg,#fef3c7,#fde68a);border:1.5px solid #f59e0b;color:#92400e;display:inline-block;font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;letter-spacing:0.5px;text-transform:uppercase;}
+      .sr-results-section{padding:20px 28px;}
+      .sr-results-title{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#2563eb;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #e8efff;}
+      .sr-results-table{width:100%;border-collapse:collapse;font-size:13px;}
+      .sr-results-table thead th{background:linear-gradient(to bottom,#eef3fd,#e6edfc);color:#1e40af;font-weight:800;font-size:10.5px;text-transform:uppercase;letter-spacing:0.6px;padding:9px 12px;text-align:left;border-bottom:2px solid #c7d7f8;}
+      .sr-results-table tbody tr{border-bottom:1px solid #f0f5ff;}
+      .sr-results-table td{padding:10px 12px;vertical-align:middle;}
+      .sr-param-name{font-weight:700;color:#0f172a;}
+      .sr-param-result{font-family:'DM Mono',monospace;font-size:14px;font-weight:700;color:#0c1445;}
+      .sr-param-result.high{color:#dc2626;}.sr-param-result.low{color:#2563eb;}.sr-param-result.normal{color:#16a34a;}
+      .sr-flag{display:inline-block;font-size:10px;font-weight:800;padding:2px 7px;border-radius:10px;}
+      .sr-flag.H{background:#fee2e2;color:#dc2626;}.sr-flag.L{background:#dbeafe;color:#2563eb;}.sr-flag.N{background:#dcfce7;color:#16a34a;}
+      .sr-ref-range{font-size:12px;color:#64748b;font-family:'DM Mono',monospace;}
+      .sr-unit{font-size:11.5px;color:#94a3b8;font-family:'DM Mono',monospace;}
+      .sr-interp-section{padding:0 28px 20px;}
+      .sr-interp-box{background:linear-gradient(135deg,#f0f9ff,#e8f5ff);border:1.5px solid rgba(37,99,235,0.15);border-left:4px solid #2563eb;border-radius:10px;padding:14px 16px;}
+      .sr-interp-title{font-size:11px;font-weight:800;color:#2563eb;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+      .sr-interp-text{font-size:13px;color:#374151;line-height:1.65;}
+      .sr-footer{background:#f8faff;border-top:1.5px solid #e2e8f0;padding:14px 28px;}
+      .sr-footer-row{display:flex;justify-content:space-between;align-items:center;gap:16px;}
+      .sr-footer-note{font-size:10.5px;color:#94a3b8;line-height:1.5;flex:1;}
+      .sr-sig-block{text-align:right;}
+      .sr-sig-line{width:130px;border-top:1.5px solid #cbd5e1;margin:0 0 4px auto;}
+      .sr-sig-label{font-size:10.5px;color:#64748b;font-weight:700;}
+      @media print{body{margin:0;}}
+    </style></head><body>
+    <div class="sr-report">${report}</div>
+    <br>
+    <button onclick="window.print()" style="display:block;margin:16px auto;padding:10px 28px;background:#2563eb;color:white;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;">🖨️ Print Report</button>
+    </body></html>`);
+  w.document.close();
+}
+
+// ═══════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════
+// Publish catalog size so index.html dashboard can display it
+localStorage.setItem('testCatalogCount', tests.length);
+renderTests();
+updateHeaderStats();
+renderPackageTestPicker();
+renderPackagesGrid(); // ← fix: render saved packages on load
+// Default sample date to today
+const td = document.getElementById('patientDate');
+if (td) td.value = new Date().toISOString().slice(0,10);
+// Update book button when patient name is typed manually
+const pnEl = document.getElementById('patientName');
+if (pnEl) pnEl.addEventListener('input', updateBookBtn);
+// Initial state
+updateBookBtn();
+</script>
+</body>
+</html>
