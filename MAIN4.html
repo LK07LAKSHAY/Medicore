@@ -1511,7 +1511,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const rIdx = allRows.indexOf(row);
       const hasData = inputs.some(i => i.value.trim());
       if (hasData) {
-        if (confirm('Delete this parameter row?')) pmDelRow(rIdx);
+        showConf('Delete Row?', 'Delete this parameter row? Its data will be lost.', () => { pmDelRow(rIdx); closeMod(); });
       } else {
         pmDelRow(rIdx);
       }
@@ -1827,7 +1827,7 @@ function renderTestPanel(tIdx) {
     <div class="tp-action-bar">
       <div class="tp-prog-wrap">
         <div class="tp-prog-track"><div class="tp-prog-fill" id="tpFill_${tIdx}" style="width:${pct}%"></div></div>
-        <div class="tp-prog-lbl" id="tpLbl_${tIdx}">${filled}/${total} filled</div>
+        <div class="tp-prog-lbl" id="tpLbl_${tIdx}">${filled} of ${total} filled</div>
       </div>
       <button class="btn btn-sm" style="background:#f0f9ff;color:var(--blue);border:1.5px solid var(--border);" onclick="nextEmptyCell(${tIdx})">⬇ Next Empty</button>
       <button class="btn btn-save btn-sm" onclick="saveTestPanel(${tIdx})">💾 Save</button>
@@ -1883,7 +1883,7 @@ function _updateTpProg(tIdx) {
   const total=rows.length, pct=total?Math.round(filled/total*100):0;
   const f=document.getElementById(`tpFill_${tIdx}`), l=document.getElementById(`tpLbl_${tIdx}`);
   if(f) f.style.width=pct+'%';
-  if(l) l.textContent=`${filled}/${total} filled`;
+  if(l) l.textContent=`${filled} of ${total} filled`;
 }
 
 /* ── GAUGE ── */
@@ -1958,10 +1958,14 @@ function onKeyNav(e,el) {
 }
 
 /* ── NEXT EMPTY CELL ── */
+function _isCellEmpty(key) {
+  const rv = _rv[key];
+  return !(rv && rv.value && String(rv.value).trim());
+}
 function nextEmptyCell(tIdx) {
   const rows=_getTestRows(tIdx).filter(r=>!r.unconfigured);
   for(const r of rows) {
-    if(!(_rv[r.key]&&_rv[r.key].value&&String(_rv[r.key].value).trim())) {
+    if(_isCellEmpty(r.key)) {
       const el=document.getElementById('inp_'+r.key);
       if(el){el.focus();el.select();showToast('⬇ Jumped to next empty cell','info');return;}
     }
