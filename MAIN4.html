@@ -599,6 +599,10 @@ td.td-gauge { padding:5px 10px 5px 8px; }
   .pm-table-head, .pm-row { grid-template-columns:32px 1fr 80px 120px 60px 60px 38px; }
   .pm-selector-grid { grid-template-columns:1fr; }
 }
+
+/* ── Excel UX enhancements ── */
+.ri:focus-visible,.ri-txt:focus-visible { outline:2px solid var(--cyan); outline-offset:1px; }
+.pm-row input.invalid { background:#fef2f2 !important; border:1.5px solid var(--red) !important; box-shadow:0 0 0 2px rgba(220,38,38,.15); }
 </style>
 </head>
 <body>
@@ -1283,6 +1287,32 @@ function pmHarvestRows() {
 
 function pmSave() {
   if (!_pmCurrentTest) { showToast('⚠️ Select a test from the catalog first', 'warning'); return; }
+  // Clear previous validation highlights
+  document.querySelectorAll('#pmRows .pm-row input.invalid').forEach(i => i.classList.remove('invalid'));
+  const rows = document.querySelectorAll('#pmRows .pm-row');
+  let hasError = false;
+  rows.forEach(row => {
+    const inps = row.querySelectorAll('input');
+    const name = inps[0].value.trim();
+    const unit = inps[1].value.trim();
+    const refRange = inps[2].value.trim();
+    const loStr = inps[3].value.trim();
+    const hiStr = inps[4].value.trim();
+    // Name required if any other field is filled
+    if (!name && (unit || refRange || loStr || hiStr)) {
+      inps[0].classList.add('invalid'); hasError = true;
+    }
+    // If Lo or Hi is filled, both must be present and valid
+    if (loStr || hiStr) {
+      const lo = parseFloat(loStr), hi = parseFloat(hiStr);
+      if (!loStr || isNaN(lo)) { inps[3].classList.add('invalid'); hasError = true; }
+      if (!hiStr || isNaN(hi)) { inps[4].classList.add('invalid'); hasError = true; }
+      if (loStr && !isNaN(lo) && hiStr && !isNaN(hi) && lo > hi) {
+        inps[3].classList.add('invalid'); inps[4].classList.add('invalid'); hasError = true;
+      }
+    }
+  });
+  if (hasError) { showToast('⚠️ Fix highlighted fields before saving', 'error'); return; }
   const params = pmHarvestRows();
   if (!params.length) { showToast('⚠️ Add at least one parameter row', 'warning'); return; }
   const store = loadParamStore();
@@ -1460,6 +1490,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
   document.getElementById('step1').classList.add('active');
+
+  // ── PM keyboard navigation (event delegation) ──
+  document.getElementById('pmRows').addEventListener('keydown', function(e) {
+    const inp = e.target;
+    if (!inp.matches('.pm-row input')) return;
+    const row = inp.closest('.pm-row');
+    const inputs = [...row.querySelectorAll('input')];
+    const iIdx = inputs.indexOf(inp);
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (iIdx < inputs.length - 1) {
+        inputs[iIdx + 1].focus(); inputs[iIdx + 1].select();
+      } else {
+        pmAddRow();
+      }
+    } else if (e.key === 'Backspace' && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      const allRows = [...document.querySelectorAll('#pmRows .pm-row')];
+      const rIdx = allRows.indexOf(row);
+      const hasData = inputs.some(i => i.value.trim());
+      if (hasData) {
+        if (confirm('Delete this parameter row?')) pmDelRow(rIdx);
+      } else {
+        pmDelRow(rIdx);
+      }
+    }
+  });
 });
 
 /* ── LOAD & FILTER ── */
@@ -1524,11 +1581,21 @@ function renderBkList() {
 
 /* ── DIRTY INDICATOR ── */
 function _updateDirtyIndicator() {
-  const info = document.getElementById('sbInfo'); if (!info) return;
-  const existing = document.getElementById('dirtyDot');
-  if (_isDirty) {
-    if (!existing) { const d=document.createElement('span'); d.id='dirtyDot'; d.className='sb-dirty-dot'; d.title='Unsaved changes'; info.parentNode.insertBefore(d,info); }
-  } else { if (existing) existing.remove(); }
+  const bar=document.getElementById('stickyBar');
+  const saveBtn=document.getElementById('stickySave');
+  const info=document.getElementById('sbInfo');
+  if(_isDirty) {
+    if(bar) bar.classList.add('vis');
+    if(saveBtn) saveBtn.disabled=false;
+    if(!document.getElementById('dirtyDot')) {
+      const d=document.createElement('span'); d.id='dirtyDot'; d.className='sb-dirty-dot'; d.title='Unsaved changes';
+      if(info&&info.parentNode) info.parentNode.insertBefore(d,info);
+    }
+  } else {
+    if(bar) bar.classList.remove('vis');
+    if(saveBtn) saveBtn.disabled=true;
+    const existing=document.getElementById('dirtyDot'); if(existing) existing.remove();
+  }
 }
 
 /* ── SELECT BOOKING ── */
@@ -1543,9 +1610,8 @@ function selBk(b) {
   document.getElementById('resultPanel').style.display='block';
   document.getElementById('mainActionBar').style.display='flex';
   document.getElementById('testPanelWrap').style.display='none';
-  document.getElementById('stickyBar').classList.add('vis');
-  document.getElementById('stickySave').disabled=false;
   document.getElementById('sbInfo').innerHTML=`<strong>${b.bookingId}</strong> — ${b.patientName} — ${(b.tests||[]).length} test(s)`;
+  _updateDirtyIndicator();
   document.getElementById('step1').classList.remove('active');
   document.getElementById('step2').classList.add('active');
   setTimeout(()=>document.getElementById('resultPanel').scrollIntoView({behavior:'smooth',block:'start'}),80);
@@ -1716,8 +1782,8 @@ function renderTestPanel(tIdx) {
       <td class="td-gauge" id="gauge_${row.key}">${gaugeHtml}</td>
       <td class="td-inp">
         ${row.isTxt
-          ?`<input class="ri-txt" type="text" id="${inpId}" value="${H(val)}" placeholder="Enter result…" data-key="${row.key}" onclick="this.select()" oninput="onTxt('${row.key}',this.value)">`
-          :`<input class="ri ${flag?'f-'+flag:''}" type="number" step="any" id="${inpId}" value="${H(val)}" placeholder="—" data-key="${row.key}" data-lo="${lo??''}" data-hi="${hi??''}" data-cl="${cl??''}" data-ch="${ch??''}" data-refrange="${H(row.refRangeStr)}" onclick="this.select()" oninput="onRI(this)" onkeydown="onKeyNav(event,this)">`
+          ?`<input class="ri-txt" type="text" id="${inpId}" value="${H(val)}" placeholder="Enter result…" data-key="${row.key}" onclick="this.select()" onfocus="this.select()" onkeydown="onKeyNav(event,this)" oninput="onTxt('${row.key}',this.value)">`
+          :`<input class="ri ${flag?'f-'+flag:''}" type="number" step="any" id="${inpId}" value="${H(val)}" placeholder="—" data-key="${row.key}" data-lo="${lo??''}" data-hi="${hi??''}" data-cl="${cl??''}" data-ch="${ch??''}" data-refrange="${H(row.refRangeStr)}" onclick="this.select()" onfocus="this.select()" oninput="onRI(this)" onkeydown="onKeyNav(event,this)">`
         }
       </td>
     </tr>`;
@@ -1734,8 +1800,10 @@ function renderTestPanel(tIdx) {
     </div>
     <div class="kb-row">
       <div class="kb-hint"><span class="kbd">Enter/↓</span> Next</div>
-      <div class="kb-hint"><span class="kbd">↑</span> Prev</div>
+      <div class="kb-hint"><span class="kbd">⇧Enter/↑</span> Prev</div>
+      <div class="kb-hint"><span class="kbd">Tab</span> Next cell</div>
       <div class="kb-hint"><span class="kbd">Ctrl+S</span> Save</div>
+      <div class="kb-hint"><span class="kbd">Esc</span> Close</div>
     </div>
     <div class="grid-wrap">
       <table class="xls" style="width:100%;border-collapse:collapse;table-layout:fixed;">
@@ -1759,8 +1827,9 @@ function renderTestPanel(tIdx) {
     <div class="tp-action-bar">
       <div class="tp-prog-wrap">
         <div class="tp-prog-track"><div class="tp-prog-fill" id="tpFill_${tIdx}" style="width:${pct}%"></div></div>
-        <div class="tp-prog-lbl" id="tpLbl_${tIdx}">${filled}/${total}</div>
+        <div class="tp-prog-lbl" id="tpLbl_${tIdx}">${filled}/${total} filled</div>
       </div>
+      <button class="btn btn-sm" style="background:#f0f9ff;color:var(--blue);border:1.5px solid var(--border);" onclick="nextEmptyCell(${tIdx})">⬇ Next Empty</button>
       <button class="btn btn-save btn-sm" onclick="saveTestPanel(${tIdx})">💾 Save</button>
       <button class="btn btn-sm" style="background:#f1f5f9;color:var(--muted);border:1.5px solid var(--border);" onclick="resetTestPanel(${tIdx})">↺ Reset</button>
       <button class="btn btn-complete btn-sm" onclick="doneTestPanel(${tIdx})">✅ Done</button>
@@ -1814,7 +1883,7 @@ function _updateTpProg(tIdx) {
   const total=rows.length, pct=total?Math.round(filled/total*100):0;
   const f=document.getElementById(`tpFill_${tIdx}`), l=document.getElementById(`tpLbl_${tIdx}`);
   if(f) f.style.width=pct+'%';
-  if(l) l.textContent=`${filled}/${total}`;
+  if(l) l.textContent=`${filled}/${total} filled`;
 }
 
 /* ── GAUGE ── */
@@ -1881,10 +1950,23 @@ function onTxt(k,v) {
 /* ── KEYBOARD NAV ── */
 function onKeyNav(e,el) {
   const id=el.id, idx=_inputOrder.indexOf(id); if(idx===-1) return;
+  if(e.key==='Escape'){e.preventDefault();if(_activeTestIdx!==null)toggleTestPanel(_activeTestIdx);return;}
   let next=null;
-  if(e.key==='Enter'||e.key==='ArrowDown'){e.preventDefault();next=_inputOrder[idx+1];}
-  else if(e.key==='ArrowUp'){e.preventDefault();next=_inputOrder[idx-1];}
+  if((e.key==='Enter'&&!e.shiftKey)||e.key==='ArrowDown'){e.preventDefault();next=_inputOrder[idx+1];}
+  else if((e.key==='Enter'&&e.shiftKey)||e.key==='ArrowUp'){e.preventDefault();next=_inputOrder[idx-1];}
   if(next){const el2=document.getElementById(next);if(el2){el2.focus();el2.select();}}
+}
+
+/* ── NEXT EMPTY CELL ── */
+function nextEmptyCell(tIdx) {
+  const rows=_getTestRows(tIdx).filter(r=>!r.unconfigured);
+  for(const r of rows) {
+    if(!(_rv[r.key]&&_rv[r.key].value&&String(_rv[r.key].value).trim())) {
+      const el=document.getElementById('inp_'+r.key);
+      if(el){el.focus();el.select();showToast('⬇ Jumped to next empty cell','info');return;}
+    }
+  }
+  showToast('✅ All cells filled!','success');
 }
 
 /* ── SAVE ALL / COMPLETE ── */
