@@ -852,7 +852,7 @@ td.td-gauge { padding:5px 10px 5px 8px; }
       <button class="btn btn-export" onclick="pmExportAll()" title="Export all saved parameter configurations">📤 Export All</button>
       <div style="font-size:11px;color:var(--muted2);align-self:center;" id="pmSaveCount"></div>
     </div>
-    <input type="file" id="pmFileInput" accept=".json,.csv,.txt" style="display:none" aria-label="Import parameter configurations file" onchange="pmHandleImport(this)">
+    <input type="file" id="pmFileInput" accept=".json,.csv,.txt" style="display:none" aria-hidden="true" onchange="pmHandleImport(this)">
   </div>
 </div>
 
@@ -1535,8 +1535,8 @@ function _pmParseCSV(text) {
     const paramName = (cols[2] || '').trim();
     const unit = (cols[3] || '').trim();
     const refRange = (cols[4] || '').trim();
-    const loRaw = cols[5] !== undefined && cols[5].trim() !== '' ? parseFloat(cols[5]) : null;
-    const hiRaw = cols[6] !== undefined && cols[6].trim() !== '' ? parseFloat(cols[6]) : null;
+    const loRaw = (cols[5] != null && cols[5].trim() !== '') ? parseFloat(cols[5]) : null;
+    const hiRaw = (cols[6] != null && cols[6].trim() !== '') ? parseFloat(cols[6]) : null;
     if (!testName || !paramName) return;
     if (!map[testName]) map[testName] = { dept, params: [] };
     map[testName].params.push({ name: paramName, unit, refRange, lo: (loRaw != null && !isNaN(loRaw)) ? loRaw : null, hi: (hiRaw != null && !isNaN(hiRaw)) ? hiRaw : null });
