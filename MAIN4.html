@@ -590,6 +590,35 @@ td.td-gauge { padding:5px 10px 5px 8px; }
 .pm-saved-chip .psc-del:hover { opacity:1; }
 .pm-empty-saved { font-size:12.5px; color:var(--muted2); font-style:italic; padding:8px 0; }
 .pm-footer { display:flex; gap:8px; padding:16px 24px; border-top:1.5px solid var(--border2); background:var(--surface2); flex-wrap:wrap; }
+.btn-import { background:#0ea5e9;color:#fff;border:none; }
+.btn-import:hover { background:#0284c7; }
+.btn-export { background:#10b981;color:#fff;border:none; }
+.btn-export:hover { background:#059669; }
+/* Import Preview Modal */
+.imp-overlay { position:fixed;inset:0;z-index:700;background:rgba(10,22,40,.65);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .2s; }
+.imp-overlay.open { opacity:1;pointer-events:all; }
+.imp-box { background:#fff;border-radius:16px;width:min(640px,100%);max-height:80vh;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(10,22,40,.28);overflow:hidden; }
+.imp-head { display:flex;align-items:center;gap:12px;padding:18px 24px;border-bottom:1.5px solid var(--border2);background:var(--surface2); }
+.imp-head-title { font-size:15px;font-weight:700;color:var(--text); flex:1; }
+.imp-body { flex:1;overflow-y:auto;padding:20px 24px; }
+.imp-preview-table { width:100%;border-collapse:collapse;font-size:12.5px; }
+.imp-preview-table th { background:var(--surface2);padding:6px 10px;text-align:left;font-weight:700;color:var(--muted);border-bottom:1.5px solid var(--border2); }
+.imp-preview-table td { padding:6px 10px;border-bottom:1px solid var(--border2);color:var(--text); }
+.imp-preview-table tr:last-child td { border-bottom:none; }
+.imp-preview-table tr:nth-child(even) td { background:#f9fafb; }
+.imp-section-label { font-size:12px;font-weight:700;color:var(--purple);margin:12px 0 6px;text-transform:uppercase;letter-spacing:.04em; }
+.imp-dup-opt { display:flex;gap:8px;margin:12px 0;flex-wrap:wrap; }
+.imp-dup-opt label { display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text);cursor:pointer;padding:6px 12px;border:1.5px solid var(--border);border-radius:8px;transition:border-color .15s; }
+.imp-dup-opt label:hover { border-color:var(--purple); }
+.imp-foot { display:flex;gap:8px;justify-content:flex-end;padding:14px 24px;border-top:1.5px solid var(--border2);background:var(--surface2); }
+/* Export format picker */
+.exp-fmt-modal { position:fixed;inset:0;z-index:710;background:rgba(10,22,40,.55);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .18s; }
+.exp-fmt-modal.open { opacity:1;pointer-events:all; }
+.exp-fmt-box { background:#fff;border-radius:14px;padding:28px 28px 22px;width:min(360px,90%);box-shadow:0 20px 56px rgba(10,22,40,.25);text-align:center; }
+.exp-fmt-title { font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px; }
+.exp-fmt-sub { font-size:12.5px;color:var(--muted);margin-bottom:20px; }
+.exp-fmt-btns { display:flex;gap:10px;justify-content:center;flex-wrap:wrap; }
+.exp-fmt-btns button { flex:1;min-width:100px; }
 .pm-hint-box { font-size:11px; color:var(--muted); margin-bottom:14px; background:#f8faff; padding:8px 12px; border-radius:8px; border:1px solid var(--border2); line-height:1.6; }
 
 @media (max-width:768px) {
@@ -819,14 +848,42 @@ td.td-gauge { padding:5px 10px 5px 8px; }
       <button class="btn" style="background:#f1f5f9;color:var(--muted);border:1.5px solid var(--border);" onclick="pmClear()">✕ Clear Form</button>
       <button class="btn btn-back" onclick="closePM()">← Close</button>
       <div style="flex:1"></div>
+      <button class="btn btn-import" onclick="pmImport()" title="Import parameters from JSON or CSV file">📥 Import</button>
+      <button class="btn btn-export" onclick="pmExportAll()" title="Export all saved parameter configurations">📤 Export All</button>
       <div style="font-size:11px;color:var(--muted2);align-self:center;" id="pmSaveCount"></div>
     </div>
+    <input type="file" id="pmFileInput" accept=".json,.csv,.txt" style="display:none" aria-hidden="true" onchange="pmHandleImport(this)">
   </div>
 </div>
 
 <!-- ════════════════════════════════════════
-     JAVASCRIPT
+     EXPORT FORMAT PICKER MODAL
 ════════════════════════════════════════ -->
+<div class="exp-fmt-modal" id="pmExpModal">
+  <div class="exp-fmt-box">
+    <div class="exp-fmt-title">📤 Choose Export Format</div>
+    <div class="exp-fmt-sub">Select the format for your parameter export</div>
+    <div class="exp-fmt-btns">
+      <button class="btn btn-export" onclick="_pmDoExport('json')">📄 JSON</button>
+      <button class="btn btn-import" onclick="_pmDoExport('csv')">📊 CSV (Excel)</button>
+      <button class="btn" style="background:#f1f5f9;color:var(--muted);border:1.5px solid var(--border);" onclick="document.getElementById('pmExpModal').classList.remove('open')">Cancel</button>
+    </div>
+  </div>
+</div>
+<div class="imp-overlay" id="impOverlay">
+  <div class="imp-box">
+    <div class="imp-head">
+      <span style="font-size:22px;">📥</span>
+      <div class="imp-head-title">Import Preview</div>
+      <button class="pm-head-close" onclick="closeImpModal()">✕</button>
+    </div>
+    <div class="imp-body" id="impBody"></div>
+    <div class="imp-foot">
+      <button class="btn btn-back btn-sm" onclick="closeImpModal()">Cancel</button>
+      <button class="btn btn-save btn-sm" onclick="pmConfirmImport()">✅ Confirm Import</button>
+    </div>
+  </div>
+</div>
 <script>
 /* ════════════════════════════════════════════════════════════
    CATALOG — same rawTests data as MAIN2.html (T001–T293)
@@ -1333,6 +1390,249 @@ function pmRefreshSavedGrid() {
       <span class="psc-count">${t.params.length} param${t.params.length !== 1 ? 's' : ''}</span>
       <span class="psc-del" onclick="pmDeleteTest('${H(t.testId)}',event)" title="Delete">✕</span>
     </div>`).join('');
+}
+
+/* ════════════════════════════════════════════════════════════
+   BULK IMPORT / EXPORT
+════════════════════════════════════════════════════════════ */
+
+/* ── Helpers ── */
+function _pmDownload(filename, content, mime) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([content], { type: mime }));
+  a.download = filename;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+function _pmStoreToCSVRows(store) {
+  const header = 'Test Name,Department,Parameter Name,Unit,Reference Range,Lo,Hi';
+  const rows = [];
+  store.forEach(t => {
+    (t.params || []).forEach(p => {
+      const esc = v => (v == null ? '' : String(v).includes(',') ? `"${String(v).replace(/"/g,'""')}"` : String(v));
+      rows.push([esc(t.testName), esc(t.dept || ''), esc(p.name), esc(p.unit), esc(p.refRange), esc(p.lo), esc(p.hi)].join(','));
+    });
+  });
+  return [header, ...rows].join('\r\n');
+}
+
+/* Find the best catalog match for a test name in a single pass */
+function _pmFindCatalogEntry(testName) {
+  const upper = testName.toUpperCase();
+  const prefix = upper.slice(0, 15);
+  let exact = null, partial = null;
+  for (const c of CATALOG) {
+    const cn = c.name.toUpperCase();
+    if (cn === upper) { exact = c; break; }
+    if (!partial && cn.includes(prefix)) partial = c;
+  }
+  return exact || partial || null;
+}
+
+/* Generate a fallback test ID for imports that don't match the catalog */
+function _pmGenerateImportId(testName) {
+  return 'IMP_' + testName.replace(/\s+/g, '_').toUpperCase().slice(0, 20);
+}
+
+/* ── Export All — opens format picker modal ── */
+function pmExportAll() {
+  const store = loadParamStore();
+  if (!store.length) { showToast('⚠️ No saved configurations to export', 'warning'); return; }
+  document.getElementById('pmExpModal').classList.add('open');
+}
+
+function _pmDoExport(fmt) {
+  document.getElementById('pmExpModal').classList.remove('open');
+  const store = loadParamStore();
+  if (fmt === 'json') {
+    _pmDownload('medicore_parameters.json', JSON.stringify(store, null, 2), 'application/json');
+    showToast(`✅ Exported ${store.length} test(s) as JSON`, 'success');
+  } else {
+    _pmDownload('medicore_parameters.csv', _pmStoreToCSVRows(store), 'text/csv');
+    showToast(`✅ Exported ${store.length} test(s) as CSV`, 'success');
+  }
+}
+
+/* ── Import ── */
+let _pmImportPending = null; // holds parsed data until user confirms
+
+function pmImport() {
+  const fi = document.getElementById('pmFileInput');
+  fi.value = '';
+  fi.click();
+}
+
+function pmHandleImport(input) {
+  const file = input.files[0];
+  if (!file) return;
+  // Determine format from MIME type first, then extension
+  const mime = file.type.toLowerCase();
+  const ext = file.name.includes('.') ? file.name.split('.').pop().toLowerCase() : '';
+  const isJSON = mime === 'application/json' || ext === 'json';
+  const isCSV = mime === 'text/csv' || mime === 'text/plain' || ext === 'csv' || ext === 'txt';
+  if (!isJSON && !isCSV) {
+    showToast('❌ Unsupported file type. Use .json, .csv, or .txt', 'error');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onerror = () => showToast('❌ Could not read file', 'error');
+  reader.onload = e => {
+    try {
+      const parsed = isJSON ? _pmParseJSON(e.target.result) : _pmParseCSV(e.target.result);
+      if (!parsed.length) { showToast('⚠️ No valid parameter data found in file', 'warning'); return; }
+      _pmImportPending = parsed;
+      pmShowImportPreview(parsed);
+    } catch (err) {
+      showToast('❌ ' + (err.message || 'Invalid file content'), 'error');
+    }
+  };
+  reader.readAsText(file);
+}
+
+function _pmParseJSON(text) {
+  const raw = JSON.parse(text);
+  // Accept both a single object and an array
+  const arr = Array.isArray(raw) ? raw : [raw];
+  const result = [];
+  arr.forEach(item => {
+    if (!item || typeof item !== 'object') throw new Error('Invalid JSON structure');
+    const testName = (item.testName || item.name || '').trim();
+    const dept = (item.department || item.dept || '').trim().toUpperCase();
+    const params = (item.parameters || item.params || []).map(p => {
+      const lo = p.lo != null ? parseFloat(p.lo) : (p.low != null ? parseFloat(p.low) : null);
+      const hi = p.hi != null ? parseFloat(p.hi) : (p.high != null ? parseFloat(p.high) : null);
+      return {
+        name: (p.name || p.paramName || '').trim(),
+        unit: (p.unit || p.units || '').trim(),
+        refRange: (p.referenceRange || p.refRange || p.reference_range || '').trim(),
+        lo: (lo != null && !isNaN(lo)) ? lo : null,
+        hi: (hi != null && !isNaN(hi)) ? hi : null,
+      };
+    }).filter(p => p.name);
+    if (!testName) throw new Error('Each entry must have a "testName" field');
+    if (!params.length) throw new Error(`No valid parameters found for "${testName}"`);
+    const catalogEntry = _pmFindCatalogEntry(testName);
+    const testId = item.testId || (catalogEntry ? catalogEntry.id : _pmGenerateImportId(testName));
+    result.push({ testId, testName: catalogEntry ? catalogEntry.name : testName, dept: dept || (catalogEntry ? catalogEntry.dept : 'IMPORTED'), params });
+  });
+  return result;
+}
+
+function _pmParseCSV(text) {
+  const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+  if (!lines.length) throw new Error('Empty file');
+  // Detect header row
+  const firstLower = lines[0].toLowerCase();
+  const hasHeader = firstLower.includes('test name') || firstLower.includes('testname') || firstLower.includes('parameter name');
+  const dataLines = hasHeader ? lines.slice(1) : lines;
+  const map = {};
+  dataLines.forEach(line => {
+    const cols = _csvSplitLine(line);
+    if (cols.length < 3) return;
+    const testName = (cols[0] || '').trim();
+    const dept = (cols[1] || '').trim().toUpperCase();
+    const paramName = (cols[2] || '').trim();
+    const unit = (cols[3] || '').trim();
+    const refRange = (cols[4] || '').trim();
+    const loRaw = (cols[5] != null && cols[5].trim() !== '') ? parseFloat(cols[5]) : null;
+    const hiRaw = (cols[6] != null && cols[6].trim() !== '') ? parseFloat(cols[6]) : null;
+    if (!testName || !paramName) return;
+    if (!map[testName]) map[testName] = { dept, params: [] };
+    map[testName].params.push({ name: paramName, unit, refRange, lo: (loRaw != null && !isNaN(loRaw)) ? loRaw : null, hi: (hiRaw != null && !isNaN(hiRaw)) ? hiRaw : null });
+  });
+  return Object.entries(map).map(([testName, v]) => {
+    const catalogEntry = _pmFindCatalogEntry(testName);
+    const testId = catalogEntry ? catalogEntry.id : _pmGenerateImportId(testName);
+    return { testId, testName: catalogEntry ? catalogEntry.name : testName, dept: v.dept || (catalogEntry ? catalogEntry.dept : 'IMPORTED'), params: v.params };
+  });
+}
+
+function _csvSplitLine(line) {
+  const cols = [];
+  let cur = '', inQuote = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (ch === '"') {
+      if (inQuote && line[i + 1] === '"') { cur += '"'; i++; }
+      else inQuote = !inQuote;
+    } else if (ch === ',' && !inQuote) {
+      cols.push(cur); cur = '';
+    } else {
+      cur += ch;
+    }
+  }
+  cols.push(cur);
+  return cols;
+}
+
+function pmShowImportPreview(data) {
+  const store = loadParamStore();
+  const dups = data.filter(d => store.some(s => s.testId === d.testId));
+  let html = `<div class="imp-section-label">📋 ${data.length} test(s) to import</div>`;
+  data.forEach(t => {
+    const isDup = store.some(s => s.testId === t.testId);
+    html += `<div style="margin-bottom:14px;">
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;">
+        🧪 ${H(t.testName)} <span style="font-size:11px;color:var(--muted);font-weight:400;">${H(t.dept)}</span>
+        ${isDup ? '<span style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 7px;border-radius:100px;margin-left:6px;font-weight:700;">⚠️ existing — will be updated</span>' : '<span style="font-size:10px;background:#d1fae5;color:#065f46;padding:1px 7px;border-radius:100px;margin-left:6px;font-weight:700;">✨ new</span>'}
+      </div>
+      <table class="imp-preview-table">
+        <thead><tr><th>Parameter</th><th>Unit</th><th>Reference Range</th><th>Lo</th><th>Hi</th></tr></thead>
+        <tbody>${t.params.map(p => `<tr><td>${H(p.name)}</td><td>${H(p.unit)}</td><td>${H(p.refRange)}</td><td>${p.lo != null ? p.lo : '—'}</td><td>${p.hi != null ? p.hi : '—'}</td></tr>`).join('')}</tbody>
+      </table>
+    </div>`;
+  });
+  if (dups.length) {
+    html += `<div class="imp-section-label" style="color:#b45309;">⚠️ Duplicate Handling</div>
+    <div class="imp-dup-opt">
+      <label><input type="radio" name="dupMode" value="merge" checked> Merge (keep existing, add new params)</label>
+      <label><input type="radio" name="dupMode" value="overwrite"> Overwrite (replace existing with imported)</label>
+      <label><input type="radio" name="dupMode" value="skip"> Skip duplicates</label>
+    </div>`;
+  }
+  document.getElementById('impBody').innerHTML = html;
+  document.getElementById('impOverlay').classList.add('open');
+}
+
+function closeImpModal() {
+  document.getElementById('impOverlay').classList.remove('open');
+  _pmImportPending = null;
+}
+
+function pmConfirmImport() {
+  if (!_pmImportPending) { closeImpModal(); return; }
+  const data = _pmImportPending;
+  const dupRadio = document.querySelector('input[name="dupMode"]:checked');
+  const dupMode = dupRadio ? dupRadio.value : 'merge';
+  const store = loadParamStore();
+  let added = 0, updated = 0, skipped = 0;
+  data.forEach(entry => {
+    const idx = store.findIndex(s => s.testId === entry.testId);
+    if (idx !== -1) {
+      if (dupMode === 'skip') { skipped++; return; }
+      if (dupMode === 'merge') {
+        const existingNames = new Set(store[idx].params.map(p => p.name.toUpperCase()));
+        const newParams = entry.params.filter(p => !existingNames.has(p.name.toUpperCase()));
+        store[idx].params = [...store[idx].params, ...newParams];
+        updated++;
+      } else { // overwrite
+        store[idx] = entry;
+        updated++;
+      }
+    } else {
+      store.push(entry);
+      added++;
+    }
+  });
+  saveParamStore(store);
+  pmRefreshSavedGrid();
+  closeImpModal();
+  const parts = [];
+  if (added) parts.push(`${added} added`);
+  if (updated) parts.push(`${updated} updated`);
+  if (skipped) parts.push(`${skipped} skipped`);
+  showToast(`✅ Import complete: ${parts.join(', ')}`, 'success');
 }
 
 /* Open PM pre-loaded with a specific test (called from unconfigured chip) */
