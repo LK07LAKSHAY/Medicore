@@ -2081,6 +2081,7 @@ function buildExpandedRows(booking) {
 
 /* ── STATE ── */
 let _bks=[], _filtered=[], _sel=null, _rv={}, _mo={}, _sf='all', _pf='all';
+const TEXT_PRESETS=['Positive','Negative','Reactive','Non-Reactive','Detected','Not Detected','Normal','Abnormal','Trace','++','+++'];
 let _expandedRows=[], _inputOrder=[];
 let _activeTestIdx=null, _isDirty=false, _chipDebTimer=null;
 let _dragSrcIdx=null;
@@ -2449,9 +2450,9 @@ function loadHistoryTab(b) {
     x.bookingId!==b.bookingId &&
     x.patientName===b.patientName &&
     localStorage.getItem(`results_${x.bookingId}`)
-  ).sort((a,c)=>{
-    const da=a.sampleDate||'', dc2=c.sampleDate||'';
-    return dc2.localeCompare(da);
+  ).sort((a,b)=>{
+    const da=a.sampleDate||'', db=b.sampleDate||'';
+    return db.localeCompare(da);
   }).slice(0,5);
   if(!siblings.length) {
     container.innerHTML=`<div class="history-empty"><div class="hi-icon">📅</div><p>No previous test history found for <strong>${H(b.patientName)}</strong></p></div>`;
@@ -2675,7 +2676,7 @@ function renderTestPanel(tIdx) {
   const filled=rows.filter(r=>(_rv[r.key]?.value||'').trim()).length;
   const total=rows.length;
   const pct=total?Math.round(filled/total*100):0;
-  const TEXT_PRESETS=['Positive','Negative','Reactive','Non-Reactive','Detected','Not Detected','Normal','Abnormal','Trace','++','+++'];
+  const TEXT_PRESETS_STATIC=TEXT_PRESETS; // use module-level constant
 
   let rowsHtml='';
   rows.forEach((row,i)=>{
@@ -2705,8 +2706,8 @@ function renderTestPanel(tIdx) {
     const paramCell=`<div style="display:flex;align-items:center;gap:5px;">
       <span class="tn">${H(row.paramName)}</span>
       <div class="param-tooltip">
-        <button class="param-help-btn" onclick="event.stopPropagation()">?</button>
-        <div class="tt-content">${H(ttText)}</div>
+        <button class="param-help-btn" aria-label="Show reference range for ${H(row.paramName)}" onclick="event.stopPropagation()">?</button>
+        <div class="tt-content" role="tooltip">${H(ttText)}</div>
       </div>
     </div>`;
     // Input cell with validation icon
@@ -2717,9 +2718,9 @@ function renderTestPanel(tIdx) {
         <div class="val-icon ${viCls}" id="vi_${row.key}">${viIcon}</div>
         <input class="ri-txt" type="text" id="${inpId}" value="${H(val)}" placeholder="Enter result…" data-key="${row.key}" onclick="this.select()" oninput="onTxt('${row.key}',this.value)" style="flex:1;">
         <div class="txt-presets">
-          <button class="txt-preset-btn" onclick="event.stopPropagation();togglePreset('${presetId}')">▾</button>
+          <button class="txt-preset-btn" aria-label="Select preset value for ${H(row.paramName)}" aria-haspopup="listbox" onclick="event.stopPropagation();togglePreset('${presetId}')">▾</button>
           <div class="txt-preset-menu" id="${presetId}">
-            ${TEXT_PRESETS.map(p=>`<div class="tpm-item" onclick="applyPreset('${row.key}','${p.replace(/'/g,"\\'")}','${presetId}')">${p}</div>`).join('')}
+            ${TEXT_PRESETS_STATIC.map(p=>`<div class="tpm-item" onclick="applyPreset('${row.key}','${p.replace(/'/g,"\\'")}','${presetId}')">${p}</div>`).join('')}
           </div>
         </div>
       </div>`;
