@@ -651,6 +651,7 @@ td.td-gauge { padding:5px 10px 5px 8px; }
 .bk-item.dragging { opacity:.35; }
 .priority-filters { display:flex; gap:3px; flex-wrap:wrap; padding:4px 0 0; }
 .pf-prio.on { color:#fff !important; }
+.pf-prio-all.on    { background:#1e40af; border-color:#1e40af; }
 .pf-prio-urgent.on { background:#dc2626; border-color:#dc2626; }
 .pf-prio-high.on   { background:#ea580c; border-color:#ea580c; }
 .pf-prio-normal.on { background:#16a34a; border-color:#16a34a; }
@@ -968,7 +969,7 @@ td.td-gauge { padding:5px 10px 5px 8px; }
         <button class="fp" onclick="setSF('Completed',this)">✅ Done</button>
       </div>
       <div class="priority-filters">
-        <button class="fp pf-prio pf-prio-urgent on" onclick="setPF('all',this)" id="pfAll">All Priority</button>
+        <button class="fp pf-prio pf-prio-all on" onclick="setPF('all',this)" id="pfAll">All Priority</button>
         <button class="fp pf-prio pf-prio-urgent" onclick="setPF('URGENT',this)">🔴 Urgent</button>
         <button class="fp pf-prio pf-prio-high"   onclick="setPF('HIGH',this)">🟠 High</button>
         <button class="fp pf-prio pf-prio-normal"  onclick="setPF('NORMAL',this)">🟢 Normal</button>
@@ -1082,10 +1083,10 @@ td.td-gauge { padding:5px 10px 5px 8px; }
 
 <!-- FLOATING ACTION BUTTON -->
 <div class="fab-wrap" id="fabWrap" style="display:none">
-  <button class="fab-main" id="fabMain" onclick="toggleFAB()" title="Quick Actions">＋</button>
+  <button class="fab-main" id="fabMain" onclick="toggleFAB()" title="Quick Actions" aria-label="Quick Actions">＋</button>
   <div class="fab-options fab-hidden" id="fabOptions">
-    <button class="fab-opt" onclick="fabFillSimilar()">📋 Fill Similar Patient</button>
-    <button class="fab-opt" onclick="fabUseTemplate()">📄 Use Template</button>
+    <button class="fab-opt" onclick="fabFillSimilar()" aria-label="Fill results from similar patient">📋 Fill Similar Patient</button>
+    <button class="fab-opt" onclick="fabUseTemplate()" aria-label="Apply saved template">📄 Use Template</button>
   </div>
 </div>
 
@@ -2676,7 +2677,6 @@ function renderTestPanel(tIdx) {
   const filled=rows.filter(r=>(_rv[r.key]?.value||'').trim()).length;
   const total=rows.length;
   const pct=total?Math.round(filled/total*100):0;
-  const TEXT_PRESETS_STATIC=TEXT_PRESETS; // use module-level constant
 
   let rowsHtml='';
   rows.forEach((row,i)=>{
@@ -2720,7 +2720,7 @@ function renderTestPanel(tIdx) {
         <div class="txt-presets">
           <button class="txt-preset-btn" aria-label="Select preset value for ${H(row.paramName)}" aria-haspopup="listbox" onclick="event.stopPropagation();togglePreset('${presetId}')">▾</button>
           <div class="txt-preset-menu" id="${presetId}">
-            ${TEXT_PRESETS_STATIC.map(p=>`<div class="tpm-item" onclick="applyPreset('${row.key}','${p.replace(/'/g,"\\'")}','${presetId}')">${p}</div>`).join('')}
+            ${TEXT_PRESETS.map(p=>`<div class="tpm-item" onclick="applyPreset('${row.key}','${p.replace(/'/g,"\\'")}','${presetId}')">${p}</div>`).join('')}
           </div>
         </div>
       </div>`;
