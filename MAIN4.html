@@ -628,6 +628,284 @@ td.td-gauge { padding:5px 10px 5px 8px; }
   .pm-table-head, .pm-row { grid-template-columns:32px 1fr 80px 120px 60px 60px 38px; }
   .pm-selector-grid { grid-template-columns:1fr; }
 }
+
+/* ══════════════════════════════════════════
+   ENHANCED SIDEBAR — PRIORITY & ACTIVITY
+══════════════════════════════════════════ */
+.priority-badge {
+  display:inline-flex; align-items:center; gap:3px;
+  font-size:8.5px; font-weight:800; padding:2px 6px;
+  border-radius:100px; letter-spacing:.4px; text-transform:uppercase; flex-shrink:0;
+}
+.pb-urgent { background:#fef2f2; color:#991b1b; border:1px solid #fca5a5; }
+.pb-high   { background:#fff7ed; color:#9a3412; border:1px solid #fdba74; }
+.pb-normal { background:#f0fdf4; color:#14532d; border:1px solid #86efac; }
+.bk-timestamp { font-size:8.5px; color:var(--muted2); font-weight:500; margin-left:auto; flex-shrink:0; }
+.bk-extras { display:flex; align-items:center; gap:4px; margin-top:2px; flex-wrap:wrap; }
+.bk-complexity { display:inline-flex; align-items:center; gap:2px; font-size:8.5px; font-weight:700; color:var(--blue); background:rgba(37,99,235,.08); padding:1px 5px; border-radius:100px; }
+.bk-flag-icons { display:flex; gap:2px; align-items:center; font-size:10px; }
+.drag-handle { font-size:12px; color:var(--border2); padding:0 2px; cursor:grab; flex-shrink:0; line-height:1; transition:color .12s; }
+.drag-handle:hover { color:var(--muted2); }
+.bk-item[draggable=true] { cursor:pointer; }
+.bk-item.drag-over { border-color:var(--blue) !important; background:#eff6ff !important; box-shadow:0 0 0 2px rgba(37,99,235,.2); }
+.bk-item.dragging { opacity:.35; }
+.priority-filters { display:flex; gap:3px; flex-wrap:wrap; padding:4px 0 0; }
+.pf-prio.on { color:#fff !important; }
+.pf-prio-all.on    { background:#1e40af; border-color:#1e40af; }
+.pf-prio-urgent.on { background:#dc2626; border-color:#dc2626; }
+.pf-prio-high.on   { background:#ea580c; border-color:#ea580c; }
+.pf-prio-normal.on { background:#16a34a; border-color:#16a34a; }
+
+/* Recent Bookings sticky section */
+.recent-section { flex-shrink:0; border-bottom:1.5px solid var(--border); background:linear-gradient(to bottom,#f8faff,#fff); }
+.recent-label {
+  font-size:8.5px; font-weight:800; letter-spacing:1px; text-transform:uppercase;
+  color:var(--muted2); padding:7px 10px 5px; display:flex; align-items:center; gap:6px;
+}
+.recent-label::after { content:''; flex:1; height:1px; background:var(--border2); }
+.recent-item {
+  display:flex; align-items:center; gap:8px; padding:6px 10px;
+  cursor:pointer; transition:background .12s;
+}
+.recent-item:hover { background:var(--bg); }
+.recent-av { width:26px; height:26px; border-radius:7px; background:linear-gradient(135deg,var(--purple),#a78bfa); display:flex; align-items:center; justify-content:center; color:white; font-weight:900; font-size:9px; flex-shrink:0; }
+.recent-info { flex:1; min-width:0; }
+.recent-name { font-size:11px; font-weight:700; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.recent-sub  { font-size:9px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.bk-section-label {
+  font-size:8.5px; font-weight:800; letter-spacing:1px; text-transform:uppercase;
+  color:var(--muted2); padding:7px 10px 3px; display:flex; align-items:center; gap:6px;
+}
+.bk-section-label::after { content:''; flex:1; height:1px; background:var(--border2); }
+
+/* ══════════════════════════════════════════
+   TEST CARDS (replaces chips)
+══════════════════════════════════════════ */
+.test-cards-wrap { padding:12px 18px 14px; border-top:1px solid var(--border); background:var(--surface); }
+.test-cards-label { font-size:9.5px; font-weight:800; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin-bottom:10px; display:flex; align-items:center; gap:6px; }
+.test-cards-label::after { content:''; flex:1; height:1px; background:var(--border2); }
+.test-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; }
+.test-card {
+  border:1.5px solid var(--border); border-radius:var(--r);
+  background:var(--surface2); cursor:pointer; transition:all .15s;
+  overflow:hidden; position:relative; user-select:none; display:flex; flex-direction:column;
+}
+.test-card:hover { border-color:var(--blue); box-shadow:0 4px 16px rgba(37,99,235,.1); transform:translateY(-1px); }
+.test-card.tc-active  { border-color:var(--blue); background:#eff6ff; box-shadow:0 4px 16px rgba(37,99,235,.15); }
+.test-card.tc-done    { border-color:#86efac; background:#f0fdf4; }
+.test-card.tc-partial { border-color:#fcd34d; background:#fffbeb; }
+.test-card.tc-critical{ border-color:#fca5a5; background:#fff5f5; animation:crit-card 2s ease-in-out infinite; }
+.test-card.tc-unconfigured { border-color:#fed7aa; background:#fff7ed; }
+@keyframes crit-card { 0%,100%{border-color:#fca5a5} 50%{border-color:#ef4444} }
+.tc-status-bar { height:3px; flex-shrink:0; }
+.tc-status-bar.bar-empty    { background:#e2e8f0; }
+.tc-status-bar.bar-partial  { background:linear-gradient(to right,var(--blue),var(--cyan)); }
+.tc-status-bar.bar-done     { background:linear-gradient(to right,var(--cyan),var(--green)); }
+.tc-status-bar.bar-critical { background:linear-gradient(to right,var(--amber),var(--red)); }
+.tc-body { padding:10px 12px; flex:1; display:flex; flex-direction:column; gap:6px; }
+.tc-header { display:flex; align-items:flex-start; gap:6px; }
+.tc-icon { font-size:14px; flex-shrink:0; margin-top:1px; }
+.tc-name { font-size:12px; font-weight:800; color:var(--text); line-height:1.3; flex:1; }
+.tc-dept { font-size:8.5px; font-weight:700; color:var(--blue); background:rgba(37,99,235,.08); padding:2px 6px; border-radius:100px; white-space:nowrap; margin-top:2px; }
+.tc-progress { display:flex; flex-direction:column; gap:2px; }
+.tc-prog-track { height:4px; background:var(--border); border-radius:100px; overflow:hidden; }
+.tc-prog-fill { height:100%; border-radius:100px; background:linear-gradient(to right,var(--cyan),var(--green)); transition:width .35s ease; }
+.tc-prog-label { font-size:9px; font-weight:700; color:var(--muted); font-family:'DM Mono',monospace; }
+.tc-footer { display:flex; align-items:center; justify-content:space-between; gap:6px; }
+.tc-status-badge {
+  display:inline-flex; align-items:center; gap:3px;
+  font-size:8.5px; font-weight:800; padding:2px 7px;
+  border-radius:100px; letter-spacing:.3px; text-transform:uppercase;
+}
+.tc-draft     { background:#f1f5f9; color:#64748b; }
+.tc-inprogress{ background:#dbeafe; color:#1e40af; }
+.tc-complete  { background:#dcfce7; color:#14532d; }
+.tc-crit-badge{ background:#fef2f2; color:#991b1b; }
+.tc-modified  { font-size:8.5px; color:var(--muted2); font-weight:500; }
+
+/* ══════════════════════════════════════════
+   FLOATING ACTION BUTTON
+══════════════════════════════════════════ */
+.fab-wrap {
+  position:fixed; bottom:80px; right:20px; z-index:290;
+  display:flex; flex-direction:column-reverse; align-items:flex-end; gap:8px;
+}
+.fab-main {
+  width:50px; height:50px; border-radius:15px;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  border:none; color:white; font-size:22px; cursor:pointer;
+  box-shadow:0 6px 20px rgba(37,99,235,.4); transition:all .2s;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.fab-main:hover { transform:scale(1.08); box-shadow:0 8px 28px rgba(37,99,235,.5); }
+.fab-main.fab-open { background:linear-gradient(135deg,#dc2626,#f97316); transform:rotate(45deg); }
+.fab-options { display:flex; flex-direction:column; gap:6px; align-items:flex-end; }
+.fab-options.fab-hidden { display:none; }
+.fab-opt {
+  display:inline-flex; align-items:center; gap:8px;
+  background:var(--navy); color:white; border:none;
+  padding:8px 14px; border-radius:10px; font-size:12px; font-weight:700;
+  cursor:pointer; font-family:'Outfit',sans-serif;
+  box-shadow:0 4px 12px rgba(12,20,69,.25); transition:all .15s; white-space:nowrap;
+}
+.fab-opt:hover { background:#1e3a8a; transform:translateX(-3px); }
+
+/* ══════════════════════════════════════════
+   BREADCRUMB
+══════════════════════════════════════════ */
+.breadcrumb {
+  display:flex; align-items:center; gap:6px;
+  font-size:11.5px; font-weight:600; color:var(--muted);
+  padding:8px 18px; background:var(--surface2);
+  border-bottom:1px solid var(--border); flex-wrap:wrap; margin-bottom:0;
+}
+.bc-item { color:var(--blue); cursor:pointer; transition:color .12s; }
+.bc-item:hover { color:var(--blue-h); text-decoration:underline; }
+.bc-sep { color:var(--muted2); font-size:10px; }
+.bc-current { color:var(--text); font-weight:700; }
+
+/* ══════════════════════════════════════════
+   CONTEXT PANEL
+══════════════════════════════════════════ */
+.context-panel {
+  background:var(--surface); border:1.5px solid var(--border);
+  border-radius:var(--r-lg); box-shadow:var(--shadow); margin-bottom:14px; overflow:hidden;
+}
+.context-panel-header {
+  display:flex; align-items:center; gap:10px; padding:9px 16px;
+  background:var(--surface2); border-bottom:1px solid var(--border);
+  cursor:pointer; user-select:none; transition:background .12s;
+}
+.context-panel-header:hover { background:var(--bg); }
+.context-panel-title { font-size:10px; font-weight:800; letter-spacing:1px; text-transform:uppercase; color:var(--blue); flex:1; }
+.context-toggle { font-size:11px; color:var(--muted); transition:transform .2s; }
+.context-toggle.ctx-open { transform:rotate(180deg); }
+.context-body {
+  padding:14px 16px; display:flex; gap:16px; flex-wrap:wrap; align-items:flex-start;
+  animation:panelIn .18s ease;
+}
+.context-avatar {
+  width:52px; height:52px; border-radius:14px; flex-shrink:0;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  display:flex; align-items:center; justify-content:center;
+  color:white; font-weight:900; font-size:18px;
+  box-shadow:0 4px 14px rgba(37,99,235,.3);
+}
+.context-vitals { flex:1; display:grid; grid-template-columns:repeat(auto-fill,minmax(90px,1fr)); gap:8px; }
+.context-vital { display:flex; flex-direction:column; gap:2px; }
+.cv-label { font-size:8.5px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; color:var(--muted2); }
+.cv-val { font-size:13px; font-weight:800; color:var(--text); font-family:'DM Mono',monospace; }
+.cv-val.cv-na { color:var(--muted2); font-size:11px; font-style:italic; font-family:'Outfit',sans-serif; }
+.context-notes-preview { font-size:11px; color:var(--muted); font-style:italic; flex-basis:100%; padding-top:6px; border-top:1px solid var(--border2); }
+
+/* ══════════════════════════════════════════
+   TABS
+══════════════════════════════════════════ */
+.result-tabs { display:flex; gap:0; border-bottom:2px solid var(--border); background:var(--surface); overflow:hidden; flex-shrink:0; }
+.tab-btn {
+  padding:10px 16px; font-size:12px; font-weight:700; color:var(--muted);
+  border:none; background:transparent; cursor:pointer; font-family:'Outfit',sans-serif;
+  border-bottom:2.5px solid transparent; margin-bottom:-2px; transition:all .15s;
+  display:flex; align-items:center; gap:5px; white-space:nowrap;
+}
+.tab-btn:hover { color:var(--text); background:var(--surface2); }
+.tab-btn.tab-active { color:var(--blue); border-bottom-color:var(--blue); background:var(--surface); }
+.tab-count { background:rgba(37,99,235,.12); color:var(--blue); font-size:8.5px; font-weight:800; padding:1px 5px; border-radius:100px; }
+.tab-count.tc-critical { background:#fef2f2; color:#dc2626; }
+.tab-pane { display:none; }
+.tab-pane.tab-active { display:block; animation:panelIn .15s ease; }
+
+/* ══════════════════════════════════════════
+   RESULT TABLE — VALIDATION ICONS & TOOLTIPS
+══════════════════════════════════════════ */
+.ri-wrap { display:flex; align-items:center; gap:5px; }
+.val-icon {
+  width:18px; height:18px; border-radius:50%; display:flex; align-items:center;
+  justify-content:center; font-size:9px; font-weight:900; flex-shrink:0; transition:all .15s;
+}
+.vi-ok       { background:#dcfce7; color:#16a34a; border:1.5px solid #86efac; }
+.vi-high     { background:#fef2f2; color:#dc2626; border:1.5px solid #fca5a5; }
+.vi-low      { background:#eff6ff; color:#2563eb; border:1.5px solid #93c5fd; }
+.vi-critical { background:#f5f0ff; color:#7c3aed; border:1.5px solid #c4b5fd; animation:crit-icon 1.5s ease-in-out infinite; }
+.vi-empty    { background:#f1f5f9; color:#94a3b8; border:1.5px solid #e2e8f0; }
+@keyframes crit-icon { 0%,100%{box-shadow:0 0 0 2px rgba(124,58,237,.08)} 50%{box-shadow:0 0 0 4px rgba(124,58,237,.15)} }
+
+/* Tooltip */
+.param-tooltip { position:relative; display:inline-flex; align-items:center; }
+.param-tooltip .tt-content {
+  position:absolute; bottom:calc(100% + 7px); left:50%; transform:translateX(-50%);
+  background:var(--navy); color:white; font-size:10px; font-weight:600;
+  padding:6px 10px; border-radius:8px; white-space:nowrap; z-index:500;
+  pointer-events:none; opacity:0; transition:opacity .15s;
+  box-shadow:0 4px 12px rgba(12,20,69,.3); line-height:1.6; text-align:center;
+  min-width:120px;
+}
+.param-tooltip .tt-content::after {
+  content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%);
+  border:5px solid transparent; border-top-color:var(--navy);
+}
+.param-tooltip:hover .tt-content { opacity:1; }
+
+/* Help button */
+.param-help-btn {
+  width:15px; height:15px; border-radius:50%; border:1.5px solid var(--border);
+  background:var(--surface2); color:var(--muted); font-size:8px; font-weight:900;
+  cursor:pointer; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;
+  transition:all .12s; font-family:monospace;
+}
+.param-help-btn:hover { background:var(--blue); color:white; border-color:var(--blue); }
+
+/* Text presets */
+.txt-presets { position:relative; display:inline-flex; align-items:center; }
+.txt-preset-btn {
+  padding:2px 7px; border:1.5px solid var(--border); border-radius:5px;
+  background:var(--surface2); font-size:10px; font-weight:700; color:var(--muted);
+  cursor:pointer; font-family:'Outfit',sans-serif; transition:all .12s;
+}
+.txt-preset-btn:hover { border-color:var(--blue); color:var(--blue); }
+.txt-preset-menu {
+  position:absolute; bottom:calc(100% + 4px); right:0;
+  background:white; border:1.5px solid var(--border);
+  border-radius:var(--r-sm); box-shadow:0 8px 24px rgba(12,20,69,.15);
+  z-index:400; min-width:130px; overflow:hidden; display:none;
+}
+.txt-preset-menu.tpm-open { display:block; animation:panelIn .12s ease; }
+.tpm-item {
+  padding:6px 12px; font-size:12px; font-weight:600; color:var(--text);
+  cursor:pointer; transition:background .08s; border-bottom:1px solid var(--border2);
+}
+.tpm-item:last-child { border-bottom:none; }
+.tpm-item:hover { background:#eff6ff; color:var(--blue); }
+
+/* ══════════════════════════════════════════
+   HISTORY & NOTES TABS
+══════════════════════════════════════════ */
+.history-empty { text-align:center; padding:36px 20px; color:var(--muted); }
+.history-empty .hi-icon { font-size:36px; margin-bottom:10px; opacity:.3; }
+.history-empty p { font-size:13px; }
+.history-entry { border:1.5px solid var(--border); border-radius:var(--r); margin-bottom:10px; overflow:hidden; }
+.he-header { padding:8px 14px; background:var(--surface2); display:flex; align-items:center; gap:8px; border-bottom:1px solid var(--border); flex-wrap:wrap; }
+.he-date { font-size:11px; font-weight:700; color:var(--text); }
+.he-bid  { font-family:'DM Mono',monospace; font-size:9.5px; color:var(--muted); background:var(--border2); padding:1px 6px; border-radius:4px; }
+.he-table { width:100%; border-collapse:collapse; font-size:11.5px; }
+.he-table td { padding:5px 12px; border-bottom:1px solid var(--border2); }
+.he-table tr:last-child td { border-bottom:none; }
+.he-table td:first-child { font-weight:700; color:var(--text); }
+.he-table td:nth-child(2) { color:var(--muted); font-size:10.5px; }
+.he-table td:last-child { font-family:'DM Mono',monospace; font-weight:700; }
+.he-val-ok { color:var(--green); }
+.he-val-H  { color:var(--red); }
+.he-val-L  { color:var(--blue-h); }
+.he-val-C  { color:var(--purple); }
+.notes-area { padding:14px 18px; }
+.notes-ta {
+  width:100%; min-height:100px; padding:10px 12px;
+  border:1.5px solid var(--border); border-radius:var(--r);
+  font-family:'Outfit',sans-serif; font-size:13px; color:var(--text);
+  background:var(--surface); resize:vertical; outline:none; transition:border-color .15s; line-height:1.6;
+}
+.notes-ta:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(37,99,235,.08); }
+.notes-hint { font-size:10.5px; color:var(--muted); margin-bottom:6px; }
 </style>
 </head>
 <body>
@@ -690,7 +968,18 @@ td.td-gauge { padding:5px 10px 5px 8px; }
         <button class="fp" onclick="setSF('Partial',this)">🔄 Partial</button>
         <button class="fp" onclick="setSF('Completed',this)">✅ Done</button>
       </div>
+      <div class="priority-filters">
+        <button class="fp pf-prio pf-prio-all on" onclick="setPF('all',this)" id="pfAll">All Priority</button>
+        <button class="fp pf-prio pf-prio-urgent" onclick="setPF('URGENT',this)">🔴 Urgent</button>
+        <button class="fp pf-prio pf-prio-high"   onclick="setPF('HIGH',this)">🟠 High</button>
+        <button class="fp pf-prio pf-prio-normal"  onclick="setPF('NORMAL',this)">🟢 Normal</button>
+      </div>
       <div class="bk-count" id="bkCount">Loading…</div>
+    </div>
+    <!-- Recent Bookings (sticky, shows last 3 with recent activity) -->
+    <div class="recent-section" id="recentSection" style="display:none">
+      <div class="recent-label">📌 Recent Activity</div>
+      <div id="recentList"></div>
     </div>
     <div class="bk-list" id="bkList">
       <div class="empty-state"><div class="ei">📋</div><h3>Loading…</h3></div>
@@ -707,25 +996,74 @@ td.td-gauge { padding:5px 10px 5px 8px; }
     </div>
 
     <div id="resultPanel">
-      <div class="sec-label">② Result Entry</div>
-      <div class="patient-card" id="patientCard">
-        <div class="patient-card-header" id="patientHeader"></div>
-        <div class="overall-prog" id="overallProg">
-          <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
-          <div class="prog-pct" id="progPct">0/0</div>
-          <div class="prog-flags" id="progFlags"></div>
+      <!-- Breadcrumb Trail -->
+      <div class="breadcrumb" id="breadcrumb" style="display:none">
+        <span class="bc-item" onclick="clearSel()">🏠 Home</span>
+        <span class="bc-sep">›</span>
+        <span class="bc-current" id="bcPatient">—</span>
+        <span class="bc-sep" id="bcTestSep" style="display:none">›</span>
+        <span class="bc-current" id="bcTest" style="display:none">—</span>
+      </div>
+
+      <div style="padding:14px 18px 0 18px;">
+        <div class="sec-label">② Result Entry</div>
+      </div>
+
+      <!-- Collapsible Context Panel -->
+      <div class="context-panel" id="contextPanel" style="display:none;margin:0 18px 14px">
+        <div class="context-panel-header" onclick="toggleCtxPanel()">
+          <div class="context-panel-title">📋 Patient Context</div>
+          <span class="context-toggle ctx-open" id="ctxToggle">▼</span>
         </div>
-        <div class="test-chips-wrap">
-          <div class="test-chips-label">Booked Tests — tap to enter results</div>
-          <div class="test-chips" id="testChips"></div>
+        <div class="context-body" id="ctxBody"></div>
+      </div>
+
+      <div style="padding:0 18px;">
+        <div class="patient-card" id="patientCard">
+          <div class="patient-card-header" id="patientHeader"></div>
+          <div class="overall-prog" id="overallProg">
+            <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+            <div class="prog-pct" id="progPct">0/0</div>
+            <div class="prog-flags" id="progFlags"></div>
+          </div>
+          <!-- Tab Navigation -->
+          <div class="result-tabs">
+            <button class="tab-btn tab-active" id="tabBtnResults" onclick="switchTab('results',this)">📊 Results <span class="tab-count" id="tabCountResults">0</span></button>
+            <button class="tab-btn" id="tabBtnHistory" onclick="switchTab('history',this)">📅 History</button>
+            <button class="tab-btn" id="tabBtnNotes" onclick="switchTab('notes',this)">📝 Notes</button>
+          </div>
+          <!-- Tab: Results -->
+          <div class="tab-pane tab-active" id="tabResults">
+            <div class="test-cards-wrap">
+              <div class="test-cards-label">Booked Tests — tap a card to enter results</div>
+              <div class="test-cards" id="testChips"></div>
+            </div>
+          </div>
+          <!-- Tab: History -->
+          <div class="tab-pane" id="tabHistory" style="padding:14px 18px;">
+            <div id="historyContent">
+              <div class="history-empty"><div class="hi-icon">📅</div><p>Select a patient to view history</p></div>
+            </div>
+          </div>
+          <!-- Tab: Notes -->
+          <div class="tab-pane" id="tabNotes">
+            <div class="notes-area">
+              <div class="notes-hint">📝 Doctor comments, department notes, or any observations for this booking</div>
+              <textarea class="notes-ta" id="notesTextarea" placeholder="Add notes, comments, or observations…"></textarea>
+              <button class="btn btn-save btn-sm" style="margin-top:8px;" onclick="saveNotes()">💾 Save Notes</button>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="test-panel-wrap" id="testPanelWrap" style="display:none"></div>
-      <div class="action-bar" id="mainActionBar" style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:12px 18px;display:none;gap:8px;flex-wrap:wrap;align-items:center;margin-top:14px;">
-        <button class="btn btn-save" onclick="saveResults()">💾 Save All</button>
-        <button class="btn btn-complete" onclick="markComplete()">✅ Mark All Complete</button>
-        <button class="btn" style="background:linear-gradient(135deg,#7c3aed,#6d28d9);color:white;border:none;" onclick="openPM()">🧬 Manage Parameters</button>
-        <button class="btn btn-back" onclick="clearSel()">← Back</button>
+
+      <div style="padding:0 18px;">
+        <div class="test-panel-wrap" id="testPanelWrap" style="display:none"></div>
+        <div class="action-bar" id="mainActionBar" style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:12px 18px;display:none;gap:8px;flex-wrap:wrap;align-items:center;margin-top:14px;">
+          <button class="btn btn-save" onclick="saveResults()">💾 Save All</button>
+          <button class="btn btn-complete" onclick="markComplete()">✅ Mark All Complete</button>
+          <button class="btn" style="background:linear-gradient(135deg,#7c3aed,#6d28d9);color:white;border:none;" onclick="openPM()">🧬 Manage Parameters</button>
+          <button class="btn btn-back" onclick="clearSel()">← Back</button>
+        </div>
       </div>
     </div>
 
@@ -740,6 +1078,15 @@ td.td-gauge { padding:5px 10px 5px 8px; }
   </div>
   <div class="sb-acts">
     <button class="btn btn-save btn-sm" onclick="saveResults()" id="stickySave" disabled>💾 Save</button>
+  </div>
+</div>
+
+<!-- FLOATING ACTION BUTTON -->
+<div class="fab-wrap" id="fabWrap" style="display:none">
+  <button class="fab-main" id="fabMain" onclick="toggleFAB()" title="Quick Actions" aria-label="Quick Actions">＋</button>
+  <div class="fab-options fab-hidden" id="fabOptions">
+    <button class="fab-opt" onclick="fabFillSimilar()" aria-label="Fill results from similar patient">📋 Fill Similar Patient</button>
+    <button class="fab-opt" onclick="fabUseTemplate()" aria-label="Apply saved template">📄 Use Template</button>
   </div>
 </div>
 
@@ -1734,10 +2081,51 @@ function buildExpandedRows(booking) {
 }
 
 /* ── STATE ── */
-let _bks=[], _filtered=[], _sel=null, _rv={}, _mo={}, _sf='all';
+let _bks=[], _filtered=[], _sel=null, _rv={}, _mo={}, _sf='all', _pf='all';
+const TEXT_PRESETS=['Positive','Negative','Reactive','Non-Reactive','Detected','Not Detected','Normal','Abnormal','Trace','++','+++'];
 let _expandedRows=[], _inputOrder=[];
 let _activeTestIdx=null, _isDirty=false, _chipDebTimer=null;
+let _dragSrcIdx=null;
 function _debouncedChipRender() { clearTimeout(_chipDebTimer); _chipDebTimer=setTimeout(renderTestChips,120); }
+
+/* ── PRIORITY HELPERS ── */
+function getPriority(b) {
+  const sv=JSON.parse(localStorage.getItem(`results_${b.bookingId}`)||'{}');
+  const hasC=Object.values(sv).some(r=>r.flag==='C');
+  if(hasC) return 'URGENT';
+  const hasHL=Object.values(sv).some(r=>r.flag==='H'||r.flag==='L');
+  if(hasHL) return 'HIGH';
+  if((b.tests||[]).length>=4) return 'HIGH';
+  return 'NORMAL';
+}
+function getPriorityBadgeHTML(p) {
+  if(p==='URGENT') return '<span class="priority-badge pb-urgent">🔴 Urgent</span>';
+  if(p==='HIGH')   return '<span class="priority-badge pb-high">🟠 High</span>';
+  return '<span class="priority-badge pb-normal">🟢 Normal</span>';
+}
+function getLastActivity(b) {
+  const ts=b.lastResultUpdate; if(!ts) return null;
+  const diff=Date.now()-new Date(ts).getTime();
+  const mins=Math.floor(diff/60000);
+  if(mins<1) return 'just now';
+  if(mins<60) return `${mins}m ago`;
+  const hrs=Math.floor(mins/60);
+  if(hrs<24) return `${hrs}h ago`;
+  return `${Math.floor(hrs/24)}d ago`;
+}
+function getTestCardStatus(tIdx) {
+  const rows=_getTestRows(tIdx);
+  if(rows.length===1&&rows[0].unconfigured) return 'unconfigured';
+  const sv=JSON.parse(localStorage.getItem(`results_${_sel?.bookingId}`)||'{}');
+  const hasC=rows.some(r=>sv[r.key]?.flag==='C');
+  if(hasC) return 'critical';
+  const filled=rows.filter(r=>(_rv[r.key]?.value||'').trim()).length;
+  const total=rows.filter(r=>!r.unconfigured).length;
+  if(!total) return 'empty';
+  if(filled===total) return 'done';
+  if(filled>0) return 'partial';
+  return 'empty';
+}
 
 /* ── INIT ── */
 document.addEventListener('DOMContentLoaded', () => {
@@ -1759,6 +2147,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if (_activeTestIdx !== null) saveTestPanel(_activeTestIdx); else saveResults();
     }
   });
+  // Close FAB and preset menus on outside click
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.fab-wrap')) closeFAB();
+    if (!e.target.closest('.txt-presets')) document.querySelectorAll('.txt-preset-menu.tpm-open').forEach(m=>m.classList.remove('tpm-open'));
+  });
   document.getElementById('step1').classList.add('active');
 });
 
@@ -1768,16 +2161,42 @@ function loadBks() {
   _bks.forEach(b => { if (!b.status) b.status = 'Booked'; });
   document.getElementById('bkCountBadge').textContent = _bks.length + ' Booking' + (_bks.length !== 1 ? 's' : '');
   document.getElementById('bkCount').textContent = _bks.length + ' booking(s) total';
+  renderRecentBookings();
   filterBks();
 }
-function setSF(v, btn) { _sf=v; document.querySelectorAll('.fp').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); filterBks(); }
+function setSF(v, btn) { _sf=v; document.querySelectorAll('.fp:not(.pf-prio)').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); filterBks(); }
+function setPF(v, btn) { _pf=v; document.querySelectorAll('.fp.pf-prio').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); filterBks(); }
 function filterBks() {
   const q = document.getElementById('bkSearch').value.toLowerCase().trim();
   _filtered = _bks.filter(b => {
     if (_sf !== 'all' && b.status !== _sf) return false;
+    if (_pf !== 'all' && getPriority(b) !== _pf) return false;
     return !q || [b.bookingId, b.patientName, b.patientMobile, b.refDoctor].join(' ').toLowerCase().includes(q);
   });
   renderBkList();
+}
+
+/* ── RENDER RECENT BOOKINGS ── */
+function renderRecentBookings() {
+  const recent = _bks
+    .filter(b => b.lastResultUpdate)
+    .sort((a,b) => new Date(b.lastResultUpdate) - new Date(a.lastResultUpdate))
+    .slice(0,3);
+  const sec = document.getElementById('recentSection');
+  const list = document.getElementById('recentList');
+  if (!recent.length) { sec.style.display='none'; return; }
+  sec.style.display='block';
+  list.innerHTML = recent.map(b => {
+    const ini=(b.patientName||'?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    const act=getLastActivity(b)||'';
+    return `<div class="recent-item" onclick="selBkById('${H(b.bookingId)}')">
+      <div class="recent-av">${ini}</div>
+      <div class="recent-info">
+        <div class="recent-name">${H(b.patientName||'—')}</div>
+        <div class="recent-sub">${H(b.bookingId)} · ${act}</div>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 /* ── RENDER BOOKING LIST ── */
@@ -1787,7 +2206,7 @@ function renderBkList() {
     c.innerHTML = `<div class="empty-state"><div class="ei">📋</div><h3>${_bks.length ? 'No matches found' : 'No bookings yet'}</h3></div>`;
     return;
   }
-  c.innerHTML = _filtered.map(b => {
+  c.innerHTML = _filtered.map((b, fi) => {
     const ini = (b.patientName||'?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
     const ds = b.sampleDate ? new Date(b.sampleDate+'T00:00:00').toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}) : '—';
     const st = b.status || 'Booked';
@@ -1803,11 +2222,31 @@ function renderBkList() {
     let fillCls='fill-empty', fillIcon='○';
     if (dc>0 && dc<storedTotal) { fillCls='fill-part'; fillIcon='◑'; }
     else if (dc>=storedTotal && storedTotal>0) { fillCls='fill-done'; fillIcon='✓'; }
-    return `<div class="bk-item${isSel?' selected':''}" onclick="selBkById('${H(b.bookingId)}')">
+    const priority = getPriority(b);
+    const act = getLastActivity(b);
+    const hasC = Object.values(sv).some(r=>r.flag==='C');
+    const hasH = Object.values(sv).some(r=>r.flag==='H'||r.flag==='L');
+    const flagIcons = (hasC ? '🔴' : '') + (hasH&&!hasC ? '⚠️' : '');
+    const origIdx = _bks.indexOf(b);
+    return `<div class="bk-item${isSel?' selected':''}" onclick="selBkById('${H(b.bookingId)}')"
+        draggable="true"
+        data-orig="${origIdx}"
+        ondragstart="onBkDragStart(event,${origIdx})"
+        ondragover="onBkDragOver(event)"
+        ondrop="onBkDrop(event,${origIdx})"
+        ondragleave="onBkDragLeave(event)"
+        ondragend="onBkDragEnd(event)">
+      <span class="drag-handle" title="Drag to reorder" onclick="event.stopPropagation()">⠿</span>
       <div class="bk-av">${ini}</div>
       <div class="bk-body">
         <div class="bk-name">${H(b.patientName||'—')}${b.patientAge?` <span style="font-weight:500;color:var(--muted);font-size:10.5px;">· ${H(b.patientAge)}</span>`:''}${b.patientGender?` <span style="font-weight:500;color:var(--muted);font-size:10.5px;">${H(b.patientGender)}</span>`:''}</div>
-        <div class="bk-meta">📅 ${ds} · 🧪 ${tc} test${tc!==1?'s':''}</div>
+        <div class="bk-meta">📅 ${ds}</div>
+        <div class="bk-extras">
+          ${getPriorityBadgeHTML(priority)}
+          <span class="bk-complexity">🧪 ${tc} test${tc!==1?'s':''}</span>
+          ${flagIcons?`<span class="bk-flag-icons">${flagIcons}</span>`:''}
+          ${act?`<span class="bk-timestamp">${act}</span>`:''}
+        </div>
         <div class="bk-prog">
           <div class="bk-prog-bar"><div class="bk-prog-fill" style="width:${Math.min(pct,100)}%"></div></div>
           <div class="bk-prog-lbl">${dc}/${storedTotal}</div>
@@ -1820,6 +2259,30 @@ function renderBkList() {
       <div class="fill-icon ${fillCls}" title="${dc} of ${storedTotal} filled">${fillIcon}</div>
     </div>`;
   }).join('');
+}
+
+/* ── DRAG-TO-REORDER ── */
+function onBkDragStart(e, origIdx) {
+  _dragSrcIdx = origIdx;
+  e.currentTarget.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', String(origIdx));
+}
+function onBkDragOver(e) { e.preventDefault(); e.dataTransfer.dropEffect='move'; e.currentTarget.classList.add('drag-over'); }
+function onBkDragLeave(e) { e.currentTarget.classList.remove('drag-over'); }
+function onBkDragEnd(e) { e.currentTarget.classList.remove('dragging','drag-over'); document.querySelectorAll('.bk-item.drag-over').forEach(el=>el.classList.remove('drag-over')); }
+function onBkDrop(e, destOrigIdx) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  if (_dragSrcIdx === null || _dragSrcIdx === destOrigIdx) return;
+  // Reorder _bks
+  const src = _bks[_dragSrcIdx];
+  _bks.splice(_dragSrcIdx, 1);
+  const newDest = destOrigIdx > _dragSrcIdx ? destOrigIdx - 1 : destOrigIdx;
+  _bks.splice(newDest, 0, src);
+  localStorage.setItem('testBookings', JSON.stringify(_bks));
+  _dragSrcIdx = null;
+  filterBks();
 }
 
 /* ── DIRTY INDICATOR ── */
@@ -1848,6 +2311,23 @@ function selBk(b) {
   document.getElementById('sbInfo').innerHTML=`<strong>${b.bookingId}</strong> — ${b.patientName} — ${(b.tests||[]).length} test(s)`;
   document.getElementById('step1').classList.remove('active');
   document.getElementById('step2').classList.add('active');
+  // Show breadcrumb
+  const bc=document.getElementById('breadcrumb');
+  bc.style.display='flex';
+  document.getElementById('bcPatient').textContent=b.patientName||b.bookingId;
+  document.getElementById('bcTestSep').style.display='none';
+  document.getElementById('bcTest').style.display='none';
+  // Show and populate context panel
+  renderContextPanel(b);
+  // Show FAB
+  document.getElementById('fabWrap').style.display='flex';
+  // Load notes
+  const notes=localStorage.getItem(`notes_${b.bookingId}`)||'';
+  const ta=document.getElementById('notesTextarea'); if(ta) ta.value=notes;
+  // Load history
+  loadHistoryTab(b);
+  // Reset to Results tab
+  switchTab('results', document.getElementById('tabBtnResults'));
   setTimeout(()=>document.getElementById('resultPanel').scrollIntoView({behavior:'smooth',block:'start'}),80);
 }
 function clearSel() {
@@ -1857,9 +2337,162 @@ function clearSel() {
   document.getElementById('mainActionBar').style.display='none';
   document.getElementById('testPanelWrap').style.display='none';
   document.getElementById('stickyBar').classList.remove('vis');
+  document.getElementById('breadcrumb').style.display='none';
+  document.getElementById('contextPanel').style.display='none';
+  document.getElementById('fabWrap').style.display='none';
+  closeFAB();
   document.getElementById('step1').classList.add('active');
   document.getElementById('step2').classList.remove('active');
   renderBkList(); window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ── CONTEXT PANEL ── */
+function renderContextPanel(b) {
+  const panel = document.getElementById('contextPanel');
+  const body = document.getElementById('ctxBody');
+  panel.style.display = 'block';
+  const ini=(b.patientName||'?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  const ds=b.sampleDate?new Date(b.sampleDate+'T00:00:00').toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}):'—';
+  const lastUpd=b.lastResultUpdate?new Date(b.lastResultUpdate).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}):'No results yet';
+  const notes=localStorage.getItem(`notes_${b.bookingId}`)||'';
+  body.innerHTML=`
+    <div class="context-avatar">${ini}</div>
+    <div class="context-vitals">
+      <div class="context-vital"><div class="cv-label">Name</div><div class="cv-val" style="font-size:12px;font-family:'Outfit',sans-serif;">${H(b.patientName||'—')}</div></div>
+      <div class="context-vital"><div class="cv-label">Age</div><div class="cv-val${b.patientAge?'':' cv-na'}">${b.patientAge?H(b.patientAge):'n/a'}</div></div>
+      <div class="context-vital"><div class="cv-label">Gender</div><div class="cv-val${b.patientGender?'':' cv-na'}">${b.patientGender?H(b.patientGender):'n/a'}</div></div>
+      <div class="context-vital"><div class="cv-label">Booking</div><div class="cv-val" style="font-size:11px;">${H(b.bookingId)}</div></div>
+      <div class="context-vital"><div class="cv-label">Sample Date</div><div class="cv-val" style="font-size:11px;">${ds}</div></div>
+      <div class="context-vital"><div class="cv-label">Last Update</div><div class="cv-val" style="font-size:11px;">${lastUpd}</div></div>
+      ${b.refDoctor?`<div class="context-vital"><div class="cv-label">Ref. Doctor</div><div class="cv-val" style="font-size:11px;">${H(b.refDoctor)}</div></div>`:''}
+      ${b.patientMobile?`<div class="context-vital"><div class="cv-label">Mobile</div><div class="cv-val" style="font-size:11px;">${H(b.patientMobile)}</div></div>`:''}
+    </div>
+    ${notes?`<div class="context-notes-preview">📝 ${H(notes.slice(0,120))}${notes.length>120?'…':''}</div>`:''}`;
+}
+function toggleCtxPanel() {
+  const body=document.getElementById('ctxBody');
+  const tog=document.getElementById('ctxToggle');
+  const panel=document.getElementById('contextPanel');
+  if(body.style.display==='none') { body.style.display=''; tog.classList.add('ctx-open'); }
+  else { body.style.display='none'; tog.classList.remove('ctx-open'); }
+}
+
+/* ── TABS ── */
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('tab-active'));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('tab-active'));
+  btn.classList.add('tab-active');
+  const pane=document.getElementById('tab'+name.charAt(0).toUpperCase()+name.slice(1));
+  if(pane) pane.classList.add('tab-active');
+}
+
+/* ── FAB ── */
+function toggleFAB() {
+  const main=document.getElementById('fabMain');
+  const opts=document.getElementById('fabOptions');
+  if(opts.classList.contains('fab-hidden')) {
+    opts.classList.remove('fab-hidden'); main.classList.add('fab-open');
+  } else {
+    closeFAB();
+  }
+}
+function closeFAB() {
+  const main=document.getElementById('fabMain');
+  const opts=document.getElementById('fabOptions');
+  if(main) main.classList.remove('fab-open');
+  if(opts) opts.classList.add('fab-hidden');
+}
+function fabFillSimilar() {
+  closeFAB();
+  if(!_sel) return;
+  // Find another booking with same tests that has results
+  const similar=_bks.find(b=>
+    b.bookingId!==_sel.bookingId &&
+    (b.tests||[]).some(t=>(_sel.tests||[]).some(t2=>t2.name===t.name))
+  );
+  if(!similar) { showToast('ℹ️ No similar patient found with existing results','info'); return; }
+  const simRv=JSON.parse(localStorage.getItem(`results_${similar.bookingId}`)||'{}');
+  let filled=0;
+  _expandedRows.forEach(row=>{
+    // Match by parameter name only
+    const matchKey=Object.keys(simRv).find(k=>k.split('_').slice(2).join('_')===String(row.paramIdx));
+    if(!matchKey) {
+      // Try to find by param name match in similar booking
+      const simRows=buildExpandedRows(similar);
+      const simRow=simRows.find(r=>r.paramName.toLowerCase()===row.paramName.toLowerCase());
+      if(simRow&&simRv[simRow.key]?.value) {
+        _rv[row.key]={value:simRv[simRow.key].value,flag:simRv[simRow.key].flag||'',remarks:''};
+        filled++;
+      }
+    }
+  });
+  if(filled) {
+    renderTestPanel(_activeTestIdx!==null?_activeTestIdx:0);
+    updateOverallProg(); renderTestChips();
+    showToast(`📋 Filled ${filled} value(s) from ${similar.patientName}`,'success');
+  } else {
+    showToast('ℹ️ No matching parameter values found','info');
+  }
+}
+function fabUseTemplate() {
+  closeFAB();
+  const store=loadParamStore();
+  if(!store.length) { showToast('ℹ️ No parameter templates configured yet. Use 🧬 Test Parameters to set up templates.','info'); return; }
+  openPM();
+  showToast('📄 Open a saved configuration to use as template','info');
+}
+
+/* ── HISTORY TAB ── */
+function loadHistoryTab(b) {
+  const container=document.getElementById('historyContent');
+  if(!container) return;
+  // Look for other bookings of the same patient with results
+  const siblings=_bks.filter(x=>
+    x.bookingId!==b.bookingId &&
+    x.patientName===b.patientName &&
+    localStorage.getItem(`results_${x.bookingId}`)
+  ).sort((a,b)=>{
+    const da=a.sampleDate||'', db=b.sampleDate||'';
+    return db.localeCompare(da);
+  }).slice(0,5);
+  if(!siblings.length) {
+    container.innerHTML=`<div class="history-empty"><div class="hi-icon">📅</div><p>No previous test history found for <strong>${H(b.patientName)}</strong></p></div>`;
+    return;
+  }
+  container.innerHTML=siblings.map(sib=>{
+    const rv2=JSON.parse(localStorage.getItem(`results_${sib.bookingId}`)||'{}');
+    const ds=sib.sampleDate?new Date(sib.sampleDate+'T00:00:00').toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}):'—';
+    const entries=Object.entries(rv2).filter(([,v])=>v.value&&String(v.value).trim());
+    const rows=buildExpandedRows(sib);
+    if(!entries.length) return '';
+    const tableRows=entries.map(([k,v])=>{
+      const row=rows.find(r=>r.key===k);
+      if(!row) return '';
+      const flagCls=v.flag?`he-val-${v.flag}`:'he-val-ok';
+      const flagLabel=v.flag?` (${v.flag})`:'';
+      return `<tr><td>${H(row.paramName)}</td><td>${H(row.unit)}</td><td class="${flagCls}">${H(v.value)}${flagLabel}</td></tr>`;
+    }).filter(Boolean).join('');
+    if(!tableRows) return '';
+    return `<div class="history-entry">
+      <div class="he-header">
+        <span class="he-date">📅 ${ds}</span>
+        <span class="he-bid">${H(sib.bookingId)}</span>
+        ${(sib.tests||[]).map(t=>`<span style="font-size:9.5px;color:var(--muted);background:var(--border2);padding:1px 6px;border-radius:4px;">${H(t.name)}</span>`).join('')}
+      </div>
+      <table class="he-table"><tbody>${tableRows}</tbody></table>
+    </div>`;
+  }).filter(Boolean).join('') || `<div class="history-empty"><div class="hi-icon">📅</div><p>No result history available</p></div>`;
+}
+
+/* ── NOTES ── */
+function saveNotes() {
+  if(!_sel) return;
+  const ta=document.getElementById('notesTextarea');
+  const text=ta?ta.value:'';
+  localStorage.setItem(`notes_${_sel.bookingId}`,text);
+  // Refresh context panel preview
+  renderContextPanel(_sel);
+  showToast('📝 Notes saved','success');
 }
 
 /* ── PATIENT HEADER ── */
@@ -1909,7 +2542,7 @@ function updateOverallProg() {
   document.getElementById('sbHint').textContent=hints.join(' · ');
 }
 
-/* ── TEST CHIPS ── */
+/* ── TEST CHIPS / CARDS ── */
 function _getTestRows(tIdx) { return _expandedRows.filter(r=>r.testIdx===tIdx); }
 function _chipStatus(tIdx) {
   const rows=_getTestRows(tIdx);
@@ -1929,23 +2562,71 @@ function renderTestChips() {
     const rows=_getTestRows(i);
     const filled=rows.filter(r=>(_rv[r.key]?.value||'').trim()).length;
     const total=rows.filter(r=>!r.unconfigured).length;
+    const isActive=(_activeTestIdx===i);
+    const dept=rows[0]?.dept||'';
+    // Check for critical flags
+    const hasCrit=rows.some(r=>_rv[r.key]?.flag==='C');
+    // Derive status badge info
+    let statusBadge='', statusBadgeCls='tc-draft', barCls='bar-empty', cardCls='test-card';
+    if(st==='unconfigured') { cardCls='test-card tc-unconfigured'; statusBadge='⚙ Config needed'; statusBadgeCls=''; }
+    else if(hasCrit) { statusBadge='🔴 Critical'; statusBadgeCls='tc-crit-badge'; barCls='bar-critical'; cardCls='test-card tc-critical'; }
+    else if(st==='done') { statusBadge='✅ Complete'; statusBadgeCls='tc-complete'; barCls='bar-done'; cardCls='test-card tc-done'; }
+    else if(st==='partial') { statusBadge='◑ Partial'; statusBadgeCls='tc-inprogress'; barCls='bar-partial'; cardCls='test-card tc-partial'; }
+    else { statusBadge='○ Draft'; statusBadgeCls='tc-draft'; }
+    if(isActive) cardCls+=' tc-active';
+    const icon=hasCrit?'🔴':st==='done'?'✅':st==='partial'?'🔬':(icons[i%icons.length]);
+    const pct=total?Math.round(filled/total*100):0;
     if(st==='unconfigured') {
-      return `<button class="chip-no-params" onclick="openPMForTest('${H(t.name)}','${H(t.id||'')}')">
-        ⚠️ ${H(t.name)} <span style="font-size:9px;opacity:.8;">→ Set up params</span>
-      </button>`;
+      return `<div class="${cardCls}" onclick="openPMForTest('${H(t.name)}','${H(t.id||'')}')">
+        <div class="tc-status-bar bar-empty"></div>
+        <div class="tc-body">
+          <div class="tc-header">
+            <span class="tc-icon">⚠️</span>
+            <div>
+              <div class="tc-name">${H(t.name)}</div>
+              ${dept?`<div class="tc-dept">${H(dept)}</div>`:''}
+            </div>
+          </div>
+          <div class="tc-footer">
+            <span class="tc-status-badge" style="background:#fff7ed;color:#c2410c;">⚙ Set up params</span>
+          </div>
+        </div>
+      </div>`;
     }
-    let cls='test-chip';
-    if(st==='done') cls+=' done';
-    else if(st==='partial') cls+=' partial';
-    if(_activeTestIdx===i) cls+=' active';
-    const icon=st==='done'?'✅':st==='partial'?'◑':(icons[i%icons.length]);
-    return `<button class="${cls}" onclick="toggleTestPanel(${i})">
-      <span class="chip-icon">${icon}</span>
-      <span class="chip-name">${H(t.name)}</span>
-      <span class="chip-badge">${filled}/${total}</span>
-    </button>`;
+    return `<div class="${cardCls}" onclick="toggleTestPanel(${i})">
+      <div class="tc-status-bar ${barCls}"></div>
+      <div class="tc-body">
+        <div class="tc-header">
+          <span class="tc-icon">${icon}</span>
+          <div>
+            <div class="tc-name">${H(t.name)}</div>
+            ${dept?`<div class="tc-dept">${H(dept)}</div>`:''}
+          </div>
+        </div>
+        <div class="tc-progress">
+          <div class="tc-prog-track"><div class="tc-prog-fill" style="width:${pct}%"></div></div>
+          <div class="tc-prog-label">${filled}/${total} entered · ${pct}%</div>
+        </div>
+        <div class="tc-footer">
+          <span class="tc-status-badge ${statusBadgeCls}">${statusBadge}</span>
+        </div>
+      </div>
+    </div>`;
   }).join('');
-  document.getElementById('testChips').innerHTML=html||'<span style="color:var(--muted);font-size:12px;">No tests booked</span>';
+  document.getElementById('testChips').innerHTML=html||'<span style="color:var(--muted);font-size:12px;padding:10px;">No tests booked</span>';
+  // Update tab count
+  const critCount=tests.filter((_,i)=>_getTestRows(i).some(r=>_rv[r.key]?.flag==='C')).length;
+  const tc=document.getElementById('tabCountResults');
+  if(tc) { tc.textContent=tests.length; tc.className='tab-count'+(critCount?' tc-critical':''); }
+  // Update breadcrumb test segment
+  if(_activeTestIdx!==null&&tests[_activeTestIdx]) {
+    document.getElementById('bcTestSep').style.display='';
+    document.getElementById('bcTest').style.display='';
+    document.getElementById('bcTest').textContent=tests[_activeTestIdx].name;
+  } else {
+    document.getElementById('bcTestSep').style.display='none';
+    document.getElementById('bcTest').style.display='none';
+  }
 }
 
 /* ── TOGGLE & RENDER TEST PANEL ── */
@@ -2009,17 +2690,53 @@ function renderTestPanel(tIdx) {
       ? buildGauge(val,lo,hi,cl,ch,flag)
       : `<span style="font-size:10px;color:var(--muted);white-space:normal;">${H(row.refRangeStr)||'—'}</span>`;
     const rowCls=flag?`has-val flag-${flag}`:val?'has-val':'';
+    // Validation icon
+    let viCls='vi-empty', viIcon='○';
+    if(val.trim()) {
+      if(flag==='C'){viCls='vi-critical';viIcon='●';}
+      else if(flag==='H'){viCls='vi-high';viIcon='▲';}
+      else if(flag==='L'){viCls='vi-low';viIcon='▼';}
+      else{viCls='vi-ok';viIcon='✓';}
+    }
+    // Tooltip text
+    const ttText=row.refRangeStr?`Range: ${row.refRangeStr}${row.unit?' ('+row.unit+')':''}`:
+      (lo!=null&&hi!=null?`Normal: ${lo} – ${hi}${row.unit?' '+row.unit:''}`:
+      (row.unit?`Unit: ${row.unit}`:'No reference range'));
+    // Parameter name cell with tooltip
+    const paramCell=`<div style="display:flex;align-items:center;gap:5px;">
+      <span class="tn">${H(row.paramName)}</span>
+      <div class="param-tooltip">
+        <button class="param-help-btn" aria-label="Show reference range for ${H(row.paramName)}" onclick="event.stopPropagation()">?</button>
+        <div class="tt-content" role="tooltip">${H(ttText)}</div>
+      </div>
+    </div>`;
+    // Input cell with validation icon
+    let inputCell;
+    if(row.isTxt) {
+      const presetId=`pm_${row.key}`;
+      inputCell=`<div class="ri-wrap">
+        <div class="val-icon ${viCls}" id="vi_${row.key}">${viIcon}</div>
+        <input class="ri-txt" type="text" id="${inpId}" value="${H(val)}" placeholder="Enter result…" data-key="${row.key}" onclick="this.select()" oninput="onTxt('${row.key}',this.value)" style="flex:1;">
+        <div class="txt-presets">
+          <button class="txt-preset-btn" aria-label="Select preset value for ${H(row.paramName)}" aria-haspopup="listbox" onclick="event.stopPropagation();togglePreset('${presetId}')">▾</button>
+          <div class="txt-preset-menu" id="${presetId}">
+            ${TEXT_PRESETS.map(p=>`<div class="tpm-item" onclick="applyPreset('${row.key}','${p.replace(/'/g,"\\'")}','${presetId}')">${p}</div>`).join('')}
+          </div>
+        </div>
+      </div>`;
+    } else {
+      inputCell=`<div class="ri-wrap">
+        <div class="val-icon ${viCls}" id="vi_${row.key}">${viIcon}</div>
+        <input class="ri ${flag?'f-'+flag:''}" type="number" step="any" id="${inpId}" value="${H(val)}" placeholder="—" data-key="${row.key}" data-lo="${lo??''}" data-hi="${hi??''}" data-cl="${cl??''}" data-ch="${ch??''}" data-refrange="${H(row.refRangeStr)}" onclick="this.select()" oninput="onRI(this)" onkeydown="onKeyNav(event,this)" style="flex:1;">
+        ${row.unit?`<span style="font-size:10px;color:var(--muted);white-space:nowrap;flex-shrink:0;font-family:'DM Mono',monospace;font-weight:600;">${H(row.unit)}</span>`:''}
+      </div>`;
+    }
     rowsHtml+=`<tr id="row_${row.key}" class="${rowCls}" data-key="${row.key}">
       <td class="td-num">${i+1}</td>
-      <td class="td-test"><span class="tn">${H(row.paramName)}</span></td>
+      <td class="td-test">${paramCell}</td>
       <td style="padding:0 8px;vertical-align:middle;"><span class="tu-cell">${H(row.unit)||'—'}</span></td>
       <td class="td-gauge" id="gauge_${row.key}">${gaugeHtml}</td>
-      <td class="td-inp">
-        ${row.isTxt
-          ?`<input class="ri-txt" type="text" id="${inpId}" value="${H(val)}" placeholder="Enter result…" data-key="${row.key}" onclick="this.select()" oninput="onTxt('${row.key}',this.value)">`
-          :`<input class="ri ${flag?'f-'+flag:''}" type="number" step="any" id="${inpId}" value="${H(val)}" placeholder="—" data-key="${row.key}" data-lo="${lo??''}" data-hi="${hi??''}" data-cl="${cl??''}" data-ch="${ch??''}" data-refrange="${H(row.refRangeStr)}" onclick="this.select()" oninput="onRI(this)" onkeydown="onKeyNav(event,this)">`
-        }
-      </td>
+      <td class="td-inp">${inputCell}</td>
     </tr>`;
   });
 
@@ -2036,15 +2753,16 @@ function renderTestPanel(tIdx) {
       <div class="kb-hint"><span class="kbd">Enter/↓</span> Next</div>
       <div class="kb-hint"><span class="kbd">↑</span> Prev</div>
       <div class="kb-hint"><span class="kbd">Ctrl+S</span> Save</div>
+      <div class="kb-hint" style="margin-left:auto;font-size:9px;color:var(--muted2);">✓ = Normal · ▲▼ = High/Low · ● = Critical</div>
     </div>
     <div class="grid-wrap">
       <table class="xls" style="width:100%;border-collapse:collapse;table-layout:fixed;">
         <colgroup>
-          <col style="width:36px">
-          <col style="width:220px">
-          <col style="width:90px">
-          <col style="width:200px">
-          <col style="width:130px">
+          <col style="width:32px">
+          <col style="width:210px">
+          <col style="width:80px">
+          <col style="width:190px">
+          <col style="width:150px">
         </colgroup>
         <thead><tr>
           <th class="c-num">#</th>
@@ -2059,7 +2777,7 @@ function renderTestPanel(tIdx) {
     <div class="tp-action-bar">
       <div class="tp-prog-wrap">
         <div class="tp-prog-track"><div class="tp-prog-fill" id="tpFill_${tIdx}" style="width:${pct}%"></div></div>
-        <div class="tp-prog-lbl" id="tpLbl_${tIdx}">${filled}/${total}</div>
+        <div class="tp-prog-lbl" id="tpLbl_${tIdx}">${filled}/${total} entered</div>
       </div>
       <button class="btn btn-save btn-sm" onclick="saveTestPanel(${tIdx})">💾 Save</button>
       <button class="btn btn-sm" style="background:#f1f5f9;color:var(--muted);border:1.5px solid var(--border);" onclick="resetTestPanel(${tIdx})">↺ Reset</button>
@@ -2085,6 +2803,7 @@ function resetTestPanel(tIdx) {
       _rv[r.key]={value:'',flag:'',remarks:''};
       const el=document.getElementById(`inp_${r.key}`);
       if(el){el.value='';el.className=el.type==='number'?'ri':'ri-txt';}
+      _updateValIcon(r.key,'',false);
       const row=document.getElementById(`row_${r.key}`);
       if(row) row.className='';
       const g=document.getElementById(`gauge_${r.key}`);
@@ -2146,6 +2865,15 @@ function buildGauge(val,lo,hi,cl,ch,flag) {
 }
 
 /* ── INPUT HANDLERS ── */
+function _updateValIcon(k, flag, hasVal) {
+  const vi=document.getElementById(`vi_${k}`);
+  if(!vi) return;
+  if(!hasVal) { vi.className='val-icon vi-empty'; vi.textContent='○'; return; }
+  if(flag==='C'){vi.className='val-icon vi-critical';vi.textContent='●';}
+  else if(flag==='H'){vi.className='val-icon vi-high';vi.textContent='▲';}
+  else if(flag==='L'){vi.className='val-icon vi-low';vi.textContent='▼';}
+  else{vi.className='val-icon vi-ok';vi.textContent='✓';}
+}
 function onRI(el) {
   const k=el.dataset.key, v=parseFloat(el.value);
   const lo=el.dataset.lo!==''?parseFloat(el.dataset.lo):null;
@@ -2162,6 +2890,7 @@ function onRI(el) {
   }
   _rv[k].flag=flag;
   el.className='ri'+(flag?' f-'+flag:'');
+  _updateValIcon(k, flag, el.value.trim()!=='');
   const row=document.getElementById(`row_${k}`);
   if(row) row.className=el.value.trim()?`has-val${flag?' flag-'+flag:''}`:'';
   const gEl=document.getElementById(`gauge_${k}`);
@@ -2172,10 +2901,25 @@ function onRI(el) {
 }
 function onTxt(k,v) {
   if(!_rv[k]) _rv[k]={}; _rv[k].value=v; _rv[k].flag='';
+  _updateValIcon(k, '', v.trim()!=='');
   const row=document.getElementById(`row_${k}`); if(row) row.className=v.trim()?'has-val':'';
   updateOverallProg();
   if(_activeTestIdx!==null) _updateTpProg(_activeTestIdx);
   _isDirty=true; _updateDirtyIndicator(); _debouncedChipRender();
+}
+
+/* ── PRESET DROPDOWN ── */
+function togglePreset(menuId) {
+  const menu=document.getElementById(menuId);
+  if(!menu) return;
+  const isOpen=menu.classList.contains('tpm-open');
+  document.querySelectorAll('.txt-preset-menu.tpm-open').forEach(m=>m.classList.remove('tpm-open'));
+  if(!isOpen) menu.classList.add('tpm-open');
+}
+function applyPreset(key, value, menuId) {
+  const inp=document.getElementById(`inp_${key}`);
+  if(inp) { inp.value=value; inp.dispatchEvent(new Event('input',{bubbles:true})); }
+  document.getElementById(menuId)?.classList.remove('tpm-open');
 }
 
 /* ── KEYBOARD NAV ── */
