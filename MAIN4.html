@@ -1308,7 +1308,7 @@ td.td-gauge { padding:5px 10px 5px 8px; }
 
       <!-- Paste Text Panel -->
       <div id="impPastePanel" style="display:none">
-        <textarea class="imp-paste-zone" id="impTextArea" spellcheck="false" placeholder="Paste JSON or CSV data here…&#10;&#10;JSON: [{ &quot;testName&quot;: &quot;Blood Glucose&quot;, &quot;testId&quot;: &quot;T001&quot;, &quot;parameters&quot;: [{...}] }]&#10;CSV:  Test Name,Test ID,Parameter Name,Unit,Ref Range Low,Ref Range High,Critical Low,Critical High"></textarea>
+        <textarea class="imp-paste-zone" id="impTextArea" spellcheck="false" placeholder="Paste JSON or CSV data here…"></textarea>
         <div class="imp-paste-actions">
           <span class="imp-paste-hint">Auto-detects JSON or CSV format</span>
           <button class="btn btn-sm" style="background:#f1f5f9;color:var(--muted);border:1.5px solid var(--border);" onclick="document.getElementById('impTextArea').value='';_impResetVal()">✕ Clear</button>
@@ -1324,8 +1324,8 @@ td.td-gauge { padding:5px 10px 5px 8px; }
         </button>
         <div class="imp-fmt-content" id="impFmtContent">
           <div class="imp-fmt-tabs">
-            <button class="imp-fmt-tab active" id="impFmtTabJSON" onclick="_impSwitchFmtTab('json',this)">📄 JSON</button>
-            <button class="imp-fmt-tab" id="impFmtTabCSV" onclick="_impSwitchFmtTab('csv',this)">📊 CSV</button>
+            <button class="imp-fmt-tab active" id="impFmtTabJSON" aria-label="JSON Format" onclick="_impSwitchFmtTab('json',this)">📄 JSON</button>
+            <button class="imp-fmt-tab" id="impFmtTabCSV" aria-label="CSV Format" onclick="_impSwitchFmtTab('csv',this)">📊 CSV</button>
           </div>
           <div id="impFmtJSONPanel">
             <pre class="imp-fmt-code">[
@@ -2012,11 +2012,21 @@ function _impCopyFmtSample() {
   const code = jsonVisible
     ? document.querySelector('#impFmtJSONPanel .imp-fmt-code').textContent
     : document.querySelector('#impFmtCSVPanel .imp-fmt-code').textContent;
-  navigator.clipboard.writeText(code).then(() => {
-    showToast('📋 Sample copied to clipboard', 'info');
-  }).catch(() => {
-    showToast('Could not copy — please select and copy manually', 'warning');
-  });
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(code).then(() => {
+      showToast('📋 Sample copied to clipboard', 'info');
+    }).catch(() => {
+      showToast('Could not copy — please select and copy manually', 'warning');
+    });
+  } else {
+    // Fallback for non-secure contexts
+    const ta = document.createElement('textarea');
+    ta.value = code; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); showToast('📋 Sample copied to clipboard', 'info'); }
+    catch { showToast('Could not copy — please select and copy manually', 'warning'); }
+    document.body.removeChild(ta);
+  }
 }
 
 function _pmDownloadTemplate(fmt) {
@@ -2040,6 +2050,8 @@ function _impDetectFormat(text) {
   return 'csv';
 }
 
+const _IMP_PREVIEW_DELAY = 600; // ms to show success message before opening preview
+
 function _impParsePaste() {
   const text = document.getElementById('impTextArea').value.trim();
   if (!text) { showToast('⚠️ Please paste some data first', 'warning'); return; }
@@ -2052,7 +2064,7 @@ function _impParsePaste() {
     msg.className = 'imp-val-msg show imp-val-ok';
     msg.innerHTML = `✅ Valid ${fmt.toUpperCase()} — ${parsed.length} test(s), ${totalParams} parameter(s) ready to import`;
     _pmImportPending = parsed;
-    setTimeout(() => { closeImpInputModal(); pmShowImportPreview(parsed); }, 600);
+    setTimeout(() => { closeImpInputModal(); pmShowImportPreview(parsed); }, _IMP_PREVIEW_DELAY);
   } catch (err) {
     msg.className = 'imp-val-msg show imp-val-err';
     msg.innerHTML = `❌ ${err.message || 'Invalid format'}`;
@@ -2092,7 +2104,7 @@ function _impInitDropZone() {
   const dz = document.getElementById('impDropZone');
   const fi = document.getElementById('impFileInput');
   if (!dz || !fi) return;
-  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+  dz.addEventListener('dragover', e => { e.preventDefault(); e.stopPropagation(); dz.classList.add('drag-over'); });
   dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
   dz.addEventListener('drop', e => {
     e.preventDefault(); dz.classList.remove('drag-over');
