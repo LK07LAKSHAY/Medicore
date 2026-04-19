@@ -611,6 +611,63 @@ td.td-gauge { padding:5px 10px 5px 8px; }
 .imp-dup-opt label { display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text);cursor:pointer;padding:6px 12px;border:1.5px solid var(--border);border-radius:8px;transition:border-color .15s; }
 .imp-dup-opt label:hover { border-color:var(--purple); }
 .imp-foot { display:flex;gap:8px;justify-content:flex-end;padding:14px 24px;border-top:1.5px solid var(--border2);background:var(--surface2); }
+
+/* ── Import Input Modal (tabbed entry) ── */
+.imp-input-overlay { position:fixed;inset:0;z-index:690;background:rgba(10,22,40,.65);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .22s; }
+.imp-input-overlay.open { opacity:1;pointer-events:all; }
+.imp-input-box { background:#fff;border-radius:16px;width:min(680px,100%);max-height:90vh;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(10,22,40,.28);overflow:hidden;transform:scale(.97);transition:transform .22s; }
+.imp-input-overlay.open .imp-input-box { transform:scale(1); }
+.imp-input-head { display:flex;align-items:center;gap:12px;padding:18px 24px;border-bottom:1.5px solid var(--border2);background:linear-gradient(135deg,var(--navy) 0%,#1e3a8a 60%,#0ea5e9 100%); }
+.imp-input-head-title { font-size:15px;font-weight:700;color:#fff;flex:1; }
+.imp-input-body { flex:1;overflow-y:auto;padding:20px 24px; }
+.imp-input-foot { display:flex;gap:8px;justify-content:flex-end;padding:14px 24px;border-top:1.5px solid var(--border2);background:var(--surface2); }
+/* Tabs */
+.imp-tab-row { display:flex;gap:0;border:1.5px solid var(--border2);border-radius:10px;overflow:hidden;margin-bottom:16px; }
+.imp-tab-btn { flex:1;padding:9px 14px;font-size:13px;font-weight:700;background:var(--surface2);color:var(--muted);border:none;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .18s;display:flex;align-items:center;justify-content:center;gap:6px;border-right:1.5px solid var(--border2); }
+.imp-tab-btn:last-child { border-right:none; }
+.imp-tab-btn.active { background:var(--blue);color:#fff; }
+.imp-tab-btn:not(.active):hover { background:#eef3ff;color:var(--blue); }
+/* Dropzone */
+.imp-dropzone { border:2.5px dashed var(--border2);border-radius:14px;padding:36px 20px;text-align:center;cursor:pointer;transition:all .2s;background:#fafbff;position:relative;overflow:hidden; }
+.imp-dropzone:hover, .imp-dropzone.drag-over { border-color:var(--blue);background:rgba(37,99,235,.04); }
+.imp-dropzone.drag-over { transform:scale(1.01); }
+.imp-dropzone input[type=file] { position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer; }
+.imp-dropzone-icon { font-size:40px;margin-bottom:10px; }
+.imp-dropzone-title { font-size:15px;font-weight:800;color:var(--navy);margin-bottom:5px; }
+.imp-dropzone-sub { font-size:12.5px;color:var(--muted); }
+.imp-dropzone-badge { display:inline-flex;gap:6px;margin-top:10px; }
+.imp-dropzone-badge span { font-size:10.5px;font-weight:700;background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:100px; }
+/* Selected file */
+.imp-selected-file { display:none;align-items:center;gap:10px;padding:10px 14px;background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;margin-top:12px; }
+.imp-selected-file.show { display:flex; }
+.imp-sf-name { font-size:13px;font-weight:700;color:#166534;flex:1; }
+.imp-sf-clear { background:none;border:none;cursor:pointer;color:#16a34a;font-size:16px;padding:0 2px; }
+/* Paste textarea */
+.imp-paste-zone { width:100%;min-height:180px;border:1.5px solid var(--border2);border-radius:12px;background:#0f172a;color:#e2e8f0;font-family:'DM Mono',monospace;font-size:12px;line-height:1.65;padding:14px 16px;resize:vertical;outline:none;transition:border-color .18s;box-sizing:border-box; }
+.imp-paste-zone:focus { border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.1); }
+.imp-paste-zone::placeholder { color:#475569; }
+.imp-paste-actions { display:flex;gap:8px;margin-top:8px;justify-content:flex-end;align-items:center; }
+.imp-paste-hint { font-size:11px;color:var(--muted);margin-right:auto; }
+/* Validation message */
+.imp-val-msg { display:none;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:8px 12px;border-radius:8px;margin-top:10px; }
+.imp-val-msg.show { display:flex; }
+.imp-val-ok { background:#f0fdf4;color:#166534;border:1px solid #86efac; }
+.imp-val-err { background:#fff5f5;color:#dc2626;border:1px solid #fca5a5; }
+/* Format docs */
+.imp-fmt-section { margin-top:16px;border-top:1px solid var(--border2);padding-top:12px; }
+.imp-fmt-toggle { display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;padding:4px 0;border:none;background:none;font-family:'Outfit',sans-serif;width:100%; }
+.imp-fmt-toggle:hover { color:var(--blue); }
+.imp-fmt-content { display:none;margin-top:10px; }
+.imp-fmt-content.open { display:block; }
+.imp-fmt-tabs { display:flex;gap:0;border-bottom:2px solid var(--border2);margin-bottom:10px; }
+.imp-fmt-tab { padding:6px 14px;font-size:12px;font-weight:700;color:var(--muted);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;font-family:'Outfit',sans-serif; }
+.imp-fmt-tab.active { color:var(--blue);border-bottom-color:var(--blue); }
+.imp-fmt-code { background:#0f172a;color:#e2e8f0;font-family:'DM Mono',monospace;font-size:11px;line-height:1.7;padding:12px 14px;border-radius:10px;overflow-x:auto;white-space:pre;margin:0; }
+.imp-fmt-actions { display:flex;gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap; }
+.imp-fmt-btn { font-size:11px;font-weight:700;padding:5px 11px;border-radius:7px;border:1.5px solid var(--border2);background:#fff;color:var(--muted);cursor:pointer;transition:all .15s;font-family:'Outfit',sans-serif;display:inline-flex;align-items:center;gap:4px; }
+.imp-fmt-btn:hover { border-color:var(--blue);color:var(--blue); }
+.imp-tpl-btn:hover { border-color:#10b981;color:#059669; }
+
 /* Export format picker */
 .exp-fmt-modal { position:fixed;inset:0;z-index:710;background:rgba(10,22,40,.55);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .18s; }
 .exp-fmt-modal.open { opacity:1;pointer-events:all; }
@@ -1199,7 +1256,6 @@ td.td-gauge { padding:5px 10px 5px 8px; }
       <button class="btn btn-export" onclick="pmExportAll()" title="Export all saved parameter configurations">📤 Export All</button>
       <div style="font-size:11px;color:var(--muted2);align-self:center;" id="pmSaveCount"></div>
     </div>
-    <input type="file" id="pmFileInput" accept=".json,.csv,.txt" style="display:none" aria-hidden="true" onchange="pmHandleImport(this)">
   </div>
 </div>
 
@@ -1217,6 +1273,98 @@ td.td-gauge { padding:5px 10px 5px 8px; }
     </div>
   </div>
 </div>
+<!-- ════════════════════════════════════════
+     IMPORT INPUT MODAL (tabbed: file + paste)
+════════════════════════════════════════ -->
+<div class="imp-input-overlay" id="impInputOverlay">
+  <div class="imp-input-box">
+    <div class="imp-input-head">
+      <span style="font-size:22px;">📥</span>
+      <div class="imp-input-head-title">Import Parameters</div>
+      <button class="pm-head-close" onclick="closeImpInputModal()" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.8);">✕</button>
+    </div>
+    <div class="imp-input-body">
+      <!-- Tabs -->
+      <div class="imp-tab-row">
+        <button class="imp-tab-btn active" id="impTabFile" onclick="switchImpTab('file')">📁 Upload File</button>
+        <button class="imp-tab-btn" id="impTabPaste" onclick="switchImpTab('paste')">✏️ Paste Text</button>
+      </div>
+
+      <!-- File Upload Panel -->
+      <div id="impFilePanel">
+        <div class="imp-dropzone" id="impDropZone">
+          <input type="file" id="impFileInput" accept=".json,.csv,.txt">
+          <div class="imp-dropzone-icon">📁</div>
+          <div class="imp-dropzone-title">Drag &amp; drop your file here</div>
+          <div class="imp-dropzone-sub">or click to browse</div>
+          <div class="imp-dropzone-badge"><span>JSON</span><span>CSV</span><span>TXT</span></div>
+        </div>
+        <div class="imp-selected-file" id="impSelectedFile">
+          <span style="font-size:20px;">📄</span>
+          <span class="imp-sf-name" id="impSelectedFileName"></span>
+          <button class="imp-sf-clear" onclick="_impClearFile()" title="Remove file">✕</button>
+        </div>
+      </div>
+
+      <!-- Paste Text Panel -->
+      <div id="impPastePanel" style="display:none">
+        <textarea class="imp-paste-zone" id="impTextArea" spellcheck="false" placeholder="Paste JSON or CSV data here…&#10;&#10;JSON: [{ &quot;testName&quot;: &quot;Blood Glucose&quot;, &quot;testId&quot;: &quot;T001&quot;, &quot;parameters&quot;: [{...}] }]&#10;CSV:  Test Name,Test ID,Parameter Name,Unit,Ref Range Low,Ref Range High,Critical Low,Critical High"></textarea>
+        <div class="imp-paste-actions">
+          <span class="imp-paste-hint">Auto-detects JSON or CSV format</span>
+          <button class="btn btn-sm" style="background:#f1f5f9;color:var(--muted);border:1.5px solid var(--border);" onclick="document.getElementById('impTextArea').value='';_impResetVal()">✕ Clear</button>
+          <button class="btn btn-import btn-sm" onclick="_impParsePaste()">▶ Preview</button>
+        </div>
+        <div class="imp-val-msg" id="impValMsg"></div>
+      </div>
+
+      <!-- Format Documentation & Templates -->
+      <div class="imp-fmt-section">
+        <button class="imp-fmt-toggle" onclick="_impToggleFmtDocs()">
+          <span id="impFmtArrow">▶</span> Expected Format &amp; Templates
+        </button>
+        <div class="imp-fmt-content" id="impFmtContent">
+          <div class="imp-fmt-tabs">
+            <button class="imp-fmt-tab active" id="impFmtTabJSON" onclick="_impSwitchFmtTab('json',this)">📄 JSON</button>
+            <button class="imp-fmt-tab" id="impFmtTabCSV" onclick="_impSwitchFmtTab('csv',this)">📊 CSV</button>
+          </div>
+          <div id="impFmtJSONPanel">
+            <pre class="imp-fmt-code">[
+  {
+    "testName": "Blood Glucose",
+    "testId": "T001",
+    "parameters": [
+      {
+        "name": "Glucose",
+        "unit": "mg/dL",
+        "refRangeLo": 70,
+        "refRangeHi": 100,
+        "criticLo": 50,
+        "criticHi": 400
+      }
+    ]
+  }
+]</pre>
+          </div>
+          <div id="impFmtCSVPanel" style="display:none">
+            <pre class="imp-fmt-code">Test Name,Test ID,Parameter Name,Unit,Ref Range Low,Ref Range High,Critical Low,Critical High
+Blood Glucose,T001,Glucose,mg/dL,70,100,50,400
+Complete Blood Count,T002,WBC,10^9/L,4.5,11.0,2.0,20.0</pre>
+          </div>
+          <div class="imp-fmt-actions">
+            <button class="imp-fmt-btn" onclick="_impCopyFmtSample()">📋 Copy Sample</button>
+            <button class="imp-fmt-btn imp-tpl-btn" onclick="_pmDownloadTemplate('json')">⬇️ JSON Template</button>
+            <button class="imp-fmt-btn imp-tpl-btn" onclick="_pmDownloadTemplate('csv')">⬇️ CSV Template</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="imp-input-foot">
+      <button class="btn btn-back btn-sm" onclick="closeImpInputModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <div class="imp-overlay" id="impOverlay">
   <div class="imp-box">
     <div class="imp-head">
@@ -1805,37 +1953,158 @@ function _pmDoExport(fmt) {
 let _pmImportPending = null; // holds parsed data until user confirms
 
 function pmImport() {
-  const fi = document.getElementById('pmFileInput');
-  fi.value = '';
-  fi.click();
+  _impReset();
+  document.getElementById('impInputOverlay').classList.add('open');
 }
 
-function pmHandleImport(input) {
-  const file = input.files[0];
-  if (!file) return;
-  // Determine format from MIME type first, then extension
-  const mime = file.type.toLowerCase();
+/* ── Import Input Modal helpers ── */
+function closeImpInputModal() {
+  document.getElementById('impInputOverlay').classList.remove('open');
+}
+
+function switchImpTab(tab) {
+  document.getElementById('impTabFile').classList.toggle('active', tab === 'file');
+  document.getElementById('impTabPaste').classList.toggle('active', tab === 'paste');
+  document.getElementById('impFilePanel').style.display = tab === 'file' ? '' : 'none';
+  document.getElementById('impPastePanel').style.display = tab === 'paste' ? '' : 'none';
+}
+
+function _impReset() {
+  switchImpTab('file');
+  const fi = document.getElementById('impFileInput');
+  if (fi) fi.value = '';
+  document.getElementById('impSelectedFile').classList.remove('show');
+  document.getElementById('impDropZone').style.display = '';
+  const ta = document.getElementById('impTextArea');
+  if (ta) ta.value = '';
+  _impResetVal();
+  document.getElementById('impFmtContent').classList.remove('open');
+  document.getElementById('impFmtArrow').textContent = '▶';
+}
+
+function _impResetVal() {
+  const msg = document.getElementById('impValMsg');
+  msg.className = 'imp-val-msg';
+  msg.textContent = '';
+}
+
+function _impClearFile() {
+  document.getElementById('impFileInput').value = '';
+  document.getElementById('impSelectedFile').classList.remove('show');
+  document.getElementById('impDropZone').style.display = '';
+}
+
+function _impToggleFmtDocs() {
+  const c = document.getElementById('impFmtContent');
+  const open = c.classList.toggle('open');
+  document.getElementById('impFmtArrow').textContent = open ? '▼' : '▶';
+}
+
+function _impSwitchFmtTab(fmt, btn) {
+  document.querySelectorAll('.imp-fmt-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('impFmtJSONPanel').style.display = fmt === 'json' ? '' : 'none';
+  document.getElementById('impFmtCSVPanel').style.display = fmt === 'csv' ? '' : 'none';
+}
+
+function _impCopyFmtSample() {
+  const jsonVisible = document.getElementById('impFmtJSONPanel').style.display !== 'none';
+  const code = jsonVisible
+    ? document.querySelector('#impFmtJSONPanel .imp-fmt-code').textContent
+    : document.querySelector('#impFmtCSVPanel .imp-fmt-code').textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    showToast('📋 Sample copied to clipboard', 'info');
+  }).catch(() => {
+    showToast('Could not copy — please select and copy manually', 'warning');
+  });
+}
+
+function _pmDownloadTemplate(fmt) {
+  if (fmt === 'json') {
+    const tmpl = JSON.stringify([{
+      testName: 'Blood Glucose',
+      testId: 'T001',
+      parameters: [{ name: 'Glucose', unit: 'mg/dL', refRangeLo: 70, refRangeHi: 100, criticLo: 50, criticHi: 400 }]
+    }], null, 2);
+    _pmDownload('medicore_parameters_template.json', tmpl, 'application/json');
+  } else {
+    const csv = 'Test Name,Test ID,Parameter Name,Unit,Ref Range Low,Ref Range High,Critical Low,Critical High\nBlood Glucose,T001,Glucose,mg/dL,70,100,50,400\nComplete Blood Count,T002,WBC,10^9/L,4.5,11.0,2.0,20.0';
+    _pmDownload('medicore_parameters_template.csv', csv, 'text/csv');
+  }
+  showToast(`⬇️ ${fmt.toUpperCase()} template downloaded`, 'info');
+}
+
+function _impDetectFormat(text) {
+  const t = text.trim();
+  if (t.startsWith('[') || t.startsWith('{')) return 'json';
+  return 'csv';
+}
+
+function _impParsePaste() {
+  const text = document.getElementById('impTextArea').value.trim();
+  if (!text) { showToast('⚠️ Please paste some data first', 'warning'); return; }
+  const fmt = _impDetectFormat(text);
+  const msg = document.getElementById('impValMsg');
+  try {
+    const parsed = fmt === 'json' ? _pmParseJSON(text) : _pmParseCSV(text);
+    if (!parsed.length) throw new Error('No valid parameter data found');
+    const totalParams = parsed.reduce((s, t) => s + t.params.length, 0);
+    msg.className = 'imp-val-msg show imp-val-ok';
+    msg.innerHTML = `✅ Valid ${fmt.toUpperCase()} — ${parsed.length} test(s), ${totalParams} parameter(s) ready to import`;
+    _pmImportPending = parsed;
+    setTimeout(() => { closeImpInputModal(); pmShowImportPreview(parsed); }, 600);
+  } catch (err) {
+    msg.className = 'imp-val-msg show imp-val-err';
+    msg.innerHTML = `❌ ${err.message || 'Invalid format'}`;
+  }
+}
+
+function _impProcessFile(file) {
   const ext = file.name.includes('.') ? file.name.split('.').pop().toLowerCase() : '';
+  const mime = file.type.toLowerCase();
   const isJSON = mime === 'application/json' || ext === 'json';
   const isCSV = mime === 'text/csv' || mime === 'text/plain' || ext === 'csv' || ext === 'txt';
   if (!isJSON && !isCSV) {
     showToast('❌ Unsupported file type. Use .json, .csv, or .txt', 'error');
     return;
   }
+  document.getElementById('impSelectedFileName').textContent = file.name;
+  document.getElementById('impSelectedFile').classList.add('show');
+  document.getElementById('impDropZone').style.display = 'none';
   const reader = new FileReader();
-  reader.onerror = () => showToast('❌ Could not read file', 'error');
+  reader.onerror = () => { showToast('❌ Could not read file', 'error'); _impClearFile(); };
   reader.onload = e => {
     try {
       const parsed = isJSON ? _pmParseJSON(e.target.result) : _pmParseCSV(e.target.result);
-      if (!parsed.length) { showToast('⚠️ No valid parameter data found in file', 'warning'); return; }
+      if (!parsed.length) { showToast('⚠️ No valid parameter data found in file', 'warning'); _impClearFile(); return; }
       _pmImportPending = parsed;
+      closeImpInputModal();
       pmShowImportPreview(parsed);
     } catch (err) {
       showToast('❌ ' + (err.message || 'Invalid file content'), 'error');
+      _impClearFile();
     }
   };
   reader.readAsText(file);
 }
+
+function _impInitDropZone() {
+  const dz = document.getElementById('impDropZone');
+  const fi = document.getElementById('impFileInput');
+  if (!dz || !fi) return;
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+  dz.addEventListener('drop', e => {
+    e.preventDefault(); dz.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (file) _impProcessFile(file);
+  });
+  fi.addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (file) _impProcessFile(file);
+  });
+}
+_impInitDropZone();
 
 function _pmParseJSON(text) {
   const raw = JSON.parse(text);
@@ -1847,12 +2116,17 @@ function _pmParseJSON(text) {
     const testName = (item.testName || item.name || '').trim();
     const dept = (item.department || item.dept || '').trim().toUpperCase();
     const params = (item.parameters || item.params || []).map(p => {
-      const lo = p.lo != null ? parseFloat(p.lo) : (p.low != null ? parseFloat(p.low) : null);
-      const hi = p.hi != null ? parseFloat(p.hi) : (p.high != null ? parseFloat(p.high) : null);
+      // Support refRangeLo/refRangeHi (new format) and lo/low/hi/high (legacy)
+      const lo = p.refRangeLo != null ? parseFloat(p.refRangeLo)
+        : (p.lo != null ? parseFloat(p.lo) : (p.low != null ? parseFloat(p.low) : null));
+      const hi = p.refRangeHi != null ? parseFloat(p.refRangeHi)
+        : (p.hi != null ? parseFloat(p.hi) : (p.high != null ? parseFloat(p.high) : null));
+      const refRange = (p.referenceRange || p.refRange || p.reference_range || '').trim()
+        || ((lo != null && hi != null) ? `${lo}–${hi}` : '');
       return {
         name: (p.name || p.paramName || '').trim(),
         unit: (p.unit || p.units || '').trim(),
-        refRange: (p.referenceRange || p.refRange || p.reference_range || '').trim(),
+        refRange,
         lo: (lo != null && !isNaN(lo)) ? lo : null,
         hi: (hi != null && !isNaN(hi)) ? hi : null,
       };
@@ -1872,25 +2146,43 @@ function _pmParseCSV(text) {
   // Detect header row
   const firstLower = lines[0].toLowerCase();
   const hasHeader = firstLower.includes('test name') || firstLower.includes('testname') || firstLower.includes('parameter name');
+  // Detect new format (has test id / ref range columns) vs legacy (has department)
+  const isNewFmt = firstLower.includes('test id') || firstLower.includes('testid') || firstLower.includes('ref range') || firstLower.includes('critical');
   const dataLines = hasHeader ? lines.slice(1) : lines;
   const map = {};
   dataLines.forEach(line => {
     const cols = _csvSplitLine(line);
     if (cols.length < 3) return;
     const testName = (cols[0] || '').trim();
-    const dept = (cols[1] || '').trim().toUpperCase();
-    const paramName = (cols[2] || '').trim();
-    const unit = (cols[3] || '').trim();
-    const refRange = (cols[4] || '').trim();
-    const loRaw = (cols[5] != null && cols[5].trim() !== '') ? parseFloat(cols[5]) : null;
-    const hiRaw = (cols[6] != null && cols[6].trim() !== '') ? parseFloat(cols[6]) : null;
+    let dept = '', testId = null, paramName, unit, refRange, lo, hi;
+    if (isNewFmt) {
+      // New format: testName, testId, paramName, unit, refRangeLo, refRangeHi, criticLo, criticHi
+      testId = (cols[1] || '').trim() || null;
+      paramName = (cols[2] || '').trim();
+      unit = (cols[3] || '').trim();
+      const loRaw = (cols[4] != null && cols[4].trim() !== '') ? parseFloat(cols[4]) : null;
+      const hiRaw = (cols[5] != null && cols[5].trim() !== '') ? parseFloat(cols[5]) : null;
+      lo = (loRaw != null && !isNaN(loRaw)) ? loRaw : null;
+      hi = (hiRaw != null && !isNaN(hiRaw)) ? hiRaw : null;
+      refRange = (lo != null && hi != null) ? `${lo}–${hi}` : '';
+    } else {
+      // Legacy format: testName, dept, paramName, unit, refRange, lo, hi
+      dept = (cols[1] || '').trim().toUpperCase();
+      paramName = (cols[2] || '').trim();
+      unit = (cols[3] || '').trim();
+      refRange = (cols[4] || '').trim();
+      const loRaw = (cols[5] != null && cols[5].trim() !== '') ? parseFloat(cols[5]) : null;
+      const hiRaw = (cols[6] != null && cols[6].trim() !== '') ? parseFloat(cols[6]) : null;
+      lo = (loRaw != null && !isNaN(loRaw)) ? loRaw : null;
+      hi = (hiRaw != null && !isNaN(hiRaw)) ? hiRaw : null;
+    }
     if (!testName || !paramName) return;
-    if (!map[testName]) map[testName] = { dept, params: [] };
-    map[testName].params.push({ name: paramName, unit, refRange, lo: (loRaw != null && !isNaN(loRaw)) ? loRaw : null, hi: (hiRaw != null && !isNaN(hiRaw)) ? hiRaw : null });
+    if (!map[testName]) map[testName] = { dept, testId, params: [] };
+    map[testName].params.push({ name: paramName, unit, refRange, lo, hi });
   });
   return Object.entries(map).map(([testName, v]) => {
     const catalogEntry = _pmFindCatalogEntry(testName);
-    const testId = catalogEntry ? catalogEntry.id : _pmGenerateImportId(testName);
+    const testId = v.testId || (catalogEntry ? catalogEntry.id : _pmGenerateImportId(testName));
     return { testId, testName: catalogEntry ? catalogEntry.name : testName, dept: v.dept || (catalogEntry ? catalogEntry.dept : 'IMPORTED'), params: v.params };
   });
 }
