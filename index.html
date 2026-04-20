@@ -1098,11 +1098,45 @@
       transition: all 0.2s;
     }
 
+    .feature-card-priority {
+      border-color: rgba(37,99,235,0.24);
+      background: linear-gradient(180deg, rgba(37,99,235,0.04) 0%, rgba(255,255,255,1) 36%);
+    }
+
     .feature-card:hover { border-color: rgba(37,99,235,0.3); box-shadow: 0 8px 24px rgba(0,0,0,0.08); transform: translateY(-2px); }
+
+    .fc-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #1d4ed8;
+      background: rgba(37,99,235,0.1);
+      border: 1px solid rgba(37,99,235,0.24);
+      border-radius: 999px;
+      padding: 4px 10px;
+      margin-bottom: 12px;
+    }
 
     .fc-icon { font-size: 24px; margin-bottom: 14px; }
     .fc-title { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
     .fc-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+    @media (min-width: 901px) {
+      .feature-card-priority {
+        grid-column: span 2;
+        padding: 26px 28px;
+      }
+      .feature-card-priority .fc-title {
+        font-size: 18px;
+      }
+      .feature-card-priority .fc-desc {
+        font-size: 14px;
+      }
+    }
 
     /* ── FOOTER ── */
     .footer {
@@ -1604,9 +1638,18 @@
       border-color: #21262d;
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
+    body.dark-mode .feature-card-priority {
+      border-color: rgba(56,139,253,0.4);
+      background: linear-gradient(180deg, rgba(56,139,253,0.12) 0%, #161b22 36%);
+    }
     body.dark-mode .feature-card:hover {
       border-color: rgba(37,99,235,0.4);
       box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    body.dark-mode .fc-kicker {
+      color: #93c5fd;
+      background: rgba(56,139,253,0.16);
+      border-color: rgba(56,139,253,0.35);
     }
     body.dark-mode .fc-title { color: #e6edf3; }
     body.dark-mode .fc-desc { color: #8b949e; }
@@ -2418,7 +2461,8 @@
         <h2>Everything You Need</h2>
       </div>
       <div class="features-grid">
-        <div class="feature-card fade-in">
+        <div class="feature-card feature-card-priority fade-in">
+          <div class="fc-kicker">Core Feature</div>
           <div class="fc-icon">🔍</div>
           <div class="fc-title">Duplicate Detection</div>
           <div class="fc-desc">Automatically flags duplicate patient entries by mobile number before saving, preventing data redundancy.</div>
@@ -2428,7 +2472,8 @@
           <div class="fc-title">Persistent Storage</div>
           <div class="fc-desc">All patient data and referrals are persisted in localStorage — no database setup needed, works offline.</div>
         </div>
-        <div class="feature-card fade-in">
+        <div class="feature-card feature-card-priority fade-in">
+          <div class="fc-kicker">Core Feature</div>
           <div class="fc-icon">📦</div>
           <div class="fc-title">Test Packages</div>
           <div class="fc-desc">Bundle multiple tests into packages with custom pricing, showing savings over individual test prices.</div>
