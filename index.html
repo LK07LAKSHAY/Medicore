@@ -84,13 +84,17 @@
     .logo-icon {
       width: 40px;
       height: 40px;
-      background: linear-gradient(135deg, #2563eb, #06b6d4);
-      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
-      box-shadow: 0 4px 16px rgba(37,99,235,0.4);
+      flex-shrink: 0;
+    }
+
+    .logo-icon img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      display: block;
     }
 
     .logo-text {
@@ -790,7 +794,7 @@
       position: relative;
       z-index: 1;
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(6, 1fr);
       gap: 0;
       align-items: start;
     }
@@ -800,15 +804,16 @@
       content: '';
       position: absolute;
       top: 24px;
-      left: calc(10% + 16px);
-      right: calc(10% + 16px);
+      left: calc(8% + 16px);
+      right: calc(8% + 16px);
       height: 2px;
       background: linear-gradient(90deg,
         rgba(96,165,250,0.6),
         rgba(34,211,238,0.6),
         rgba(45,212,191,0.6),
         rgba(251,191,36,0.6),
-        rgba(167,139,250,0.6)
+        rgba(167,139,250,0.6),
+        rgba(129,140,248,0.6)
       );
       z-index: 0;
     }
@@ -1206,13 +1211,14 @@
     @media (max-width: 1100px) {
       .hero { grid-template-columns: 1fr; gap: 32px; }
       .hero-bento { display: none; }
-      .modules-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .modules-grid { grid-template-columns: repeat(3, 1fr); grid-template-rows: auto; }
       .module-card-anchor { grid-row: auto; }
     }
 
     @media (max-width: 900px) {
-      .modules-grid { grid-template-columns: 1fr; }
+      .modules-grid { grid-template-columns: 1fr 1fr; }
       .module-card-anchor { grid-row: auto; }
+      .modules-grid .module-card:last-child { grid-column: 1 / -1; max-width: 50%; }
       .workflow-steps { grid-template-columns: repeat(3, 1fr); gap: 24px; }
       .workflow-steps::before { display: none; }
       .features-grid { grid-template-columns: 1fr; }
@@ -1232,6 +1238,7 @@
       .stat-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
       .dp-kpi-grid { grid-template-columns: 1fr 1fr; }
       .workflow-steps { grid-template-columns: 1fr 1fr; }
+      .modules-grid .module-card:last-child { grid-column: auto; max-width: 100%; }
       .dp-header { flex-direction: column; align-items: flex-start; gap: 10px; }
       .quick-strip { flex-direction: column; align-items: flex-start; }
     }
@@ -1583,17 +1590,43 @@
       box-shadow: 0 4px 12px rgba(37,99,235,0.2);
     }
 
+    /* Accent quick-pills (light mode) */
+    .quick-pill-purple { border-color: rgba(124,58,237,0.25); color: #7c3aed; }
+    .quick-pill-indigo  { border-color: rgba(99,102,241,0.25); color: #6366f1; }
+
     /* Module cards dark mode */
     body.dark-mode .mc-front {
       background: #161b22;
-      border-color: #21262d;
+      border-color: #21262d !important;
     }
     body.dark-mode .module-card:hover .mc-front {
       background: #1c2128;
     }
     body.dark-mode .mc-reveal {
       background: #0d1117;
-      border-color: #21262d;
+      border-color: #21262d !important;
+    }
+
+    /* Fix 1 — MAIN5 indigo quick-pill dark mode override */
+    body.dark-mode .quick-pill-indigo {
+      border-color: #21262d !important;
+      color: #e6edf3 !important;
+    }
+    body.dark-mode .quick-pill-indigo:hover {
+      border-color: #818cf8 !important;
+      color: #818cf8 !important;
+    }
+    /* Fix 1 — MAIN5 workflow step 6 link dark mode */
+    body.dark-mode .wf-link-indigo {
+      color: rgba(255,255,255,0.5) !important;
+    }
+    body.dark-mode .wf-link-indigo:hover {
+      color: white !important;
+    }
+    /* Fix 1 — workflow step 6 num badge dark mode */
+    body.dark-mode .wf-num-indigo {
+      background: linear-gradient(135deg,#4338ca,#6366f1) !important;
+      box-shadow: 0 4px 12px rgba(99,102,241,0.25) !important;
     }
     body.dark-mode .mc-stat + .mc-stat { border-left-color: #21262d; }
     body.dark-mode .mc-stat-label { color: #8b949e; }
@@ -1895,7 +1928,9 @@
   <!-- NAVBAR -->
   <nav class="navbar">
     <a href="#" class="nav-logo">
-      <div class="logo-icon">⚕️</div>
+      <div class="logo-icon">
+        <img id="navLogo" src="White.png" alt="MediCore Logo" />
+      </div>
       <span class="logo-text">Medi<span>Core</span></span>
     </a>
     <div class="nav-links">
@@ -1950,17 +1985,18 @@
   <!-- HERO -->
   <section class="hero">
     <div class="hero-left">
-      <div class="hero-badge">Clinic Management System v2.0</div>
+      <div class="hero-badge">Clinic Management System · 5 Modules</div>
       <h1>
         Smarter Care,<br>
         <span class="accent">Simpler Ops</span>
       </h1>
-      <p>A unified platform connecting patient registration, lab diagnostics, booking management, and result entry — built for speed and accuracy.</p>
+      <p>A unified platform connecting patient registration, lab diagnostics, booking management, result entry, and report generation — built for speed and accuracy.</p>
       <div class="hero-actions">
         <a href="MAIN1.html" class="btn-hero-primary">🧑‍⚕️ Register Patient</a>
         <a href="MAIN2.html" class="btn-hero-secondary">🔬 Order Tests</a>
         <a href="MAIN3.html" class="btn-hero-secondary">📋 Bookings</a>
         <a href="MAIN4.html" class="btn-hero-secondary" style="border-color:rgba(167,139,250,0.4);color:#7c3aed;">🧫 Results</a>
+        <a href="MAIN5.html" class="btn-hero-secondary" style="border-color:rgba(99,102,241,0.4);color:#6366f1;">🖨️ Reports</a>
       </div>
     </div>
 
@@ -2026,8 +2062,8 @@
     <div id="modules">
       <div class="section-heading">
         <div class="eyebrow">Core Modules</div>
-        <h2>Four Modules, One Workflow</h2>
-        <p>Everything you need to manage patients, lab diagnostics, bookings, and test results in one connected place.</p>
+        <h2>Five Modules, One Workflow</h2>
+        <p>Everything you need to manage patients, lab diagnostics, bookings, result entry, and report generation in one connected place.</p>
       </div>
 
       <div class="modules-grid">
@@ -2218,6 +2254,52 @@
           </div>
         </a>
 
+        <!-- Report Print / Generation -->
+        <a href="MAIN5.html" class="module-card fade-in">
+          <div class="mc-front" style="border-color:rgba(99,102,241,0.2);">
+            <div class="mc-bar" style="background:linear-gradient(90deg,#6366f1,#818cf8);height:4px;transition:height 0.2s;"></div>
+            <div class="mc-body">
+              <div class="mc-icon" style="background:linear-gradient(135deg,rgba(99,102,241,0.1),rgba(129,140,248,0.18));width:52px;height:52px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:16px;">🖨️</div>
+              <div class="mc-title">Report Generation</div>
+              <div class="mc-desc">
+                Generate and print patient lab reports with complete result sets, reference ranges, H/L flags, and doctor sign-off. Branded printable output.
+              </div>
+              <div class="mc-features">
+                <span class="mc-tag" style="background:rgba(99,102,241,0.08);color:#6366f1;">Print-Ready</span>
+                <span class="mc-tag" style="background:rgba(99,102,241,0.08);color:#6366f1;">PDF Export</span>
+                <span class="mc-tag" style="background:rgba(99,102,241,0.08);color:#6366f1;">Branded</span>
+              </div>
+            </div>
+            <div class="mc-footer" style="background:rgba(99,102,241,0.04);">
+              <span class="mc-footer-label">Open Report Module →</span>
+              <div class="mc-arrow" style="background:rgba(99,102,241,0.1);color:#6366f1;">→</div>
+            </div>
+          </div>
+          <div class="mc-reveal" style="border-color:rgba(99,102,241,0.2);">
+            <div class="mc-reveal-inner">
+              <div class="mc-stat">
+                <div class="mc-stat-icon">📄</div>
+                <div class="mc-stat-label">Reports</div>
+                <div class="mc-stat-val" id="mcReports" style="color:#6366f1;">—</div>
+              </div>
+              <div class="mc-stat">
+                <div class="mc-stat-icon">🏷️</div>
+                <div class="mc-stat-label">Flags</div>
+                <div class="mc-stat-val" style="color:#6366f1;">H/L/C</div>
+              </div>
+              <div class="mc-stat">
+                <div class="mc-stat-icon">🖊️</div>
+                <div class="mc-stat-label">Sign-off</div>
+                <div class="mc-stat-val" style="color:#6366f1;">Doctor</div>
+              </div>
+            </div>
+            <div class="mc-reveal-status">
+              <div class="mc-reveal-status-dot" style="background:#818cf8;box-shadow:0 0 0 3px rgba(129,140,248,0.25);animation:pulse 2s infinite;"></div>
+              <span class="mc-reveal-status-text" style="color:#6366f1;">Module Active</span>
+            </div>
+          </div>
+        </a>
+
       </div><!-- /modules-grid -->
 
       <!-- Quick-launch strip — lives inside the modules section -->
@@ -2226,7 +2308,8 @@
         <a href="MAIN1.html" class="quick-pill">➕ New Patient</a>
         <a href="MAIN2.html" class="quick-pill">🧪 Order Tests</a>
         <a href="MAIN3.html" class="quick-pill">📋 Bookings</a>
-        <a href="MAIN4.html" class="quick-pill" style="border-color:rgba(124,58,237,0.25);color:#7c3aed;">🧫 Enter Results</a>
+        <a href="MAIN4.html" class="quick-pill quick-pill-purple">🧫 Enter Results</a>
+        <a href="MAIN5.html" class="quick-pill quick-pill-indigo">🖨️ Print Report</a>
         <a href="MAIN2.html" class="quick-pill">📦 Packages</a>
         <button class="quick-pill" onclick="openPatientsModal()" style="border:none;">👥 Patient List</button>
       </div>
@@ -2237,7 +2320,7 @@
     <div id="workflow" class="workflow-section">
       <div class="workflow-heading">
         <h2>Patient Journey</h2>
-        <p>From first visit to results delivered</p>
+        <p>From first visit to report delivered</p>
       </div>
       <div class="workflow-steps">
         <div class="wf-step">
@@ -2269,6 +2352,12 @@
           <div class="wf-title">Enter Results</div>
           <div class="wf-desc">Values, H/L flags, remarks, mark complete</div>
           <a href="MAIN4.html" class="wf-link">🧫 Open →</a>
+        </div>
+        <div class="wf-step">
+          <div class="wf-num wf-num-indigo" style="background:linear-gradient(135deg,#6366f1,#818cf8);color:white;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;margin:0 auto 12px;box-shadow:0 4px 12px rgba(99,102,241,0.35);">6</div>
+          <div class="wf-title">Print Report</div>
+          <div class="wf-desc">Generate branded PDF, doctor sign-off, deliver</div>
+          <a href="MAIN5.html" class="wf-link wf-link-indigo">🖨️ Open →</a>
         </div>
       </div>
     </div>
@@ -2502,7 +2591,7 @@
   <footer class="footer">
     <div class="footer-top">
       <div class="footer-logo">
-        <span>⚕️</span>
+        <img id="footerLogo" src="White.png" alt="MediCore Logo" style="width:28px;height:28px;object-fit:contain;" />
         <span>MediCore CMS</span>
       </div>
       <div class="footer-links">
@@ -2563,18 +2652,30 @@
     // ─── DARK MODE TOGGLE ───
     const toggleInput = document.getElementById('toggle');
     const savedTheme = localStorage.getItem('medicore-theme');
-    if (savedTheme === 'dark') {
-      document.body.classList.add('dark-mode');
-      toggleInput.checked = true;
-    }
-    toggleInput.addEventListener('change', () => {
-      if (toggleInput.checked) {
+
+    function applyTheme(dark) {
+      const navLogo    = document.getElementById('navLogo');
+      const footerLogo = document.getElementById('footerLogo');
+      if (dark) {
         document.body.classList.add('dark-mode');
-        localStorage.setItem('medicore-theme', 'dark');
+        if (navLogo)    navLogo.src    = 'Black.png';
+        if (footerLogo) footerLogo.src = 'Black.png';
       } else {
         document.body.classList.remove('dark-mode');
-        localStorage.setItem('medicore-theme', 'light');
+        if (navLogo)    navLogo.src    = 'White.png';
+        if (footerLogo) footerLogo.src = 'White.png';
       }
+    }
+
+    if (savedTheme === 'dark') {
+      toggleInput.checked = true;
+      applyTheme(true);
+    }
+
+    toggleInput.addEventListener('change', () => {
+      const dark = toggleInput.checked;
+      applyTheme(dark);
+      localStorage.setItem('medicore-theme', dark ? 'dark' : 'light');
     });
 
     // ─── PATIENTS MODAL ───
@@ -2722,6 +2823,7 @@
       if (document.getElementById('mcCatalog')) document.getElementById('mcCatalog').textContent = catalogCount || '—';
       if (document.getElementById('mcPackages')) document.getElementById('mcPackages').textContent = packages.length;
       if (document.getElementById('mcBookings')) document.getElementById('mcBookings').textContent = todayBookings.length;
+      if (document.getElementById('mcReports')) document.getElementById('mcReports').textContent = doneBookings.length;
 
       // Patient delta
       document.getElementById('dpPatientDelta').textContent = patients.length
@@ -2747,11 +2849,13 @@
     }
 
     function renderBackupMeta(patients, referrals, packages, bookings) {
+      const results = JSON.parse(localStorage.getItem('labResults') || '[]');
       const keys = [
         { label: 'Patients',  val: patients.length,  color: '#2563eb' },
         { label: 'Referrals', val: referrals.length, color: '#0891b2' },
         { label: 'Packages',  val: packages.length,  color: '#d97706' },
         { label: 'Bookings',  val: bookings.length,  color: '#16a34a' },
+        { label: 'Results',   val: results.length,   color: '#6366f1' },
       ];
       const lastExport = localStorage.getItem('lastExportAt');
       const meta = document.getElementById('backupMeta');
@@ -2765,6 +2869,32 @@
           <div class="bm-val" style="color:var(--muted);font-size:12px;">${lastExport || 'Never'}</div>
         </div>`;
     }
+
+    // ─── MODULE HEALTH CHECK (Fix 4) ───
+    async function checkModuleHealth() {
+      const modules = ['MAIN1.html','MAIN2.html','MAIN3.html','MAIN4.html','MAIN5.html'];
+      const statusEl = document.querySelector('.hb-status-row span');
+      const dotEl    = document.querySelector('.hb-dot');
+      if (!statusEl || !dotEl) return;
+      try {
+        const results = await Promise.all(
+          modules.map(m => fetch(m, { method: 'HEAD', cache: 'no-store' }).then(r => r.ok).catch(() => false))
+        );
+        const missing = modules.filter((_, i) => !results[i]);
+        if (missing.length === 0) {
+          statusEl.textContent = 'All 5 modules operational';
+          dotEl.style.background = '#22c55e';
+          dotEl.style.boxShadow = '0 0 0 3px rgba(34,197,94,0.25)';
+        } else {
+          statusEl.textContent = `${missing.length} module${missing.length > 1 ? 's' : ''} unavailable`;
+          dotEl.style.background = '#f59e0b';
+          dotEl.style.boxShadow = '0 0 0 3px rgba(245,158,11,0.25)';
+        }
+      } catch {
+        // file:// protocol or network blocked — skip silently
+      }
+    }
+    checkModuleHealth();
 
     // ─── EXPORT ───
     function exportData() {
