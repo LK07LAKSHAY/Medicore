@@ -1324,7 +1324,7 @@
       letter-spacing: 0.3px;
     }
     .footer-col h4 {
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 1.4px;
@@ -2160,11 +2160,11 @@
       </div>
       <span class="logo-text">Medi<span>Core</span></span>
     </a>
-    <div class="nav-links" role="list">
-      <a href="#modules" class="nav-link active" role="listitem">Modules</a>
-      <a href="#workflow" class="nav-link" role="listitem">Workflow</a>
-      <a href="#features" class="nav-link" role="listitem">Features</a>
-      <a href="#backup" class="nav-link" role="listitem">Backup</a>
+    <div class="nav-links">
+      <a href="#modules" class="nav-link active">Modules</a>
+      <a href="#workflow" class="nav-link">Workflow</a>
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#backup" class="nav-link">Backup</a>
     </div>
     <div class="nav-right">
       <div class="nav-datetime">
@@ -2216,7 +2216,7 @@
     </div>
   </nav>
   <!-- MOBILE MENU -->
-  <div class="nav-mobile-menu" id="navMobileMenu" role="navigation" aria-label="Mobile navigation">
+  <div class="nav-mobile-menu" id="navMobileMenu" aria-label="Mobile navigation">
     <a href="#modules" class="nav-mobile-link active">📋 Modules</a>
     <a href="#workflow" class="nav-mobile-link">⚙️ Workflow</a>
     <a href="#features" class="nav-mobile-link">✨ Features</a>
@@ -2883,7 +2883,7 @@
             <span class="footer-contact-icon">📱</span>
             <span>Fully responsive across desktop, tablet, and mobile</span>
           </div>
-          <div class="footer-social" aria-label="Quick links">
+          <div class="footer-social" aria-label="Quick action links">
             <a href="#backup" title="Backup &amp; Export" aria-label="Backup and export data">💾</a>
             <a href="MAIN1.html" title="Patient Management" aria-label="Patient management">🧑‍⚕️</a>
             <a href="MAIN5.html" title="Generate Reports" aria-label="Generate reports">📊</a>
@@ -3320,8 +3320,9 @@
         });
       });
       // Close on outside click
+      const headerEl = document.querySelector('header');
       document.addEventListener('click', (e) => {
-        if (!mainNav.contains(e.target) && !mobileMenu.contains(e.target)) {
+        if (headerEl && !headerEl.contains(e.target)) {
           mobileMenu.classList.remove('open');
           hamburger.setAttribute('aria-expanded', 'false');
         }
