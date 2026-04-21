@@ -60,6 +60,7 @@
     }
 
     /* ── NAVBAR ── */
+    header { position: relative; }
     .navbar {
       position: sticky;
       top: 0;
@@ -124,6 +125,8 @@
 
     .nav-link:hover { color: white; background: rgba(255,255,255,0.08); }
     .nav-link.active { color: white; background: rgba(37,99,235,0.3); }
+    .nav-link:focus-visible { outline: 2px solid #06b6d4; outline-offset: 2px; border-radius: 6px; }
+    .nav-logo:focus-visible { outline: 2px solid #06b6d4; outline-offset: 4px; border-radius: 8px; }
 
     .nav-right {
       display: flex;
@@ -178,6 +181,134 @@
     }
 
     .btn-nav:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(37,99,235,0.45); }
+
+    /* ── NAVBAR SCROLL SHADOW ── */
+    .navbar.scrolled {
+      box-shadow: 0 4px 28px rgba(12,20,69,0.4);
+      border-bottom-color: rgba(255,255,255,0.14);
+    }
+
+    /* ── SKIP LINK ── */
+    .skip-link {
+      position: absolute;
+      top: -60px;
+      left: 16px;
+      background: #2563eb;
+      color: white;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      z-index: 9999;
+      text-decoration: none;
+      transition: top 0.2s;
+    }
+    .skip-link:focus { top: 12px; }
+
+    /* ── NAV CTA BUTTON ── */
+    .btn-nav-cta {
+      background: linear-gradient(135deg, #2563eb, #06b6d4);
+      color: white;
+      border: none;
+      padding: 9px 18px;
+      border-radius: 9px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(37,99,235,0.35);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .btn-nav-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(37,99,235,0.5); }
+    .btn-nav-cta:focus-visible { outline: 2px solid #06b6d4; outline-offset: 2px; border-radius: 9px; }
+
+    /* ── HAMBURGER BUTTON ── */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 44px;
+      height: 44px;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 9px;
+      cursor: pointer;
+      padding: 10px;
+      flex-shrink: 0;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: rgba(255,255,255,0.85);
+      border-radius: 2px;
+      transition: all 0.25s ease;
+      transform-origin: center;
+    }
+    .nav-hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .nav-hamburger:focus-visible { outline: 2px solid #06b6d4; outline-offset: 2px; }
+
+    /* ── MOBILE MENU ── */
+    .nav-mobile-menu {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 64px;
+      left: 0;
+      right: 0;
+      background: rgba(10, 17, 58, 0.98);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding: 10px 16px 16px;
+      gap: 3px;
+      z-index: 198;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.32);
+    }
+    .nav-mobile-menu.open { display: flex; animation: navSlideDown 0.2s ease; }
+    @keyframes navSlideDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .nav-mobile-link {
+      color: rgba(255,255,255,0.72);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 500;
+      padding: 11px 14px;
+      border-radius: 9px;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav-mobile-link:hover { color: white; background: rgba(255,255,255,0.08); }
+    .nav-mobile-link.active { color: white; background: rgba(37,99,235,0.22); }
+    .nav-mobile-link:focus-visible { outline: 2px solid #06b6d4; outline-offset: 2px; border-radius: 9px; }
+    .nav-mobile-divider { height: 1px; background: rgba(255,255,255,0.07); margin: 6px 0; }
+    .nav-mobile-cta {
+      background: linear-gradient(135deg, #2563eb, #06b6d4);
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 12px 18px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 4px;
+      box-shadow: 0 4px 12px rgba(37,99,235,0.35);
+    }
+    .nav-mobile-cta:focus-visible { outline: 2px solid #06b6d4; outline-offset: 2px; }
 
     /* ── HERO ── */
     .hero {
@@ -1146,34 +1277,120 @@
     /* ── FOOTER ── */
     .footer {
       background: var(--navy);
-      color: rgba(255,255,255,0.5);
-      padding: 32px;
-      text-align: center;
-      font-size: 13px;
+      color: rgba(255,255,255,0.55);
+      font-size: 14px;
+      position: relative;
+      z-index: 1;
     }
-
-    .footer a { color: #60a5fa; text-decoration: none; }
-    .footer-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .footer-inner {
       max-width: 1280px;
-      margin: 0 auto 20px;
-      flex-wrap: wrap;
-      gap: 16px;
+      margin: 0 auto;
+      padding: 56px 32px 32px;
     }
-
-    .footer-logo {
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+    .footer-brand .footer-logo {
       display: flex;
       align-items: center;
       gap: 10px;
       color: white;
-      font-weight: 700;
-      font-size: 16px;
+      font-weight: 800;
+      font-size: 18px;
+      margin-bottom: 14px;
+      text-decoration: none;
     }
-
-    .footer-links { display: flex; gap: 24px; }
-    .footer-bottom { max-width: 1280px; margin: 0 auto; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 20px; }
+    .footer-brand p {
+      font-size: 13px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.45);
+      max-width: 230px;
+      margin-bottom: 20px;
+    }
+    .footer-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(6,182,212,0.08);
+      border: 1px solid rgba(6,182,212,0.2);
+      color: #67e8f9;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 5px 11px;
+      border-radius: 100px;
+      letter-spacing: 0.3px;
+    }
+    .footer-col h4 {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 16px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 11px; }
+    .footer-col ul li a {
+      color: rgba(255,255,255,0.55);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .footer-col ul li a:hover { color: white; }
+    .footer-col ul li a:focus-visible { outline: 2px solid #06b6d4; outline-offset: 2px; border-radius: 3px; }
+    .footer-contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 12px;
+      line-height: 1.55;
+    }
+    .footer-contact-icon { flex-shrink: 0; font-size: 15px; }
+    .footer-social { display: flex; gap: 8px; margin-top: 20px; }
+    .footer-social a {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 9px;
+      color: rgba(255,255,255,0.55);
+      font-size: 15px;
+      text-decoration: none;
+      transition: all 0.18s;
+    }
+    .footer-social a:hover { background: rgba(255,255,255,0.12); color: white; border-color: rgba(255,255,255,0.22); }
+    .footer-social a:focus-visible { outline: 2px solid #06b6d4; outline-offset: 2px; border-radius: 9px; }
+    .footer-bottom-bar {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.32);
+    }
+    .footer-bottom-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-bottom-links a {
+      color: rgba(255,255,255,0.32);
+      text-decoration: none;
+      font-size: 12px;
+      transition: color 0.15s;
+    }
+    .footer-bottom-links a:hover { color: rgba(255,255,255,0.65); }
+    .footer-bottom-links a:focus-visible { outline: 2px solid #06b6d4; outline-offset: 2px; border-radius: 3px; }
 
     /* ── NOTIFICATION TOAST ── */
     #toastArea {
@@ -1229,8 +1446,13 @@
       .workflow-section { padding: 28px 20px; }
       .navbar { padding: 0 16px; }
       .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+      .btn-nav-cta { display: none; }
+      .nav-datetime { display: none; }
+      .nav-divider { display: none; }
       .stat-item { padding: 8px 24px; }
       .quick-strip { gap: 8px; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
     }
 
     @media (max-width: 600px) {
@@ -1241,6 +1463,9 @@
       .modules-grid .module-card:last-child { grid-column: auto; max-width: 100%; }
       .dp-header { flex-direction: column; align-items: flex-start; gap: 10px; }
       .quick-strip { flex-direction: column; align-items: flex-start; }
+      .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+      .footer-inner { padding: 40px 20px 24px; }
+      .footer-bottom-bar { flex-direction: column; align-items: flex-start; gap: 8px; }
     }
 
     /* ── ANIMATIONS ── */
@@ -1921,13 +2146,15 @@
 </head>
 <body>
 
+  <a href="#main-content" class="skip-link">Skip to main content</a>
   <div class="bg-canvas"></div>
   <div class="bg-grid"></div>
   <div class="particles" id="particlesContainer"></div>
 
-  <!-- NAVBAR -->
-  <nav class="navbar">
-    <a href="#" class="nav-logo">
+  <!-- HEADER / NAVBAR -->
+  <header>
+  <nav class="navbar" id="mainNav" aria-label="Main navigation">
+    <a href="#" class="nav-logo" aria-label="MediCore home">
       <div class="logo-icon">
         <img id="navLogo" src="White.png" alt="MediCore Logo" />
       </div>
@@ -1945,8 +2172,10 @@
         <div class="date-badge-inline" id="dateBadge">— — —</div>
       </div>
       <div class="nav-divider"></div>
+      <a href="MAIN1.html" class="btn-nav-cta" aria-label="Register a new patient">🧑‍⚕️ Register Patient</a>
+      <div class="nav-divider"></div>
       <div class="toggle-cont">
-        <input class="toggle-input" id="toggle" name="toggle" type="checkbox" />
+        <input class="toggle-input" id="toggle" name="toggle" type="checkbox" aria-label="Toggle dark mode" />
         <label class="toggle-label" for="toggle">
           <div class="cont-icon">
             <span style="--width: 2; --deg: 25; --duration: 11" class="sparkle"></span>
@@ -1979,11 +2208,26 @@
           </div>
         </label>
       </div>
+      <button class="nav-hamburger" id="navHamburger" aria-label="Toggle mobile menu" aria-expanded="false" aria-controls="navMobileMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </div>
   </nav>
+  <!-- MOBILE MENU -->
+  <div class="nav-mobile-menu" id="navMobileMenu" aria-label="Mobile navigation">
+    <a href="#modules" class="nav-mobile-link active">📋 Modules</a>
+    <a href="#workflow" class="nav-mobile-link">⚙️ Workflow</a>
+    <a href="#features" class="nav-mobile-link">✨ Features</a>
+    <a href="#backup" class="nav-mobile-link">💾 Backup</a>
+    <div class="nav-mobile-divider"></div>
+    <a href="MAIN1.html" class="nav-mobile-cta">🧑‍⚕️ Register Patient</a>
+  </div>
+  </header>
 
   <!-- HERO -->
-  <section class="hero">
+  <section class="hero" id="main-content">
     <div class="hero-left">
       <div class="hero-badge">Clinic Management System · 5 Modules</div>
       <h1>
@@ -2588,21 +2832,74 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="footer">
-    <div class="footer-top">
-      <div class="footer-logo">
-        <img id="footerLogo" src="White.png" alt="MediCore Logo" style="width:28px;height:28px;object-fit:contain;" />
-        <span>MediCore CMS</span>
+  <footer class="footer" aria-label="Site footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <!-- Column 1: Brand -->
+        <div class="footer-col footer-brand">
+          <a href="#" class="footer-logo">
+            <img id="footerLogo" src="White.png" alt="MediCore Logo" style="width:32px;height:32px;object-fit:contain;" />
+            <span>MediCore</span>
+          </a>
+          <p>A unified clinic management platform connecting patient registration, diagnostics, bookings, result entry, and report generation — built for speed and accuracy.</p>
+          <div class="footer-badge">🔒 Data stored locally · No server required</div>
+        </div>
+
+        <!-- Column 2: Modules -->
+        <div class="footer-col">
+          <h4>Modules</h4>
+          <ul>
+            <li><a href="MAIN1.html">🧑‍⚕️ Patient Registration</a></li>
+            <li><a href="MAIN2.html">🔬 Lab Tests</a></li>
+            <li><a href="MAIN3.html">📋 Bookings</a></li>
+            <li><a href="MAIN4.html">🧫 Result Entry</a></li>
+            <li><a href="MAIN5.html">🖨️ Reports</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Navigate -->
+        <div class="footer-col">
+          <h4>Navigate</h4>
+          <ul>
+            <li><a href="#modules">Overview</a></li>
+            <li><a href="#workflow">Workflow</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#backup">Backup &amp; Data</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 4: System -->
+        <div class="footer-col">
+          <h4>System</h4>
+          <div class="footer-contact-item">
+            <span class="footer-contact-icon">💾</span>
+            <span>All data stored locally in your browser via localStorage</span>
+          </div>
+          <div class="footer-contact-item">
+            <span class="footer-contact-icon">🌐</span>
+            <span>Works offline — no internet connection required</span>
+          </div>
+          <div class="footer-contact-item">
+            <span class="footer-contact-icon">📱</span>
+            <span>Fully responsive across desktop, tablet, and mobile</span>
+          </div>
+          <div class="footer-social" aria-label="Quick action links">
+            <a href="#backup" title="Backup &amp; Export" aria-label="Backup and export data">💾</a>
+            <a href="MAIN1.html" title="Patient Management" aria-label="Patient management">🧑‍⚕️</a>
+            <a href="MAIN5.html" title="Generate Reports" aria-label="Generate reports">📊</a>
+          </div>
+        </div>
       </div>
-      <div class="footer-links">
-        <a href="MAIN1.html">Patient Registration</a>
-        <a href="MAIN2.html">Lab Tests</a>
-        <a href="MAIN3.html">Bookings</a>
-        <a href="MAIN4.html" style="color:#a78bfa;">Result Entry</a>
+
+      <!-- Bottom bar -->
+      <div class="footer-bottom-bar">
+        <span>&copy; 2025 MediCore Clinic Management System. All rights reserved.</span>
+        <nav class="footer-bottom-links" aria-label="Legal links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Use</a>
+          <a href="#">Help</a>
+        </nav>
       </div>
-    </div>
-    <div class="footer-bottom">
-      MediCore Clinic Management System &mdash; All data stored locally in your browser &nbsp;·&nbsp; No server required
     </div>
   </footer>
 
@@ -3001,9 +3298,41 @@
       });
     });
 
+    // ─── NAVBAR SCROLL SHADOW ───
+    const mainNav = document.getElementById('mainNav');
+    window.addEventListener('scroll', () => {
+      mainNav.classList.toggle('scrolled', window.scrollY > 10);
+    }, { passive: true });
+
+    // ─── MOBILE MENU TOGGLE ───
+    const hamburger = document.getElementById('navHamburger');
+    const mobileMenu = document.getElementById('navMobileMenu');
+    if (hamburger && mobileMenu) {
+      hamburger.addEventListener('click', () => {
+        const isOpen = mobileMenu.classList.toggle('open');
+        hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      });
+      // Close mobile menu when a link is clicked
+      mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.remove('open');
+          hamburger.setAttribute('aria-expanded', 'false');
+        });
+      });
+      // Close on outside click
+      const headerEl = document.querySelector('header');
+      document.addEventListener('click', (e) => {
+        if (headerEl && !headerEl.contains(e.target)) {
+          mobileMenu.classList.remove('open');
+          hamburger.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
     // ─── NAVBAR ACTIVE ON SCROLL ───
     window.addEventListener('scroll', () => {
       const links = document.querySelectorAll('.nav-link');
+      const mobileLinks = document.querySelectorAll('.nav-mobile-link');
       const sections = ['modules', 'workflow', 'features', 'backup'];
       let active = 0;
       sections.forEach((id, i) => {
@@ -3011,7 +3340,8 @@
         if (el && window.scrollY >= el.offsetTop - 120) active = i;
       });
       links.forEach((l, i) => l.classList.toggle('active', i === active));
-    });
+      mobileLinks.forEach((l, i) => l.classList.toggle('active', i === active));
+    }, { passive: true });
   </script>
 </body>
 </html>
