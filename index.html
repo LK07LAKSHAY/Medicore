@@ -33,7 +33,8 @@
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
-      overflow-x: hidden;
+      min-width: 1280px;
+      overflow-x: auto;
     }
 
     /* ── ANIMATED BACKGROUND ── */
@@ -59,113 +60,436 @@
       background-size: 48px 48px;
     }
 
-    /* ── NAVBAR ── */
+    /* ══════════════════════════════════════════════
+       NAVBAR — Premium 2025 Redesign
+    ══════════════════════════════════════════════ */
     header { position: relative; }
+
     .navbar {
       position: sticky;
       top: 0;
       z-index: 200;
-      background: rgba(12, 20, 69, 0.95);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      padding: 0 32px;
+      background: rgba(8, 14, 50, 0.92);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 0 clamp(16px, 3vw, 36px);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 64px;
+      height: 70px;
+      gap: 16px;
+      transition: box-shadow 0.3s ease, border-color 0.3s ease, background 0.4s ease;
     }
 
+    /* ── LOGO ── */
     .nav-logo {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 11px;
       text-decoration: none;
+      flex-shrink: 0;
     }
 
     .logo-icon {
-      width: 40px;
-      height: 40px;
+      width: clamp(38px, 4vw, 46px);
+      height: clamp(38px, 4vw, 46px);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 0 18px rgba(6,182,212,0.18), 0 2px 8px rgba(0,0,0,0.25);
+      transition: box-shadow 0.3s ease, transform 0.25s ease;
+      padding: 5px;
+    }
+
+    .nav-logo:hover .logo-icon {
+      box-shadow: 0 0 28px rgba(6,182,212,0.32), 0 4px 16px rgba(0,0,0,0.3);
+      transform: scale(1.05);
     }
 
     .logo-icon img {
-      width: 40px;
-      height: 40px;
+      width: 100%;
+      height: 100%;
       object-fit: contain;
       display: block;
     }
 
     .logo-text {
-      font-size: 20px;
+      font-size: clamp(17px, 2vw, 22px);
       font-weight: 800;
       color: white;
-      letter-spacing: -0.5px;
+      letter-spacing: -0.6px;
+      line-height: 1;
     }
 
-    .logo-text span { color: #06b6d4; }
+    .logo-text .logo-medi { color: rgba(255,255,255,0.95); }
+    .logo-text .logo-core {
+      background: linear-gradient(120deg, #06b6d4, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
 
+    .logo-sub {
+      display: block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.38);
+      margin-top: 3px;
+      -webkit-text-fill-color: rgba(255,255,255,0.38);
+    }
+
+    /* ── NAV LINKS ── */
     .nav-links {
       display: flex;
-      gap: 4px;
+      gap: 2px;
       align-items: center;
     }
 
     .nav-link {
-      color: rgba(255,255,255,0.65);
+      color: rgba(255,255,255,0.55);
       text-decoration: none;
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 500;
-      padding: 8px 14px;
+      padding: 7px 13px;
       border-radius: 8px;
-      transition: all 0.2s;
+      transition: color 0.2s, background 0.2s;
+      white-space: nowrap;
     }
 
-    .nav-link:hover { color: white; background: rgba(255,255,255,0.08); }
-    .nav-link.active { color: white; background: rgba(37,99,235,0.3); }
+    .nav-link:hover { color: rgba(255,255,255,0.92); background: rgba(255,255,255,0.07); }
+    .nav-link.active { color: white; background: rgba(37,99,235,0.28); }
     .nav-link:focus-visible { outline: 2px solid #06b6d4; outline-offset: 2px; border-radius: 6px; }
-    .nav-logo:focus-visible { outline: 2px solid #06b6d4; outline-offset: 4px; border-radius: 8px; }
+    .nav-logo:focus-visible { outline: 2px solid #06b6d4; outline-offset: 4px; border-radius: 10px; }
 
+    /* ── NAV RIGHT ── */
     .nav-right {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       flex-shrink: 0;
     }
 
-    .nav-datetime {
+    /* ── SIMPLE CLOCK DISPLAY ── */
+    .nav-clock-simple {
       display: flex;
       flex-direction: column;
       align-items: flex-end;
       gap: 1px;
+      padding: 0 4px;
     }
 
     .clock-badge {
       font-family: 'DM Mono', monospace;
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 500;
-      color: rgba(255,255,255,0.85);
-      letter-spacing: 1px;
+      color: rgba(255,255,255,0.9);
+      letter-spacing: 0.8px;
       line-height: 1;
     }
 
     .date-badge-inline {
       font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      color: rgba(255,255,255,0.4);
-      letter-spacing: 0.3px;
+      font-size: 9.5px;
+      color: rgba(255,255,255,0.38);
+      letter-spacing: 0.2px;
       line-height: 1;
     }
 
+    /* ── NAV DIVIDER ── */
     .nav-divider {
       width: 1px;
-      height: 28px;
-      background: rgba(255,255,255,0.12);
+      height: 24px;
+      background: rgba(255,255,255,0.1);
       flex-shrink: 0;
     }
 
+    /* ── DARK MODE TOGGLE — Sun/Moon Animated ── */
+    .theme-toggle-wrap {
+      display: flex;
+      align-items: center;
+    }
+
+    .theme-toggle {
+      position: relative;
+      width: 52px;
+      height: 28px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .theme-toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+
+    .theme-track {
+      position: absolute;
+      inset: 0;
+      border-radius: 100px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .theme-toggle input:checked ~ .theme-track {
+      background: rgba(14, 30, 80, 0.9);
+      border-color: rgba(100,149,237,0.4);
+      box-shadow: inset 0 0 12px rgba(30,60,150,0.3), 0 0 10px rgba(100,149,237,0.15);
+    }
+
+    .theme-thumb {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      box-shadow: 0 0 10px rgba(251,191,36,0.6), 0 2px 6px rgba(0,0,0,0.3);
+      transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), background 0.4s ease, box-shadow 0.4s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .theme-toggle input:checked ~ .theme-thumb {
+      transform: translateX(24px);
+      background: linear-gradient(135deg, #c7d2fe, #a5b4fc);
+      box-shadow: 0 0 12px rgba(165,180,252,0.5), 0 2px 6px rgba(0,0,0,0.4);
+    }
+
+    .theme-thumb-icon {
+      font-size: 12px;
+      line-height: 1;
+      transition: opacity 0.2s, transform 0.3s;
+      position: absolute;
+    }
+
+    .icon-sun { opacity: 1; transform: rotate(0deg); }
+    .icon-moon { opacity: 0; transform: rotate(-90deg); }
+
+    .theme-toggle input:checked ~ .theme-thumb .icon-sun { opacity: 0; transform: rotate(90deg); }
+    .theme-toggle input:checked ~ .theme-thumb .icon-moon { opacity: 1; transform: rotate(0deg); }
+
+    .theme-toggle:hover .theme-track {
+      box-shadow: 0 0 0 3px rgba(251,191,36,0.15);
+    }
+
+    .theme-toggle input:checked:hover ~ .theme-track {
+      box-shadow: inset 0 0 12px rgba(30,60,150,0.3), 0 0 0 3px rgba(165,180,252,0.15);
+    }
+
+    .theme-toggle input:focus-visible ~ .theme-track {
+      outline: 2px solid #06b6d4;
+      outline-offset: 3px;
+    }
+
+    /* ── THEME LABEL ── */
+    .theme-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      user-select: none;
+      min-width: 24px;
+    }
+
+    /* ── PATIENT SEARCH BUTTON ── */
+    .nav-search-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      border: 1px solid rgba(255,255,255,0.09);
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.55);
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s;
+      flex-shrink: 0;
+    }
+    .nav-search-btn:hover {
+      background: rgba(6,182,212,0.12);
+      border-color: rgba(6,182,212,0.35);
+      color: #22d3ee;
+      box-shadow: 0 0 12px rgba(6,182,212,0.15);
+    }
+    .nav-search-btn:focus-visible { outline: 2px solid #06b6d4; outline-offset: 2px; }
+
+    /* ── USER DROPDOWN ── */
+    .nav-user-wrap {
+      position: relative;
+    }
+
+    .nav-user-pill {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 10px;
+      padding: 5px 10px 5px 6px;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+      user-select: none;
+    }
+    .nav-user-pill:hover {
+      background: rgba(255,255,255,0.09);
+      border-color: rgba(255,255,255,0.16);
+    }
+
+    .nav-user-avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #2563eb, #06b6d4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 800;
+      color: white;
+      flex-shrink: 0;
+      letter-spacing: 0;
+    }
+
+    .nav-user-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.75);
+      white-space: nowrap;
+    }
+
+    .nav-user-chevron {
+      color: rgba(255,255,255,0.3);
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+    .nav-user-wrap.open .nav-user-chevron { transform: rotate(180deg); }
+
+    /* Dropdown panel */
+    .nav-user-dropdown {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      width: 220px;
+      background: rgba(8, 14, 50, 0.98);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.55), 0 0 0 1px rgba(6,182,212,0.08);
+      z-index: 300;
+      opacity: 0;
+      transform: translateY(-6px) scale(0.97);
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .nav-user-wrap.open .nav-user-dropdown {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .nud-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .nud-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #2563eb, #06b6d4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 800;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .nud-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.9);
+      line-height: 1.2;
+    }
+
+    .nud-role {
+      font-size: 10px;
+      color: rgba(255,255,255,0.38);
+      font-weight: 500;
+      margin-top: 2px;
+      letter-spacing: 0.2px;
+    }
+
+    .nud-divider {
+      height: 1px;
+      background: rgba(255,255,255,0.07);
+      margin: 10px 0;
+    }
+
+    .nud-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 3px 0;
+    }
+
+    .nud-row-label {
+      font-size: 10.5px;
+      color: rgba(255,255,255,0.38);
+      font-weight: 500;
+    }
+
+    .nud-row-val {
+      font-family: 'DM Mono', monospace;
+      font-size: 10.5px;
+      color: rgba(255,255,255,0.65);
+      font-weight: 500;
+    }
+
+    .nud-lock-btn {
+      width: 100%;
+      margin-top: 10px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.5);
+      font-size: 12px;
+      font-weight: 600;
+      font-family: 'Outfit', sans-serif;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+    .nud-lock-btn:hover {
+      background: rgba(220,38,38,0.12);
+      border-color: rgba(220,38,38,0.25);
+      color: #f87171;
+    }
+
+    /* ── CTA BUTTON ── */
     .btn-nav {
       background: linear-gradient(135deg, #2563eb, #06b6d4);
       color: white;
@@ -184,8 +508,224 @@
 
     /* ── NAVBAR SCROLL SHADOW ── */
     .navbar.scrolled {
-      box-shadow: 0 4px 28px rgba(12,20,69,0.4);
-      border-bottom-color: rgba(255,255,255,0.14);
+      background: rgba(4, 8, 32, 0.98);
+      box-shadow: 0 4px 32px rgba(0,0,0,0.55), 0 1px 0 rgba(6,182,212,0.12);
+      border-bottom-color: rgba(6,182,212,0.15);
+    }
+
+    /* ══════════════════════════════════════════════
+       SUB-BAR — Secondary info tier below navbar
+    ══════════════════════════════════════════════ */
+    .sub-bar {
+      position: sticky;
+      top: 70px;
+      z-index: 199;
+      background: rgba(6, 10, 38, 0.88);
+      backdrop-filter: blur(16px) saturate(160%);
+      -webkit-backdrop-filter: blur(16px) saturate(160%);
+      border-bottom: 1px solid rgba(255,255,255,0.055);
+      padding: 0 clamp(16px, 3vw, 36px);
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .navbar.scrolled ~ .sub-bar,
+    .sub-bar.scrolled {
+      box-shadow: 0 2px 16px rgba(0,0,0,0.35);
+    }
+
+    /* Left side — breadcrumb / active module indicator */
+    .sub-left {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-shrink: 0;
+    }
+
+    .sub-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sub-bc-item {
+      font-size: 11px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.38);
+      letter-spacing: 0.2px;
+      white-space: nowrap;
+    }
+
+    .sub-bc-item.active {
+      color: rgba(255,255,255,0.72);
+      font-weight: 600;
+    }
+
+    .sub-bc-sep {
+      font-size: 10px;
+      color: rgba(255,255,255,0.2);
+    }
+
+    /* Active module pill */
+    .sub-module-pill {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(37,99,235,0.18);
+      border: 1px solid rgba(37,99,235,0.3);
+      border-radius: 100px;
+      padding: 2px 10px 2px 6px;
+      margin-left: 12px;
+    }
+
+    .sub-module-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #22d3ee;
+      box-shadow: 0 0 0 2px rgba(34,211,238,0.25);
+      animation: subpulse 2s infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes subpulse {
+      0%, 100% { box-shadow: 0 0 0 2px rgba(34,211,238,0.25); }
+      50% { box-shadow: 0 0 0 4px rgba(34,211,238,0.08); }
+    }
+
+    .sub-module-label {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #22d3ee;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+
+    /* Center — quick module jump links */
+    .sub-center {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .sub-module-link {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 11px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.4);
+      transition: color 0.15s, background 0.15s;
+      white-space: nowrap;
+      letter-spacing: 0.1px;
+    }
+
+    .sub-module-link:hover {
+      color: rgba(255,255,255,0.85);
+      background: rgba(255,255,255,0.07);
+    }
+
+    .sub-module-link.active {
+      color: white;
+      background: rgba(37,99,235,0.22);
+    }
+
+    .sub-link-icon {
+      width: 12px;
+      height: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* Right side — system status + date */
+    .sub-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+
+    .sub-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sub-status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 0 2px rgba(34,197,94,0.2);
+      animation: subpulse 2.5s infinite;
+    }
+
+    .sub-status-text {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.2px;
+    }
+
+    .sub-status-text strong {
+      color: #4ade80;
+      font-weight: 700;
+    }
+
+    .sub-divider {
+      width: 1px;
+      height: 14px;
+      background: rgba(255,255,255,0.1);
+    }
+
+    .sub-date-full {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: rgba(255,255,255,0.32);
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+
+    .sub-session {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 6px;
+      padding: 2px 9px;
+    }
+
+    .sub-session-icon {
+      display: flex;
+      align-items: center;
+      opacity: 0.5;
+    }
+
+    .sub-session-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    /* Dark mode sub-bar adjustments */
+    body.dark-mode .sub-bar {
+      background: rgba(4, 7, 26, 0.92);
+      border-bottom-color: rgba(255,255,255,0.04);
     }
 
     /* ── SKIP LINK ── */
@@ -227,88 +767,7 @@
     .btn-nav-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(37,99,235,0.5); }
     .btn-nav-cta:focus-visible { outline: 2px solid #06b6d4; outline-offset: 2px; border-radius: 9px; }
 
-    /* ── HAMBURGER BUTTON ── */
-    .nav-hamburger {
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      gap: 5px;
-      width: 44px;
-      height: 44px;
-      background: transparent;
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 9px;
-      cursor: pointer;
-      padding: 10px;
-      flex-shrink: 0;
-    }
-    .nav-hamburger span {
-      display: block;
-      width: 100%;
-      height: 2px;
-      background: rgba(255,255,255,0.85);
-      border-radius: 2px;
-      transition: all 0.25s ease;
-      transform-origin: center;
-    }
-    .nav-hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .nav-hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-    .nav-hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-    .nav-hamburger:focus-visible { outline: 2px solid #06b6d4; outline-offset: 2px; }
-
-    /* ── MOBILE MENU ── */
-    .nav-mobile-menu {
-      display: none;
-      flex-direction: column;
-      position: absolute;
-      top: 64px;
-      left: 0;
-      right: 0;
-      background: rgba(10, 17, 58, 0.98);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      padding: 10px 16px 16px;
-      gap: 3px;
-      z-index: 198;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.32);
-    }
-    .nav-mobile-menu.open { display: flex; animation: navSlideDown 0.2s ease; }
-    @keyframes navSlideDown {
-      from { opacity: 0; transform: translateY(-8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .nav-mobile-link {
-      color: rgba(255,255,255,0.72);
-      text-decoration: none;
-      font-size: 15px;
-      font-weight: 500;
-      padding: 11px 14px;
-      border-radius: 9px;
-      transition: all 0.15s;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .nav-mobile-link:hover { color: white; background: rgba(255,255,255,0.08); }
-    .nav-mobile-link.active { color: white; background: rgba(37,99,235,0.22); }
-    .nav-mobile-link:focus-visible { outline: 2px solid #06b6d4; outline-offset: 2px; border-radius: 9px; }
-    .nav-mobile-divider { height: 1px; background: rgba(255,255,255,0.07); margin: 6px 0; }
-    .nav-mobile-cta {
-      background: linear-gradient(135deg, #2563eb, #06b6d4);
-      color: white;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 700;
-      padding: 12px 18px;
-      border-radius: 9px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 4px;
-      box-shadow: 0 4px 12px rgba(37,99,235,0.35);
-    }
-    .nav-mobile-cta:focus-visible { outline: 2px solid #06b6d4; outline-offset: 2px; }
+    /* Hamburger & mobile menu removed — desktop-only build */
 
     /* ── HERO ── */
     .hero {
@@ -1424,49 +1883,7 @@
       to { transform: translateX(0); opacity: 1; }
     }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 1100px) {
-      .hero { grid-template-columns: 1fr; gap: 32px; }
-      .hero-bento { display: none; }
-      .modules-grid { grid-template-columns: repeat(3, 1fr); grid-template-rows: auto; }
-      .module-card-anchor { grid-row: auto; }
-    }
-
-    @media (max-width: 900px) {
-      .modules-grid { grid-template-columns: 1fr 1fr; }
-      .module-card-anchor { grid-row: auto; }
-      .modules-grid .module-card:last-child { grid-column: 1 / -1; max-width: 50%; }
-      .workflow-steps { grid-template-columns: repeat(3, 1fr); gap: 24px; }
-      .workflow-steps::before { display: none; }
-      .features-grid { grid-template-columns: 1fr; }
-      .dp-inner { grid-template-columns: 1fr; }
-      .dp-feed { border-top: 1px solid var(--border-light); }
-      .hero { padding: 40px 20px 36px; }
-      .main { padding: 36px 20px; }
-      .workflow-section { padding: 28px 20px; }
-      .navbar { padding: 0 16px; }
-      .nav-links { display: none; }
-      .nav-hamburger { display: flex; }
-      .btn-nav-cta { display: none; }
-      .nav-datetime { display: none; }
-      .nav-divider { display: none; }
-      .stat-item { padding: 8px 24px; }
-      .quick-strip { gap: 8px; }
-      .footer-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
-    }
-
-    @media (max-width: 600px) {
-      .stats-bar { flex-wrap: wrap; }
-      .stat-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
-      .dp-kpi-grid { grid-template-columns: 1fr 1fr; }
-      .workflow-steps { grid-template-columns: 1fr 1fr; }
-      .modules-grid .module-card:last-child { grid-column: auto; max-width: 100%; }
-      .dp-header { flex-direction: column; align-items: flex-start; gap: 10px; }
-      .quick-strip { flex-direction: column; align-items: flex-start; }
-      .footer-grid { grid-template-columns: 1fr; gap: 24px; }
-      .footer-inner { padding: 40px 20px 24px; }
-      .footer-bottom-bar { flex-direction: column; align-items: flex-start; gap: 8px; }
-    }
+    /* ── DESKTOP-ONLY BUILD — no responsive breakpoints ── */
 
     /* ── ANIMATIONS ── */
     .fade-in {
@@ -1615,126 +2032,7 @@
       font-weight: 700;
       color: var(--navy);
     }
-    /* ── DARK MODE TOGGLE (Uiverse by MuhammadHasann) ── */
-    .toggle-cont {
-      --primary: #54a8fc;
-      --light: #d9d9d9;
-      --dark: #121212;
-      --gray: #414344;
-      position: relative;
-      z-index: 10;
-      width: fit-content;
-      height: 36px;
-      border-radius: 9999px;
-      flex-shrink: 0;
-      /* clip the glow pseudo-elements so they don't bleed outside navbar */
-      overflow: hidden;
-      padding: 2px;
-      margin: -2px;
-    }
-    .toggle-cont .toggle-input { display: none; }
-    .toggle-cont .toggle-label {
-      --gap: 4px;
-      --width: 36px;
-      cursor: pointer;
-      position: relative;
-      display: inline-block;
-      padding: 0.3rem;
-      width: calc((var(--width) + var(--gap)) * 2);
-      height: 100%;
-      background-color: var(--dark);
-      border: 1px solid #777777;
-      border-bottom: 0;
-      border-radius: 9999px;
-      box-sizing: content-box;
-      transition: all 0.3s ease-in-out;
-    }
-    .toggle-label::before {
-      content: "";
-      position: absolute;
-      z-index: -10;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      /* reduced size to stay inside clipping container */
-      width: 100%;
-      height: 100%;
-      background-color: var(--gray);
-      border: 1px solid #777777;
-      border-bottom: 0;
-      border-radius: 9999px;
-      transition: all 0.3s ease-in-out;
-    }
-    .toggle-label::after {
-      content: "";
-      position: absolute;
-      z-index: -10;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 100%;
-      height: 100%;
-      background-image: radial-gradient(circle at 50% -100%, rgb(58,155,252) 0%, rgba(12,12,12,1) 80%);
-      border-radius: 9999px;
-    }
-    .toggle-cont .toggle-label .cont-icon {
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: var(--width);
-      height: 100%;
-      background-image: radial-gradient(circle at 50% 0%, #666666 0%, var(--gray) 100%);
-      border: 1px solid #aaaaaa;
-      border-bottom: 0;
-      border-radius: 9999px;
-      box-shadow: inset 0 -0.1rem 0.1rem var(--primary), inset 0 0 0.4rem 0.5rem var(--second);
-      transition: transform 0.3s ease-in-out;
-      overflow: clip;
-    }
-    .cont-icon .sparkle {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      display: block;
-      width: calc(var(--width) * 1px);
-      aspect-ratio: 1;
-      background-color: var(--light);
-      border-radius: 50%;
-      transform-origin: 50% 50%;
-      rotate: calc(1deg * var(--deg));
-      transform: translate(-50%, -50%);
-      animation: sparkle calc(100s / var(--duration)) linear calc(0s / var(--duration)) infinite;
-    }
-    @keyframes sparkle {
-      to { width: calc(var(--width) * 0.5px); transform: translate(2000%, -50%); }
-    }
-    .cont-icon .icon { width: 0.9rem; fill: var(--light); }
-    .toggle-cont:has(.toggle-input:checked) { --checked: true; }
-    @container style(--checked: true) {
-      .toggle-cont .toggle-label {
-        background-color: #41434400;
-        border: 1px solid #3d6970;
-        border-bottom: 0;
-      }
-      .toggle-cont .toggle-label::before { box-shadow: 0 1rem 2.5rem -2rem #0080ff; }
-      .toggle-cont .toggle-label .cont-icon {
-        overflow: visible;
-        background-image: radial-gradient(circle at 50% 0%, #045ab1 0%, var(--primary) 100%);
-        border: 1px solid var(--primary);
-        border-bottom: 0;
-        transform: translateX(calc((var(--gap) * 2) + 100%)) rotate(-225deg);
-      }
-      .toggle-cont .toggle-label .cont-icon .sparkle {
-        z-index: -10;
-        width: calc(var(--width) * 1.5px);
-        background-color: #acacac;
-        animation: sparkle calc(100s / var(--duration)) linear calc(10s / var(--duration)) infinite;
-      }
-      @keyframes sparkle {
-        to { width: calc(var(--width) * 1px); transform: translate(5000%, -50%); }
-      }
-    }
+    /* Old toggle CSS removed — replaced by .theme-toggle in navbar section */
 
     /* ── DARK MODE — comprehensive token swap ── */
     body.dark-mode {
@@ -2154,75 +2452,141 @@
   <!-- HEADER / NAVBAR -->
   <header>
   <nav class="navbar" id="mainNav" aria-label="Main navigation">
+    <!-- LOGO -->
     <a href="#" class="nav-logo" aria-label="MediCore home">
       <div class="logo-icon">
         <img id="navLogo" src="White.png" alt="MediCore Logo" />
       </div>
-      <span class="logo-text">Medi<span>Core</span></span>
+      <div class="logo-text">
+        <span class="logo-medi">Medi</span><span class="logo-core">Core</span>
+        <span class="logo-sub">Diagnostic Centre</span>
+      </div>
     </a>
+
+    <!-- DESKTOP NAV LINKS -->
     <div class="nav-links">
       <a href="#modules" class="nav-link active">Modules</a>
       <a href="#workflow" class="nav-link">Workflow</a>
       <a href="#features" class="nav-link">Features</a>
       <a href="#backup" class="nav-link">Backup</a>
     </div>
+
+    <!-- RIGHT SIDE -->
     <div class="nav-right">
-      <div class="nav-datetime">
-        <div class="clock-badge" id="clockBadge">--:--:--</div>
-        <div class="date-badge-inline" id="dateBadge">— — —</div>
+
+      <!-- CLOCK — simple display, no dropdown -->
+      <div class="nav-clock-simple">
+        <span class="clock-badge" id="clockBadge">--:--:--</span>
+        <span class="date-badge-inline" id="dateBadge">— — —</span>
       </div>
+
       <div class="nav-divider"></div>
-      <a href="MAIN1.html" class="btn-nav-cta" aria-label="Register a new patient">🧑‍⚕️ Register Patient</a>
-      <div class="nav-divider"></div>
-      <div class="toggle-cont">
-        <input class="toggle-input" id="toggle" name="toggle" type="checkbox" aria-label="Toggle dark mode" />
-        <label class="toggle-label" for="toggle">
-          <div class="cont-icon">
-            <span style="--width: 2; --deg: 25; --duration: 11" class="sparkle"></span>
-            <span style="--width: 1; --deg: 100; --duration: 18" class="sparkle"></span>
-            <span style="--width: 1; --deg: 280; --duration: 5" class="sparkle"></span>
-            <span style="--width: 2; --deg: 200; --duration: 3" class="sparkle"></span>
-            <span style="--width: 2; --deg: 30; --duration: 20" class="sparkle"></span>
-            <span style="--width: 2; --deg: 300; --duration: 9" class="sparkle"></span>
-            <span style="--width: 1; --deg: 250; --duration: 4" class="sparkle"></span>
-            <span style="--width: 2; --deg: 210; --duration: 8" class="sparkle"></span>
-            <span style="--width: 2; --deg: 100; --duration: 9" class="sparkle"></span>
-            <span style="--width: 1; --deg: 15; --duration: 13" class="sparkle"></span>
-            <span style="--width: 1; --deg: 75; --duration: 18" class="sparkle"></span>
-            <span style="--width: 2; --deg: 65; --duration: 6" class="sparkle"></span>
-            <span style="--width: 2; --deg: 50; --duration: 7" class="sparkle"></span>
-            <span style="--width: 1; --deg: 320; --duration: 5" class="sparkle"></span>
-            <span style="--width: 1; --deg: 220; --duration: 5" class="sparkle"></span>
-            <span style="--width: 1; --deg: 215; --duration: 2" class="sparkle"></span>
-            <span style="--width: 2; --deg: 135; --duration: 9" class="sparkle"></span>
-            <span style="--width: 2; --deg: 45; --duration: 4" class="sparkle"></span>
-            <span style="--width: 1; --deg: 78; --duration: 16" class="sparkle"></span>
-            <span style="--width: 1; --deg: 89; --duration: 19" class="sparkle"></span>
-            <span style="--width: 2; --deg: 65; --duration: 14" class="sparkle"></span>
-            <span style="--width: 2; --deg: 97; --duration: 1" class="sparkle"></span>
-            <span style="--width: 1; --deg: 174; --duration: 10" class="sparkle"></span>
-            <span style="--width: 1; --deg: 236; --duration: 5" class="sparkle"></span>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 30 30" class="icon">
-              <path d="M0.96233 28.61C1.36043 29.0081 1.96007 29.1255 2.47555 28.8971L10.4256 25.3552C13.2236 24.11 16.4254 24.1425 19.2107 25.4401L27.4152 29.2747C27.476 29.3044 27.5418 29.3023 27.6047 29.32C27.6563 29.3348 27.7079 29.3497 27.761 29.3574C27.843 29.3687 27.9194 29.3758 28 29.3688C28.1273 29.3617 28.2531 29.3405 28.3726 29.2945C28.4447 29.262 28.5162 29.2287 28.5749 29.1842C28.6399 29.1446 28.6993 29.0994 28.7509 29.0477L28.9008 28.8582C28.9468 28.7995 28.9793 28.7274 29.0112 28.656C29.0599 28.5322 29.0811 28.4036 29.0882 28.2734C29.0939 28.1957 29.0868 28.1207 29.0769 28.0415C29.0705 27.9955 29.0585 27.9524 29.0472 27.9072C29.0295 27.8343 29.0302 27.7601 28.9984 27.6901L25.1638 19.4855C23.8592 16.7073 23.8273 13.5048 25.0726 10.7068L28.6145 2.75679C28.8429 2.24131 28.7318 1.63531 28.3337 1.2372C27.9165 0.820011 27.271 0.721743 26.7491 0.9961L19.8357 4.59596C16.8418 6.15442 13.2879 6.18696 10.2615 4.70062L1.80308 0.520214C1.7055 0.474959 1.60722 0.441742 1.50964 0.421943C1.44459 0.409215 1.37882 0.395769 1.3074 0.402133C1.14406 0.395769 0.981436 0.428275 0.818095 0.499692C0.77284 0.519491 0.719805 0.545671 0.67455 0.578198C0.596061 0.617088 0.524653 0.675786 0.4596 0.74084C0.394546 0.805894 0.335843 0.877306 0.296245 0.956502C0.263718 1.00176 0.237561 1.05477 0.217762 1.10003C0.152708 1.24286 0.126545 1.40058 0.120181 1.54978C0.120181 1.61483 0.126527 1.6735 0.132891 1.73219C0.15269 1.85664 0.178881 1.97332 0.237571 2.08434L4.41798 10.5427C5.91139 13.5621 5.8725 17.1238 4.3204 20.1099L0.720514 27.0233C0.440499 27.5536 0.545137 28.1928 0.96233 28.61Z"></path>
-            </svg>
-          </div>
-        </label>
-      </div>
-      <button class="nav-hamburger" id="navHamburger" aria-label="Toggle mobile menu" aria-expanded="false" aria-controls="navMobileMenu">
-        <span></span>
-        <span></span>
-        <span></span>
+
+      <!-- PATIENT QUICK SEARCH -->
+      <button class="nav-search-btn" onclick="openPatientsModal()" title="Search patients  ( / )" aria-label="Search patients">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
       </button>
+
+      <div class="nav-divider"></div>
+
+      <!-- SUN/MOON DARK MODE TOGGLE -->
+      <label class="theme-toggle" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">
+        <input type="checkbox" id="toggle" name="toggle" />
+        <div class="theme-track"></div>
+        <div class="theme-thumb">
+          <span class="theme-thumb-icon icon-sun">☀️</span>
+          <span class="theme-thumb-icon icon-moon">🌙</span>
+        </div>
+      </label>
+      <span class="theme-label" id="themeLabelText">Light</span>
+
+      <div class="nav-divider"></div>
+
+      <!-- USER / SESSION DROPDOWN -->
+      <div class="nav-user-wrap" id="userWrap">
+        <div class="nav-user-pill" id="userTrigger" role="button" tabindex="0" aria-label="Session info" aria-expanded="false">
+          <div class="nav-user-avatar">A</div>
+          <span class="nav-user-name">Admin</span>
+          <svg class="nav-user-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </div>
+
+        <div class="nav-user-dropdown" id="userDropdown" role="dialog" aria-label="Session details">
+          <div class="nud-header">
+            <div class="nud-avatar">A</div>
+            <div>
+              <div class="nud-name">Admin</div>
+              <div class="nud-role">Lab Console · Operator</div>
+            </div>
+          </div>
+          <div class="nud-divider"></div>
+          <div class="nud-row">
+            <span class="nud-row-label">Session started</span>
+            <span class="nud-row-val" id="nudSessionTime">—</span>
+          </div>
+          <div class="nud-row">
+            <span class="nud-row-label">Storage</span>
+            <span class="nud-row-val" id="nudStorage">—</span>
+          </div>
+          <div class="nud-divider"></div>
+          <button class="nud-lock-btn" onclick="lockSession()">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            Lock Session
+          </button>
+        </div>
+      </div>
+
     </div>
   </nav>
-  <!-- MOBILE MENU -->
-  <div class="nav-mobile-menu" id="navMobileMenu" aria-label="Mobile navigation">
-    <a href="#modules" class="nav-mobile-link active">📋 Modules</a>
-    <a href="#workflow" class="nav-mobile-link">⚙️ Workflow</a>
-    <a href="#features" class="nav-mobile-link">✨ Features</a>
-    <a href="#backup" class="nav-mobile-link">💾 Backup</a>
-    <div class="nav-mobile-divider"></div>
-    <a href="MAIN1.html" class="nav-mobile-cta">🧑‍⚕️ Register Patient</a>
+  <!-- SUB-BAR — Secondary info tier -->
+  <div class="sub-bar" id="subBar">
+    <!-- LEFT: Active section pill only -->
+    <div class="sub-left">
+      <div class="sub-module-pill">
+        <div class="sub-module-dot"></div>
+        <span class="sub-module-label" id="subModuleLabel">Dashboard</span>
+      </div>
+    </div>
+
+    <!-- CENTER: Quick module jump links -->
+    <nav class="sub-center" aria-label="Module shortcuts">
+      <a href="MAIN1.html" class="sub-module-link">
+        <span class="sub-link-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span> Register
+      </a>
+      <a href="MAIN2.html" class="sub-module-link">
+        <span class="sub-link-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6m-5 0v7l-4 7a2 2 0 0 0 1.8 3h8.4a2 2 0 0 0 1.8-3l-4-7V3"/></svg></span> Lab Tests
+      </a>
+      <a href="MAIN3.html" class="sub-module-link">
+        <span class="sub-link-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg></span> Bookings
+      </a>
+      <a href="MAIN4.html" class="sub-module-link">
+        <span class="sub-link-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span> Results
+      </a>
+      <a href="MAIN5.html" class="sub-module-link">
+        <span class="sub-link-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></span> Reports
+      </a>
+    </nav>
+
+    <!-- RIGHT: System status + date + session -->
+    <div class="sub-right">
+      <div class="sub-status">
+        <div class="sub-status-dot" id="subStatusDot"></div>
+        <span class="sub-status-text" id="subStatusText" style="display:none;"></span>
+      </div>
+      <div class="sub-divider"></div>
+      <span class="sub-date-full" id="subDateFull">—</span>
+      <div class="sub-divider"></div>
+      <div class="sub-session">
+        <span class="sub-session-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>
+        <span class="sub-session-label">Lab Console · Admin</span>
+      </div>
+    </div>
   </div>
   </header>
 
@@ -2933,13 +3297,36 @@
   <div id="toastArea"></div>
 
   <script>
-    // ─── CLOCK ───
+    // ─── CLOCK — simple display ───
+    let clockFormat = localStorage.getItem('mc-clock-format') || '12';
+    let dateFormat  = localStorage.getItem('mc-date-format')  || 'DD/MM/YYYY';
+
+    function formatTime(now) {
+      if (clockFormat === '12') {
+        return now.toLocaleTimeString('en-US', { hour12: true, hour: 'numeric', minute: '2-digit', second: '2-digit' });
+      }
+      return now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    }
+
+    function formatDate(now) {
+      const d = String(now.getDate()).padStart(2,'0');
+      const m = String(now.getMonth()+1).padStart(2,'0');
+      const y = now.getFullYear();
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      if (dateFormat === 'MM/DD/YYYY') return `${m}/${d}/${y}`;
+      if (dateFormat === 'Short') return `${d} ${months[now.getMonth()]} ${y}`;
+      return `${d}/${m}/${y}`;
+    }
+
     function updateClock() {
       const now = new Date();
-      const t = now.toLocaleTimeString('en-IN', { hour12: false });
-      document.getElementById('clockBadge').textContent = t;
-      document.getElementById('dateBadge').textContent = now.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
-      document.getElementById('dpDate').textContent = now.toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      const t = formatTime(now);
+      const clockEl = document.getElementById('clockBadge');
+      const dateEl  = document.getElementById('dateBadge');
+      if (clockEl) clockEl.textContent = t;
+      if (dateEl)  dateEl.textContent  = formatDate(now);
+      if (document.getElementById('dpDate'))
+        document.getElementById('dpDate').textContent = now.toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
       const hbC = document.getElementById('hbClock');
       if (hbC) hbC.textContent = t;
     }
@@ -2953,14 +3340,18 @@
     function applyTheme(dark) {
       const navLogo    = document.getElementById('navLogo');
       const footerLogo = document.getElementById('footerLogo');
+      const themeLabel = document.getElementById('themeLabelText');
+      document.body.style.transition = 'background 0.4s ease, color 0.3s ease';
       if (dark) {
         document.body.classList.add('dark-mode');
         if (navLogo)    navLogo.src    = 'Black.png';
         if (footerLogo) footerLogo.src = 'Black.png';
+        if (themeLabel) themeLabel.textContent = 'Dark';
       } else {
         document.body.classList.remove('dark-mode');
         if (navLogo)    navLogo.src    = 'White.png';
         if (footerLogo) footerLogo.src = 'White.png';
+        if (themeLabel) themeLabel.textContent = 'Light';
       }
     }
 
@@ -3169,7 +3560,7 @@
 
     // ─── MODULE HEALTH CHECK (Fix 4) ───
     async function checkModuleHealth() {
-      const modules = ['MAIN1.html','MAIN2.html','MAIN3.html','MAIN4.html','MAIN5.html'];
+      const modules = ['MAIN1.html','MAIN2.html','MAIN3.html','MAIN4.html']; // MAIN5 excluded until built
       const statusEl = document.querySelector('.hb-status-row span');
       const dotEl    = document.querySelector('.hb-dot');
       if (!statusEl || !dotEl) return;
@@ -3179,7 +3570,7 @@
         );
         const missing = modules.filter((_, i) => !results[i]);
         if (missing.length === 0) {
-          statusEl.textContent = 'All 5 modules operational';
+          statusEl.textContent = 'All 4 modules operational';
           dotEl.style.background = '#22c55e';
           dotEl.style.boxShadow = '0 0 0 3px rgba(34,197,94,0.25)';
         } else {
@@ -3258,6 +3649,70 @@
 
     loadStats();
 
+    // ─── USER / SESSION DROPDOWN ───
+    (function initUserDropdown() {
+      const wrap     = document.getElementById('userWrap');
+      const trigger  = document.getElementById('userTrigger');
+      if (!trigger || !wrap) return;
+
+      // Session start time
+      const sessionKey = 'medicore-session-start';
+      if (!sessionStorage.getItem(sessionKey)) {
+        sessionStorage.setItem(sessionKey, new Date().toISOString());
+      }
+      const sessionStart = new Date(sessionStorage.getItem(sessionKey));
+      const nudSess = document.getElementById('nudSessionTime');
+      if (nudSess) {
+        nudSess.textContent = sessionStart.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+      }
+
+      // Storage usage estimate
+      function updateStorage() {
+        const nudStor = document.getElementById('nudStorage');
+        if (!nudStor) return;
+        try {
+          let total = 0;
+          for (const key of Object.keys(localStorage)) {
+            total += (localStorage.getItem(key) || '').length;
+          }
+          nudStor.textContent = (total / 1024).toFixed(1) + ' KB';
+        } catch { nudStor.textContent = '—'; }
+      }
+      updateStorage();
+
+      trigger.addEventListener('click', () => {
+        const isOpen = wrap.classList.toggle('open');
+        trigger.setAttribute('aria-expanded', isOpen);
+        if (isOpen) updateStorage();
+      });
+      trigger.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); trigger.click(); }
+        if (e.key === 'Escape') { wrap.classList.remove('open'); trigger.setAttribute('aria-expanded', false); }
+      });
+      document.addEventListener('click', e => {
+        if (wrap && !wrap.contains(e.target)) {
+          wrap.classList.remove('open');
+          trigger.setAttribute('aria-expanded', false);
+        }
+      });
+    })();
+
+    function lockSession() {
+      document.getElementById('userWrap')?.classList.remove('open');
+      showToast('Session locked', 'info');
+    }
+
+    // ─── KEYBOARD SHORTCUT: / → open patient search ───
+    document.addEventListener('keydown', e => {
+      if (e.key === '/' && !e.ctrlKey && !e.metaKey) {
+        const tag = document.activeElement?.tagName;
+        if (tag !== 'INPUT' && tag !== 'TEXTAREA' && tag !== 'SELECT') {
+          e.preventDefault();
+          openPatientsModal();
+        }
+      }
+    });
+
     // ─── PARTICLES ───
     function createParticles() {
       const container = document.getElementById('particlesContainer');
@@ -3298,50 +3753,100 @@
       });
     });
 
-    // ─── NAVBAR SCROLL SHADOW ───
+    // ─── NAVBAR SCROLL SHADOW + SUB-BAR ───
     const mainNav = document.getElementById('mainNav');
+    const subBar  = document.getElementById('subBar');
     window.addEventListener('scroll', () => {
       mainNav.classList.toggle('scrolled', window.scrollY > 10);
+      if (subBar) subBar.classList.toggle('scrolled', window.scrollY > 10);
     }, { passive: true });
 
-    // ─── MOBILE MENU TOGGLE ───
-    const hamburger = document.getElementById('navHamburger');
-    const mobileMenu = document.getElementById('navMobileMenu');
-    if (hamburger && mobileMenu) {
-      hamburger.addEventListener('click', () => {
-        const isOpen = mobileMenu.classList.toggle('open');
-        hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    // ─── NAVBAR + SUB-BAR ACTIVE ON SCROLL — with click-lock ───
+    const sectionMeta = [
+      { id: 'modules',  label: 'Modules',  module: 'Module Overview' },
+      { id: 'workflow', label: 'Workflow', module: 'Workflow Guide' },
+      { id: 'features', label: 'Features', module: 'Feature Set' },
+      { id: 'backup',   label: 'Backup',   module: 'Data Management' },
+    ];
+
+    let navClickLocked = false;
+    let navClickTimer  = null;
+
+    // Lock active state on click for 1.5s before handing back to scroll
+    document.querySelectorAll('.nav-link').forEach((link, idx) => {
+      link.addEventListener('click', () => {
+        navClickLocked = true;
+        document.querySelectorAll('.nav-link').forEach((l, i) => l.classList.toggle('active', i === idx));
+        const meta = sectionMeta[idx];
+        const subLabel = document.getElementById('subModuleLabel');
+        if (subLabel) subLabel.textContent = meta.module;
+        clearTimeout(navClickTimer);
+        navClickTimer = setTimeout(() => { navClickLocked = false; }, 1500);
       });
-      // Close mobile menu when a link is clicked
-      mobileMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-          mobileMenu.classList.remove('open');
-          hamburger.setAttribute('aria-expanded', 'false');
-        });
+    });
+
+    window.addEventListener('scroll', () => {
+      if (navClickLocked) return;
+      const links = document.querySelectorAll('.nav-link');
+      let activeIdx = 0;
+      sectionMeta.forEach(({ id }, i) => {
+        const el = document.getElementById(id);
+        if (el && window.scrollY >= el.offsetTop - 120) activeIdx = i;
       });
-      // Close on outside click
-      const headerEl = document.querySelector('header');
-      document.addEventListener('click', (e) => {
-        if (headerEl && !headerEl.contains(e.target)) {
-          mobileMenu.classList.remove('open');
-          hamburger.setAttribute('aria-expanded', 'false');
-        }
+      links.forEach((l, i) => l.classList.toggle('active', i === activeIdx));
+
+      // Update sub-bar module label
+      const meta = sectionMeta[activeIdx];
+      const subLabel = document.getElementById('subModuleLabel');
+      if (subLabel) subLabel.textContent = meta.module;
+    }, { passive: true });
+
+    // ─── SUB-BAR: live full date ───
+    function updateSubDate() {
+      const el = document.getElementById('subDateFull');
+      if (!el) return;
+      el.textContent = new Date().toLocaleDateString('en-IN', {
+        weekday: 'long', day: '2-digit', month: 'long', year: 'numeric'
       });
     }
+    updateSubDate();
+    setInterval(updateSubDate, 60000);
 
-    // ─── NAVBAR ACTIVE ON SCROLL ───
-    window.addEventListener('scroll', () => {
-      const links = document.querySelectorAll('.nav-link');
-      const mobileLinks = document.querySelectorAll('.nav-mobile-link');
-      const sections = ['modules', 'workflow', 'features', 'backup'];
-      let active = 0;
-      sections.forEach((id, i) => {
-        const el = document.getElementById(id);
-        if (el && window.scrollY >= el.offsetTop - 120) active = i;
-      });
-      links.forEach((l, i) => l.classList.toggle('active', i === active));
-      mobileLinks.forEach((l, i) => l.classList.toggle('active', i === active));
-    }, { passive: true });
+    // ─── SUB-BAR: module health → dot color + tooltip only, never text ───
+    async function checkSubBarHealth() {
+      // Skip entirely on file:// — fetch will always fail there
+      if (location.protocol === 'file:') return;
+
+      const modules = ['MAIN1.html','MAIN2.html','MAIN3.html','MAIN4.html']; // MAIN5 excluded until built
+      const dot  = document.getElementById('subStatusDot');
+      if (!dot) return;
+
+      try {
+        const results = await Promise.all(
+          modules.map(m =>
+            fetch(m, { method: 'HEAD', cache: 'no-store' })
+              .then(r => r.ok)
+              .catch(() => null)   // null = network error, not a 404
+          )
+        );
+
+        // If every result is null, fetch itself failed (CORS / wrong origin) — stay green
+        const responded = results.filter(r => r !== null);
+        if (responded.length === 0) return;
+
+        const missing = modules.filter((_, i) => results[i] === false);
+        if (missing.length === 0) {
+          dot.style.background = '#22c55e';
+          dot.style.boxShadow  = '0 0 0 2px rgba(34,197,94,0.2)';
+          dot.title            = 'All 5 modules operational';
+        } else {
+          dot.style.background = '#f59e0b';
+          dot.style.boxShadow  = '0 0 0 2px rgba(245,158,11,0.2)';
+          dot.title            = `${missing.length} module${missing.length > 1 ? 's' : ''} not found: ${missing.join(', ')}`;
+        }
+      } catch { /* skip silently */ }
+    }
+    checkSubBarHealth();
   </script>
 </body>
 </html>
