@@ -63,52 +63,54 @@
     /* ══════════════════════════════════════════════
        NAVBAR — Premium 2025 Redesign
     ══════════════════════════════════════════════ */
-    header { position: relative; }
-
-    .navbar {
+    header {
       position: sticky;
       top: 0;
       z-index: 200;
-      background: rgba(8, 14, 50, 0.92);
-      backdrop-filter: blur(24px) saturate(180%);
-      -webkit-backdrop-filter: blur(24px) saturate(180%);
+    }
+
+    .navbar {
+      position: relative;
+      z-index: 1;
+      background: #06102a;
       border-bottom: 1px solid rgba(255,255,255,0.07);
-      padding: 0 clamp(16px, 3vw, 36px);
+      padding: 0 clamp(20px, 3vw, 44px);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 70px;
-      gap: 16px;
-      transition: box-shadow 0.3s ease, border-color 0.3s ease, background 0.4s ease;
+      height: 84px;
+      gap: 20px;
+      transition: box-shadow 0.3s ease, border-color 0.3s ease;
     }
+    body.dark-mode .navbar { background: #02060f; }
 
     /* ── LOGO ── */
     .nav-logo {
       display: flex;
       align-items: center;
-      gap: 11px;
+      gap: 14px;
       text-decoration: none;
       flex-shrink: 0;
     }
 
     .logo-icon {
-      width: clamp(38px, 4vw, 46px);
-      height: clamp(38px, 4vw, 46px);
+      width: clamp(50px, 5vw, 62px);
+      height: clamp(50px, 5vw, 62px);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      border-radius: 12px;
+      border-radius: 15px;
       background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.1);
-      box-shadow: 0 0 18px rgba(6,182,212,0.18), 0 2px 8px rgba(0,0,0,0.25);
+      border: 1.5px solid rgba(255,255,255,0.12);
+      box-shadow: 0 0 22px rgba(6,182,212,0.22), 0 3px 10px rgba(0,0,0,0.35);
       transition: box-shadow 0.3s ease, transform 0.25s ease;
-      padding: 5px;
+      padding: 7px;
     }
 
     .nav-logo:hover .logo-icon {
-      box-shadow: 0 0 28px rgba(6,182,212,0.32), 0 4px 16px rgba(0,0,0,0.3);
-      transform: scale(1.05);
+      box-shadow: 0 0 34px rgba(6,182,212,0.38), 0 5px 18px rgba(0,0,0,0.35);
+      transform: scale(1.06);
     }
 
     .logo-icon img {
@@ -119,10 +121,10 @@
     }
 
     .logo-text {
-      font-size: clamp(17px, 2vw, 22px);
+      font-size: clamp(21px, 2.4vw, 27px);
       font-weight: 800;
       color: white;
-      letter-spacing: -0.6px;
+      letter-spacing: -0.8px;
       line-height: 1;
     }
 
@@ -136,36 +138,61 @@
 
     .logo-sub {
       display: block;
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 600;
-      letter-spacing: 1.2px;
+      letter-spacing: 1.4px;
       text-transform: uppercase;
       color: rgba(255,255,255,0.38);
-      margin-top: 3px;
+      margin-top: 4px;
       -webkit-text-fill-color: rgba(255,255,255,0.38);
     }
 
     /* ── NAV LINKS ── */
     .nav-links {
       display: flex;
-      gap: 2px;
+      gap: 4px;
       align-items: center;
     }
 
     .nav-link {
       color: rgba(255,255,255,0.55);
       text-decoration: none;
-      font-size: 13.5px;
-      font-weight: 500;
-      padding: 7px 13px;
-      border-radius: 8px;
-      transition: color 0.2s, background 0.2s;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 7px 16px;
+      border-radius: 9px;
+      border: 1.5px solid transparent;
+      transition: color 0.18s, background 0.18s, border-color 0.18s, box-shadow 0.18s;
       white-space: nowrap;
+      letter-spacing: 0.1px;
     }
 
-    .nav-link:hover { color: rgba(255,255,255,0.92); background: rgba(255,255,255,0.07); }
-    .nav-link.active { color: white; background: rgba(37,99,235,0.28); }
-    .nav-link:focus-visible { outline: 2px solid #06b6d4; outline-offset: 2px; border-radius: 6px; }
+    /* Light mode — hover & active: solid blue */
+    .nav-link:hover {
+      color: #fff;
+      background: #2563eb;
+      border-color: #2563eb;
+      box-shadow: 0 4px 14px rgba(37,99,235,0.45);
+    }
+    .nav-link.active {
+      color: #fff;
+      background: #2563eb;
+      border-color: #2563eb;
+      box-shadow: 0 4px 14px rgba(37,99,235,0.45);
+    }
+    .nav-link:focus-visible { outline: 2px solid #06b6d4; outline-offset: 2px; border-radius: 9px; }
+
+    /* Dark mode — hover & active: solid cyan */
+    body.dark-mode .nav-link:hover {
+      background: #0891b2;
+      border-color: #0891b2;
+      box-shadow: 0 4px 14px rgba(6,182,212,0.45);
+    }
+    body.dark-mode .nav-link.active {
+      background: #0891b2;
+      border-color: #0891b2;
+      box-shadow: 0 4px 14px rgba(6,182,212,0.45);
+    }
     .nav-logo:focus-visible { outline: 2px solid #06b6d4; outline-offset: 4px; border-radius: 10px; }
 
     /* ── NAV RIGHT ── */
@@ -305,189 +332,220 @@
       min-width: 24px;
     }
 
-    /* ── PATIENT SEARCH BUTTON ── */
-    .nav-search-btn {
+    /* ── PATIENT SEARCH PILL ── */
+    .nav-search-pill {
       display: flex;
       align-items: center;
-      justify-content: center;
-      width: 34px;
-      height: 34px;
-      border-radius: 9px;
-      border: 1px solid rgba(255,255,255,0.09);
-      background: rgba(255,255,255,0.05);
-      color: rgba(255,255,255,0.55);
+      gap: 8px;
+      height: 36px;
+      padding: 0 16px 0 12px;
+      border-radius: 100px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(0,0,0,0.35);
+      color: rgba(255,255,255,0.38);
       cursor: pointer;
-      transition: background 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s;
+      transition: background 0.22s, border-color 0.22s, color 0.22s, box-shadow 0.22s;
       flex-shrink: 0;
-    }
-    .nav-search-btn:hover {
-      background: rgba(6,182,212,0.12);
-      border-color: rgba(6,182,212,0.35);
-      color: #22d3ee;
-      box-shadow: 0 0 12px rgba(6,182,212,0.15);
-    }
-    .nav-search-btn:focus-visible { outline: 2px solid #06b6d4; outline-offset: 2px; }
-
-    /* ── USER DROPDOWN ── */
-    .nav-user-wrap {
-      position: relative;
-    }
-
-    .nav-user-pill {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.09);
-      border-radius: 10px;
-      padding: 5px 10px 5px 6px;
-      cursor: pointer;
-      transition: background 0.2s, border-color 0.2s;
       user-select: none;
+      min-width: 148px;
     }
-    .nav-user-pill:hover {
-      background: rgba(255,255,255,0.09);
-      border-color: rgba(255,255,255,0.16);
+    .nav-search-pill:hover {
+      background: rgba(6,182,212,0.10);
+      border-color: rgba(6,182,212,0.32);
+      color: rgba(255,255,255,0.65);
+      box-shadow: 0 0 14px rgba(6,182,212,0.12);
     }
-
-    .nav-user-avatar {
-      width: 24px;
-      height: 24px;
-      border-radius: 6px;
-      background: linear-gradient(135deg, #2563eb, #06b6d4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 800;
-      color: white;
-      flex-shrink: 0;
-      letter-spacing: 0;
-    }
-
-    .nav-user-name {
-      font-size: 12px;
-      font-weight: 600;
-      color: rgba(255,255,255,0.75);
+    .nav-search-pill:focus-visible { outline: 2px solid #06b6d4; outline-offset: 2px; }
+    .nav-search-pill svg { flex-shrink: 0; color: rgba(255,255,255,0.38); }
+    .nav-search-pill:hover svg { color: rgba(255,255,255,0.6); }
+    .nav-search-text {
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.1px;
       white-space: nowrap;
     }
 
-    .nav-user-chevron {
-      color: rgba(255,255,255,0.3);
-      transition: transform 0.2s;
+    /* ══════════════════════════════════════════════
+       MODULE HUB — Orbital vertical nav menu
+    ══════════════════════════════════════════════ */
+    .mod-hub-wrap {
+      position: relative;
       flex-shrink: 0;
     }
-    .nav-user-wrap.open .nav-user-chevron { transform: rotate(180deg); }
 
-    /* Dropdown panel */
-    .nav-user-dropdown {
-      position: absolute;
-      top: calc(100% + 8px);
-      right: 0;
-      width: 220px;
-      background: rgba(8, 14, 50, 0.98);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 14px;
-      padding: 14px;
-      box-shadow: 0 16px 48px rgba(0,0,0,0.55), 0 0 0 1px rgba(6,182,212,0.08);
-      z-index: 300;
-      opacity: 0;
-      transform: translateY(-6px) scale(0.97);
-      pointer-events: none;
-      transition: opacity 0.2s ease, transform 0.2s ease;
+    /* Trigger button */
+    .mod-hub-trigger {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(37,99,235,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.22s, border-color 0.22s, box-shadow 0.22s, transform 0.22s;
+      position: relative;
+      color: rgba(255,255,255,0.85);
+      box-shadow: 0 0 16px rgba(37,99,235,0.22);
     }
-    .nav-user-wrap.open .nav-user-dropdown {
+    .mod-hub-trigger:hover {
+      background: rgba(37,99,235,0.35);
+      border-color: rgba(6,182,212,0.45);
+      box-shadow: 0 0 22px rgba(6,182,212,0.28);
+    }
+    .mod-hub-wrap.open .mod-hub-trigger {
+      background: rgba(6,182,212,0.22);
+      border-color: rgba(6,182,212,0.5);
+      box-shadow: 0 0 24px rgba(6,182,212,0.35);
+      transform: rotate(45deg);
+    }
+    .mod-hub-trigger svg { transition: opacity 0.18s, transform 0.18s; }
+    .mod-hub-icon-grid { position: absolute; }
+    .mod-hub-icon-close { position: absolute; opacity: 0; transform: rotate(-45deg); }
+    .mod-hub-wrap.open .mod-hub-icon-grid { opacity: 0; transform: rotate(45deg); }
+    .mod-hub-wrap.open .mod-hub-icon-close { opacity: 1; transform: rotate(0deg); }
+
+    /* The vertical panel */
+    .mod-hub-panel {
+      position: absolute;
+      top: calc(100% + 14px);
+      right: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0;
+      z-index: 400;
+      pointer-events: none;
+      /* Invisible wrapper — items animate individually */
+    }
+
+    /* Connecting vertical track line */
+    .mod-hub-track {
+      position: absolute;
+      top: 19px;
+      right: 19px;
+      width: 2px;
+      background: linear-gradient(180deg,
+        rgba(6,182,212,0.55) 0%,
+        rgba(37,99,235,0.35) 60%,
+        transparent 100%);
+      border-radius: 99px;
+      transform-origin: top center;
+      transition: height 0.4s cubic-bezier(0.34,1.2,0.64,1), opacity 0.3s;
+      height: 0;
+      opacity: 0;
+    }
+    .mod-hub-wrap.open .mod-hub-track {
+      height: calc(5 * 64px - 24px);
       opacity: 1;
-      transform: translateY(0) scale(1);
+    }
+
+    /* Each module node row */
+    .mod-hub-node {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      padding: 6px 0 6px 0;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateX(20px) scale(0.85);
+      transition:
+        opacity 0.28s cubic-bezier(0.34,1.3,0.64,1),
+        transform 0.28s cubic-bezier(0.34,1.3,0.64,1);
+    }
+    .mod-hub-wrap.open .mod-hub-node {
+      opacity: 1;
+      transform: translateX(0) scale(1);
       pointer-events: auto;
     }
+    /* Staggered delays */
+    .mod-hub-wrap.open .mod-hub-node:nth-child(2) { transition-delay: 0.04s; }
+    .mod-hub-wrap.open .mod-hub-node:nth-child(3) { transition-delay: 0.09s; }
+    .mod-hub-wrap.open .mod-hub-node:nth-child(4) { transition-delay: 0.14s; }
+    .mod-hub-wrap.open .mod-hub-node:nth-child(5) { transition-delay: 0.19s; }
+    .mod-hub-wrap.open .mod-hub-node:nth-child(6) { transition-delay: 0.24s; }
 
-    .nud-header {
+    /* Label (left of circle) */
+    .mod-hub-label-wrap {
       display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 12px;
+      flex-direction: column;
+      align-items: flex-end;
+      text-align: right;
     }
-
-    .nud-avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, #2563eb, #06b6d4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 15px;
-      font-weight: 800;
-      color: white;
-      flex-shrink: 0;
-    }
-
-    .nud-name {
-      font-size: 13px;
-      font-weight: 700;
-      color: rgba(255,255,255,0.9);
-      line-height: 1.2;
-    }
-
-    .nud-role {
-      font-size: 10px;
-      color: rgba(255,255,255,0.38);
-      font-weight: 500;
-      margin-top: 2px;
-      letter-spacing: 0.2px;
-    }
-
-    .nud-divider {
-      height: 1px;
-      background: rgba(255,255,255,0.07);
-      margin: 10px 0;
-    }
-
-    .nud-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 3px 0;
-    }
-
-    .nud-row-label {
-      font-size: 10.5px;
-      color: rgba(255,255,255,0.38);
-      font-weight: 500;
-    }
-
-    .nud-row-val {
+    .mod-hub-num {
       font-family: 'DM Mono', monospace;
-      font-size: 10.5px;
-      color: rgba(255,255,255,0.65);
+      font-size: 9px;
+      color: rgba(255,255,255,0.28);
+      letter-spacing: 1px;
+      line-height: 1;
       font-weight: 500;
     }
-
-    .nud-lock-btn {
-      width: 100%;
-      margin-top: 10px;
-      padding: 8px 12px;
-      border-radius: 8px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.04);
-      color: rgba(255,255,255,0.5);
+    .mod-hub-name {
       font-size: 12px;
-      font-weight: 600;
-      font-family: 'Outfit', sans-serif;
-      cursor: pointer;
+      font-weight: 700;
+      color: rgba(255,255,255,0.75);
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+      line-height: 1.2;
+      transition: color 0.18s;
+    }
+    .mod-hub-node:hover .mod-hub-name { color: #22d3ee; }
+
+    /* The glowing circle */
+    .mod-hub-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(37,99,235,0.45);
+      background: radial-gradient(circle at 35% 35%, rgba(37,99,235,0.5), rgba(6,182,212,0.22) 70%, rgba(8,14,50,0.88) 100%);
+      box-shadow:
+        0 0 14px rgba(6,182,212,0.22),
+        0 0 0 3px rgba(37,99,235,0.12),
+        inset 0 1px 0 rgba(255,255,255,0.14);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      transition: all 0.15s;
+      color: rgba(255,255,255,0.85);
+      flex-shrink: 0;
+      transition: box-shadow 0.22s, border-color 0.22s, background 0.22s, transform 0.22s;
+      position: relative;
     }
-    .nud-lock-btn:hover {
-      background: rgba(220,38,38,0.12);
-      border-color: rgba(220,38,38,0.25);
-      color: #f87171;
+    .mod-hub-node:hover .mod-hub-circle {
+      border-color: rgba(6,182,212,0.8);
+      box-shadow:
+        0 0 22px rgba(6,182,212,0.45),
+        0 0 0 5px rgba(6,182,212,0.12),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+      background: radial-gradient(circle at 35% 35%, rgba(6,182,212,0.55), rgba(37,99,235,0.35) 70%, rgba(8,14,50,0.88) 100%);
+      transform: scale(1.1);
     }
+    /* Pulse ring on active module */
+    .mod-hub-circle::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 1px solid rgba(6,182,212,0.3);
+      animation: hubRingPulse 2.5s ease-in-out infinite;
+      opacity: 0;
+    }
+    .mod-hub-node:hover .mod-hub-circle::after { opacity: 1; }
+    @keyframes hubRingPulse {
+      0%, 100% { transform: scale(1); opacity: 0.6; }
+      50% { transform: scale(1.18); opacity: 0; }
+    }
+
+    /* Backdrop overlay (click-outside close) */
+    .mod-hub-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 399;
+    }
+    .mod-hub-wrap.open .mod-hub-backdrop { display: block; }
+    .mod-hub-wrap.open .mod-hub-panel { pointer-events: auto; }
 
     /* ── CTA BUTTON ── */
     .btn-nav {
@@ -506,36 +564,29 @@
 
     .btn-nav:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(37,99,235,0.45); }
 
-    /* ── NAVBAR SCROLL SHADOW ── */
-    .navbar.scrolled {
-      background: rgba(4, 8, 32, 0.98);
-      box-shadow: 0 4px 32px rgba(0,0,0,0.55), 0 1px 0 rgba(6,182,212,0.12);
-      border-bottom-color: rgba(6,182,212,0.15);
-    }
+    /* ── NAVBAR SCROLL SHADOW (now in main navbar block) ── */
 
     /* ══════════════════════════════════════════════
        SUB-BAR — Secondary info tier below navbar
     ══════════════════════════════════════════════ */
     .sub-bar {
-      position: sticky;
-      top: 70px;
-      z-index: 199;
-      background: rgba(6, 10, 38, 0.88);
-      backdrop-filter: blur(16px) saturate(160%);
-      -webkit-backdrop-filter: blur(16px) saturate(160%);
-      border-bottom: 1px solid rgba(255,255,255,0.055);
-      padding: 0 clamp(16px, 3vw, 36px);
-      height: 36px;
+      position: relative;
+      z-index: 0;
+      background: #040d22;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 0 clamp(20px, 3vw, 44px);
+      height: 38px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 24px;
       transition: box-shadow 0.3s ease;
     }
+    body.dark-mode .sub-bar { background: #010409; border-bottom-color: rgba(255,255,255,0.04); }
 
     .navbar.scrolled ~ .sub-bar,
     .sub-bar.scrolled {
-      box-shadow: 0 2px 16px rgba(0,0,0,0.35);
+      box-shadow: 0 2px 16px rgba(0,0,0,0.5);
     }
 
     /* Left side — breadcrumb / active module indicator */
@@ -720,12 +771,6 @@
       color: rgba(255,255,255,0.45);
       letter-spacing: 0.5px;
       text-transform: uppercase;
-    }
-
-    /* Dark mode sub-bar adjustments */
-    body.dark-mode .sub-bar {
-      background: rgba(4, 7, 26, 0.92);
-      border-bottom-color: rgba(255,255,255,0.04);
     }
 
     /* ── SKIP LINK ── */
@@ -1061,12 +1106,12 @@
       margin: 0 auto;
     }
 
-    /* ── MODULE CARDS — uiverse hover-reveal design ── */
+    /* ── MODULE CARDS — bento grid matching sketch layout ── */
     .modules-grid {
       display: grid;
-      grid-template-columns: 1.35fr 1fr 1fr;
-      grid-template-rows: auto auto;
-      gap: 20px;
+      grid-template-columns: repeat(10, 1fr);
+      grid-auto-rows: auto;
+      gap: 22px;
       margin-bottom: 0;
     }
 
@@ -1074,40 +1119,69 @@
       margin-bottom: 56px;
     }
 
-    .module-card-anchor {
-      grid-row: 1 / 3;
+    /* Row 1 left — 40% width */
+    .module-card-r1l {
+      grid-column: 1 / 5;
     }
 
-    /* Outer wrapper — positions the two-layer card */
+    /* Row 1 right — 60% width */
+    .module-card-r1r {
+      grid-column: 5 / 11;
+    }
+
+    /* Row 2 — full width */
+    .module-card-full {
+      grid-column: 1 / 11;
+    }
+
+    /* Row 3 left — 50% */
+    .module-card-r3l {
+      grid-column: 1 / 6;
+    }
+
+    /* Row 3 right — 50% */
+    .module-card-r3r {
+      grid-column: 6 / 11;
+    }
+
+    /* Outer wrapper */
     .module-card {
       position: relative;
       text-decoration: none;
       color: inherit;
       cursor: pointer;
       display: block;
-      /* height of front card + reveal panel — anchor card gets extra via min-height */
+      border-radius: 22px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
+    .module-card:hover { transform: translateY(-4px); }
 
-    /* Front visible card (card layer 1) */
+    /* Front visible card */
     .mc-front {
-      background: whitesmoke;
+      background: #ffffff;
       border-radius: 22px;
       border: 1.5px solid var(--border-light);
       box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-      transition: background 0.4s ease, box-shadow 0.4s ease;
+      transition: background 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
       position: relative;
       z-index: 2;
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      height: 100%;
+    }
+    body.dark-mode .mc-front {
+      background: #0d1630;
+      border-color: rgba(255,255,255,0.08);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.4);
     }
 
-    /* Hidden reveal panel (card layer 2) — slides up on hover */
+    /* Hidden reveal panel */
     .mc-reveal {
       position: absolute;
       left: 0; right: 0; bottom: 0;
       border-radius: 0 0 22px 22px;
-      background: white;
+      background: #fff;
       border: 1.5px solid var(--border-light);
       border-top: none;
       z-index: 1;
@@ -1115,6 +1189,10 @@
       max-height: 0;
       transition: max-height 0.4s ease, box-shadow 0.4s ease;
       box-shadow: none;
+    }
+    body.dark-mode .mc-reveal {
+      background: #0a1225;
+      border-color: rgba(255,255,255,0.08);
     }
 
     .mc-reveal-inner {
@@ -1124,15 +1202,18 @@
       flex-wrap: wrap;
     }
 
-    /* On hover: front card glows, reveal slides down */
     .module-card:hover .mc-front {
-      background: #fffde7;
-      box-shadow: 0 8px 32px rgba(37,99,235,0.13);
+      box-shadow: 0 12px 36px rgba(37,99,235,0.15);
+      border-color: rgba(37,99,235,0.25);
+    }
+    body.dark-mode .module-card:hover .mc-front {
+      box-shadow: 0 12px 36px rgba(6,182,212,0.2);
+      border-color: rgba(6,182,212,0.3);
     }
 
     .module-card:hover .mc-reveal {
       max-height: 200px;
-      box-shadow: 0 16px 40px rgba(0,0,0,0.1);
+      box-shadow: 0 18px 48px rgba(0,0,0,0.14);
     }
 
     /* Reveal stat chips */
@@ -1172,6 +1253,14 @@
       color: var(--navy);
       text-align: center;
     }
+    body.dark-mode .mc-stat-val { color: rgba(255,255,255,0.85); }
+    body.dark-mode .mc-stat-label { color: rgba(255,255,255,0.4); }
+    body.dark-mode .mc-title { color: rgba(255,255,255,0.92); }
+    body.dark-mode .mc-desc { color: rgba(255,255,255,0.48); }
+    body.dark-mode .mc-footer { background: rgba(255,255,255,0.03); border-top-color: rgba(255,255,255,0.07); }
+    body.dark-mode .mc-footer-label { color: rgba(255,255,255,0.45); }
+    body.dark-mode .mc-reveal-status { border-top-color: rgba(255,255,255,0.07); }
+    body.dark-mode .mc-reveal-inner .mc-stat + .mc-stat { border-left-color: rgba(255,255,255,0.07); }
 
     /* Status pill inside reveal */
     .mc-reveal-status {
@@ -1258,6 +1347,8 @@
 
     .mc-tag-blue { background: rgba(37,99,235,0.08); color: #2563eb; }
     .mc-tag-teal { background: rgba(6,182,212,0.08); color: #0891b2; }
+    body.dark-mode .mc-tag-blue { background: rgba(37,99,235,0.18); color: #93c5fd; }
+    body.dark-mode .mc-tag-teal { background: rgba(6,182,212,0.18); color: #67e8f9; }
 
     .mc-footer {
       display: flex;
@@ -1291,53 +1382,126 @@
 
     .module-card:hover .mc-arrow { transform: translateX(4px); }
 
-    /* ── QUICK ACTIONS STRIP ── */
-    .quick-strip {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 20px;
-      margin-bottom: 0;
-      align-items: center;
-      padding-top: 20px;
-      border-top: 1px solid var(--border-light);
+    /* ── QUICK LAUNCH SECTION ── */
+    .quick-launch-section {
+      margin-top: 36px;
+      background: linear-gradient(135deg, #06102a 0%, #0b1f4a 50%, #071628 100%);
+      border-radius: 24px;
+      padding: 36px 40px 40px;
+      border: 1px solid rgba(255,255,255,0.07);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.25);
+      position: relative;
+      overflow: hidden;
+    }
+    .quick-launch-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 0% 50%, rgba(37,99,235,0.18) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 60% at 100% 30%, rgba(6,182,212,0.14) 0%, transparent 55%);
+      pointer-events: none;
+    }
+    body.dark-mode .quick-launch-section {
+      background: linear-gradient(135deg, #010614 0%, #040e24 50%, #020b18 100%);
+      border-color: rgba(255,255,255,0.05);
     }
 
-    .quick-strip-label {
-      font-size: 11px;
+    .ql-header {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+    .ql-header h3 {
+      font-size: 20px;
+      font-weight: 800;
+      color: white;
+      letter-spacing: -0.4px;
+    }
+    .ql-header p {
+      font-size: 13px;
+      color: rgba(255,255,255,0.38);
+    }
+    .ql-badge {
+      font-size: 10px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: var(--muted);
-      margin-right: 4px;
-      white-space: nowrap;
-    }
-
-    .quick-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      background: white;
-      border: 1.5px solid var(--border-light);
+      letter-spacing: 1.2px;
+      color: #22d3ee;
+      background: rgba(34,211,238,0.1);
+      border: 1px solid rgba(34,211,238,0.25);
       border-radius: 100px;
-      padding: 9px 18px;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--navy);
-      transition: all 0.2s;
-      white-space: nowrap;
-      font-family: 'Outfit', sans-serif;
-      text-decoration: none;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      padding: 3px 10px;
+      margin-left: auto;
     }
 
-    .quick-pill:hover {
-      border-color: var(--blue-light);
-      background: rgba(37,99,235,0.04);
-      color: var(--blue-mid);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(37,99,235,0.12);
+    .ql-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 14px;
+    }
+
+    .ql-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 20px 12px 18px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.04);
+      text-decoration: none;
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      transition: background 0.22s, border-color 0.22s, transform 0.22s, box-shadow 0.22s;
+    }
+    .ql-card:hover {
+      background: rgba(37,99,235,0.18);
+      border-color: rgba(6,182,212,0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(6,182,212,0.18);
+    }
+    button.ql-card { border: 1px solid rgba(255,255,255,0.08); }
+
+    .ql-icon-wrap {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+      transition: background 0.22s, box-shadow 0.22s;
+    }
+    .ql-card:hover .ql-icon-wrap {
+      background: rgba(6,182,212,0.18);
+      box-shadow: 0 0 20px rgba(6,182,212,0.3);
+    }
+
+    .ql-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.78);
+      text-align: center;
+      line-height: 1.3;
+      white-space: nowrap;
+    }
+    .ql-card:hover .ql-name { color: white; }
+
+    .ql-chip {
+      font-size: 9.5px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.5px;
+      text-align: center;
     }
 
     /* ── WORKFLOW ── */
@@ -2455,7 +2619,7 @@
     <!-- LOGO -->
     <a href="#" class="nav-logo" aria-label="MediCore home">
       <div class="logo-icon">
-        <img id="navLogo" src="White.png" alt="MediCore Logo" />
+        <img id="navLogo" src="White.svg" alt="MediCore Logo" />
       </div>
       <div class="logo-text">
         <span class="logo-medi">Medi</span><span class="logo-core">Core</span>
@@ -2482,12 +2646,15 @@
 
       <div class="nav-divider"></div>
 
-      <!-- PATIENT QUICK SEARCH -->
-      <button class="nav-search-btn" onclick="openPatientsModal()" title="Search patients  ( / )" aria-label="Search patients">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <!-- PATIENT QUICK SEARCH — Pill -->
+      <div class="nav-search-pill" onclick="openPatientsModal()" role="button" tabindex="0"
+           title="Search patients  ( / )" aria-label="Search patients"
+           onkeydown="if(event.key==='Enter'||event.key===' '){openPatientsModal()}">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
         </svg>
-      </button>
+        <span class="nav-search-text">Search...</span>
+      </div>
 
       <div class="nav-divider"></div>
 
@@ -2504,41 +2671,97 @@
 
       <div class="nav-divider"></div>
 
-      <!-- USER / SESSION DROPDOWN -->
-      <div class="nav-user-wrap" id="userWrap">
-        <div class="nav-user-pill" id="userTrigger" role="button" tabindex="0" aria-label="Session info" aria-expanded="false">
-          <div class="nav-user-avatar">A</div>
-          <span class="nav-user-name">Admin</span>
-          <svg class="nav-user-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="6 9 12 15 18 9"/>
-          </svg>
-        </div>
+      <!-- MODULE HUB — Orbital vertical page nav -->
+      <div class="mod-hub-wrap" id="modHubWrap">
+        <!-- backdrop for click-outside -->
+        <div class="mod-hub-backdrop" id="modHubBackdrop"></div>
 
-        <div class="nav-user-dropdown" id="userDropdown" role="dialog" aria-label="Session details">
-          <div class="nud-header">
-            <div class="nud-avatar">A</div>
-            <div>
-              <div class="nud-name">Admin</div>
-              <div class="nud-role">Lab Console · Operator</div>
+        <!-- Trigger -->
+        <button class="mod-hub-trigger" id="modHubTrigger" aria-label="Module navigation" aria-expanded="false" title="Navigate modules">
+          <!-- Grid icon (open state) -->
+          <svg class="mod-hub-icon-grid" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+            <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+          </svg>
+          <!-- X icon (close state) -->
+          <svg class="mod-hub-icon-close" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+
+        <!-- Vertical orbital panel -->
+        <div class="mod-hub-panel" id="modHubPanel" role="navigation" aria-label="Module pages">
+          <!-- Connecting track line -->
+          <div class="mod-hub-track"></div>
+
+          <!-- 1. Register — MAIN1 -->
+          <a href="MAIN1.html" class="mod-hub-node">
+            <div class="mod-hub-label-wrap">
+              <span class="mod-hub-num">01</span>
+              <span class="mod-hub-name">Register</span>
             </div>
-          </div>
-          <div class="nud-divider"></div>
-          <div class="nud-row">
-            <span class="nud-row-label">Session started</span>
-            <span class="nud-row-val" id="nudSessionTime">—</span>
-          </div>
-          <div class="nud-row">
-            <span class="nud-row-label">Storage</span>
-            <span class="nud-row-val" id="nudStorage">—</span>
-          </div>
-          <div class="nud-divider"></div>
-          <button class="nud-lock-btn" onclick="lockSession()">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-            </svg>
-            Lock Session
-          </button>
+            <div class="mod-hub-circle">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+          </a>
+
+          <!-- 2. Lab Tests — MAIN2 -->
+          <a href="MAIN2.html" class="mod-hub-node">
+            <div class="mod-hub-label-wrap">
+              <span class="mod-hub-num">02</span>
+              <span class="mod-hub-name">Lab Tests</span>
+            </div>
+            <div class="mod-hub-circle">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 3h6m-5 0v7l-4 7a2 2 0 0 0 1.8 3h8.4a2 2 0 0 0 1.8-3l-4-7V3"/>
+              </svg>
+            </div>
+          </a>
+
+          <!-- 3. Bookings — MAIN3 -->
+          <a href="MAIN3.html" class="mod-hub-node">
+            <div class="mod-hub-label-wrap">
+              <span class="mod-hub-num">03</span>
+              <span class="mod-hub-name">Bookings</span>
+            </div>
+            <div class="mod-hub-circle">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
+                <rect x="9" y="3" width="6" height="4" rx="1"/>
+                <path d="M9 12h6M9 16h4"/>
+              </svg>
+            </div>
+          </a>
+
+          <!-- 4. Results — MAIN4 -->
+          <a href="MAIN4.html" class="mod-hub-node">
+            <div class="mod-hub-label-wrap">
+              <span class="mod-hub-num">04</span>
+              <span class="mod-hub-name">Results</span>
+            </div>
+            <div class="mod-hub-circle">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+              </svg>
+            </div>
+          </a>
+
+          <!-- 5. Reports — MAIN5 -->
+          <a href="MAIN5.html" class="mod-hub-node">
+            <div class="mod-hub-label-wrap">
+              <span class="mod-hub-num">05</span>
+              <span class="mod-hub-name">Reports</span>
+            </div>
+            <div class="mod-hub-circle">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 6 2 18 2 18 9"/>
+                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+                <rect x="6" y="14" width="12" height="8"/>
+              </svg>
+            </div>
+          </a>
         </div>
       </div>
 
@@ -2589,6 +2812,7 @@
     </div>
   </div>
   </header>
+  <hr><hr><hr>
 
   <!-- HERO -->
   <section class="hero" id="main-content">
@@ -2642,7 +2866,9 @@
       </div>
     </div>
   </section>
-
+<hr>
+<hr>
+<hr>
   <!-- STATS BAR -->
   <div class="stats-bar">
     <div class="stat-item">
@@ -2662,7 +2888,9 @@
       <div class="stat-label">System Status</div>
     </div>
   </div>
-
+<hr>
+<hr>
+<hr>
   <!-- MAIN CONTENT -->
   <main class="main">
 
@@ -2675,8 +2903,8 @@
       </div>
 
       <div class="modules-grid">
-        <!-- Patient Registration — anchor (tall, left) -->
-        <a href="MAIN1.html" class="module-card module-card-anchor fade-in">
+        <!-- Row 1 Left — Patient Registration (40%) -->
+        <a href="MAIN1.html" class="module-card module-card-r1l fade-in">
           <div class="mc-front">
             <div class="mc-bar mc-bar-blue"></div>
             <div class="mc-body">
@@ -2723,8 +2951,8 @@
           </div>
         </a>
 
-        <!-- Lab Test Details -->
-        <a href="MAIN2.html" class="module-card fade-in">
+        <!-- Row 1 Right — Lab Test Details (60%) -->
+        <a href="MAIN2.html" class="module-card module-card-r1r fade-in">
           <div class="mc-front">
             <div class="mc-bar mc-bar-teal"></div>
             <div class="mc-body">
@@ -2770,8 +2998,60 @@
           </div>
         </a>
 
-        <!-- Result Entry -->
-        <a href="MAIN4.html" class="module-card fade-in">
+        <!-- Row 2 — Booking Dashboard (full width) -->
+        <a href="MAIN3.html" class="module-card module-card-full fade-in">
+          <div class="mc-front" style="border-color:rgba(34,197,94,0.2);">
+            <div class="mc-bar" style="background:linear-gradient(90deg,#16a34a,#22c55e);height:4px;transition:height 0.2s;"></div>
+            <div class="mc-body" style="display:flex;gap:32px;align-items:flex-start;">
+              <div style="flex:0 0 auto;">
+                <div class="mc-icon" style="background:linear-gradient(135deg,rgba(22,163,74,0.1),rgba(34,197,94,0.15));width:52px;height:52px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:16px;">📋</div>
+                <div class="mc-title">Booking Dashboard</div>
+              </div>
+              <div style="flex:1;">
+                <div class="mc-desc" style="margin-bottom:16px;">
+                  Full pipeline view — pending → collected → processed → complete. Manage payments, update status, and generate daily reports from a unified operations hub.
+                </div>
+                <div class="mc-features">
+                  <span class="mc-tag" style="background:#dcfce7;color:#15803d;">Status Pipeline</span>
+                  <span class="mc-tag" style="background:#dcfce7;color:#15803d;">Payments</span>
+                  <span class="mc-tag" style="background:#dcfce7;color:#15803d;">Reports</span>
+                  <span class="mc-tag" style="background:#dcfce7;color:#15803d;">Daily Summary</span>
+                  <span class="mc-tag" style="background:#dcfce7;color:#15803d;">4-Stage Flow</span>
+                </div>
+              </div>
+            </div>
+            <div class="mc-footer" style="background:rgba(22,163,74,0.04);">
+              <span class="mc-footer-label">Open Booking Dashboard →</span>
+              <div class="mc-arrow" style="background:rgba(22,163,74,0.1);color:#16a34a;">→</div>
+            </div>
+          </div>
+          <div class="mc-reveal" style="border-color:rgba(34,197,94,0.2);">
+            <div class="mc-reveal-inner">
+              <div class="mc-stat">
+                <div class="mc-stat-icon">📋</div>
+                <div class="mc-stat-label">Today</div>
+                <div class="mc-stat-val" id="mcBookings" style="color:#16a34a;">—</div>
+              </div>
+              <div class="mc-stat">
+                <div class="mc-stat-icon">🔄</div>
+                <div class="mc-stat-label">Stages</div>
+                <div class="mc-stat-val" style="color:#16a34a;">4</div>
+              </div>
+              <div class="mc-stat">
+                <div class="mc-stat-icon">📊</div>
+                <div class="mc-stat-label">Reports</div>
+                <div class="mc-stat-val" style="color:#16a34a;">Daily</div>
+              </div>
+            </div>
+            <div class="mc-reveal-status">
+              <div class="mc-reveal-status-dot" style="background:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,0.25);animation:pulse 2s infinite;"></div>
+              <span class="mc-reveal-status-text" style="color:#16a34a;">Module Active</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Row 3 Left — Result Entry (50%) -->
+        <a href="MAIN4.html" class="module-card module-card-r3l fade-in">
           <div class="mc-front" style="border-color:rgba(167,139,250,0.2);">
             <div class="mc-bar" style="background:linear-gradient(90deg,#7c3aed,#a78bfa);height:4px;transition:height 0.2s;"></div>
             <div class="mc-body">
@@ -2816,54 +3096,8 @@
           </div>
         </a>
 
-        <!-- Booking Dashboard -->
-        <a href="MAIN3.html" class="module-card fade-in">
-          <div class="mc-front" style="border-color:rgba(34,197,94,0.2);">
-            <div class="mc-bar" style="background:linear-gradient(90deg,#16a34a,#22c55e);height:4px;transition:height 0.2s;"></div>
-            <div class="mc-body">
-              <div class="mc-icon" style="background:linear-gradient(135deg,rgba(22,163,74,0.1),rgba(34,197,94,0.15));width:52px;height:52px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:16px;">📋</div>
-              <div class="mc-title">Booking Dashboard</div>
-              <div class="mc-desc">
-                Full pipeline view — pending → collected → processed → complete. Manage payments, update status, and generate daily reports.
-              </div>
-              <div class="mc-features">
-                <span class="mc-tag" style="background:#dcfce7;color:#15803d;">Status Pipeline</span>
-                <span class="mc-tag" style="background:#dcfce7;color:#15803d;">Payments</span>
-                <span class="mc-tag" style="background:#dcfce7;color:#15803d;">Reports</span>
-              </div>
-            </div>
-            <div class="mc-footer" style="background:rgba(22,163,74,0.04);">
-              <span class="mc-footer-label">Open Booking Dashboard →</span>
-              <div class="mc-arrow" style="background:rgba(22,163,74,0.1);color:#16a34a;">→</div>
-            </div>
-          </div>
-          <div class="mc-reveal" style="border-color:rgba(34,197,94,0.2);">
-            <div class="mc-reveal-inner">
-              <div class="mc-stat">
-                <div class="mc-stat-icon">📋</div>
-                <div class="mc-stat-label">Today</div>
-                <div class="mc-stat-val" id="mcBookings" style="color:#16a34a;">—</div>
-              </div>
-              <div class="mc-stat">
-                <div class="mc-stat-icon">🔄</div>
-                <div class="mc-stat-label">Stages</div>
-                <div class="mc-stat-val" style="color:#16a34a;">4</div>
-              </div>
-              <div class="mc-stat">
-                <div class="mc-stat-icon">📊</div>
-                <div class="mc-stat-label">Reports</div>
-                <div class="mc-stat-val" style="color:#16a34a;">Daily</div>
-              </div>
-            </div>
-            <div class="mc-reveal-status">
-              <div class="mc-reveal-status-dot" style="background:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,0.25);animation:pulse 2s infinite;"></div>
-              <span class="mc-reveal-status-text" style="color:#16a34a;">Module Active</span>
-            </div>
-          </div>
-        </a>
-
-        <!-- Report Print / Generation -->
-        <a href="MAIN5.html" class="module-card fade-in">
+        <!-- Row 3 Right — Report Generation (50%) -->
+        <a href="MAIN5.html" class="module-card module-card-r3r fade-in">
           <div class="mc-front" style="border-color:rgba(99,102,241,0.2);">
             <div class="mc-bar" style="background:linear-gradient(90deg,#6366f1,#818cf8);height:4px;transition:height 0.2s;"></div>
             <div class="mc-body">
@@ -2909,20 +3143,64 @@
         </a>
 
       </div><!-- /modules-grid -->
+<br><br><br>
 
-      <!-- Quick-launch strip — lives inside the modules section -->
-      <div class="quick-strip">
-        <span class="quick-strip-label">Quick launch →</span>
-        <a href="MAIN1.html" class="quick-pill">➕ New Patient</a>
-        <a href="MAIN2.html" class="quick-pill">🧪 Order Tests</a>
-        <a href="MAIN3.html" class="quick-pill">📋 Bookings</a>
-        <a href="MAIN4.html" class="quick-pill quick-pill-purple">🧫 Enter Results</a>
-        <a href="MAIN5.html" class="quick-pill quick-pill-indigo">🖨️ Print Report</a>
-        <a href="MAIN2.html" class="quick-pill">📦 Packages</a>
-        <button class="quick-pill" onclick="openPatientsModal()" style="border:none;">👥 Patient List</button>
+
+<hr>
+<hr><hr>
+      <!-- QUICK LAUNCH — Full featured section -->
+      <div class="quick-launch-section">
+        <div class="ql-header">
+          <h3>⚡ Quick Launch</h3>
+          <p>Jump directly to any module or action</p>
+          <span class="ql-badge">7 shortcuts</span>
+        </div>
+        <div class="ql-grid">
+          <a href="MAIN1.html" class="ql-card">
+            <div class="ql-icon-wrap">🧑‍⚕️</div>
+            <div class="ql-name">New Patient</div>
+            <div class="ql-chip">MAIN1</div>
+          </a>
+          <a href="MAIN2.html" class="ql-card">
+            <div class="ql-icon-wrap">🧪</div>
+            <div class="ql-name">Order Tests</div>
+            <div class="ql-chip">MAIN2</div>
+          </a>
+          <a href="MAIN3.html" class="ql-card">
+            <div class="ql-icon-wrap">📋</div>
+            <div class="ql-name">Bookings</div>
+            <div class="ql-chip">MAIN3</div>
+          </a>
+          <a href="MAIN4.html" class="ql-card">
+            <div class="ql-icon-wrap">🧫</div>
+            <div class="ql-name">Enter Results</div>
+            <div class="ql-chip">MAIN4</div>
+          </a>
+          <a href="MAIN5.html" class="ql-card">
+            <div class="ql-icon-wrap">🖨️</div>
+            <div class="ql-name">Print Report</div>
+            <div class="ql-chip">MAIN5</div>
+          </a>
+          <a href="MAIN2.html" class="ql-card">
+            <div class="ql-icon-wrap">📦</div>
+            <div class="ql-name">Packages</div>
+            <div class="ql-chip">CATALOG</div>
+          </a>
+          <button class="ql-card" onclick="openPatientsModal()">
+            <div class="ql-icon-wrap">👥</div>
+            <div class="ql-name">Patient List</div>
+            <div class="ql-chip">SEARCH</div>
+          </button>
+        </div>
       </div>
 
     </div><!-- /modules -->
+
+<hr><hr><hr>
+<br>
+<br>
+<br>
+
 
     <!-- WORKFLOW -->
     <div id="workflow" class="workflow-section">
@@ -2969,6 +3247,9 @@
         </div>
       </div>
     </div>
+
+<hr><hr><hr>
+<br><br><br>
 
     <!-- LIVE DASHBOARD PREVIEW -->
     <div class="dashboard-preview">
@@ -3124,7 +3405,7 @@
         </div>
       </div>
     </div>
-    
+    <hr><hr><hr><br><br><br>
     <!-- DATA BACKUP -->
     <div id="backup">
       <div class="section-heading">
@@ -3150,7 +3431,7 @@
         </div>
       </div>
     </div>
-    
+    <hr><hr><hr><br><br><br>
        <!-- FEATURES -->
     <div id="features">
       <div class="section-heading">
@@ -3194,7 +3475,7 @@
     </div>
 
   </main>
-
+<hr><hr><hr><br><br><br>
   <!-- FOOTER -->
   <footer class="footer" aria-label="Site footer">
     <div class="footer-inner">
@@ -3202,7 +3483,7 @@
         <!-- Column 1: Brand -->
         <div class="footer-col footer-brand">
           <a href="#" class="footer-logo">
-            <img id="footerLogo" src="White.png" alt="MediCore Logo" style="width:32px;height:32px;object-fit:contain;" />
+            <img id="footerLogo" src="White.svg" alt="MediCore Logo" style="width:32px;height:32px;object-fit:contain;" />
             <span>MediCore</span>
           </a>
           <p>A unified clinic management platform connecting patient registration, diagnostics, bookings, result entry, and report generation — built for speed and accuracy.</p>
@@ -3344,13 +3625,13 @@
       document.body.style.transition = 'background 0.4s ease, color 0.3s ease';
       if (dark) {
         document.body.classList.add('dark-mode');
-        if (navLogo)    navLogo.src    = 'Black.png';
-        if (footerLogo) footerLogo.src = 'Black.png';
+        if (navLogo)    navLogo.src    = 'Black.svg';
+        if (footerLogo) footerLogo.src = 'Black.svg';
         if (themeLabel) themeLabel.textContent = 'Dark';
       } else {
         document.body.classList.remove('dark-mode');
-        if (navLogo)    navLogo.src    = 'White.png';
-        if (footerLogo) footerLogo.src = 'White.png';
+        if (navLogo)    navLogo.src    = 'White.svg';
+        if (footerLogo) footerLogo.src = 'White.svg';
         if (themeLabel) themeLabel.textContent = 'Light';
       }
     }
@@ -3649,58 +3930,35 @@
 
     loadStats();
 
-    // ─── USER / SESSION DROPDOWN ───
-    (function initUserDropdown() {
-      const wrap     = document.getElementById('userWrap');
-      const trigger  = document.getElementById('userTrigger');
+    // ─── MODULE HUB TOGGLE ───
+    (function initModHub() {
+      const wrap    = document.getElementById('modHubWrap');
+      const trigger = document.getElementById('modHubTrigger');
+      const backdrop = document.getElementById('modHubBackdrop');
       if (!trigger || !wrap) return;
 
-      // Session start time
-      const sessionKey = 'medicore-session-start';
-      if (!sessionStorage.getItem(sessionKey)) {
-        sessionStorage.setItem(sessionKey, new Date().toISOString());
+      function openHub() {
+        wrap.classList.add('open');
+        trigger.setAttribute('aria-expanded', 'true');
       }
-      const sessionStart = new Date(sessionStorage.getItem(sessionKey));
-      const nudSess = document.getElementById('nudSessionTime');
-      if (nudSess) {
-        nudSess.textContent = sessionStart.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+      function closeHub() {
+        wrap.classList.remove('open');
+        trigger.setAttribute('aria-expanded', 'false');
+      }
+      function toggleHub() {
+        wrap.classList.contains('open') ? closeHub() : openHub();
       }
 
-      // Storage usage estimate
-      function updateStorage() {
-        const nudStor = document.getElementById('nudStorage');
-        if (!nudStor) return;
-        try {
-          let total = 0;
-          for (const key of Object.keys(localStorage)) {
-            total += (localStorage.getItem(key) || '').length;
-          }
-          nudStor.textContent = (total / 1024).toFixed(1) + ' KB';
-        } catch { nudStor.textContent = '—'; }
-      }
-      updateStorage();
-
-      trigger.addEventListener('click', () => {
-        const isOpen = wrap.classList.toggle('open');
-        trigger.setAttribute('aria-expanded', isOpen);
-        if (isOpen) updateStorage();
-      });
+      trigger.addEventListener('click', toggleHub);
       trigger.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); trigger.click(); }
-        if (e.key === 'Escape') { wrap.classList.remove('open'); trigger.setAttribute('aria-expanded', false); }
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleHub(); }
+        if (e.key === 'Escape') closeHub();
       });
-      document.addEventListener('click', e => {
-        if (wrap && !wrap.contains(e.target)) {
-          wrap.classList.remove('open');
-          trigger.setAttribute('aria-expanded', false);
-        }
+      if (backdrop) backdrop.addEventListener('click', closeHub);
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && wrap.classList.contains('open')) closeHub();
       });
     })();
-
-    function lockSession() {
-      document.getElementById('userWrap')?.classList.remove('open');
-      showToast('Session locked', 'info');
-    }
 
     // ─── KEYBOARD SHORTCUT: / → open patient search ───
     document.addEventListener('keydown', e => {
