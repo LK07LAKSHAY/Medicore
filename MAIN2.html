@@ -6,9 +6,11 @@
   <title>Lab Test Details — MediCore</title>
   <style>
   @media print {
-    .navbar, .page-header, .tab-bar, .search-row, .pagination-row,
+    header, .navbar, .page-header, .tab-bar, .search-row, .pagination-row,
     .specimen-selector-bar, .card-header .btn, .delete-btn, .add-btn,
-    .btn-home, .clock-badge, #toastContainer, #stickyBillBar,
+    .btn-nav, .btn-home, .nav-clock-simple, .clock-badge, .theme-toggle,
+    .theme-toggle-wrap, .theme-label, .mod-hub-wrap, .nav-divider,
+    #toastContainer, #stickyBillBar,
     .section-label, #panel-packages, #panel-prices, .patient-info-bar > .patient-info-field:not(:first-child) { display: none !important; }
     body { background: white !important; }
     .container { padding: 8px !important; max-width: 100% !important; }
@@ -61,63 +63,349 @@ body {
     radial-gradient(ellipse 60% 50% at 90% 110%, rgba(6,182,212,0.07) 0%, transparent 60%);
 }
 
-/* ── NAVBAR ── */
+/* ══════════════════════════════════════════════
+   NAVBAR — Premium (matches MAIN1)
+══════════════════════════════════════════════ */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+
 .navbar {
-  background: rgba(12,20,69,0.97);
-  backdrop-filter: blur(20px);
+  position: relative;
+  z-index: 1;
+  background: #06102a;
   border-bottom: 1px solid rgba(255,255,255,0.07);
-  padding: 0 32px;
+  padding: 0 clamp(20px, 3vw, 44px);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 62px;
-  position: sticky;
-  top: 0;
-  z-index: 300;
+  height: 84px;
+  gap: 20px;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+body.dark-mode .navbar { background: #02060f; }
+
+/* ── LOGO ── */
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+  flex-shrink: 0;
 }
 
-.nav-logo { display: flex; align-items: center; gap: 11px; text-decoration: none; }
 .logo-icon {
-  width: 38px; height: 38px;
-  background: linear-gradient(135deg, #2563eb, #06b6d4);
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px;
-  box-shadow: 0 4px 14px rgba(37,99,235,0.4);
+  width: clamp(50px, 5vw, 62px);
+  height: clamp(50px, 5vw, 62px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 15px;
+  background: rgba(255,255,255,0.06);
+  border: 1.5px solid rgba(255,255,255,0.12);
+  box-shadow: 0 0 22px rgba(6,182,212,0.22), 0 3px 10px rgba(0,0,0,0.35);
+  transition: box-shadow 0.3s ease, transform 0.25s ease;
+  padding: 7px;
 }
-.logo-text { font-size: 19px; font-weight: 800; color: white; letter-spacing: -0.5px; }
-.logo-text span { color: #06b6d4; }
 
-.nav-right { display: flex; align-items: center; gap: 12px; }
+.nav-logo:hover .logo-icon {
+  box-shadow: 0 0 34px rgba(6,182,212,0.38), 0 5px 18px rgba(0,0,0,0.35);
+  transform: scale(1.06);
+}
+
+.logo-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.logo-text {
+  font-size: clamp(21px, 2.4vw, 27px);
+  font-weight: 800;
+  color: white;
+  letter-spacing: -0.8px;
+  line-height: 1;
+}
+
+.logo-text .logo-medi { color: rgba(255,255,255,0.95); }
+.logo-text .logo-core {
+  background: linear-gradient(120deg, #06b6d4, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.logo-sub {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.38);
+  margin-top: 4px;
+  -webkit-text-fill-color: rgba(255,255,255,0.38);
+}
+
+/* ── NAV RIGHT ── */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* ── CLOCK ── */
+.nav-clock-simple {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1px;
+  padding: 0 4px;
+}
 
 .clock-badge {
   font-family: 'DM Mono', monospace;
-  font-size: 13px;
-  color: rgba(255,255,255,0.55);
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.1);
-  padding: 6px 12px;
-  border-radius: 8px;
-  letter-spacing: 0.5px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.9);
+  letter-spacing: 0.8px;
+  line-height: 1;
 }
 
-.btn-home {
-  background: rgba(255,255,255,0.08);
-  color: rgba(255,255,255,0.8);
-  border: 1px solid rgba(255,255,255,0.12);
-  padding: 8px 16px;
-  border-radius: 9px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: 'Outfit', sans-serif;
+.date-badge-inline {
+  font-family: 'DM Mono', monospace;
+  font-size: 9.5px;
+  color: rgba(255,255,255,0.38);
+  letter-spacing: 0.2px;
+  line-height: 1;
+}
+
+/* ── NAV DIVIDER ── */
+.nav-divider {
+  width: 1px;
+  height: 24px;
+  background: rgba(255,255,255,0.1);
+  flex-shrink: 0;
+}
+
+/* ── NAV BUTTONS ── */
+.btn-nav {
+  color: rgba(255,255,255,0.55);
   text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 7px 16px;
+  border-radius: 9px;
+  border: 1.5px solid transparent;
+  transition: color 0.18s, background 0.18s, border-color 0.18s, box-shadow 0.18s;
+  white-space: nowrap;
+  letter-spacing: 0.1px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  transition: all 0.2s;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  background: rgba(255,255,255,0.04);
 }
-.btn-home:hover { background: rgba(255,255,255,0.13); color: white; }
+.btn-nav:hover {
+  color: #fff;
+  background: #2563eb;
+  border-color: #2563eb;
+  box-shadow: 0 4px 14px rgba(37,99,235,0.45);
+}
+body.dark-mode .btn-nav:hover {
+  background: #0891b2;
+  border-color: #0891b2;
+  box-shadow: 0 4px 14px rgba(6,182,212,0.45);
+}
+
+/* ── DARK MODE TOGGLE ── */
+.theme-toggle-wrap { display: flex; align-items: center; }
+
+.theme-toggle {
+  position: relative;
+  width: 52px;
+  height: 28px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.theme-toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+
+.theme-track {
+  position: absolute;
+  inset: 0;
+  border-radius: 100px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.theme-toggle input:checked ~ .theme-track {
+  background: rgba(14,30,80,0.9);
+  border-color: rgba(100,149,237,0.4);
+  box-shadow: inset 0 0 12px rgba(30,60,150,0.3), 0 0 10px rgba(100,149,237,0.15);
+}
+
+.theme-thumb {
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  box-shadow: 0 0 10px rgba(251,191,36,0.6), 0 2px 6px rgba(0,0,0,0.3);
+  transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), background 0.4s ease, box-shadow 0.4s ease;
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+
+.theme-toggle input:checked ~ .theme-thumb {
+  transform: translateX(24px);
+  background: linear-gradient(135deg, #c7d2fe, #a5b4fc);
+  box-shadow: 0 0 12px rgba(165,180,252,0.5), 0 2px 6px rgba(0,0,0,0.4);
+}
+
+.theme-thumb-icon { font-size: 12px; line-height: 1; transition: opacity 0.2s, transform 0.3s; position: absolute; }
+.icon-sun  { opacity: 1; transform: rotate(0deg); }
+.icon-moon { opacity: 0; transform: rotate(-90deg); }
+.theme-toggle input:checked ~ .theme-thumb .icon-sun  { opacity: 0; transform: rotate(90deg); }
+.theme-toggle input:checked ~ .theme-thumb .icon-moon { opacity: 1; transform: rotate(0deg); }
+.theme-toggle:hover .theme-track { box-shadow: 0 0 0 3px rgba(251,191,36,0.15); }
+.theme-toggle input:checked:hover ~ .theme-track { box-shadow: inset 0 0 12px rgba(30,60,150,0.3), 0 0 0 3px rgba(165,180,252,0.15); }
+.theme-toggle input:focus-visible ~ .theme-track { outline: 2px solid #06b6d4; outline-offset: 3px; }
+
+.theme-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  user-select: none;
+  min-width: 24px;
+}
+
+/* ══════════════════════════════════════════════
+   MODULE HUB — Orbital vertical nav menu
+══════════════════════════════════════════════ */
+.mod-hub-wrap { position: relative; flex-shrink: 0; }
+
+.mod-hub-trigger {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(37,99,235,0.18);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: background 0.22s, border-color 0.22s, box-shadow 0.22s, transform 0.22s;
+  position: relative;
+  color: rgba(255,255,255,0.85);
+  box-shadow: 0 0 16px rgba(37,99,235,0.22);
+}
+.mod-hub-trigger:hover {
+  background: rgba(37,99,235,0.35);
+  border-color: rgba(6,182,212,0.45);
+  box-shadow: 0 0 22px rgba(6,182,212,0.28);
+}
+.mod-hub-wrap.open .mod-hub-trigger {
+  background: rgba(6,182,212,0.22);
+  border-color: rgba(6,182,212,0.5);
+  box-shadow: 0 0 24px rgba(6,182,212,0.35);
+  transform: rotate(45deg);
+}
+.mod-hub-trigger svg { transition: opacity 0.18s, transform 0.18s; }
+.mod-hub-icon-grid  { position: absolute; }
+.mod-hub-icon-close { position: absolute; opacity: 0; transform: rotate(-45deg); }
+.mod-hub-wrap.open .mod-hub-icon-grid  { opacity: 0; transform: rotate(45deg); }
+.mod-hub-wrap.open .mod-hub-icon-close { opacity: 1; transform: rotate(0deg); }
+
+.mod-hub-panel {
+  position: absolute;
+  top: calc(100% + 14px);
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0;
+  z-index: 400;
+  pointer-events: none;
+}
+
+.mod-hub-track {
+  position: absolute;
+  top: 19px; right: 19px;
+  width: 2px;
+  background: linear-gradient(180deg, rgba(6,182,212,0.55) 0%, rgba(37,99,235,0.35) 60%, transparent 100%);
+  border-radius: 99px;
+  transform-origin: top center;
+  transition: height 0.4s cubic-bezier(0.34,1.2,0.64,1), opacity 0.3s;
+  height: 0; opacity: 0;
+}
+.mod-hub-wrap.open .mod-hub-track { height: calc(5 * 64px - 24px); opacity: 1; }
+
+.mod-hub-node {
+  display: flex; align-items: center; gap: 12px;
+  text-decoration: none;
+  padding: 6px 0;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(20px) scale(0.85);
+  transition: opacity 0.28s cubic-bezier(0.34,1.3,0.64,1), transform 0.28s cubic-bezier(0.34,1.3,0.64,1);
+}
+.mod-hub-wrap.open .mod-hub-node { opacity: 1; transform: translateX(0) scale(1); pointer-events: auto; }
+.mod-hub-wrap.open .mod-hub-node:nth-child(2) { transition-delay: 0.04s; }
+.mod-hub-wrap.open .mod-hub-node:nth-child(3) { transition-delay: 0.09s; }
+.mod-hub-wrap.open .mod-hub-node:nth-child(4) { transition-delay: 0.14s; }
+.mod-hub-wrap.open .mod-hub-node:nth-child(5) { transition-delay: 0.19s; }
+.mod-hub-wrap.open .mod-hub-node:nth-child(6) { transition-delay: 0.24s; }
+
+.mod-hub-label-wrap { display: flex; flex-direction: column; align-items: flex-end; text-align: right; }
+.mod-hub-num  { font-family: 'DM Mono', monospace; font-size: 9px; color: rgba(255,255,255,0.28); letter-spacing: 1px; line-height: 1; font-weight: 500; }
+.mod-hub-name { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.75); letter-spacing: 0.3px; white-space: nowrap; line-height: 1.2; transition: color 0.18s; }
+.mod-hub-node:hover .mod-hub-name { color: #22d3ee; }
+
+.mod-hub-circle {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(37,99,235,0.45);
+  background: radial-gradient(circle at 35% 35%, rgba(37,99,235,0.5), rgba(6,182,212,0.22) 70%, rgba(8,14,50,0.88) 100%);
+  box-shadow: 0 0 14px rgba(6,182,212,0.22), 0 0 0 3px rgba(37,99,235,0.12), inset 0 1px 0 rgba(255,255,255,0.14);
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,0.85);
+  flex-shrink: 0;
+  transition: box-shadow 0.22s, border-color 0.22s, background 0.22s, transform 0.22s;
+  position: relative;
+}
+.mod-hub-node:hover .mod-hub-circle {
+  border-color: rgba(6,182,212,0.8);
+  box-shadow: 0 0 22px rgba(6,182,212,0.45), 0 0 0 5px rgba(6,182,212,0.12), inset 0 1px 0 rgba(255,255,255,0.2);
+  background: radial-gradient(circle at 35% 35%, rgba(6,182,212,0.55), rgba(37,99,235,0.35) 70%, rgba(8,14,50,0.88) 100%);
+  transform: scale(1.1);
+}
+.mod-hub-circle::after {
+  content: '';
+  position: absolute; inset: -4px; border-radius: 50%;
+  border: 1px solid rgba(6,182,212,0.3);
+  animation: hubRingPulse 2.5s ease-in-out infinite;
+  opacity: 0;
+}
+.mod-hub-node:hover .mod-hub-circle::after { opacity: 1; }
+@keyframes hubRingPulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.18); opacity: 0; }
+}
+
+.mod-hub-node.active .mod-hub-circle {
+  border-color: rgba(6,182,212,0.7);
+  box-shadow: 0 0 18px rgba(6,182,212,0.4), 0 0 0 4px rgba(6,182,212,0.1), inset 0 1px 0 rgba(255,255,255,0.18);
+}
+.mod-hub-node.active .mod-hub-name { color: #22d3ee; }
+
+.mod-hub-backdrop { display: none; position: fixed; inset: 0; z-index: 399; }
+.mod-hub-wrap.open .mod-hub-backdrop { display: block; }
+.mod-hub-wrap.open .mod-hub-panel { pointer-events: auto; }
 
 /* ── PAGE HEADER ── */
 .page-header {
@@ -210,8 +498,8 @@ body {
   display: flex;
   gap: 10px;
   align-items: center;
-  padding: 16px 22px;
-  background: linear-gradient(to right, #f8fbff, #f0f5ff);
+  padding: 14px 20px;
+  background: #fafbff;
   border-bottom: 1.5px solid var(--border-light);
   flex-wrap: wrap;
 }
@@ -229,7 +517,7 @@ body {
   padding: 10px 36px 10px 38px;
   border: 1.5px solid var(--border);
   border-radius: var(--radius-sm);
-  font-size: 14px;
+  font-size: 13.5px;
   font-family: 'Outfit', sans-serif;
   font-weight: 500;
   color: var(--text);
@@ -250,84 +538,154 @@ body {
 }
 .catalog-search-main .s-clear:hover { background: var(--border-light); }
 
-/* ── PATIENT ORDER — COMPACT FORM ── */
-.patient-form-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 10px;
-  padding: 14px 22px;
-  background: #f8fbff;
-  border-bottom: 1.5px solid var(--border-light);
-}
-.patient-selector-row {
-  grid-column: 1 / -1;
+/* ══════════════════════════════════════════════
+   PATIENT ORDER — REDESIGNED ZONE LAYOUT
+══════════════════════════════════════════════ */
+
+/* Zone A: Patient selector strip */
+.porder-selector-strip {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  padding: 14px 22px 12px;
+  border-bottom: 1px solid var(--border-light);
+  background: #fafcff;
   flex-wrap: wrap;
-  padding-bottom: 10px;
-  border-bottom: 1px dashed var(--border-light);
-  margin-bottom: 2px;
 }
-.patient-form-field { display: flex; flex-direction: column; gap: 4px; }
-.patient-form-field label {
-  font-size: 10.5px; font-weight: 700; color: var(--muted);
-  text-transform: uppercase; letter-spacing: 0.8px;
+
+/* Zone B: Inline field grid — borderless inputs */
+.porder-fields-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  background: white;
+  border-bottom: 1.5px solid var(--border-light);
 }
-.patient-form-field input {
-  padding: 7px 10px;
-  border: 1.5px solid var(--border);
-  border-radius: 8px;
-  font-size: 13px;
+@media (max-width: 960px) { .porder-fields-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 600px)  { .porder-fields-grid { grid-template-columns: repeat(2, 1fr); } }
+
+.porder-field {
+  padding: 12px 18px 11px;
+  border-right: 1.5px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  position: relative;
+  cursor: text;
+  transition: background 0.15s;
+}
+.porder-field:last-child { border-right: none; }
+.porder-field:hover { background: #f5f8ff; }
+.porder-field:focus-within { background: #eff4ff; z-index: 1; }
+.porder-field:focus-within::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+}
+
+.porder-field-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9.5px;
+  font-weight: 800;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 1;
+  pointer-events: none;
+}
+.pf-icon { font-size: 11px; }
+
+.porder-field input {
+  border: none;
+  background: transparent;
+  padding: 0;
+  font-size: 13.5px;
   font-family: 'Outfit', sans-serif;
   font-weight: 600;
   color: var(--text);
-  background: white;
-  transition: all 0.15s;
+  outline: none;
+  width: 100%;
+  min-width: 0;
 }
-.patient-form-field input:focus {
-  outline: none; border-color: var(--blue);
-  box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
-}
+.porder-field input::placeholder { color: #c4d0e0; font-weight: 400; font-size: 13px; }
+.porder-field input[type="date"] { cursor: pointer; color: var(--text); }
 
-/* ── SPECIMEN BAR COMPACT ── */
-.specimen-bar-compact {
+/* Zone C: Specimen selector */
+.porder-specimen-zone {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   padding: 10px 22px;
-  background: linear-gradient(to right, #f0f9f0, #f8feff);
-  border-bottom: 1.5px solid var(--border-light);
+  background: linear-gradient(to right, #f0fff8, #f0feff);
+  border-bottom: 1.5px solid rgba(13,148,136,0.14);
   flex-wrap: wrap;
 }
-.specimen-bar-compact label {
-  font-size: 12px; font-weight: 700; color: var(--muted);
-  white-space: nowrap; flex-shrink: 0;
+.porder-specimen-label {
+  font-size: 10.5px;
+  font-weight: 800;
+  color: var(--teal);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
-/* ── PATIENT SUMMARY FOOTER ── */
-.patient-summary-footer {
+/* Zone D: Billing summary — always rendered, JS toggles display */
+.porder-billing-zone {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 12px 22px;
-  background: linear-gradient(to right, #eef3fd, #e8f0ff);
-  border-top: 2px solid var(--border-light);
+  padding: 14px 22px;
+  background: linear-gradient(135deg, #eef3fd 0%, #e8efff 100%);
+  border-top: 2px solid rgba(37,99,235,0.11);
   flex-wrap: wrap;
 }
-.psf-totals { display: flex; gap: 0; align-items: center; }
-.psf-stat {
-  padding: 0 20px;
-  border-right: 1.5px solid rgba(37,99,235,0.15);
-  text-align: center;
+.pbill-stats { display: flex; align-items: center; }
+.pbill-stat {
+  padding: 0 22px 0 0;
+  margin-right: 22px;
+  border-right: 1.5px solid rgba(37,99,235,0.13);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex-shrink: 0;
 }
-.psf-stat:first-child { padding-left: 0; }
-.psf-stat:last-child { border-right: none; }
-.psf-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 2px; }
-.psf-value { font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 800; color: var(--navy); }
-.psf-value.disc { color: var(--red); }
-.psf-value.net  { color: var(--green); font-size: 17px; }
+.pbill-stat:last-child { border-right: none; padding-right: 0; margin-right: 0; }
+
+.pbill-label {
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: #8a9bb5;
+}
+.pbill-value {
+  font-family: 'DM Mono', monospace;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--navy);
+  letter-spacing: -0.3px;
+}
+.pbill-value.disc-val { color: var(--red); }
+.pbill-value.net-val  { color: var(--green); font-size: 19px; }
+
+.pbill-actions { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+
+/* Compat: keep old class aliases working (used in dark-mode CSS below) */
+.patient-form-grid { padding: 0; background: transparent; border: none; }
+.patient-summary-footer { display: none; }
+.psf-totals { display: none; }
+.psf-label { display: none; }
+.psf-value { display: none; }
+.patient-form-field { display: none; }
+.specimen-bar-compact { display: none; }
 
 /* ── SECTION LABEL ── */
 
@@ -478,7 +836,10 @@ thead th.center { text-align: center; }
 
 tbody tr { border-bottom: 1px solid var(--border-light); transition: background 0.12s; }
 tbody tr:last-child { border-bottom: none; }
-tbody tr:hover { background: #f5f8ff; }
+tbody tr:hover { background: #f0f5ff; }
+/* Alternating rows for patient test table specifically */
+#patientTbody tr:nth-child(even):not(:hover) { background: #fafbff; }
+#patientTbody tr:hover { background: #eff4ff; }
 tbody td {
   padding: 10px 12px;
   color: var(--muted);
@@ -1436,48 +1797,154 @@ tbody td:first-child {
 }
 .btn-booking-new:hover { box-shadow: 0 6px 18px rgba(37,99,235,0.4); }
 
+/* ── FLOATING BILL SUMMARY CARD — Draggable + Minimizable ── */
 .sticky-bill-bar {
-  position: fixed; bottom: 0; left: 0; right: 0;
-  background: linear-gradient(135deg, #0c1445 0%, #1e3a8a 100%);
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 268px;
+  background: linear-gradient(160deg, #0c1a4a 0%, #1a3a8f 100%);
   color: white;
-  padding: 12px 28px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.10);
+  padding: 0;
   display: none;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-  z-index: 200;
-  box-shadow: 0 -6px 30px rgba(12,20,69,0.25);
-  border-top: 1px solid rgba(255,255,255,0.08);
+  flex-direction: column;
+  gap: 0;
+  z-index: 500;
+  box-shadow: 0 12px 40px rgba(12,20,69,0.38), 0 2px 8px rgba(0,0,0,0.18);
+  overflow: hidden;
+  animation: floatCardIn 0.28s cubic-bezier(0.34,1.3,0.64,1);
+  transition: border-radius 0.2s, box-shadow 0.2s;
+  touch-action: none;
+}
+@keyframes floatCardIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 .sticky-bill-bar.visible { display: flex; }
-.sticky-bill-stats { display: flex; align-items: center; gap: 0; }
-.sticky-bill-stat { padding: 0 20px; border-right: 1px solid rgba(255,255,255,0.12); }
-.sticky-bill-stat:first-child { padding-left: 0; }
-.sticky-bill-stat:last-child { border-right: none; }
-.sticky-bill-stat .s-label { font-size: 10px; font-weight: 700; opacity: 0.5; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
-.sticky-bill-stat .s-val { font-family: 'DM Mono', monospace; font-size: 18px; font-weight: 700; }
+
+/* Minimized pill state */
+.sticky-bill-bar.bill-minimized {
+  width: auto !important;
+  height: auto !important;
+  border-radius: 50px !important;
+  overflow: hidden;
+}
+.sticky-bill-bar.bill-minimized .bill-bar-header,
+.sticky-bill-bar.bill-minimized .sticky-bill-stats,
+.sticky-bill-bar.bill-minimized .bill-bar-actions { display: none !important; }
+.sticky-bill-bar.bill-minimized .bill-minimized-pill { display: flex !important; }
+
+/* Drag handle strip at top */
+.bill-bar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px 6px;
+  cursor: grab;
+  user-select: none;
+  flex-shrink: 0;
+}
+.bill-bar-header:active { cursor: grabbing; }
+.bill-bar-title {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.42);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.bill-drag-dots {
+  display: flex; flex-direction: column; gap: 2.5px;
+  opacity: 0.3; margin-right: 4px;
+}
+.bill-drag-dots span { display: block; width: 16px; height: 2px; border-radius: 2px; background: white; }
+.bill-header-controls { display: flex; gap: 4px; }
+.bill-ctrl-btn {
+  background: rgba(255,255,255,0.1); border: none; color: rgba(255,255,255,0.7);
+  width: 22px; height: 22px; border-radius: 6px; cursor: pointer;
+  font-size: 11px; display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+.bill-ctrl-btn:hover { background: rgba(255,255,255,0.22); color: white; }
+.bill-ctrl-btn.minimize-btn:hover { background: rgba(255,255,255,0.2); }
+
+/* Minimized pill */
+.bill-minimized-pill {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.bill-pill-icon { font-size: 16px; }
+.bill-pill-net {
+  font-family: 'DM Mono', monospace;
+  font-size: 15px; font-weight: 700; color: #4ade80;
+}
+.bill-pill-label { font-size: 10px; color: rgba(255,255,255,0.45); font-weight: 700; letter-spacing: 0.5px; }
+.bill-pill-restore {
+  font-size: 11px; color: rgba(255,255,255,0.35);
+  margin-left: 4px; transition: color 0.15s;
+}
+.bill-minimized-pill:hover .bill-pill-restore { color: white; }
+
+.sticky-bill-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  padding: 6px 16px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.sticky-bill-stat { padding: 6px 4px; }
+.sticky-bill-stat .s-label {
+  font-size: 9px; font-weight: 700; opacity: 0.45;
+  text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px;
+}
+.sticky-bill-stat .s-val {
+  font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 700; line-height: 1.2;
+}
+.sticky-bill-stat:last-child {
+  grid-column: 1 / -1;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding-top: 10px; margin-top: 4px;
+  display: flex; align-items: baseline; gap: 8px;
+}
+.sticky-bill-stat:last-child .s-label { font-size: 10px; opacity: 0.55; margin-bottom: 0; white-space: nowrap; }
+.sticky-bill-stat:last-child .s-val   { font-size: 22px; }
 .sticky-bill-stat .s-val.accent { color: #22d3ee; }
-.sticky-bill-stat .s-val.red { color: #f87171; }
-.sticky-bill-stat .s-val.green { color: #4ade80; }
-.bill-bar-actions { display: flex; gap: 8px; }
+.sticky-bill-stat .s-val.red    { color: #f87171; }
+.sticky-bill-stat .s-val.green  { color: #4ade80; }
+
+.bill-bar-actions {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 12px 14px;
+}
+.bill-bar-actions .book-test-btn {
+  grid-column: 1 / -1; padding: 9px 14px; font-size: 13px;
+  border-radius: 10px; justify-content: center;
+}
 .btn-print {
-  background: white; color: #0c1445;
-  border: none; padding: 9px 18px;
-  border-radius: 9px; font-size: 13px;
-  font-family: 'Outfit', sans-serif; font-weight: 800;
-  cursor: pointer; transition: all 0.15s;
-  box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+  background: rgba(255,255,255,0.12); color: white;
+  border: 1px solid rgba(255,255,255,0.15); padding: 7px 10px; border-radius: 9px;
+  font-size: 12px; font-family: 'Outfit', sans-serif; font-weight: 700;
+  cursor: pointer; transition: all 0.15s; text-align: center;
 }
-.btn-print:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+.btn-print:hover { background: rgba(255,255,255,0.22); }
 .btn-clear-all {
-  background: rgba(220,38,38,0.2); color: #fca5a5;
-  border: 1.5px solid rgba(220,38,38,0.3);
-  padding: 8px 14px; border-radius: 9px;
-  font-size: 13px; font-family: 'Outfit', sans-serif;
-  font-weight: 700; cursor: pointer; transition: all 0.15s;
+  background: rgba(220,38,38,0.18); color: #fca5a5;
+  border: 1px solid rgba(220,38,38,0.28); padding: 7px 10px; border-radius: 9px;
+  font-size: 12px; font-family: 'Outfit', sans-serif; font-weight: 700;
+  cursor: pointer; transition: all 0.15s; text-align: center;
 }
-.btn-clear-all:hover { background: rgba(220,38,38,0.5); color: white; }
+.btn-clear-all:hover { background: rgba(220,38,38,0.45); color: white; }
+@media (max-width: 480px) {
+  .sticky-bill-bar { right: 12px; bottom: 12px; width: calc(100vw - 24px); border-radius: 14px; }
+}
 
 /* ── TEST DETAIL MODAL ── */
 .test-detail-modal {
@@ -1747,6 +2214,253 @@ tbody td:first-child {
 /* pad body for sticky bar */
 body { padding-bottom: 70px; }
 
+/* ══════════════════════════════════════════════
+   DARK MODE — Full theme override
+══════════════════════════════════════════════ */
+body.dark-mode {
+  --bg: #070d1c;
+  --card: #131929;
+  --text: #dde4f0;
+  --muted: #8896b0;
+  --border: #2a3249;
+  --border-light: #1e2538;
+  --input-bg: #0e1422;
+  --blue-pale: rgba(37,99,235,0.15);
+  --green-light: rgba(22,163,74,0.12);
+  --amber-light: rgba(217,119,6,0.12);
+  --red-light: rgba(220,38,38,0.12);
+  background-image:
+    radial-gradient(ellipse 80% 60% at 10% -10%, rgba(37,99,235,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 90% 110%, rgba(6,182,212,0.03) 0%, transparent 60%);
+}
+
+/* ── PAGE HEADER ── */
+body.dark-mode .page-header {
+  background: linear-gradient(135deg, #04091a 0%, #091830 55%, #122050 100%);
+}
+
+/* ── TAB BAR ── */
+body.dark-mode .tab-bar { background: #131929; border-color: #1e2538; }
+body.dark-mode .tab-btn { color: #8896b0; }
+body.dark-mode .tab-btn:hover { background: rgba(77,142,240,0.07); color: #6aa3f5; }
+body.dark-mode .tab-btn.active {
+  background: linear-gradient(135deg, #3b7ae0, #2563c8);
+  color: white;
+  box-shadow: 0 4px 12px rgba(59,122,224,0.25);
+}
+
+/* ── SECTION LABEL ── */
+body.dark-mode .section-label { color: #7a8499; }
+body.dark-mode .section-label::after { background: linear-gradient(to right, rgba(77,142,240,0.2), transparent); }
+
+/* ── CARDS ── */
+body.dark-mode .card {
+  background: #131929;
+  border-color: #1e2538;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.5), 0 4px 20px rgba(0,0,0,0.45);
+}
+body.dark-mode .card:hover { box-shadow: 0 6px 28px rgba(0,0,0,0.55); }
+body.dark-mode .card-header { background: linear-gradient(to right, #131929, #161e30); border-bottom-color: #1e2538; }
+body.dark-mode .card-header h3 { color: #dde4f0; }
+
+/* ── TABLE ── */
+body.dark-mode .table-wrapper { background: #0e1422; border-color: #1e2538; }
+body.dark-mode thead th {
+  background: linear-gradient(to bottom, #161e30, #131929);
+  color: #7a8499;
+  border-bottom-color: #1e2538;
+}
+body.dark-mode tbody tr { border-bottom-color: #1a2132; }
+body.dark-mode tbody tr:hover { background: #161e30; }
+body.dark-mode tbody td { color: #8896b0; }
+body.dark-mode tbody td:first-child { color: #4d5e7a; }
+body.dark-mode .test-name { color: #dde4f0; }
+body.dark-mode .price-val { color: #dde4f0; }
+body.dark-mode .price-clickable { border-bottom-color: rgba(6,182,212,0.4); }
+body.dark-mode .highlight { background: rgba(254,240,138,0.12); color: #fef08a; border-radius: 2px; }
+body.dark-mode .no-results td { color: #7a8499; }
+body.dark-mode .summary-row { background: linear-gradient(to right, #161e30, #131929); border-top-color: #2a3249; }
+body.dark-mode .summary-row td { color: #6aa3f5 !important; }
+body.dark-mode .grand-total { color: #4ade80 !important; }
+
+/* ── DISC INPUT ── */
+body.dark-mode .disc-input { background: #0e1422; border-color: #2a3249; color: #dde4f0; }
+body.dark-mode .disc-input:focus { background: #131929; border-color: rgba(6,182,212,0.6); }
+
+/* ── CATALOG SEARCH ── */
+body.dark-mode .catalog-search-bar { background: #131929; border-color: #1e2538; }
+body.dark-mode .catalog-search-main { background: #0e1422; border-color: #2a3249; }
+body.dark-mode .catalog-search-main input { background: transparent; color: #dde4f0; }
+body.dark-mode .catalog-search-main input::placeholder { color: #3d4a63; }
+body.dark-mode .catalog-search-main input:focus { box-shadow: none; }
+body.dark-mode .catalog-search-main .s-icon { color: #4d5e7a; }
+body.dark-mode .catalog-search-main .s-clear { color: #4d5e7a; }
+body.dark-mode .catalog-search-main .s-clear:hover { background: #1e2538; color: #dde4f0; }
+body.dark-mode .dept-filter { background: #0e1422; border-color: #2a3249; color: #dde4f0; }
+body.dark-mode .dept-filter:focus { border-color: #4d8ef0; box-shadow: 0 0 0 3px rgba(77,142,240,0.12); }
+
+/* ── SEARCH ROW INPUTS ── */
+body.dark-mode .search-field input { background: #0e1422; border-color: #2a3249; color: #dde4f0; }
+body.dark-mode .search-field input:focus { border-color: #4d8ef0; box-shadow: 0 0 0 3px rgba(77,142,240,0.12); background: #131929; }
+body.dark-mode .search-field input::placeholder { color: #3d4a63; }
+body.dark-mode .search-clear { color: #4d5e7a; }
+body.dark-mode .search-clear:hover { background: #1e2538; color: #dde4f0; }
+
+/* ── BUTTONS ── */
+body.dark-mode .btn-muted { background: #131929; border-color: #2a3249; color: #7a8499; }
+body.dark-mode .btn-muted:hover { border-color: #4d8ef0; color: #6aa3f5; background: rgba(77,142,240,0.07); }
+body.dark-mode .btn-primary { background: linear-gradient(135deg, #3b7ae0, #2563c8); box-shadow: 0 4px 14px rgba(59,122,224,0.3); }
+body.dark-mode .btn-primary:hover { box-shadow: 0 8px 22px rgba(59,122,224,0.42); }
+body.dark-mode .delete-btn { background: #0e1422; border-color: #2a3249; color: #f87171; }
+body.dark-mode .delete-btn:hover { background: var(--red); color: white; border-color: var(--red); }
+
+/* ── PAGINATION ── */
+body.dark-mode .pagination-row { background: #0e1422; border-top-color: #1e2538; }
+body.dark-mode .page-btn { background: #131929; border-color: #2a3249; color: #7a8499; }
+body.dark-mode .page-btn:hover:not(:disabled) { border-color: #4d8ef0; color: #6aa3f5; background: rgba(77,142,240,0.07); }
+
+/* ── SPECIMEN BAR ── */
+body.dark-mode .specimen-selector-bar { background: linear-gradient(to right, #0e1422, #131929); border-bottom-color: #1e2538; }
+body.dark-mode .specimen-selector-bar label { color: #7a8499; }
+body.dark-mode .specimen-bar-compact { background: #0e1422; border-color: #1e2538; }
+body.dark-mode .specimen-bar-compact label { color: #7a8499; }
+
+/* ── MULTISELECT ── */
+body.dark-mode .multiselect-trigger { background: #0e1422; border-color: #2a3249; color: #8896b0; }
+body.dark-mode .multiselect-trigger:hover { border-color: #4d8ef0; }
+body.dark-mode .multiselect-trigger.open { border-color: #4d8ef0; box-shadow: 0 0 0 3px rgba(77,142,240,0.12); }
+body.dark-mode .multiselect-panel { background: #131929; border-color: #1e2538; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+body.dark-mode .ms-search { border-bottom-color: #1e2538; }
+body.dark-mode .ms-search input { background: #0e1422; border-color: #2a3249; color: #dde4f0; }
+body.dark-mode .ms-option { color: #8896b0; }
+body.dark-mode .ms-option:hover { background: rgba(77,142,240,0.07); }
+body.dark-mode .ms-option.selected { background: rgba(77,142,240,0.12); color: #6aa3f5; }
+body.dark-mode .ms-footer { background: #0e1422; border-top-color: #1e2538; color: #7a8499; }
+
+/* ── POPUP / SPECIMEN SELECTOR ── */
+body.dark-mode .popup-box { background: #131929; border-color: #1e2538; box-shadow: 0 24px 64px rgba(0,0,0,0.55); }
+body.dark-mode .popup-header { background: linear-gradient(to right, #131929, #161e30); border-bottom-color: #1e2538; }
+body.dark-mode .popup-header h3 { color: #dde4f0; }
+body.dark-mode .popup-close { color: #7a8499; }
+body.dark-mode .popup-close:hover { background: #1e2538; color: #dde4f0; }
+body.dark-mode .popup-search { border-bottom-color: #1e2538; }
+body.dark-mode .popup-search input { background: #0e1422; border-color: #2a3249; color: #dde4f0; }
+body.dark-mode .popup-search input:focus { border-color: rgba(6,182,212,0.6); box-shadow: 0 0 0 3px rgba(6,182,212,0.08); }
+body.dark-mode .specimen-list label { color: #8896b0; }
+body.dark-mode .specimen-list label:hover { background: rgba(77,142,240,0.07); }
+body.dark-mode .popup-footer { background: #0e1422; border-top-color: #1e2538; }
+
+/* ── PRICE EDIT POPUP ── */
+body.dark-mode .price-edit-box { background: #131929; border-color: #1e2538; box-shadow: 0 24px 64px rgba(0,0,0,0.55); }
+body.dark-mode .price-edit-header { background: linear-gradient(to right, #131929, #161e30); border-bottom-color: #1e2538; }
+body.dark-mode .price-edit-header h3 { color: #dde4f0; }
+body.dark-mode .price-edit-test-name { color: #dde4f0; }
+body.dark-mode .price-edit-dept { color: #7a8499; }
+body.dark-mode .price-edit-row label { color: #8896b0; }
+body.dark-mode .price-edit-row input { background: #0e1422; border-color: #2a3249; color: #dde4f0; }
+body.dark-mode .price-edit-row input:focus { background: #131929; border-color: #4d8ef0; box-shadow: 0 0 0 3px rgba(77,142,240,0.12); }
+body.dark-mode .price-edit-footer { background: #0e1422; border-top-color: #1e2538; }
+
+/* ── PRICE TAB ── */
+body.dark-mode .price-tab-controls input { background: #0e1422; border-color: #2a3249; color: #dde4f0; }
+body.dark-mode .price-tab-controls input:focus { border-color: #4d8ef0; box-shadow: 0 0 0 3px rgba(77,142,240,0.12); }
+body.dark-mode .price-modified-badge { background: rgba(217,119,6,0.15); color: #fbbf24; }
+
+/* ── PACKAGES ── */
+body.dark-mode .pkg-form-section { background: #0e1422; border-color: #1e2538; }
+body.dark-mode .pkg-form-section h4 { color: #7a8499; }
+body.dark-mode .pkg-field label { color: #8896b0; }
+body.dark-mode .pkg-field input,
+body.dark-mode .pkg-field select { background: #0e1422; border-color: #2a3249; color: #dde4f0; }
+body.dark-mode .pkg-field input:focus,
+body.dark-mode .pkg-field select:focus { background: #131929; border-color: #4d8ef0; box-shadow: 0 0 0 3px rgba(77,142,240,0.12); }
+body.dark-mode .pkg-test-search { border-bottom-color: #1e2538; }
+body.dark-mode .pkg-test-search input { background: #0e1422; border-color: #2a3249; color: #dde4f0; }
+body.dark-mode .pkg-test-option { color: #8896b0; }
+body.dark-mode .pkg-test-option:hover { background: rgba(77,142,240,0.07); }
+body.dark-mode .pkg-test-option.checked { background: rgba(77,142,240,0.12); color: #6aa3f5; }
+body.dark-mode .pkg-test-option .opt-dept { color: #4d5e7a; }
+body.dark-mode .pkg-selected-chips { background: #0e1422; border-color: #2a3249; }
+body.dark-mode .pkg-card { background: #131929; border-color: #1e2538; }
+body.dark-mode .pkg-card:hover { border-color: rgba(77,142,240,0.3); box-shadow: 0 6px 28px rgba(0,0,0,0.45); }
+body.dark-mode .pkg-card-name { color: #dde4f0; }
+body.dark-mode .pkg-card-dept { color: #7a8499; }
+body.dark-mode .pkg-card-tests { color: #7a8499; }
+body.dark-mode .pkg-card-footer { border-top-color: #1e2538; }
+body.dark-mode .pkg-edit-btn { background: rgba(217,119,6,0.12); color: #fbbf24; border-color: rgba(217,119,6,0.25); }
+body.dark-mode .pkg-del-btn { background: rgba(220,38,38,0.12); color: #f87171; border-color: rgba(220,38,38,0.25); }
+body.dark-mode .pkg-empty { color: #7a8499; }
+
+/* ── TEST DETAIL MODAL ── */
+body.dark-mode .test-detail-box { background: #131929; border-color: #1e2538; box-shadow: 0 24px 60px rgba(0,0,0,0.55); }
+body.dark-mode .test-detail-body { background: #131929; }
+body.dark-mode .test-detail-footer { background: #0e1422; border-top-color: #1e2538; }
+body.dark-mode .td-param-card { background: #0e1422; border-color: #1e2538; }
+body.dark-mode .td-param-name { color: #dde4f0; }
+body.dark-mode .td-param-unit { color: #7a8499; }
+body.dark-mode .td-param-note { color: #7a8499; }
+body.dark-mode .td-section-title { color: #6aa3f5; }
+body.dark-mode .td-section-title::after { background: linear-gradient(to right, rgba(77,142,240,0.2), transparent); }
+body.dark-mode .td-cover-tag { background: rgba(37,99,235,0.12); color: #6aa3f5; }
+body.dark-mode .td-specimen-pill { background: rgba(13,148,136,0.12); border-color: rgba(13,148,136,0.25); }
+body.dark-mode .info-btn:hover { background: rgba(77,142,240,0.1); }
+
+/* ── DARK MODE: PATIENT ORDER ZONES ── */
+body.dark-mode .porder-selector-strip { background: #0e1525; border-bottom-color: #1e2538; }
+body.dark-mode .porder-fields-grid { background: #0c1320; border-bottom-color: #1e2538; }
+body.dark-mode .porder-field { border-right-color: #1e2538; }
+body.dark-mode .porder-field:hover { background: #101b2e; }
+body.dark-mode .porder-field:focus-within { background: #0e1a30; }
+body.dark-mode .porder-field-label { color: #5a6b84; }
+body.dark-mode .porder-field input { color: #dde4f0; }
+body.dark-mode .porder-field input::placeholder { color: #3a4a5e; }
+body.dark-mode .porder-specimen-zone { background: linear-gradient(to right, #0d1f1a, #0d1e22); border-bottom-color: rgba(13,148,136,0.2); }
+body.dark-mode .porder-billing-zone { background: linear-gradient(135deg, #0e1525, #0a1330); border-top-color: rgba(77,142,240,0.15); }
+body.dark-mode .pbill-stat { border-right-color: rgba(77,142,240,0.15); }
+body.dark-mode .pbill-label { color: #5a6b84; }
+body.dark-mode .pbill-value { color: #c8d4e8; }
+body.dark-mode .pbill-value.net-val { color: #4ade80; }
+body.dark-mode .pbill-value.disc-val { color: #f87171; }
+
+/* ── PATIENT SELECT MODAL ── */
+body.dark-mode .ps-modal { background: #131929; box-shadow: 0 30px 80px rgba(0,0,0,0.55); }
+body.dark-mode .ps-search-bar { background: #0e1422; border-bottom-color: #1e2538; }
+body.dark-mode .ps-search-input { background: #0e1422; border-color: #2a3249; color: #dde4f0; }
+body.dark-mode .ps-search-input:focus { border-color: #4d8ef0; }
+body.dark-mode .ps-patient-list { background: #131929; }
+body.dark-mode .ps-patient-card { background: #0e1422; border-color: #1e2538; }
+body.dark-mode .ps-patient-card:hover { background: rgba(77,142,240,0.07); border-color: #4d8ef0; box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
+body.dark-mode .ps-patient-name { color: #dde4f0; }
+body.dark-mode .ps-patient-meta { color: #7a8499; }
+body.dark-mode .ps-patient-id-badge { background: rgba(37,99,235,0.15); color: #6aa3f5; }
+body.dark-mode .ps-empty { color: #7a8499; }
+
+/* ── SELECTED PATIENT CHIP ── */
+body.dark-mode .selected-patient-chip {
+  background: linear-gradient(135deg, rgba(77,142,240,0.1), rgba(6,182,212,0.1));
+  border-color: rgba(77,142,240,0.28);
+}
+body.dark-mode .selected-patient-chip .chip-name { color: #dde4f0; }
+body.dark-mode .selected-patient-chip .chip-detail { color: #7a8499; }
+body.dark-mode .chip-change-btn { background: rgba(77,142,240,0.12); color: #6aa3f5; }
+body.dark-mode .chip-change-btn:hover { background: rgba(77,142,240,0.2); }
+
+/* ── BOOKING CONFIRM MODAL ── */
+body.dark-mode .booking-modal { background: #131929; box-shadow: 0 30px 80px rgba(0,0,0,0.55); }
+body.dark-mode .booking-modal-body { background: #131929; }
+body.dark-mode .booking-detail-row { border-bottom-color: #1e2538; }
+body.dark-mode .booking-detail-row .bd-label { color: #8896b0; }
+body.dark-mode .booking-detail-row .bd-val { color: #dde4f0; }
+body.dark-mode .booking-modal-footer { padding-top: 0; background: #131929; }
+body.dark-mode .btn-booking-close { background: #131929; border-color: #2a3249; color: #7a8499; }
+body.dark-mode .btn-booking-close:hover { background: #0e1422; }
+
+/* ── PATIENT COUNT BADGE ── */
+body.dark-mode .patient-count-badge { background: rgba(77,142,240,0.12); color: #6aa3f5; }
+
+/* ── EMPTY STATES ── */
+body.dark-mode .empty-state { color: #7a8499; }
+
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
   .navbar { padding: 0 16px; }
@@ -1768,16 +2482,144 @@ body { padding-bottom: 70px; }
 <body>
 
 <!-- NAVBAR -->
-<nav class="navbar">
-  <a href="index.html" class="nav-logo">
-    <div class="logo-icon">⚕️</div>
-    <span class="logo-text">Medi<span>Core</span></span>
+<header>
+<nav class="navbar" id="mainNav" aria-label="Main navigation">
+
+  <!-- LOGO -->
+  <a href="index.html" class="nav-logo" aria-label="MediCore home">
+    <div class="logo-icon">
+      <img id="navLogo" src="White.svg" alt="MediCore Logo" />
+    </div>
+    <div class="logo-text">
+      <span class="logo-medi">Medi</span><span class="logo-core">Core</span>
+      <span class="logo-sub">Diagnostic Centre</span>
+    </div>
   </a>
+
+  <!-- RIGHT SIDE -->
   <div class="nav-right">
-    <div class="clock-badge" id="clockBadge">--:--:--</div>
-    <a href="index.html" class="btn-home">← Home</a>
+
+    <!-- CLOCK -->
+    <div class="nav-clock-simple">
+      <span class="clock-badge" id="clockBadge">--:--:--</span>
+      <span class="date-badge-inline" id="dateBadge">— — —</span>
+    </div>
+
+    <div class="nav-divider"></div>
+
+    <!-- HOME LINK -->
+    <a href="index.html" class="btn-nav">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </a>
+
+    <!-- PATIENT REGISTRATION LINK -->
+    <a href="MAIN1.html" class="btn-nav">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Patient
+    </a>
+
+    <div class="nav-divider"></div>
+
+    <!-- SUN/MOON DARK MODE TOGGLE -->
+    <label class="theme-toggle" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">
+      <input type="checkbox" id="themeToggle" name="themeToggle" />
+      <div class="theme-track"></div>
+      <div class="theme-thumb">
+        <span class="theme-thumb-icon icon-sun">☀️</span>
+        <span class="theme-thumb-icon icon-moon">🌙</span>
+      </div>
+    </label>
+    <span class="theme-label" id="themeLabelText">Light</span>
+
+    <div class="nav-divider"></div>
+
+    <!-- MODULE HUB -->
+    <div class="mod-hub-wrap" id="modHubWrap">
+      <div class="mod-hub-backdrop" id="modHubBackdrop"></div>
+
+      <button class="mod-hub-trigger" id="modHubTrigger" aria-label="Module navigation" aria-expanded="false" title="Navigate modules">
+        <svg class="mod-hub-icon-grid" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+          <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+        </svg>
+        <svg class="mod-hub-icon-close" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+
+      <div class="mod-hub-panel" id="modHubPanel" role="navigation" aria-label="Module pages">
+        <div class="mod-hub-track"></div>
+
+        <a href="MAIN1.html" class="mod-hub-node">
+          <div class="mod-hub-label-wrap">
+            <span class="mod-hub-num">01</span>
+            <span class="mod-hub-name">Register</span>
+          </div>
+          <div class="mod-hub-circle">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+        </a>
+
+        <a href="MAIN2.html" class="mod-hub-node active">
+          <div class="mod-hub-label-wrap">
+            <span class="mod-hub-num">02</span>
+            <span class="mod-hub-name">Lab Tests</span>
+          </div>
+          <div class="mod-hub-circle">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 3h6m-5 0v7l-4 7a2 2 0 0 0 1.8 3h8.4a2 2 0 0 0 1.8-3l-4-7V3"/>
+            </svg>
+          </div>
+        </a>
+
+        <a href="MAIN3.html" class="mod-hub-node">
+          <div class="mod-hub-label-wrap">
+            <span class="mod-hub-num">03</span>
+            <span class="mod-hub-name">Bookings</span>
+          </div>
+          <div class="mod-hub-circle">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
+              <rect x="9" y="3" width="6" height="4" rx="1"/>
+              <path d="M9 12h6M9 16h4"/>
+            </svg>
+          </div>
+        </a>
+
+        <a href="MAIN4.html" class="mod-hub-node">
+          <div class="mod-hub-label-wrap">
+            <span class="mod-hub-num">04</span>
+            <span class="mod-hub-name">Results</span>
+          </div>
+          <div class="mod-hub-circle">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+          </div>
+        </a>
+
+        <a href="MAIN5.html" class="mod-hub-node">
+          <div class="mod-hub-label-wrap">
+            <span class="mod-hub-num">05</span>
+            <span class="mod-hub-name">Reports</span>
+          </div>
+          <div class="mod-hub-circle">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 6 2 18 2 18 9"/>
+              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+              <rect x="6" y="14" width="12" height="8"/>
+            </svg>
+          </div>
+        </a>
+      </div>
+    </div>
+
   </div>
 </nav>
+</header>
 
 <!-- PAGE HEADER -->
 <div class="page-header">
@@ -1819,17 +2661,20 @@ body { padding-bottom: 70px; }
     <p class="section-label">Test Catalog</p>
     <div class="card">
       <div class="card-header">
-        <h3>📋 Test Catalog</h3>
-        <span id="filteredCount" style="font-size:13px;color:var(--muted);font-weight:600;"></span>
+        <h3>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M9 3h6m-5 0v7l-4 7a2 2 0 0 0 1.8 3h8.4a2 2 0 0 0 1.8-3l-4-7V3"/></svg>
+          Test Catalog
+        </h3>
+        <span id="filteredCount" style="font-size:12px;color:var(--muted);font-weight:700;background:rgba(37,99,235,0.07);padding:3px 10px;border-radius:20px;"></span>
       </div>
-      <!-- UNIFIED SEARCH BAR -->
-      <div class="catalog-search-bar">
-        <div class="catalog-search-main">
+      <!-- UNIFIED SEARCH BAR — redesigned -->
+      <div class="catalog-search-bar" style="gap:8px;">
+        <div class="catalog-search-main" style="flex:1;min-width:200px;">
           <span class="s-icon">🔍</span>
-          <input type="text" id="searchName" placeholder="Search by test name or department..." oninput="onCatalogSearch(this)">
+          <input type="text" id="searchName" placeholder="Search test name or department…" oninput="onCatalogSearch(this)">
           <button class="s-clear" id="clearSearch" onclick="clearCatalogSearch()">✕</button>
         </div>
-        <select class="dept-filter" id="deptFilter" onchange="searchTest()" style="min-width:190px;">
+        <select class="dept-filter" id="deptFilter" onchange="searchTest()" style="min-width:180px;background:white;font-weight:600;">
           <option value="">All Departments</option>
         </select>
       </div>
@@ -1867,7 +2712,11 @@ body { padding-bottom: 70px; }
     <div class="card">
       <!-- HEADER -->
       <div class="card-header">
-        <h3>🩺 Patient Test List <span class="patient-count-badge" id="patientCountBadge">0 tests</span></h3>
+        <h3>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Patient Test List
+          <span class="patient-count-badge" id="patientCountBadge">0 tests</span>
+        </h3>
         <div style="display:flex;gap:8px;align-items:center;">
           <button class="book-test-btn" id="bookTestBtn" onclick="initiateBooking()" disabled>
             📋 Book Test
@@ -1875,58 +2724,60 @@ body { padding-bottom: 70px; }
         </div>
       </div>
 
-      <!-- PATIENT FORM GRID -->
-      <div class="patient-form-grid">
-        <div class="patient-selector-row">
-          <button class="select-patient-btn" onclick="openPatientSelector()">
-            <span class="sp-icon">👤</span> Select Saved Patient
-          </button>
-          <div class="selected-patient-chip" id="selectedPatientChip">
-            <span style="font-size:20px;">👤</span>
-            <div>
-              <div class="chip-name" id="chipName">—</div>
-              <div class="chip-detail" id="chipDetail">—</div>
-            </div>
-            <button class="chip-change-btn" onclick="openPatientSelector()">Change</button>
-            <button class="chip-change-btn" onclick="clearSelectedPatient()" style="color:var(--red);background:rgba(220,38,38,0.08);">✕</button>
+      <!-- ZONE A: Patient Identity Strip -->
+      <div class="porder-selector-strip">
+        <button class="select-patient-btn" onclick="openPatientSelector()">
+          <span class="sp-icon">👤</span> Select Saved Patient
+        </button>
+        <div class="selected-patient-chip" id="selectedPatientChip">
+          <span style="font-size:20px;">👤</span>
+          <div>
+            <div class="chip-name" id="chipName">—</div>
+            <div class="chip-detail" id="chipDetail">—</div>
           </div>
-          <span id="noSavedPatientNote" style="font-size:12px;color:var(--muted);display:none;">
-            💡 No patients found. Register in <strong>Patient Registration</strong> first.
-          </span>
+          <button class="chip-change-btn" onclick="openPatientSelector()">Change</button>
+          <button class="chip-change-btn" onclick="clearSelectedPatient()" style="color:var(--red);background:rgba(220,38,38,0.08);">✕</button>
         </div>
-        <div class="patient-form-field">
-          <label>Patient Name</label>
+        <span id="noSavedPatientNote" style="font-size:12px;color:var(--muted);display:none;">
+          💡 No patients found. Register in <strong>Patient Registration</strong> first.
+        </span>
+      </div>
+
+      <!-- ZONE B: Inline Field Grid (borderless inputs) -->
+      <div class="porder-fields-grid">
+        <div class="porder-field">
+          <div class="porder-field-label"><span class="pf-icon">✍️</span> Patient Name</div>
           <input type="text" id="patientName" placeholder="Full name">
         </div>
-        <div class="patient-form-field">
-          <label>Age / Gender</label>
+        <div class="porder-field">
+          <div class="porder-field-label"><span class="pf-icon">🎂</span> Age / Gender</div>
           <input type="text" id="patientAge" placeholder="e.g. 35 / M">
         </div>
-        <div class="patient-form-field">
-          <label>Mobile</label>
+        <div class="porder-field">
+          <div class="porder-field-label"><span class="pf-icon">📱</span> Mobile</div>
           <input type="text" id="patientMobile" placeholder="10-digit number">
         </div>
-        <div class="patient-form-field">
-          <label>Ref. Doctor</label>
+        <div class="porder-field">
+          <div class="porder-field-label"><span class="pf-icon">🩺</span> Ref. Doctor</div>
           <input type="text" id="patientDoctor" placeholder="Dr. Name">
         </div>
-        <div class="patient-form-field">
-          <label>Sample Date</label>
+        <div class="porder-field">
+          <div class="porder-field-label"><span class="pf-icon">📅</span> Sample Date</div>
           <input type="date" id="patientDate">
         </div>
       </div>
 
-      <!-- SPECIMEN BAR -->
-      <div class="specimen-bar-compact">
-        <label>🧫 Specimen Type:</label>
-        <div class="multiselect-wrapper" id="globalSpecimenWrapper" style="max-width:400px;">
+      <!-- ZONE C: Specimen Selector -->
+      <div class="porder-specimen-zone">
+        <span class="porder-specimen-label">🧫 Specimen</span>
+        <div class="multiselect-wrapper" id="globalSpecimenWrapper" style="max-width:380px;flex:1;">
           <button type="button" class="multiselect-trigger" id="globalSpecimenTrigger" onclick="toggleSpecimenDropdown()">
-            <span class="placeholder" id="globalSpecimenPlaceholder">Select specimen(s)...</span>
+            <span class="placeholder" id="globalSpecimenPlaceholder">Select specimen(s)…</span>
             <span class="arrow">▼</span>
           </button>
           <div class="multiselect-panel" id="globalSpecimenPanel">
             <div class="ms-search">
-              <input type="text" id="globalSpecimenSearch" placeholder="Search specimen..." oninput="filterGlobalSpecimens()">
+              <input type="text" id="globalSpecimenSearch" placeholder="Search specimen…" oninput="filterGlobalSpecimens()">
             </div>
             <div class="ms-options" id="globalSpecimenOptions"></div>
             <div class="ms-footer">
@@ -1938,20 +2789,20 @@ body { padding-bottom: 70px; }
         <button class="apply-to-all-btn" onclick="applySpecimenToAll()">Apply to All</button>
       </div>
 
-      <!-- TEST TABLE -->
-      <div class="table-wrapper" style="border:none; max-height:460px; overflow-y:auto;">
+      <!-- ZONE D: Test Table -->
+      <div class="table-wrapper" style="border:none; max-height:460px; overflow-y:auto; border-radius:0;">
         <table id="patientTable">
           <thead>
             <tr>
-              <th style="width:36px;">#</th>
+              <th style="width:38px;">#</th>
               <th>Test Name</th>
-              <th>Dept</th>
-              <th class="center">Price (₹)</th>
-              <th class="center">Sample</th>
-              <th class="center">Disc ₹</th>
-              <th class="center">Disc %</th>
-              <th class="center">Net (₹)</th>
-              <th class="center" style="width:44px;">✕</th>
+              <th style="width:130px;">Department</th>
+              <th class="center" style="width:90px;">Price (₹)</th>
+              <th class="center" style="width:110px;">Specimen</th>
+              <th class="center" style="width:82px;">Disc ₹</th>
+              <th class="center" style="width:76px;">Disc %</th>
+              <th class="center" style="width:96px;">Net (₹)</th>
+              <th class="center" style="width:42px;">✕</th>
             </tr>
           </thead>
           <tbody id="patientTbody">
@@ -1967,23 +2818,23 @@ body { padding-bottom: 70px; }
         </table>
       </div>
 
-      <!-- SUMMARY FOOTER -->
-      <div class="patient-summary-footer" id="patientSummaryFooter" style="display:none;">
-        <div class="psf-totals">
-          <div class="psf-stat">
-            <div class="psf-label">Subtotal</div>
-            <div class="psf-value" id="sumPrice">₹0</div>
+      <!-- ZONE E: Billing Summary -->
+      <div class="porder-billing-zone" id="patientSummaryFooter" style="display:none;">
+        <div class="pbill-stats">
+          <div class="pbill-stat">
+            <div class="pbill-label">Subtotal</div>
+            <div class="pbill-value" id="sumPrice">₹0</div>
           </div>
-          <div class="psf-stat">
-            <div class="psf-label">Discount</div>
-            <div class="psf-value disc" id="sumDisc">—</div>
+          <div class="pbill-stat">
+            <div class="pbill-label">Discount</div>
+            <div class="pbill-value disc-val" id="sumDisc">—</div>
           </div>
-          <div class="psf-stat">
-            <div class="psf-label">Net Bill</div>
-            <div class="psf-value net" id="sumNet">₹0</div>
+          <div class="pbill-stat">
+            <div class="pbill-label">Net Bill</div>
+            <div class="pbill-value net-val" id="sumNet">₹0</div>
           </div>
         </div>
-        <div style="display:flex;gap:8px;">
+        <div class="pbill-actions">
           <button class="btn btn-danger btn-sm" onclick="clearAllTests()">🗑 Clear All</button>
           <button class="btn btn-muted btn-sm" onclick="printBill()">🖨️ Print Bill</button>
         </div>
@@ -2155,8 +3006,30 @@ body { padding-bottom: 70px; }
   </div>
 </div>
 
-<!-- ══ STICKY BILL BAR ══ -->
+<!-- ══ STICKY BILL BAR — Draggable + Minimizable ══ -->
 <div class="sticky-bill-bar" id="stickyBillBar">
+  <!-- Drag handle / header row -->
+  <div class="bill-bar-header" id="billDragHandle">
+    <div class="bill-bar-title">
+      <div class="bill-drag-dots"><span></span><span></span></div>
+      🧾 Bill Summary
+    </div>
+    <div class="bill-header-controls">
+      <button class="bill-ctrl-btn minimize-btn" onclick="toggleBillMinimize(event)" title="Minimize">⊟</button>
+    </div>
+  </div>
+
+  <!-- Minimized pill (shown when collapsed) -->
+  <div class="bill-minimized-pill" onclick="toggleBillMinimize(event)" title="Click to expand">
+    <span class="bill-pill-icon">🧾</span>
+    <div>
+      <div class="bill-pill-net" id="stickyNetPill">₹0</div>
+      <div class="bill-pill-label">Net Bill</div>
+    </div>
+    <span class="bill-pill-restore">▲ expand</span>
+  </div>
+
+  <!-- Stats grid -->
   <div class="sticky-bill-stats">
     <div class="sticky-bill-stat">
       <div class="s-label">Tests</div>
@@ -2273,10 +3146,74 @@ body { padding-bottom: 70px; }
 //  CLOCK
 // ═══════════════════════════════════════════
 function updateClock() {
-  document.getElementById('clockBadge').textContent = new Date().toLocaleTimeString('en-IN', { hour12: false });
+  const now = new Date();
+  const clockEl = document.getElementById('clockBadge');
+  const dateEl  = document.getElementById('dateBadge');
+  if (clockEl) clockEl.textContent = now.toLocaleTimeString('en-US', { hour12: true, hour: 'numeric', minute: '2-digit', second: '2-digit' });
+  if (dateEl) {
+    const d = String(now.getDate()).padStart(2,'0');
+    const m = String(now.getMonth()+1).padStart(2,'0');
+    const y = now.getFullYear();
+    dateEl.textContent = `${d}/${m}/${y}`;
+  }
 }
-updateClock();
-setInterval(updateClock, 1000);
+updateClock(); setInterval(updateClock, 1000);
+
+// ═══════════════════════════════════════════
+//  DARK MODE
+// ═══════════════════════════════════════════
+(function initTheme() {
+  const toggleEl = document.getElementById('themeToggle');
+  if (!toggleEl) return;
+  const saved = localStorage.getItem('medicore-theme');
+
+  function applyTheme(dark) {
+    const navLogo    = document.getElementById('navLogo');
+    const themeLabel = document.getElementById('themeLabelText');
+    document.body.style.transition = 'background 0.4s ease, color 0.3s ease';
+    if (dark) {
+      document.body.classList.add('dark-mode');
+      if (navLogo)    navLogo.src    = 'Black.svg';
+      if (themeLabel) themeLabel.textContent = 'Dark';
+    } else {
+      document.body.classList.remove('dark-mode');
+      if (navLogo)    navLogo.src    = 'White.svg';
+      if (themeLabel) themeLabel.textContent = 'Light';
+    }
+  }
+
+  if (saved === 'dark') { toggleEl.checked = true; applyTheme(true); }
+
+  toggleEl.addEventListener('change', () => {
+    const dark = toggleEl.checked;
+    applyTheme(dark);
+    localStorage.setItem('medicore-theme', dark ? 'dark' : 'light');
+  });
+})();
+
+// ═══════════════════════════════════════════
+//  MODULE HUB
+// ═══════════════════════════════════════════
+(function initModHub() {
+  const wrap     = document.getElementById('modHubWrap');
+  const trigger  = document.getElementById('modHubTrigger');
+  const backdrop = document.getElementById('modHubBackdrop');
+  if (!trigger || !wrap) return;
+
+  function openHub()  { wrap.classList.add('open');    trigger.setAttribute('aria-expanded','true'); }
+  function closeHub() { wrap.classList.remove('open'); trigger.setAttribute('aria-expanded','false'); }
+  function toggleHub(){ wrap.classList.contains('open') ? closeHub() : openHub(); }
+
+  trigger.addEventListener('click', toggleHub);
+  trigger.addEventListener('keydown', e => {
+    if (e.key==='Enter'||e.key===' ') { e.preventDefault(); toggleHub(); }
+    if (e.key==='Escape') closeHub();
+  });
+  if (backdrop) backdrop.addEventListener('click', closeHub);
+  document.addEventListener('keydown', e => {
+    if (e.key==='Escape' && wrap.classList.contains('open')) closeHub();
+  });
+})();
 
 // ═══════════════════════════════════════════
 //  DATA
@@ -3119,8 +4056,86 @@ function updateStickyBar() {
   document.getElementById('stickySubtotal').textContent  = '₹'+totalP.toLocaleString();
   document.getElementById('stickyDiscount').textContent  = totalD>0 ? '−₹'+totalD.toLocaleString() : '₹0';
   document.getElementById('stickyNet').textContent       = '₹'+totalN.toLocaleString();
+  // Also update minimized pill net
+  const pill = document.getElementById('stickyNetPill');
+  if (pill) pill.textContent = '₹'+totalN.toLocaleString();
   updateBookBtn();
 }
+
+// ═══════════════════════════════════════════
+//  BILL BAR — MINIMIZE TOGGLE
+// ═══════════════════════════════════════════
+function toggleBillMinimize(e) {
+  if (e) e.stopPropagation();
+  const bar = document.getElementById('stickyBillBar');
+  bar.classList.toggle('bill-minimized');
+  // Update minimize button label
+  const btn = bar.querySelector('.minimize-btn');
+  if (btn) btn.textContent = bar.classList.contains('bill-minimized') ? '⊞' : '⊟';
+}
+
+// ═══════════════════════════════════════════
+//  BILL BAR — DRAG TO MOVE
+// ═══════════════════════════════════════════
+(function initBillDrag() {
+  let dragging = false, startX, startY, origLeft, origTop;
+
+  function getBar() { return document.getElementById('stickyBillBar'); }
+
+  function startDrag(cx, cy) {
+    const bar  = getBar();
+    const rect = bar.getBoundingClientRect();
+    // Switch from bottom/right anchoring to absolute top/left
+    bar.style.bottom = 'auto';
+    bar.style.right  = 'auto';
+    bar.style.left   = rect.left + 'px';
+    bar.style.top    = rect.top  + 'px';
+    origLeft = rect.left;
+    origTop  = rect.top;
+    startX = cx; startY = cy;
+    dragging = true;
+  }
+
+  function moveDrag(cx, cy) {
+    if (!dragging) return;
+    const bar = getBar();
+    const dx  = cx - startX;
+    const dy  = cy - startY;
+    let nl = origLeft + dx;
+    let nt = origTop  + dy;
+    // Clamp to viewport
+    nl = Math.max(0, Math.min(nl, window.innerWidth  - bar.offsetWidth));
+    nt = Math.max(0, Math.min(nt, window.innerHeight - bar.offsetHeight));
+    bar.style.left = nl + 'px';
+    bar.style.top  = nt + 'px';
+  }
+
+  function endDrag() { dragging = false; }
+
+  // Mouse
+  document.addEventListener('mousedown', e => {
+    const handle = document.getElementById('billDragHandle');
+    if (!handle || !handle.contains(e.target)) return;
+    if (e.target.closest('button')) return;
+    startDrag(e.clientX, e.clientY);
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', e => { if (dragging) moveDrag(e.clientX, e.clientY); });
+  document.addEventListener('mouseup',   endDrag);
+
+  // Touch
+  document.addEventListener('touchstart', e => {
+    const handle = document.getElementById('billDragHandle');
+    if (!handle || !handle.contains(e.target)) return;
+    if (e.target.closest('button')) return;
+    startDrag(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: true });
+  document.addEventListener('touchmove', e => {
+    if (!dragging) return;
+    moveDrag(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: true });
+  document.addEventListener('touchend', endDrag);
+})();
 
 // ═══════════════════════════════════════════
 //  PRICE EDIT POPUP
