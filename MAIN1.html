@@ -1350,7 +1350,10 @@
     <div class="card">
       <div class="card-head">
         <h2><div class="ch-icon ch-blue">📋</div> Patient Details</h2>
-        <span id="formMode" style="font-size:11px;font-weight:800;color:var(--blue);background:rgba(37,99,235,0.08);padding:4px 10px;border-radius:6px;letter-spacing:0.3px;">NEW PATIENT</span>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span id="formMode" style="font-size:11px;font-weight:800;color:var(--blue);background:rgba(37,99,235,0.08);padding:4px 10px;border-radius:6px;letter-spacing:0.3px;">NEW PATIENT</span>
+          <button type="button" onclick="openSettingsModal()" title="Field Settings" style="width:32px;height:32px;border-radius:8px;border:1.5px solid var(--border-mid);background:var(--input-bg);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all 0.18s;flex-shrink:0;" onmouseover="this.style.borderColor='var(--blue)';this.style.color='var(--blue)';this.style.background='rgba(37,99,235,0.07)'" onmouseout="this.style.borderColor='var(--border-mid)';this.style.color='var(--muted)';this.style.background='var(--input-bg)'">⚙️</button>
+        </div>
       </div>
       <div class="card-body">
         <form id="patientForm" novalidate>
@@ -1585,13 +1588,6 @@
               <div class="io-sub">Bulk import from JSON</div>
             </div>
           </button>
-          <button class="io-btn template" type="button" onclick="downloadTemplate()">
-            <div class="io-icon" style="background:rgba(217,119,6,0.1)">📄</div>
-            <div class="io-info">
-              <div class="io-label">Download Template</div>
-              <div class="io-sub">Sample JSON structure</div>
-            </div>
-          </button>
           <button class="io-btn" type="button" onclick="openSyntaxModal()" style="border-color:rgba(124,58,237,0.3);background:rgba(124,58,237,0.04);color:#7c3aed">
             <div class="io-icon" style="background:rgba(124,58,237,0.08)">📖</div>
             <div class="io-info">
@@ -1616,20 +1612,6 @@
           <p><strong>Duplicate check</strong> runs on mobile number before saving.</p>
           <p>Use <strong>Load &amp; Edit</strong> to update existing patient records.</p>
         </div>
-      </div>
-    </div>
-
-    <!-- Field Settings -->
-    <div class="side-card">
-      <div class="side-card-head">
-        <div class="ch-icon ch-red" style="font-size:13px;">⚙️</div>
-        <h3>Field Settings</h3>
-      </div>
-      <div class="side-card-body">
-        <p style="font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.5;">Control which fields are required. Settings are saved automatically.</p>
-        <button class="btn btn-muted btn-full" type="button" onclick="openSettingsModal()">
-          ⚙️ Configure Required Fields
-        </button>
       </div>
     </div>
 
