@@ -40,58 +40,350 @@
         radial-gradient(ellipse 60% 50% at 90% 110%, rgba(6,182,212,0.06) 0%, transparent 60%);
     }
 
-    /* ── NAVBAR ── */
+    /* ══════════════════════════════════════════════
+       NAVBAR — Premium (matches index.html)
+    ══════════════════════════════════════════════ */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+    }
+
     .navbar {
-      background: rgba(12,20,69,0.97);
-      backdrop-filter: blur(20px);
+      position: relative;
+      z-index: 1;
+      background: #06102a;
       border-bottom: 1px solid rgba(255,255,255,0.07);
-      padding: 0 28px;
+      padding: 0 clamp(20px, 3vw, 44px);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 60px;
-      position: sticky;
-      top: 0;
-      z-index: 300;
+      height: 84px;
+      gap: 20px;
+      transition: box-shadow 0.3s ease, border-color 0.3s ease;
     }
+    body.dark-mode .navbar { background: #02060f; }
 
+    /* ── LOGO ── */
     .nav-logo {
-      display: flex; align-items: center; gap: 10px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
       text-decoration: none;
+      flex-shrink: 0;
     }
-    .logo-icon {
-      width: 36px; height: 36px;
-      background: linear-gradient(135deg, #2563eb, #06b6d4);
-      border-radius: 9px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 17px;
-      box-shadow: 0 4px 14px rgba(37,99,235,0.4);
-    }
-    .logo-text { font-size: 18px; font-weight: 800; color: white; letter-spacing: -0.5px; }
-    .logo-text span { color: #06b6d4; }
 
-    .nav-right { display: flex; align-items: center; gap: 10px; }
+    .logo-icon {
+      width: clamp(50px, 5vw, 62px);
+      height: clamp(50px, 5vw, 62px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border-radius: 15px;
+      background: rgba(255,255,255,0.06);
+      border: 1.5px solid rgba(255,255,255,0.12);
+      box-shadow: 0 0 22px rgba(6,182,212,0.22), 0 3px 10px rgba(0,0,0,0.35);
+      transition: box-shadow 0.3s ease, transform 0.25s ease;
+      padding: 7px;
+    }
+
+    .nav-logo:hover .logo-icon {
+      box-shadow: 0 0 34px rgba(6,182,212,0.38), 0 5px 18px rgba(0,0,0,0.35);
+      transform: scale(1.06);
+    }
+
+    .logo-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .logo-text {
+      font-size: clamp(21px, 2.4vw, 27px);
+      font-weight: 800;
+      color: white;
+      letter-spacing: -0.8px;
+      line-height: 1;
+    }
+
+    .logo-text .logo-medi { color: rgba(255,255,255,0.95); }
+    .logo-text .logo-core {
+      background: linear-gradient(120deg, #06b6d4, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .logo-sub {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.38);
+      margin-top: 4px;
+      -webkit-text-fill-color: rgba(255,255,255,0.38);
+    }
+
+    /* ── NAV RIGHT ── */
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    /* ── CLOCK ── */
+    .nav-clock-simple {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 1px;
+      padding: 0 4px;
+    }
 
     .clock-badge {
       font-family: 'DM Mono', monospace;
-      font-size: 12px; color: rgba(255,255,255,0.5);
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.1);
-      padding: 5px 11px; border-radius: 7px; letter-spacing: 0.5px;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.9);
+      letter-spacing: 0.8px;
+      line-height: 1;
     }
 
-    .btn-nav {
-      background: rgba(255,255,255,0.08);
-      color: rgba(255,255,255,0.75);
-      border: 1px solid rgba(255,255,255,0.12);
-      padding: 7px 14px; border-radius: 8px;
-      font-size: 13px; font-weight: 600;
-      cursor: pointer; font-family: 'Outfit', sans-serif;
-      text-decoration: none;
-      display: inline-flex; align-items: center; gap: 5px;
-      transition: all 0.2s;
+    .date-badge-inline {
+      font-family: 'DM Mono', monospace;
+      font-size: 9.5px;
+      color: rgba(255,255,255,0.38);
+      letter-spacing: 0.2px;
+      line-height: 1;
     }
-    .btn-nav:hover { background: rgba(255,255,255,0.13); color: white; }
+
+    /* ── NAV DIVIDER ── */
+    .nav-divider {
+      width: 1px;
+      height: 24px;
+      background: rgba(255,255,255,0.1);
+      flex-shrink: 0;
+    }
+
+    /* ── HOME BACK LINK ── */
+    .btn-nav {
+      color: rgba(255,255,255,0.55);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 7px 16px;
+      border-radius: 9px;
+      border: 1.5px solid transparent;
+      transition: color 0.18s, background 0.18s, border-color 0.18s, box-shadow 0.18s;
+      white-space: nowrap;
+      letter-spacing: 0.1px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      background: rgba(255,255,255,0.04);
+    }
+    .btn-nav:hover {
+      color: #fff;
+      background: #2563eb;
+      border-color: #2563eb;
+      box-shadow: 0 4px 14px rgba(37,99,235,0.45);
+    }
+    body.dark-mode .btn-nav:hover {
+      background: #0891b2;
+      border-color: #0891b2;
+      box-shadow: 0 4px 14px rgba(6,182,212,0.45);
+    }
+
+    /* ── DARK MODE TOGGLE ── */
+    .theme-toggle-wrap { display: flex; align-items: center; }
+
+    .theme-toggle {
+      position: relative;
+      width: 52px;
+      height: 28px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .theme-toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+
+    .theme-track {
+      position: absolute;
+      inset: 0;
+      border-radius: 100px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .theme-toggle input:checked ~ .theme-track {
+      background: rgba(14,30,80,0.9);
+      border-color: rgba(100,149,237,0.4);
+      box-shadow: inset 0 0 12px rgba(30,60,150,0.3), 0 0 10px rgba(100,149,237,0.15);
+    }
+
+    .theme-thumb {
+      position: absolute;
+      top: 3px; left: 3px;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      box-shadow: 0 0 10px rgba(251,191,36,0.6), 0 2px 6px rgba(0,0,0,0.3);
+      transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), background 0.4s ease, box-shadow 0.4s ease;
+      display: flex; align-items: center; justify-content: center; overflow: hidden;
+    }
+
+    .theme-toggle input:checked ~ .theme-thumb {
+      transform: translateX(24px);
+      background: linear-gradient(135deg, #c7d2fe, #a5b4fc);
+      box-shadow: 0 0 12px rgba(165,180,252,0.5), 0 2px 6px rgba(0,0,0,0.4);
+    }
+
+    .theme-thumb-icon { font-size: 12px; line-height: 1; transition: opacity 0.2s, transform 0.3s; position: absolute; }
+    .icon-sun  { opacity: 1; transform: rotate(0deg); }
+    .icon-moon { opacity: 0; transform: rotate(-90deg); }
+    .theme-toggle input:checked ~ .theme-thumb .icon-sun  { opacity: 0; transform: rotate(90deg); }
+    .theme-toggle input:checked ~ .theme-thumb .icon-moon { opacity: 1; transform: rotate(0deg); }
+    .theme-toggle:hover .theme-track { box-shadow: 0 0 0 3px rgba(251,191,36,0.15); }
+    .theme-toggle input:checked:hover ~ .theme-track { box-shadow: inset 0 0 12px rgba(30,60,150,0.3), 0 0 0 3px rgba(165,180,252,0.15); }
+    .theme-toggle input:focus-visible ~ .theme-track { outline: 2px solid #06b6d4; outline-offset: 3px; }
+
+    .theme-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      user-select: none;
+      min-width: 24px;
+    }
+
+    /* ══════════════════════════════════════════════
+       MODULE HUB — Orbital vertical nav menu
+    ══════════════════════════════════════════════ */
+    .mod-hub-wrap { position: relative; flex-shrink: 0; }
+
+    .mod-hub-trigger {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(37,99,235,0.18);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: background 0.22s, border-color 0.22s, box-shadow 0.22s, transform 0.22s;
+      position: relative;
+      color: rgba(255,255,255,0.85);
+      box-shadow: 0 0 16px rgba(37,99,235,0.22);
+    }
+    .mod-hub-trigger:hover {
+      background: rgba(37,99,235,0.35);
+      border-color: rgba(6,182,212,0.45);
+      box-shadow: 0 0 22px rgba(6,182,212,0.28);
+    }
+    .mod-hub-wrap.open .mod-hub-trigger {
+      background: rgba(6,182,212,0.22);
+      border-color: rgba(6,182,212,0.5);
+      box-shadow: 0 0 24px rgba(6,182,212,0.35);
+      transform: rotate(45deg);
+    }
+    .mod-hub-trigger svg { transition: opacity 0.18s, transform 0.18s; }
+    .mod-hub-icon-grid  { position: absolute; }
+    .mod-hub-icon-close { position: absolute; opacity: 0; transform: rotate(-45deg); }
+    .mod-hub-wrap.open .mod-hub-icon-grid  { opacity: 0; transform: rotate(45deg); }
+    .mod-hub-wrap.open .mod-hub-icon-close { opacity: 1; transform: rotate(0deg); }
+
+    .mod-hub-panel {
+      position: absolute;
+      top: calc(100% + 14px);
+      right: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0;
+      z-index: 400;
+      pointer-events: none;
+    }
+
+    .mod-hub-track {
+      position: absolute;
+      top: 19px; right: 19px;
+      width: 2px;
+      background: linear-gradient(180deg, rgba(6,182,212,0.55) 0%, rgba(37,99,235,0.35) 60%, transparent 100%);
+      border-radius: 99px;
+      transform-origin: top center;
+      transition: height 0.4s cubic-bezier(0.34,1.2,0.64,1), opacity 0.3s;
+      height: 0; opacity: 0;
+    }
+    .mod-hub-wrap.open .mod-hub-track { height: calc(5 * 64px - 24px); opacity: 1; }
+
+    .mod-hub-node {
+      display: flex; align-items: center; gap: 12px;
+      text-decoration: none;
+      padding: 6px 0;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateX(20px) scale(0.85);
+      transition: opacity 0.28s cubic-bezier(0.34,1.3,0.64,1), transform 0.28s cubic-bezier(0.34,1.3,0.64,1);
+    }
+    .mod-hub-wrap.open .mod-hub-node { opacity: 1; transform: translateX(0) scale(1); pointer-events: auto; }
+    .mod-hub-wrap.open .mod-hub-node:nth-child(2) { transition-delay: 0.04s; }
+    .mod-hub-wrap.open .mod-hub-node:nth-child(3) { transition-delay: 0.09s; }
+    .mod-hub-wrap.open .mod-hub-node:nth-child(4) { transition-delay: 0.14s; }
+    .mod-hub-wrap.open .mod-hub-node:nth-child(5) { transition-delay: 0.19s; }
+    .mod-hub-wrap.open .mod-hub-node:nth-child(6) { transition-delay: 0.24s; }
+
+    .mod-hub-label-wrap { display: flex; flex-direction: column; align-items: flex-end; text-align: right; }
+    .mod-hub-num  { font-family: 'DM Mono', monospace; font-size: 9px; color: rgba(255,255,255,0.28); letter-spacing: 1px; line-height: 1; font-weight: 500; }
+    .mod-hub-name { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.75); letter-spacing: 0.3px; white-space: nowrap; line-height: 1.2; transition: color 0.18s; }
+    .mod-hub-node:hover .mod-hub-name { color: #22d3ee; }
+
+    .mod-hub-circle {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(37,99,235,0.45);
+      background: radial-gradient(circle at 35% 35%, rgba(37,99,235,0.5), rgba(6,182,212,0.22) 70%, rgba(8,14,50,0.88) 100%);
+      box-shadow: 0 0 14px rgba(6,182,212,0.22), 0 0 0 3px rgba(37,99,235,0.12), inset 0 1px 0 rgba(255,255,255,0.14);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,0.85);
+      flex-shrink: 0;
+      transition: box-shadow 0.22s, border-color 0.22s, background 0.22s, transform 0.22s;
+      position: relative;
+    }
+    .mod-hub-node:hover .mod-hub-circle {
+      border-color: rgba(6,182,212,0.8);
+      box-shadow: 0 0 22px rgba(6,182,212,0.45), 0 0 0 5px rgba(6,182,212,0.12), inset 0 1px 0 rgba(255,255,255,0.2);
+      background: radial-gradient(circle at 35% 35%, rgba(6,182,212,0.55), rgba(37,99,235,0.35) 70%, rgba(8,14,50,0.88) 100%);
+      transform: scale(1.1);
+    }
+    .mod-hub-circle::after {
+      content: '';
+      position: absolute; inset: -4px; border-radius: 50%;
+      border: 1px solid rgba(6,182,212,0.3);
+      animation: hubRingPulse 2.5s ease-in-out infinite;
+      opacity: 0;
+    }
+    .mod-hub-node:hover .mod-hub-circle::after { opacity: 1; }
+    @keyframes hubRingPulse {
+      0%, 100% { transform: scale(1); opacity: 0.6; }
+      50% { transform: scale(1.18); opacity: 0; }
+    }
+
+    /* Active module highlight */
+    .mod-hub-node.active .mod-hub-circle {
+      border-color: rgba(6,182,212,0.7);
+      box-shadow: 0 0 18px rgba(6,182,212,0.4), 0 0 0 4px rgba(6,182,212,0.1), inset 0 1px 0 rgba(255,255,255,0.18);
+    }
+    .mod-hub-node.active .mod-hub-name { color: #22d3ee; }
+
+    .mod-hub-backdrop { display: none; position: fixed; inset: 0; z-index: 399; }
+    .mod-hub-wrap.open .mod-hub-backdrop { display: block; }
+    .mod-hub-wrap.open .mod-hub-panel { pointer-events: auto; }
 
     /* ── PAGE BANNER ── */
     .page-banner {
@@ -580,21 +872,450 @@
       .import-mode { flex-direction: column; }
       .main-layout { padding: 14px 12px 40px; }
     }
+
+
+    /* ── READ-ONLY FIELD (doctor name) ── */
+    .ctl-readonly {
+      background: #eef3fb !important;
+      color: #475569 !important;
+      cursor: not-allowed;
+      font-style: italic;
+      border-style: dashed !important;
+    }
+
+    /* ── DARK MODE ── */
+    body.dark-mode {
+      --bg: #0b0f19;
+      --card: #131929;
+      --text: #dde4f0;
+      --muted: #7a8499;
+      --border: #1e2538;
+      --border-mid: #2a3249;
+      --input-bg: #0e1422;
+    }
+    body.dark-mode {
+      background: #0b0f19;
+      background-image:
+        radial-gradient(ellipse 80% 60% at 10% -10%, rgba(37,99,235,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 90% 110%, rgba(6,182,212,0.05) 0%, transparent 60%);
+    }
+    body.dark-mode .card { background: #131929; border-color: #1e2538; box-shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 20px rgba(0,0,0,0.4), 0 0 0 1px rgba(77,142,240,0.04); }
+    body.dark-mode .card-head { background: linear-gradient(to right, #131929, #161e30); border-bottom-color: #1e2538; }
+    body.dark-mode .card-head h2 { color: #dde4f0; }
+    body.dark-mode .page-banner { background: linear-gradient(135deg, #04091a 0%, #091830 55%, #122050 100%); }
+    body.dark-mode .ctl { background: #0e1422; border-color: #2a3249; color: #dde4f0; }
+    body.dark-mode .ctl:focus { background: #131929; border-color: #4d8ef0; box-shadow: 0 0 0 3px rgba(77,142,240,0.12); }
+    body.dark-mode .ctl::placeholder { color: #3d4a63; }
+    body.dark-mode .ctl-readonly { background: #0a1020 !important; color: #4d5e7a !important; border-color: #1e2538 !important; }
+    body.dark-mode .radio-pill { background: #0e1422; border-color: #2a3249; color: #7a8499; }
+    body.dark-mode .radio-pill:has(input:checked) { background: rgba(77,142,240,0.12); border-color: #4d8ef0; color: #6aa3f5; }
+    body.dark-mode label { color: #b8c4d8; }
+    body.dark-mode .stitle { color: #4d8ef0; }
+    body.dark-mode .stitle::after { background: linear-gradient(to right, rgba(77,142,240,0.2), transparent); }
+    body.dark-mode .actions { background: linear-gradient(to right, #131929, #161e30); border-color: #1e2538; }
+    body.dark-mode .btn-muted { background: #131929; border-color: #2a3249; color: #7a8499; }
+    body.dark-mode .btn-muted:hover { border-color: #4d8ef0; color: #6aa3f5; background: rgba(77,142,240,0.07); }
+    body.dark-mode .btn-primary { background: linear-gradient(135deg, #3b7ae0, #2563c8); box-shadow: 0 4px 14px rgba(59,122,224,0.3); }
+    body.dark-mode .btn-primary:hover { box-shadow: 0 8px 22px rgba(59,122,224,0.42); }
+    body.dark-mode .side-card { background: #131929; border-color: #1e2538; box-shadow: 0 1px 2px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.35); }
+    body.dark-mode .side-card-head { background: linear-gradient(to right, #131929, #161e30); border-bottom-color: #1e2538; }
+    body.dark-mode .side-card-head h3 { color: #dde4f0; }
+    body.dark-mode .qa-btn { background: #0e1422; border-color: #1e2538; color: #b8c4d8; }
+    body.dark-mode .qa-btn:hover { background: rgba(77,142,240,0.08); border-color: #4d8ef0; color: #6aa3f5; }
+    body.dark-mode .stat-tile { background: #0e1422; border-color: #1e2538; }
+    body.dark-mode .stat-num { color: #4d8ef0; }
+    body.dark-mode .stat-lbl { color: #7a8499; }
+    body.dark-mode .tip-box { background: rgba(77,142,240,0.05); border-color: rgba(77,142,240,0.18); }
+    body.dark-mode .tip-box p { color: #7a8499; }
+    body.dark-mode .tip-box strong { color: #b8c4d8; }
+    body.dark-mode .io-btn { background: #0e1422; border-color: #1e2538; color: #b8c4d8; }
+    body.dark-mode .io-btn.export { background: rgba(77,142,240,0.07); border-color: rgba(77,142,240,0.22); color: #6aa3f5; }
+    body.dark-mode .io-btn.import { background: rgba(6,182,212,0.07); border-color: rgba(6,182,212,0.22); color: #22d3ee; }
+    body.dark-mode .io-btn.template { background: rgba(245,158,11,0.07); border-color: rgba(245,158,11,0.22); color: #fbbf24; }
+    body.dark-mode .ref-wrap { background: linear-gradient(135deg, #111728, #141c30); border-color: #1e2a40; }
+    body.dark-mode .ref-head h3 { color: #dde4f0; }
+    body.dark-mode .modal-box { background: #131929; border-color: #1e2538; box-shadow: 0 24px 64px rgba(0,0,0,0.55), 0 0 0 1px rgba(77,142,240,0.06); }
+    body.dark-mode .modal-head { background: linear-gradient(to right, #131929, #161e30); border-bottom-color: #1e2538; }
+    body.dark-mode .modal-head h3 { color: #dde4f0; }
+    body.dark-mode .modal-body { background: #131929; }
+    body.dark-mode .table th { background: linear-gradient(to bottom, #161e30, #131929); color: #7a8499; border-bottom: 2px solid #1e2538; }
+    body.dark-mode .table td { border-bottom-color: #1a2132; color: #dde4f0; }
+    body.dark-mode .table tbody tr:hover { background: #161e30; }
+    body.dark-mode .search-wrap input { background: #0e1422; border-color: #2a3249; color: #dde4f0; }
+    body.dark-mode .search-wrap input:focus { border-color: #4d8ef0; box-shadow: 0 0 0 3px rgba(77,142,240,0.12); }
+    body.dark-mode .edit-banner { background: #1e1500; border-color: #d97706; color: #fbbf24; }
+    body.dark-mode .dup-box { background: #131929; border-color: #1e2538; }
+    body.dark-mode .dup-body { background: #131929; }
+    body.dark-mode .dup-body p { color: #7a8499; }
+    body.dark-mode .dup-detail { background: #0e1422; border-color: #1e2538; }
+    body.dark-mode .dup-detail .dl { color: #7a8499; }
+    body.dark-mode .dup-detail .dv { color: #dde4f0; }
+    body.dark-mode .import-zone { border-color: #2a3249; }
+    body.dark-mode .import-zone:hover { border-color: #4d8ef0; background: rgba(77,142,240,0.04); }
+    body.dark-mode .iz-title { color: #b8c4d8; }
+    body.dark-mode .import-preview { background: #0e1422; border-color: #1e2538; }
+    body.dark-mode .preview-stat { background: #131929; border-color: #1e2538; }
+    body.dark-mode .import-mode label { background: #131929; border-color: #1e2538; color: #7a8499; }
+    body.dark-mode .import-mode label:has(input:checked) { border-color: #4d8ef0; background: rgba(77,142,240,0.08); color: #6aa3f5; }
+    body.dark-mode .schema-doc { background: #0e1422; border-color: #1e2538; }
+    body.dark-mode .schema-doc h4 { color: #dde4f0; }
+    body.dark-mode .import-tabs { border-color: #2a3249; }
+    body.dark-mode .import-tab { background: #0e1422; color: #7a8499; border-right-color: #2a3249; }
+    body.dark-mode .import-tab:not(.active):hover { background: rgba(77,142,240,0.08); color: #6aa3f5; }
+    body.dark-mode .patient-id-badge { background: rgba(77,142,240,0.1); color: #6aa3f5; }
+
+    /* ══════════════════════════════════════════════
+       PATIENT SAVED SUCCESS MODAL
+    ══════════════════════════════════════════════ */
+    .success-modal {
+      position: fixed; inset: 0;
+      background: rgba(4,9,26,0.72);
+      backdrop-filter: blur(8px);
+      display: none; align-items: center; justify-content: center;
+      padding: 16px; z-index: 600;
+    }
+    .success-modal.open { display: flex; }
+
+    .success-box {
+      background: var(--card);
+      border-radius: 22px;
+      border: 1.5px solid var(--border);
+      box-shadow: 0 32px 80px rgba(0,0,0,0.25), 0 0 0 1px rgba(22,163,74,0.1);
+      width: min(520px,100%);
+      overflow: hidden;
+      animation: successPop 0.32s cubic-bezier(0.34,1.5,0.64,1);
+    }
+    @keyframes successPop {
+      from { opacity:0; transform: scale(0.82) translateY(30px); }
+      to   { opacity:1; transform: scale(1) translateY(0); }
+    }
+
+    .success-header {
+      background: linear-gradient(135deg, #15803d 0%, #16a34a 60%, #22c55e 100%);
+      padding: 28px 28px 22px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .success-header::before {
+      content:'';
+      position:absolute; inset:0;
+      background: radial-gradient(ellipse 70% 80% at 50% 120%, rgba(255,255,255,0.12) 0%, transparent 60%);
+    }
+    .success-checkring {
+      width: 68px; height: 68px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.18);
+      border: 2.5px solid rgba(255,255,255,0.5);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 14px;
+      font-size: 30px;
+      box-shadow: 0 0 0 8px rgba(255,255,255,0.08);
+      position: relative; z-index: 1;
+    }
+    .success-title {
+      font-size: 22px; font-weight: 900; color: #fff;
+      letter-spacing: -0.5px; position: relative; z-index: 1;
+    }
+    .success-sub {
+      font-size: 13px; color: rgba(255,255,255,0.75);
+      margin-top: 5px; position: relative; z-index: 1;
+    }
+
+    .success-body { padding: 22px 24px; }
+
+    .saved-id-chip {
+      display: flex; align-items: center; gap: 10px;
+      background: linear-gradient(135deg, rgba(22,163,74,0.07), rgba(37,99,235,0.05));
+      border: 1.5px solid rgba(22,163,74,0.2);
+      border-radius: 12px; padding: 13px 16px;
+      margin-bottom: 18px;
+    }
+    .saved-id-icon { font-size: 22px; }
+    .saved-id-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+    .saved-id-value { font-family: 'DM Mono', monospace; font-size: 18px; font-weight: 700; color: var(--green); letter-spacing: 0.5px; }
+    .saved-name-val { font-size: 14px; font-weight: 700; color: var(--text); }
+
+    .success-actions {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    }
+    .suc-btn {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      padding: 14px 12px; border-radius: 12px;
+      border: 1.5px solid var(--border-mid);
+      background: var(--input-bg); cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      transition: all 0.18s; text-decoration: none;
+    }
+    .suc-btn:hover { transform: translateY(-2px); }
+    .suc-btn-icon { font-size: 24px; }
+    .suc-btn-label { font-size: 13px; font-weight: 700; color: var(--text); }
+    .suc-btn-sub { font-size: 11px; color: var(--muted); font-weight: 400; }
+    .suc-btn.primary { background: linear-gradient(135deg, var(--blue), var(--blue-dark)); border-color: var(--blue); }
+    .suc-btn.primary .suc-btn-label, .suc-btn.primary .suc-btn-sub { color: #fff; }
+    .suc-btn.primary:hover { box-shadow: 0 8px 22px rgba(37,99,235,0.38); }
+    .suc-btn.teal { background: linear-gradient(135deg, #0891b2, #0d9488); border-color: #0891b2; }
+    .suc-btn.teal .suc-btn-label, .suc-btn.teal .suc-btn-sub { color: #fff; }
+    .suc-btn.teal:hover { box-shadow: 0 8px 22px rgba(8,145,178,0.35); }
+    .success-close-row { margin-top: 12px; display: flex; justify-content: center; }
+    .suc-close-link { font-size: 12px; color: var(--muted); cursor: pointer; background: none; border: none; font-family: 'Outfit', sans-serif; font-weight: 600; padding: 6px 14px; border-radius: 8px; transition: color 0.15s, background 0.15s; }
+    .suc-close-link:hover { color: var(--text); background: var(--border); }
+
+    body.dark-mode .success-box { box-shadow: 0 32px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(22,163,74,0.12); }
+    body.dark-mode .saved-id-chip { background: linear-gradient(135deg, rgba(22,163,74,0.08), rgba(77,142,240,0.05)); border-color: rgba(22,163,74,0.22); }
+    body.dark-mode .suc-btn { background: #0e1422; border-color: #2a3249; }
+    body.dark-mode .suc-btn:hover { border-color: #4d8ef0; }
+
+    /* ══════════════════════════════════════════════
+       SYNTAX REFERENCE MODAL
+    ══════════════════════════════════════════════ */
+    .syntax-modal {
+      position: fixed; inset: 0;
+      background: rgba(4,9,26,0.72);
+      backdrop-filter: blur(8px);
+      display: none; align-items: center; justify-content: center;
+      padding: 16px; z-index: 600;
+    }
+    .syntax-modal.open { display: flex; }
+    .syntax-box {
+      background: var(--card); border-radius: 20px;
+      border: 1.5px solid var(--border);
+      box-shadow: 0 24px 64px rgba(0,0,0,0.25);
+      width: min(700px, 100%); max-height: 88vh; overflow: auto;
+      animation: modalSlide 0.22s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .syntax-head {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 22px; border-bottom: 1.5px solid var(--border);
+      background: linear-gradient(to right, var(--card), var(--input-bg));
+      position: sticky; top: 0; z-index: 2;
+    }
+    .syntax-head h3 { font-size: 16px; font-weight: 800; color: var(--text); display:flex; align-items:center; gap:8px; }
+    .syntax-body { padding: 20px 22px; }
+    .syntax-tabs { display: flex; gap: 0; border: 1.5px solid var(--border-mid); border-radius: 10px; overflow: hidden; margin-bottom: 16px; }
+    .syntax-tab { flex:1; padding: 9px 14px; font-size: 13px; font-weight: 700; background: var(--input-bg); color: var(--muted); border: none; cursor: pointer; font-family: 'Outfit', sans-serif; transition: all 0.18s; display:flex; align-items:center; justify-content:center; gap:6px; border-right: 1.5px solid var(--border-mid); }
+    .syntax-tab:last-child { border-right: none; }
+    .syntax-tab.active { background: var(--blue); color: #fff; }
+    .syntax-tab:not(.active):hover { background: rgba(37,99,235,0.07); color: var(--blue); }
+    .syntax-code-wrap { position: relative; }
+    .syntax-code {
+      display: block; background: #0f172a; color: #e2e8f0;
+      border-radius: 12px; padding: 16px 18px;
+      font-family: 'DM Mono', monospace; font-size: 12px;
+      line-height: 1.75; overflow-x: auto; white-space: pre;
+      margin: 0; border: 1.5px solid rgba(255,255,255,0.06);
+    }
+    .copy-code-btn {
+      position: absolute; top: 10px; right: 10px;
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.8); border-radius: 7px;
+      padding: 5px 10px; font-size: 11px; font-weight: 700;
+      cursor: pointer; font-family: 'Outfit', sans-serif;
+      transition: background 0.15s;
+    }
+    .copy-code-btn:hover { background: rgba(255,255,255,0.2); }
+    .syntax-field-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 14px; }
+    .syntax-field-table th { background: var(--input-bg); color: var(--muted); font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.7px; padding: 8px 12px; text-align: left; border-bottom: 2px solid var(--border); }
+    .syntax-field-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: top; }
+    .syntax-field-table tr:last-child td { border-bottom: none; }
+    .syntax-field-table tr:hover td { background: rgba(37,99,235,0.03); }
+    .sf-req-badge { background: rgba(220,38,38,0.1); color: var(--red); font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 5px; }
+    .sf-opt-badge { background: rgba(100,116,139,0.1); color: var(--muted); font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 5px; }
+    body.dark-mode .syntax-box { box-shadow: 0 24px 64px rgba(0,0,0,0.55); }
+    body.dark-mode .syntax-head { background: linear-gradient(to right, #131929, #161e30); }
+    body.dark-mode .syntax-tab { background: #0e1422; color: #7a8499; border-right-color: #2a3249; }
+    body.dark-mode .syntax-tab.active { background: #3b7ae0; }
+    body.dark-mode .syntax-tab:not(.active):hover { background: rgba(77,142,240,0.08); color: #6aa3f5; }
+
+    /* ══════════════════════════════════════════════
+       FIELD SETTINGS MODAL
+    ══════════════════════════════════════════════ */
+    .settings-modal {
+      position: fixed; inset: 0;
+      background: rgba(4,9,26,0.72);
+      backdrop-filter: blur(8px);
+      display: none; align-items: center; justify-content: center;
+      padding: 16px; z-index: 600;
+    }
+    .settings-modal.open { display: flex; }
+    .settings-box {
+      background: var(--card); border-radius: 20px;
+      border: 1.5px solid var(--border);
+      box-shadow: 0 24px 64px rgba(0,0,0,0.25);
+      width: min(560px, 100%); max-height: 88vh; overflow: auto;
+      animation: modalSlide 0.22s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .settings-head {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 22px; border-bottom: 1.5px solid var(--border);
+      background: linear-gradient(to right, var(--card), var(--input-bg));
+      position: sticky; top: 0; z-index: 2;
+    }
+    .settings-head h3 { font-size: 16px; font-weight: 800; color: var(--text); display:flex; align-items:center; gap:8px; }
+    .settings-body { padding: 20px 22px; }
+    .settings-section-title { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.6px; color: var(--blue); margin: 16px 0 10px; display: flex; align-items: center; gap: 8px; }
+    .settings-section-title::after { content:''; flex:1; height:1.5px; background: linear-gradient(to right, rgba(37,99,235,0.18), transparent); }
+    .settings-section-title:first-child { margin-top: 0; }
+    .field-toggle-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 14px; border-radius: 10px;
+      border: 1.5px solid var(--border); background: var(--input-bg);
+      margin-bottom: 8px; gap: 12px;
+    }
+    .field-toggle-row:last-child { margin-bottom: 0; }
+    .ftoggle-info { flex: 1; }
+    .ftoggle-name { font-size: 13px; font-weight: 700; color: var(--text); }
+    .ftoggle-desc { font-size: 11px; color: var(--muted); margin-top: 1px; }
+    .req-toggle-wrap { display: flex; align-items: center; gap: 8px; }
+    .req-toggle-label { font-size: 11px; font-weight: 700; color: var(--muted); min-width: 50px; text-align: right; }
+    /* Reuse theme-toggle style for req toggles */
+    .req-toggle { position: relative; width: 44px; height: 24px; cursor: pointer; flex-shrink: 0; }
+    .req-toggle input { opacity:0; width:0; height:0; position:absolute; }
+    .req-toggle-track { position:absolute; inset:0; border-radius:100px; background: rgba(100,116,139,0.2); border:1px solid rgba(100,116,139,0.25); transition: background 0.3s, border-color 0.3s; }
+    .req-toggle input:checked ~ .req-toggle-track { background: rgba(220,38,38,0.25); border-color: rgba(220,38,38,0.5); }
+    .req-toggle-thumb { position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%; background: #94a3b8; transition: transform 0.3s cubic-bezier(0.34,1.4,0.64,1), background 0.3s; box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+    .req-toggle input:checked ~ .req-toggle-thumb { transform: translateX(20px); background: var(--red); }
+    .settings-footer { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; padding-top: 16px; border-top: 1.5px solid var(--border); }
+    body.dark-mode .settings-box { box-shadow: 0 24px 64px rgba(0,0,0,0.55); }
+    body.dark-mode .settings-head { background: linear-gradient(to right, #131929, #161e30); }
+    body.dark-mode .field-toggle-row { background: #0e1422; border-color: #1e2538; }
   </style>
 </head>
 <body>
 
 <!-- NAVBAR -->
-<nav class="navbar">
-  <a href="index.html" class="nav-logo">
-    <div class="logo-icon">⚕️</div>
-    <span class="logo-text">Medi<span>Core</span></span>
+<header>
+<nav class="navbar" id="mainNav" aria-label="Main navigation">
+
+  <!-- LOGO -->
+  <a href="index.html" class="nav-logo" aria-label="MediCore home">
+    <div class="logo-icon">
+      <img id="navLogo" src="White.svg" alt="MediCore Logo" />
+    </div>
+    <div class="logo-text">
+      <span class="logo-medi">Medi</span><span class="logo-core">Core</span>
+      <span class="logo-sub">Diagnostic Centre</span>
+    </div>
   </a>
+
+  <!-- RIGHT SIDE -->
   <div class="nav-right">
-    <div class="clock-badge" id="clockBadge">--:--:--</div>
-    <a href="index.html" class="btn-nav">← Home</a>
+
+    <!-- CLOCK -->
+    <div class="nav-clock-simple">
+      <span class="clock-badge" id="clockBadge">--:--:--</span>
+      <span class="date-badge-inline" id="dateBadge">— — —</span>
+    </div>
+
+    <div class="nav-divider"></div>
+
+    <!-- HOME LINK -->
+    <a href="index.html" class="btn-nav">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </a>
+
+    <div class="nav-divider"></div>
+
+    <!-- SUN/MOON DARK MODE TOGGLE -->
+    <label class="theme-toggle" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">
+      <input type="checkbox" id="themeToggle" name="themeToggle" />
+      <div class="theme-track"></div>
+      <div class="theme-thumb">
+        <span class="theme-thumb-icon icon-sun">☀️</span>
+        <span class="theme-thumb-icon icon-moon">🌙</span>
+      </div>
+    </label>
+    <span class="theme-label" id="themeLabelText">Light</span>
+
+    <div class="nav-divider"></div>
+
+    <!-- MODULE HUB -->
+    <div class="mod-hub-wrap" id="modHubWrap">
+      <div class="mod-hub-backdrop" id="modHubBackdrop"></div>
+
+      <button class="mod-hub-trigger" id="modHubTrigger" aria-label="Module navigation" aria-expanded="false" title="Navigate modules">
+        <svg class="mod-hub-icon-grid" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+          <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+        </svg>
+        <svg class="mod-hub-icon-close" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+
+      <div class="mod-hub-panel" id="modHubPanel" role="navigation" aria-label="Module pages">
+        <div class="mod-hub-track"></div>
+
+        <a href="MAIN1.html" class="mod-hub-node active">
+          <div class="mod-hub-label-wrap">
+            <span class="mod-hub-num">01</span>
+            <span class="mod-hub-name">Register</span>
+          </div>
+          <div class="mod-hub-circle">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+        </a>
+
+        <a href="MAIN2.html" class="mod-hub-node">
+          <div class="mod-hub-label-wrap">
+            <span class="mod-hub-num">02</span>
+            <span class="mod-hub-name">Lab Tests</span>
+          </div>
+          <div class="mod-hub-circle">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 3h6m-5 0v7l-4 7a2 2 0 0 0 1.8 3h8.4a2 2 0 0 0 1.8-3l-4-7V3"/>
+            </svg>
+          </div>
+        </a>
+
+        <a href="MAIN3.html" class="mod-hub-node">
+          <div class="mod-hub-label-wrap">
+            <span class="mod-hub-num">03</span>
+            <span class="mod-hub-name">Bookings</span>
+          </div>
+          <div class="mod-hub-circle">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
+              <rect x="9" y="3" width="6" height="4" rx="1"/>
+              <path d="M9 12h6M9 16h4"/>
+            </svg>
+          </div>
+        </a>
+
+        <a href="MAIN4.html" class="mod-hub-node">
+          <div class="mod-hub-label-wrap">
+            <span class="mod-hub-num">04</span>
+            <span class="mod-hub-name">Results</span>
+          </div>
+          <div class="mod-hub-circle">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+          </div>
+        </a>
+
+        <a href="MAIN5.html" class="mod-hub-node">
+          <div class="mod-hub-label-wrap">
+            <span class="mod-hub-num">05</span>
+            <span class="mod-hub-name">Reports</span>
+          </div>
+          <div class="mod-hub-circle">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 6 2 18 2 18 9"/>
+              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+              <rect x="6" y="14" width="12" height="8"/>
+            </svg>
+          </div>
+        </a>
+      </div>
+    </div>
+
   </div>
 </nav>
+</header>
 
 <!-- PAGE BANNER -->
 <div class="page-banner">
@@ -757,7 +1478,7 @@
             <div class="ref-grid2">
               <div class="field">
                 <label>Doctor Name</label>
-                <input id="refName" class="ctl" type="text" readonly style="background:#f0f5ff;cursor:not-allowed" />
+                <input id="refName" class="ctl ctl-readonly" type="text" readonly />
               </div>
               <div class="field">
                 <label>Margin</label>
@@ -871,6 +1592,13 @@
               <div class="io-sub">Sample JSON structure</div>
             </div>
           </button>
+          <button class="io-btn" type="button" onclick="openSyntaxModal()" style="border-color:rgba(124,58,237,0.3);background:rgba(124,58,237,0.04);color:#7c3aed">
+            <div class="io-icon" style="background:rgba(124,58,237,0.08)">📖</div>
+            <div class="io-info">
+              <div class="io-label" style="color:#7c3aed">View Import Syntax</div>
+              <div class="io-sub">JSON schema + copy</div>
+            </div>
+          </button>
         </div>
       </div>
     </div>
@@ -888,6 +1616,20 @@
           <p><strong>Duplicate check</strong> runs on mobile number before saving.</p>
           <p>Use <strong>Load &amp; Edit</strong> to update existing patient records.</p>
         </div>
+      </div>
+    </div>
+
+    <!-- Field Settings -->
+    <div class="side-card">
+      <div class="side-card-head">
+        <div class="ch-icon ch-red" style="font-size:13px;">⚙️</div>
+        <h3>Field Settings</h3>
+      </div>
+      <div class="side-card-body">
+        <p style="font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.5;">Control which fields are required. Settings are saved automatically.</p>
+        <button class="btn btn-muted btn-full" type="button" onclick="openSettingsModal()">
+          ⚙️ Configure Required Fields
+        </button>
       </div>
     </div>
 
@@ -1128,6 +1870,261 @@
   </div>
 </div>
 
+<!-- ═══ PATIENT SAVED SUCCESS MODAL ═══ -->
+<div id="savedModal" class="success-modal">
+  <div class="success-box">
+    <div class="success-header">
+      <div class="success-checkring">✅</div>
+      <div class="success-title">Patient Registered!</div>
+      <div class="success-sub" id="savedModalSub">Successfully saved to records</div>
+    </div>
+    <div class="success-body">
+      <div class="saved-id-chip">
+        <div class="saved-id-icon">🪪</div>
+        <div>
+          <div class="saved-id-label">Patient ID</div>
+          <div class="saved-id-value" id="savedModalId">—</div>
+          <div class="saved-name-val" id="savedModalName">—</div>
+        </div>
+      </div>
+      <div class="success-actions">
+        <button class="suc-btn primary" type="button" onclick="savedGoTests()">
+          <div class="suc-btn-icon">🧪</div>
+          <div class="suc-btn-label">Add Lab Tests</div>
+          <div class="suc-btn-sub">Go to Lab Tests module</div>
+        </button>
+        <button class="suc-btn teal" type="button" onclick="savedGoBookings()">
+          <div class="suc-btn-icon">📅</div>
+          <div class="suc-btn-label">Book Appointment</div>
+          <div class="suc-btn-sub">Go to Bookings module</div>
+        </button>
+        <button class="suc-btn" type="button" onclick="savedViewPatients()">
+          <div class="suc-btn-icon">👥</div>
+          <div class="suc-btn-label">View All Patients</div>
+          <div class="suc-btn-sub">Open patient list</div>
+        </button>
+        <button class="suc-btn" type="button" onclick="savedNewPatient()">
+          <div class="suc-btn-icon">➕</div>
+          <div class="suc-btn-label">New Patient</div>
+          <div class="suc-btn-sub">Register another</div>
+        </button>
+      </div>
+      <div class="success-close-row">
+        <button class="suc-close-link" type="button" onclick="closeSavedModal()">✕ Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SYNTAX REFERENCE MODAL ═══ -->
+<div id="syntaxModal" class="syntax-modal">
+  <div class="syntax-box">
+    <div class="syntax-head">
+      <h3>📖 Import Syntax Reference</h3>
+      <button class="btn btn-muted btn-sm" type="button" onclick="closeSyntaxModal()">✕ Close</button>
+    </div>
+    <div class="syntax-body">
+      <div class="syntax-tabs">
+        <button class="syntax-tab active" id="stab-minimal" onclick="switchSyntaxTab('minimal')">📄 Minimal</button>
+        <button class="syntax-tab" id="stab-full" onclick="switchSyntaxTab('full')">📋 Full Example</button>
+        <button class="syntax-tab" id="stab-fields" onclick="switchSyntaxTab('fields')">🔑 Field Guide</button>
+      </div>
+
+      <div id="syntaxPanel-minimal">
+        <div class="syntax-code-wrap">
+          <pre class="syntax-code" id="syntaxCodeMinimal">{
+  "patients": [
+    {
+      "title":   "Mr",
+      "name":    "JOHN DOE",
+      "gender":  "Male",
+      "mobile":  "9876543210",
+      "address": "123 MAIN STREET, CITY, PINCODE"
+    }
+  ]
+}</pre>
+          <button class="copy-code-btn" onclick="copySyntax('syntaxCodeMinimal')">📋 Copy</button>
+        </div>
+        <p style="font-size:11.5px;color:var(--muted);margin-top:12px;line-height:1.6;">These 5 fields are the minimum required to import a patient row. Any row missing one of these will be skipped with an error.</p>
+      </div>
+
+      <div id="syntaxPanel-full" style="display:none">
+        <div class="syntax-code-wrap">
+          <pre class="syntax-code" id="syntaxCodeFull">{
+  "_note": "MediCore Patient Import",
+  "patients": [
+    {
+      "title":      "Mr",
+      "name":       "JOHN DOE",
+      "gender":     "Male",
+      "mobile":     "9876543210",
+      "address":    "123 MAIN STREET, CITY, PINCODE",
+      "age":        "35",
+      "dob":        "",
+      "email":      "john@example.com",
+      "healthId":   "",
+      "weight":     "70",
+      "bpCategory": "Normal (120/80 mmHg)",
+      "remark":     "",
+      "referral": {
+        "name":   "Self",
+        "margin": 0,
+        "type":   "fixed"
+      }
+    },
+    {
+      "title":      "Mrs",
+      "name":       "JANE SMITH",
+      "gender":     "Female",
+      "mobile":     "9123456789",
+      "address":    "456 PARK AVENUE, CITY, PINCODE",
+      "age":        "",
+      "dob":        "1985-06-15",
+      "email":      "",
+      "healthId":   "AB12345",
+      "weight":     "60",
+      "bpCategory": "",
+      "remark":     "DIABETIC PATIENT",
+      "referral": {
+        "name":   "Dr. Sharma",
+        "margin": 50,
+        "type":   "fixed"
+      }
+    }
+  ]
+}</pre>
+          <button class="copy-code-btn" onclick="copySyntax('syntaxCodeFull')">📋 Copy</button>
+        </div>
+      </div>
+
+      <div id="syntaxPanel-fields" style="display:none">
+        <table class="syntax-field-table">
+          <thead><tr><th>Field</th><th>Required</th><th>Values / Format</th></tr></thead>
+          <tbody>
+            <tr><td><code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--blue)">title</code></td><td><span class="sf-req-badge">Required</span></td><td>Mr · Mrs · Ms · Dr · Master · Baby</td></tr>
+            <tr><td><code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--blue)">name</code></td><td><span class="sf-req-badge">Required</span></td><td>Uppercase string, max 25 chars</td></tr>
+            <tr><td><code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--blue)">gender</code></td><td><span class="sf-req-badge">Required</span></td><td>Male · Female · Other</td></tr>
+            <tr><td><code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--blue)">mobile</code></td><td><span class="sf-req-badge">Required</span></td><td>10-digit number (string or number)</td></tr>
+            <tr><td><code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--blue)">address</code></td><td><span class="sf-req-badge">Required</span></td><td>Uppercase string</td></tr>
+            <tr><td><code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--blue)">age</code></td><td><span class="sf-opt-badge">Optional</span></td><td>Number as string e.g. "35"</td></tr>
+            <tr><td><code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--blue)">dob</code></td><td><span class="sf-opt-badge">Optional</span></td><td>YYYY-MM-DD (use age OR dob)</td></tr>
+            <tr><td><code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--blue)">email</code></td><td><span class="sf-opt-badge">Optional</span></td><td>Valid email string</td></tr>
+            <tr><td><code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--blue)">healthId</code></td><td><span class="sf-opt-badge">Optional</span></td><td>ABHA / Health ID string</td></tr>
+            <tr><td><code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--blue)">weight</code></td><td><span class="sf-opt-badge">Optional</span></td><td>Weight in kg as string e.g. "70"</td></tr>
+            <tr><td><code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--blue)">bpCategory</code></td><td><span class="sf-opt-badge">Optional</span></td><td>BP category string (see dropdown values)</td></tr>
+            <tr><td><code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--blue)">remark</code></td><td><span class="sf-opt-badge">Optional</span></td><td>Clinical notes, uppercase</td></tr>
+            <tr><td><code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--blue)">referral.name</code></td><td><span class="sf-opt-badge">Optional</span></td><td>"Self" or doctor name string</td></tr>
+            <tr><td><code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--blue)">referral.margin</code></td><td><span class="sf-opt-badge">Optional</span></td><td>Number e.g. 0, 50, 100</td></tr>
+            <tr><td><code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--blue)">referral.type</code></td><td><span class="sf-opt-badge">Optional</span></td><td>"fixed" or "percent"</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ FIELD SETTINGS MODAL ═══ -->
+<div id="settingsModal" class="settings-modal">
+  <div class="settings-box">
+    <div class="settings-head">
+      <h3>⚙️ Field Settings</h3>
+      <button class="btn btn-muted btn-sm" type="button" onclick="closeSettingsModal()">✕ Close</button>
+    </div>
+    <div class="settings-body">
+      <p style="font-size:12.5px;color:var(--muted);margin-bottom:4px;line-height:1.6;">Toggle which fields are <span style="color:var(--red);font-weight:700;">required</span> before saving. Preferences are saved to localStorage and persist across sessions.</p>
+
+      <div class="settings-section-title">Core Fields</div>
+
+      <div class="field-toggle-row">
+        <div class="ftoggle-info"><div class="ftoggle-name">Title</div><div class="ftoggle-desc">Mr / Mrs / Dr etc.</div></div>
+        <div class="req-toggle-wrap">
+          <span class="req-toggle-label" id="lbl-title">Required</span>
+          <label class="req-toggle"><input type="checkbox" id="ftog-title" checked onchange="updateFieldSetting('title', this.checked)" /><div class="req-toggle-track"></div><div class="req-toggle-thumb"></div></label>
+        </div>
+      </div>
+
+      <div class="field-toggle-row">
+        <div class="ftoggle-info"><div class="ftoggle-name">Full Name</div><div class="ftoggle-desc">Patient's full name</div></div>
+        <div class="req-toggle-wrap">
+          <span class="req-toggle-label" id="lbl-name">Required</span>
+          <label class="req-toggle"><input type="checkbox" id="ftog-name" checked onchange="updateFieldSetting('name', this.checked)" /><div class="req-toggle-track"></div><div class="req-toggle-thumb"></div></label>
+        </div>
+      </div>
+
+      <div class="field-toggle-row">
+        <div class="ftoggle-info"><div class="ftoggle-name">Mobile Number</div><div class="ftoggle-desc">10-digit contact number</div></div>
+        <div class="req-toggle-wrap">
+          <span class="req-toggle-label" id="lbl-mobile">Required</span>
+          <label class="req-toggle"><input type="checkbox" id="ftog-mobile" checked onchange="updateFieldSetting('mobile', this.checked)" /><div class="req-toggle-track"></div><div class="req-toggle-thumb"></div></label>
+        </div>
+      </div>
+
+      <div class="field-toggle-row">
+        <div class="ftoggle-info"><div class="ftoggle-name">Full Address</div><div class="ftoggle-desc">Patient's residence address</div></div>
+        <div class="req-toggle-wrap">
+          <span class="req-toggle-label" id="lbl-address">Required</span>
+          <label class="req-toggle"><input type="checkbox" id="ftog-address" checked onchange="updateFieldSetting('address', this.checked)" /><div class="req-toggle-track"></div><div class="req-toggle-thumb"></div></label>
+        </div>
+      </div>
+
+      <div class="field-toggle-row">
+        <div class="ftoggle-info"><div class="ftoggle-name">Age / Date of Birth</div><div class="ftoggle-desc">Patient's age or DOB</div></div>
+        <div class="req-toggle-wrap">
+          <span class="req-toggle-label" id="lbl-age">Required</span>
+          <label class="req-toggle"><input type="checkbox" id="ftog-age" checked onchange="updateFieldSetting('age', this.checked)" /><div class="req-toggle-track"></div><div class="req-toggle-thumb"></div></label>
+        </div>
+      </div>
+
+      <div class="settings-section-title">Optional Fields</div>
+
+      <div class="field-toggle-row">
+        <div class="ftoggle-info"><div class="ftoggle-name">Email Address</div><div class="ftoggle-desc">Patient's email</div></div>
+        <div class="req-toggle-wrap">
+          <span class="req-toggle-label" id="lbl-email">Optional</span>
+          <label class="req-toggle"><input type="checkbox" id="ftog-email" onchange="updateFieldSetting('email', this.checked)" /><div class="req-toggle-track"></div><div class="req-toggle-thumb"></div></label>
+        </div>
+      </div>
+
+      <div class="field-toggle-row">
+        <div class="ftoggle-info"><div class="ftoggle-name">Weight (kg)</div><div class="ftoggle-desc">Patient's body weight</div></div>
+        <div class="req-toggle-wrap">
+          <span class="req-toggle-label" id="lbl-weight">Optional</span>
+          <label class="req-toggle"><input type="checkbox" id="ftog-weight" onchange="updateFieldSetting('weight', this.checked)" /><div class="req-toggle-track"></div><div class="req-toggle-thumb"></div></label>
+        </div>
+      </div>
+
+      <div class="field-toggle-row">
+        <div class="ftoggle-info"><div class="ftoggle-name">BP Category</div><div class="ftoggle-desc">Blood pressure classification</div></div>
+        <div class="req-toggle-wrap">
+          <span class="req-toggle-label" id="lbl-bp">Optional</span>
+          <label class="req-toggle"><input type="checkbox" id="ftog-bp" onchange="updateFieldSetting('bp', this.checked)" /><div class="req-toggle-track"></div><div class="req-toggle-thumb"></div></label>
+        </div>
+      </div>
+
+      <div class="field-toggle-row">
+        <div class="ftoggle-info"><div class="ftoggle-name">Health ID (ABHA)</div><div class="ftoggle-desc">Government health ID</div></div>
+        <div class="req-toggle-wrap">
+          <span class="req-toggle-label" id="lbl-healthId">Optional</span>
+          <label class="req-toggle"><input type="checkbox" id="ftog-healthId" onchange="updateFieldSetting('healthId', this.checked)" /><div class="req-toggle-track"></div><div class="req-toggle-thumb"></div></label>
+        </div>
+      </div>
+
+      <div class="field-toggle-row">
+        <div class="ftoggle-info"><div class="ftoggle-name">Remarks / Notes</div><div class="ftoggle-desc">Clinical observations</div></div>
+        <div class="req-toggle-wrap">
+          <span class="req-toggle-label" id="lbl-remark">Optional</span>
+          <label class="req-toggle"><input type="checkbox" id="ftog-remark" onchange="updateFieldSetting('remark', this.checked)" /><div class="req-toggle-track"></div><div class="req-toggle-thumb"></div></label>
+        </div>
+      </div>
+
+      <div class="settings-footer">
+        <button class="btn btn-muted" type="button" onclick="resetFieldSettings()">↺ Reset Defaults</button>
+        <button class="btn btn-primary" type="button" onclick="closeSettingsModal()">✓ Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div id="toastArea"></div>
 
@@ -1145,9 +2142,69 @@
 
   /* ── CLOCK ── */
   function updateClock() {
-    $("clockBadge").textContent = new Date().toLocaleTimeString("en-IN", { hour12: false });
+    const now = new Date();
+    const clockEl = document.getElementById('clockBadge');
+    const dateEl  = document.getElementById('dateBadge');
+    if (clockEl) clockEl.textContent = now.toLocaleTimeString('en-US', { hour12: true, hour: 'numeric', minute: '2-digit', second: '2-digit' });
+    if (dateEl) {
+      const d = String(now.getDate()).padStart(2,'0');
+      const m = String(now.getMonth()+1).padStart(2,'0');
+      const y = now.getFullYear();
+      dateEl.textContent = `${d}/${m}/${y}`;
+    }
   }
   updateClock(); setInterval(updateClock, 1000);
+
+  /* ── DARK MODE ── */
+  (function initTheme() {
+    const toggleEl = document.getElementById('themeToggle');
+    const saved = localStorage.getItem('medicore-theme');
+
+    function applyTheme(dark) {
+      const navLogo    = document.getElementById('navLogo');
+      const themeLabel = document.getElementById('themeLabelText');
+      document.body.style.transition = 'background 0.4s ease, color 0.3s ease';
+      if (dark) {
+        document.body.classList.add('dark-mode');
+        if (navLogo)    navLogo.src    = 'Black.svg';
+        if (themeLabel) themeLabel.textContent = 'Dark';
+      } else {
+        document.body.classList.remove('dark-mode');
+        if (navLogo)    navLogo.src    = 'White.svg';
+        if (themeLabel) themeLabel.textContent = 'Light';
+      }
+    }
+
+    if (saved === 'dark') { toggleEl.checked = true; applyTheme(true); }
+
+    toggleEl.addEventListener('change', () => {
+      const dark = toggleEl.checked;
+      applyTheme(dark);
+      localStorage.setItem('medicore-theme', dark ? 'dark' : 'light');
+    });
+  })();
+
+  /* ── MODULE HUB ── */
+  (function initModHub() {
+    const wrap     = document.getElementById('modHubWrap');
+    const trigger  = document.getElementById('modHubTrigger');
+    const backdrop = document.getElementById('modHubBackdrop');
+    if (!trigger || !wrap) return;
+
+    function openHub()  { wrap.classList.add('open');    trigger.setAttribute('aria-expanded','true'); }
+    function closeHub() { wrap.classList.remove('open'); trigger.setAttribute('aria-expanded','false'); }
+    function toggleHub(){ wrap.classList.contains('open') ? closeHub() : openHub(); }
+
+    trigger.addEventListener('click', toggleHub);
+    trigger.addEventListener('keydown', e => {
+      if (e.key==='Enter'||e.key===' ') { e.preventDefault(); toggleHub(); }
+      if (e.key==='Escape') closeHub();
+    });
+    if (backdrop) backdrop.addEventListener('click', closeHub);
+    document.addEventListener('keydown', e => {
+      if (e.key==='Escape' && wrap.classList.contains('open')) closeHub();
+    });
+  })();
 
   /* ── STATS ── */
   function updateStats() {
@@ -1223,18 +2280,35 @@
   /* ── VALIDATE ── */
   function validatePatientForm() {
     let valid = true;
-    [{ el:$("patientTitle"), msg:"Select title" },
-     { el:$("patientName"),  msg:"Enter patient name" },
-     { el:$("patientMobile"),msg:"Enter 10-digit mobile" },
-     { el:$("patientAddress"),msg:"Enter address" }
-    ].forEach(f => { if (!String(f.el.value||"").trim()){setError(f.el,f.msg);valid=false;} else clearError(f.el); });
+    const checks = [
+      { key:'title',   el:$("patientTitle"),  msg:"Select title" },
+      { key:'name',    el:$("patientName"),   msg:"Enter patient name" },
+      { key:'mobile',  el:$("patientMobile"), msg:"Enter 10-digit mobile" },
+      { key:'address', el:$("patientAddress"),msg:"Enter address" },
+    ];
+    checks.forEach(f => {
+      if (fieldSettings[f.key] && !String(f.el.value||"").trim()) { setError(f.el,f.msg); valid=false; } else clearError(f.el);
+    });
 
-    if ($("ageMode").value==="age") {
-      if (!$("ageYears").value){setError($("ageYears"),"Enter age");valid=false;} else clearError($("ageYears"));
-    } else {
-      if (!$("patientDOB").value){setError($("patientDOB"),"Select DOB");valid=false;} else clearError($("patientDOB"));
+    if (fieldSettings.age) {
+      if ($("ageMode").value==="age") {
+        if (!$("ageYears").value){setError($("ageYears"),"Enter age");valid=false;} else clearError($("ageYears"));
+      } else {
+        if (!$("patientDOB").value){setError($("patientDOB"),"Select DOB");valid=false;} else clearError($("patientDOB"));
+      }
     }
-    if ($("patientMobile").value.length!==10){setError($("patientMobile"),"Mobile must be 10 digits");valid=false;}
+    if (fieldSettings.email && $("patientEmail").value && !$("patientEmail").value.includes('@')) {
+      setError($("patientEmail"),"Enter valid email"); valid=false;
+    } else clearError($("patientEmail"));
+    if (fieldSettings.email && fieldSettings.email===true && !$("patientEmail").value.trim()) {
+      setError($("patientEmail"),"Email is required"); valid=false;
+    }
+    if (fieldSettings.weight && !$("patientWeight").value) { setError($("patientWeight"),"Weight is required"); valid=false; } else clearError($("patientWeight"));
+    if (fieldSettings.bp && !$("bpCategory").value) { setError($("bpCategory"),"Select BP category"); valid=false; } else clearError($("bpCategory"));
+    if (fieldSettings.healthId && !$("healthId").value.trim()) { setError($("healthId"),"Health ID is required"); valid=false; } else clearError($("healthId"));
+    if (fieldSettings.remark && !$("patientRemark").value.trim()) { setError($("patientRemark"),"Remark is required"); valid=false; } else clearError($("patientRemark"));
+
+    if (fieldSettings.mobile && $("patientMobile").value.length!==10){setError($("patientMobile"),"Mobile must be 10 digits");valid=false;}
     return valid;
   }
 
@@ -1413,6 +2487,124 @@
     $("ageYears").value=Math.max(0,Math.min(age,200));
   });
 
+  /* ── FIELD SETTINGS ── */
+  const DEFAULT_FIELD_SETTINGS = { title:true, name:true, mobile:true, address:true, age:true, email:false, weight:false, bp:false, healthId:false, remark:false };
+  let fieldSettings = Object.assign({}, DEFAULT_FIELD_SETTINGS);
+
+  function loadFieldSettings() {
+    const saved = localStorage.getItem('medicore-field-settings');
+    if (saved) {
+      try { Object.assign(fieldSettings, JSON.parse(saved)); } catch(e) {}
+    }
+    applyFieldSettingsToUI();
+  }
+
+  function saveFieldSettingsToStorage() {
+    localStorage.setItem('medicore-field-settings', JSON.stringify(fieldSettings));
+  }
+
+  function applyFieldSettingsToUI() {
+    const map = {
+      'ftog-title':    'title',
+      'ftog-name':     'name',
+      'ftog-mobile':   'mobile',
+      'ftog-address':  'address',
+      'ftog-age':      'age',
+      'ftog-email':    'email',
+      'ftog-weight':   'weight',
+      'ftog-bp':       'bp',
+      'ftog-healthId': 'healthId',
+      'ftog-remark':   'remark',
+    };
+    Object.entries(map).forEach(([togId, key]) => {
+      const el = $(togId); if (!el) return;
+      el.checked = !!fieldSettings[key];
+      const lblKey = togId.replace('ftog-', 'lbl-');
+      const lbl = $(lblKey); if (lbl) lbl.textContent = fieldSettings[key] ? 'Required' : 'Optional';
+    });
+    updateFormLabels();
+  }
+
+  function updateFormLabels() {
+    const fieldMap = {
+      title:    { el: $('patientTitle'), label: 'Title' },
+      name:     { el: $('patientName'),  label: 'Full Name' },
+      mobile:   { el: $('patientMobile'),label: 'Mobile Number' },
+      address:  { el: $('patientAddress'),label: 'Full Address' },
+      age:      { el: $('ageYears'),     label: 'Age / Date of Birth' },
+      email:    { el: $('patientEmail'), label: 'Email Address' },
+      weight:   { el: $('patientWeight'),label: 'Weight (kg)' },
+      bp:       { el: $('bpCategory'),   label: 'BP Category' },
+      healthId: { el: $('healthId'),     label: 'Health ID (ABHA)' },
+      remark:   { el: $('patientRemark'),label: 'Remarks / Clinical Notes' },
+    };
+    Object.entries(fieldMap).forEach(([key, { el, label }]) => {
+      if (!el) return;
+      const fieldEl = el.closest('.field');
+      if (!fieldEl) return;
+      const lbl = fieldEl.querySelector('label');
+      if (!lbl) return;
+      const reqSpan = lbl.querySelector('.req');
+      if (fieldSettings[key]) {
+        if (!reqSpan) { const s = document.createElement('span'); s.className='req'; s.textContent=' *'; lbl.appendChild(s); }
+      } else {
+        if (reqSpan) reqSpan.remove();
+      }
+    });
+  }
+
+  function updateFieldSetting(key, val) {
+    fieldSettings[key] = val;
+    saveFieldSettingsToStorage();
+    applyFieldSettingsToUI();
+  }
+
+  function openSettingsModal() { $('settingsModal').classList.add('open'); }
+  function closeSettingsModal() { $('settingsModal').classList.remove('open'); }
+
+  function resetFieldSettings() {
+    fieldSettings = Object.assign({}, DEFAULT_FIELD_SETTINGS);
+    saveFieldSettingsToStorage();
+    applyFieldSettingsToUI();
+    showToast('Field settings reset to defaults','info');
+  }
+
+  /* ── PATIENT SAVED MODAL ── */
+  let _lastSavedPatient = null;
+
+  function openSavedModal(patient) {
+    _lastSavedPatient = patient;
+    $('savedModalId').textContent = patient.id;
+    $('savedModalName').textContent = (patient.title ? patient.title + ' ' : '') + patient.name;
+    $('savedModalSub').textContent = 'Registered • ' + new Date().toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
+    $('savedModal').classList.add('open');
+  }
+  function closeSavedModal() { $('savedModal').classList.remove('open'); _lastSavedPatient = null; }
+  function savedGoTests()     { window.location.href = 'MAIN2.html'; }
+  function savedGoBookings()  { window.location.href = 'MAIN3.html'; }
+  function savedViewPatients(){ closeSavedModal(); viewPatients(); }
+  function savedNewPatient()  { closeSavedModal(); }
+
+  /* ── SYNTAX MODAL ── */
+  let _activeSyntaxTab = 'minimal';
+  function openSyntaxModal()  { $('syntaxModal').classList.add('open'); }
+  function closeSyntaxModal() { $('syntaxModal').classList.remove('open'); }
+  function switchSyntaxTab(tab) {
+    _activeSyntaxTab = tab;
+    ['minimal','full','fields'].forEach(t => {
+      $('stab-'+t).classList.toggle('active', t===tab);
+      $('syntaxPanel-'+t).style.display = t===tab ? '' : 'none';
+    });
+  }
+  function copySyntax(elId) {
+    const el = $(elId); if (!el) return;
+    navigator.clipboard.writeText(el.textContent).then(() => showToast('📋 Copied to clipboard','success')).catch(() => {
+      const ta = document.createElement('textarea');
+      ta.value = el.textContent; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
+      showToast('📋 Copied to clipboard','success');
+    });
+  }
+
   /* ── FORM SUBMIT ── */
   $("patientForm").addEventListener("submit", e=>{
     e.preventDefault(); if(!validatePatientForm())return;
@@ -1434,7 +2626,8 @@
       setEditMode(null);
     } else {
       const existing=checkDuplicatePatient(mobile); if(existing){showDupPatient(existing);return;}
-      patientData.id=generatePatientId(); patients.push(patientData); localStorage.setItem("patients",JSON.stringify(patients)); showToast("✅ Patient saved — ID: "+patientData.id,"success");
+      patientData.id=generatePatientId(); patients.push(patientData); localStorage.setItem("patients",JSON.stringify(patients));
+      openSavedModal(patientData);
     }
     $("patientForm").reset(); $("ageMode").value="age"; $("ageYears").style.display=""; $("patientDOB").style.display="none"; updateReferralDropdown(); updateStats();
   });
@@ -1451,12 +2644,16 @@
     if(e.target===$("importModal"))       closeImportModal();
     if(e.target===$("dupPatientModal"))   closeDupPatient();
     if(e.target===$("dupDoctorModal"))    closeDupDoctor();
+    if(e.target===$("savedModal"))        closeSavedModal();
+    if(e.target===$("syntaxModal"))       closeSyntaxModal();
+    if(e.target===$("settingsModal"))     closeSettingsModal();
   });
 
   /* ── ESCAPE KEY ── */
   document.addEventListener("keydown", e=>{
     if(e.key!=="Escape")return;
     closePatientList(); closeReferrals(); closeReferralModal(); closeImportModal();
+    closeSavedModal(); closeSyntaxModal(); closeSettingsModal();
   });
 
   /* ════════════════════════════════════════
@@ -1697,6 +2894,7 @@
   }
 
   /* ── INIT ── */
+  loadFieldSettings();
   updateReferralDropdown();
 </script>
 </body>
