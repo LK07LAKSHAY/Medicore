@@ -10,7 +10,7 @@
     .specimen-selector-bar, .card-header .btn, .delete-btn, .add-btn,
     .btn-nav, .btn-home, .nav-clock-simple, .clock-badge, .theme-toggle,
     .theme-toggle-wrap, .theme-label, .mod-hub-wrap, .nav-divider,
-    #toastContainer, #stickyBillBar,
+    #toastContainer,
     .section-label, #panel-packages, #panel-prices, .patient-info-bar > .patient-info-field:not(:first-child) { display: none !important; }
     body { background: white !important; }
     .container { padding: 8px !important; max-width: 100% !important; }
@@ -636,47 +636,82 @@ body.dark-mode .btn-nav:hover {
   gap: 5px;
 }
 
-/* Zone D: Billing summary — always rendered, JS toggles display */
+/* Zone D: Billing summary strip */
 .porder-billing-zone {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 14px 22px;
-  background: linear-gradient(135deg, #eef3fd 0%, #e8efff 100%);
-  border-top: 2px solid rgba(37,99,235,0.11);
-  flex-wrap: wrap;
-}
-.pbill-stats { display: flex; align-items: center; }
-.pbill-stat {
-  padding: 0 22px 0 0;
-  margin-right: 22px;
-  border-right: 1.5px solid rgba(37,99,235,0.13);
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
+  gap: 0;
+  background: linear-gradient(90deg, #0c1445 0%, #1e3a8a 55%, #1d4ed8 100%);
+  border-top: none;
+  border-radius: 0 0 var(--radius) var(--radius);
+  overflow: hidden;
   flex-shrink: 0;
 }
-.pbill-stat:last-child { border-right: none; padding-right: 0; margin-right: 0; }
+.pbill-stats {
+  display: flex;
+  align-items: stretch;
+  flex: 1;
+}
+.pbill-stat {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  padding: 13px 20px;
+  border-right: 1px solid rgba(255,255,255,0.1);
+  flex: 1;
+  min-width: 0;
+}
+.pbill-stat:last-child { border-right: 1px solid rgba(255,255,255,0.1); }
 
 .pbill-label {
-  font-size: 9px;
+  font-size: 8.5px;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 1.2px;
-  color: #8a9bb5;
+  color: rgba(255,255,255,0.42);
+  white-space: nowrap;
 }
 .pbill-value {
   font-family: 'DM Mono', monospace;
   font-size: 15px;
   font-weight: 800;
-  color: var(--navy);
+  color: rgba(255,255,255,0.9);
   letter-spacing: -0.3px;
+  white-space: nowrap;
 }
-.pbill-value.disc-val { color: var(--red); }
-.pbill-value.net-val  { color: var(--green); font-size: 19px; }
+.pbill-value.disc-val { color: #fca5a5; }
+.pbill-value.net-val  { color: #4ade80; font-size: 16px; }
 
-.pbill-actions { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+.pbill-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  flex-shrink: 0;
+  background: rgba(0,0,0,0.15);
+  border-left: 1px solid rgba(255,255,255,0.08);
+}
+.pbill-actions .btn-danger {
+  background: rgba(220,38,38,0.25);
+  color: #fca5a5;
+  border-color: rgba(220,38,38,0.35);
+  font-size: 12px;
+  padding: 7px 12px;
+}
+.pbill-actions .btn-danger:hover { background: rgba(220,38,38,0.55); color: white; }
+.pbill-actions .btn-muted {
+  background: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.85);
+  border-color: rgba(255,255,255,0.15);
+  font-size: 12px;
+  padding: 7px 12px;
+}
+.pbill-actions .btn-muted:hover { background: rgba(255,255,255,0.2); color: white; border-color: rgba(255,255,255,0.3); }
+.pbill-actions .btn-icon {
+  padding: 7px 9px;
+  font-size: 13px;
+}
 
 /* Compat: keep old class aliases working (used in dark-mode CSS below) */
 .patient-form-grid { padding: 0; background: transparent; border: none; }
@@ -840,6 +875,8 @@ tbody tr:hover { background: #f0f5ff; }
 /* Alternating rows for patient test table specifically */
 #patientTbody tr:nth-child(even):not(:hover) { background: #fafbff; }
 #patientTbody tr:hover { background: #eff4ff; }
+body.dark-mode #patientTbody tr:nth-child(even):not(:hover) { background: #0f1826; }
+body.dark-mode #patientTbody tr:hover { background: #161e30; }
 tbody td {
   padding: 10px 12px;
   color: var(--muted);
@@ -1797,155 +1834,6 @@ tbody td:first-child {
 }
 .btn-booking-new:hover { box-shadow: 0 6px 18px rgba(37,99,235,0.4); }
 
-/* ── FLOATING BILL SUMMARY CARD — Draggable + Minimizable ── */
-.sticky-bill-bar {
-  position: fixed;
-  bottom: 28px;
-  right: 28px;
-  width: 268px;
-  background: linear-gradient(160deg, #0c1a4a 0%, #1a3a8f 100%);
-  color: white;
-  border-radius: 18px;
-  border: 1px solid rgba(255,255,255,0.10);
-  padding: 0;
-  display: none;
-  flex-direction: column;
-  gap: 0;
-  z-index: 500;
-  box-shadow: 0 12px 40px rgba(12,20,69,0.38), 0 2px 8px rgba(0,0,0,0.18);
-  overflow: hidden;
-  animation: floatCardIn 0.28s cubic-bezier(0.34,1.3,0.64,1);
-  transition: border-radius 0.2s, box-shadow 0.2s;
-  touch-action: none;
-}
-@keyframes floatCardIn {
-  from { opacity: 0; transform: translateY(16px) scale(0.95); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
-}
-.sticky-bill-bar.visible { display: flex; }
-
-/* Minimized pill state */
-.sticky-bill-bar.bill-minimized {
-  width: auto !important;
-  height: auto !important;
-  border-radius: 50px !important;
-  overflow: hidden;
-}
-.sticky-bill-bar.bill-minimized .bill-bar-header,
-.sticky-bill-bar.bill-minimized .sticky-bill-stats,
-.sticky-bill-bar.bill-minimized .bill-bar-actions { display: none !important; }
-.sticky-bill-bar.bill-minimized .bill-minimized-pill { display: flex !important; }
-
-/* Drag handle strip at top */
-.bill-bar-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 14px 6px;
-  cursor: grab;
-  user-select: none;
-  flex-shrink: 0;
-}
-.bill-bar-header:active { cursor: grabbing; }
-.bill-bar-title {
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.42);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.bill-drag-dots {
-  display: flex; flex-direction: column; gap: 2.5px;
-  opacity: 0.3; margin-right: 4px;
-}
-.bill-drag-dots span { display: block; width: 16px; height: 2px; border-radius: 2px; background: white; }
-.bill-header-controls { display: flex; gap: 4px; }
-.bill-ctrl-btn {
-  background: rgba(255,255,255,0.1); border: none; color: rgba(255,255,255,0.7);
-  width: 22px; height: 22px; border-radius: 6px; cursor: pointer;
-  font-size: 11px; display: flex; align-items: center; justify-content: center;
-  transition: background 0.15s;
-  flex-shrink: 0;
-}
-.bill-ctrl-btn:hover { background: rgba(255,255,255,0.22); color: white; }
-.bill-ctrl-btn.minimize-btn:hover { background: rgba(255,255,255,0.2); }
-
-/* Minimized pill */
-.bill-minimized-pill {
-  display: none;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 16px;
-  cursor: pointer;
-  white-space: nowrap;
-}
-.bill-pill-icon { font-size: 16px; }
-.bill-pill-net {
-  font-family: 'DM Mono', monospace;
-  font-size: 15px; font-weight: 700; color: #4ade80;
-}
-.bill-pill-label { font-size: 10px; color: rgba(255,255,255,0.45); font-weight: 700; letter-spacing: 0.5px; }
-.bill-pill-restore {
-  font-size: 11px; color: rgba(255,255,255,0.35);
-  margin-left: 4px; transition: color 0.15s;
-}
-.bill-minimized-pill:hover .bill-pill-restore { color: white; }
-
-.sticky-bill-stats {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-  padding: 6px 16px 12px;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-}
-.sticky-bill-stat { padding: 6px 4px; }
-.sticky-bill-stat .s-label {
-  font-size: 9px; font-weight: 700; opacity: 0.45;
-  text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px;
-}
-.sticky-bill-stat .s-val {
-  font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 700; line-height: 1.2;
-}
-.sticky-bill-stat:last-child {
-  grid-column: 1 / -1;
-  border-top: 1px solid rgba(255,255,255,0.07);
-  padding-top: 10px; margin-top: 4px;
-  display: flex; align-items: baseline; gap: 8px;
-}
-.sticky-bill-stat:last-child .s-label { font-size: 10px; opacity: 0.55; margin-bottom: 0; white-space: nowrap; }
-.sticky-bill-stat:last-child .s-val   { font-size: 22px; }
-.sticky-bill-stat .s-val.accent { color: #22d3ee; }
-.sticky-bill-stat .s-val.red    { color: #f87171; }
-.sticky-bill-stat .s-val.green  { color: #4ade80; }
-
-.bill-bar-actions {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 12px 14px;
-}
-.bill-bar-actions .book-test-btn {
-  grid-column: 1 / -1; padding: 9px 14px; font-size: 13px;
-  border-radius: 10px; justify-content: center;
-}
-.btn-print {
-  background: rgba(255,255,255,0.12); color: white;
-  border: 1px solid rgba(255,255,255,0.15); padding: 7px 10px; border-radius: 9px;
-  font-size: 12px; font-family: 'Outfit', sans-serif; font-weight: 700;
-  cursor: pointer; transition: all 0.15s; text-align: center;
-}
-.btn-print:hover { background: rgba(255,255,255,0.22); }
-.btn-clear-all {
-  background: rgba(220,38,38,0.18); color: #fca5a5;
-  border: 1px solid rgba(220,38,38,0.28); padding: 7px 10px; border-radius: 9px;
-  font-size: 12px; font-family: 'Outfit', sans-serif; font-weight: 700;
-  cursor: pointer; transition: all 0.15s; text-align: center;
-}
-.btn-clear-all:hover { background: rgba(220,38,38,0.45); color: white; }
-@media (max-width: 480px) {
-  .sticky-bill-bar { right: 12px; bottom: 12px; width: calc(100vw - 24px); border-radius: 14px; }
-}
-
 /* ── TEST DETAIL MODAL ── */
 .test-detail-modal {
   display: none; position: fixed; inset: 0;
@@ -2211,8 +2099,131 @@ tbody td:first-child {
 .dept-badge.clin   { background: rgba(236,72,153,0.08);  color: #db2777; }
 .dept-badge.gen    { background: rgba(100,116,139,0.08); color: #475569; }
 
-/* pad body for sticky bar */
-body { padding-bottom: 70px; }
+/* dept badge colors below */
+
+/* ── BILL SETTINGS BUTTON ── */
+.btn-bill-settings {
+  background: rgba(255,255,255,0.1);
+  border: 1.5px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.85);
+  padding: 7px 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.btn-bill-settings:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.35); transform: rotate(30deg); }
+
+/* ── BILL SETTINGS MODAL ── */
+.bill-settings-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(5,10,40,0.65);
+  backdrop-filter: blur(6px);
+  z-index: 10000;
+  align-items: center; justify-content: center;
+  padding: 20px;
+}
+.bill-settings-overlay.open { display: flex; }
+.bill-settings-modal {
+  background: white;
+  border-radius: 20px;
+  width: 100%; max-width: 560px;
+  max-height: 88vh;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 32px 80px rgba(5,10,40,0.35);
+  animation: popIn 0.22s ease;
+}
+.bsm-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 22px 14px;
+  border-bottom: 1.5px solid var(--border-light);
+  background: linear-gradient(to right, #f0f5ff, #e8efff);
+  flex-shrink: 0;
+}
+.bsm-title { display: flex; align-items: center; gap: 12px; }
+.bsm-title h3 { font-size: 16px; font-weight: 800; color: var(--navy); margin-bottom: 2px; }
+.bsm-title p { font-size: 12px; color: var(--muted); }
+.bsm-close {
+  background: none; border: none; cursor: pointer;
+  font-size: 18px; color: var(--muted); padding: 6px 8px;
+  border-radius: 8px; transition: all 0.15s;
+}
+.bsm-close:hover { background: var(--border-light); color: var(--text); }
+.bsm-body { overflow-y: auto; flex: 1; padding: 20px 22px; display: flex; flex-direction: column; gap: 20px; }
+.bsm-section {
+  background: var(--input-bg);
+  border: 1.5px solid var(--border-light);
+  border-radius: 12px; padding: 16px;
+}
+.bsm-section-title {
+  font-size: 11px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 1.2px;
+  color: var(--blue); margin-bottom: 14px;
+  padding-bottom: 10px; border-bottom: 1.5px solid var(--border-light);
+}
+.bsm-field { margin-bottom: 12px; }
+.bsm-field:last-child { margin-bottom: 0; }
+.bsm-field label {
+  display: block; font-size: 12px; font-weight: 700;
+  color: var(--muted); margin-bottom: 5px;
+}
+.bsm-field input {
+  width: 100%; padding: 9px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 13.5px; font-family: 'Outfit', sans-serif;
+  font-weight: 500; color: var(--text);
+  background: white; transition: all 0.15s;
+}
+.bsm-field input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+.bsm-field input::placeholder { color: #b0bed0; font-weight: 400; }
+.bsm-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.bsm-toggles { display: flex; flex-direction: column; gap: 12px; }
+.bsm-toggle {
+  display: flex; align-items: center; gap: 10px;
+  cursor: pointer; user-select: none;
+}
+.bst-track {
+  width: 40px; height: 22px; border-radius: 100px;
+  background: #cbd5e1; border: 1px solid #94a3b8;
+  position: relative; flex-shrink: 0;
+  transition: background 0.25s, border-color 0.25s;
+}
+.bsm-toggle input:checked ~ .bst-track { background: var(--blue); border-color: var(--blue-dark); }
+.bst-thumb {
+  position: absolute; top: 2px; left: 2px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+  transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+}
+.bsm-toggle input:checked ~ .bst-track .bst-thumb { transform: translateX(18px); }
+.bsm-toggle input { display: none; }
+.bst-label { font-size: 13.5px; font-weight: 600; color: var(--text); }
+.bsm-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 22px; border-top: 1.5px solid var(--border-light);
+  background: #fafbff; flex-shrink: 0;
+}
+
+/* dark mode bill settings */
+body.dark-mode .bill-settings-modal { background: #131929; }
+body.dark-mode .bsm-header { background: linear-gradient(to right, #131929, #161e30); border-bottom-color: #1e2538; }
+body.dark-mode .bsm-title h3 { color: #dde4f0; }
+body.dark-mode .bsm-title p { color: #7a8499; }
+body.dark-mode .bsm-close { color: #7a8499; }
+body.dark-mode .bsm-close:hover { background: #1e2538; color: #dde4f0; }
+body.dark-mode .bsm-section { background: #0e1422; border-color: #1e2538; }
+body.dark-mode .bsm-section-title { color: #6aa3f5; border-bottom-color: #1e2538; }
+body.dark-mode .bsm-field label { color: #8896b0; }
+body.dark-mode .bsm-field input { background: #131929; border-color: #2a3249; color: #dde4f0; }
+body.dark-mode .bsm-field input:focus { border-color: #4d8ef0; box-shadow: 0 0 0 3px rgba(77,142,240,0.12); background: #161e30; }
+body.dark-mode .bst-label { color: #c8d4e8; }
+body.dark-mode .bst-track { background: #2a3249; border-color: #3a4a63; }
+body.dark-mode .bsm-footer { background: #0e1422; border-top-color: #1e2538; }
 
 /* ══════════════════════════════════════════════
    DARK MODE — Full theme override
@@ -2415,12 +2426,10 @@ body.dark-mode .porder-field-label { color: #5a6b84; }
 body.dark-mode .porder-field input { color: #dde4f0; }
 body.dark-mode .porder-field input::placeholder { color: #3a4a5e; }
 body.dark-mode .porder-specimen-zone { background: linear-gradient(to right, #0d1f1a, #0d1e22); border-bottom-color: rgba(13,148,136,0.2); }
-body.dark-mode .porder-billing-zone { background: linear-gradient(135deg, #0e1525, #0a1330); border-top-color: rgba(77,142,240,0.15); }
-body.dark-mode .pbill-stat { border-right-color: rgba(77,142,240,0.15); }
-body.dark-mode .pbill-label { color: #5a6b84; }
-body.dark-mode .pbill-value { color: #c8d4e8; }
-body.dark-mode .pbill-value.net-val { color: #4ade80; }
-body.dark-mode .pbill-value.disc-val { color: #f87171; }
+body.dark-mode .porder-billing-zone { background: linear-gradient(90deg, #050b1a 0%, #0e1e4a 55%, #111f60 100%); }
+body.dark-mode .pbill-stat { border-right-color: rgba(255,255,255,0.07); }
+body.dark-mode .pbill-stat:last-child { border-right-color: rgba(255,255,255,0.07); }
+body.dark-mode .pbill-actions { background: rgba(0,0,0,0.3); border-left-color: rgba(255,255,255,0.06); }
 
 /* ── PATIENT SELECT MODAL ── */
 body.dark-mode .ps-modal { background: #131929; box-shadow: 0 30px 80px rgba(0,0,0,0.55); }
@@ -2837,6 +2846,7 @@ body.dark-mode .empty-state { color: #7a8499; }
         <div class="pbill-actions">
           <button class="btn btn-danger btn-sm" onclick="clearAllTests()">🗑 Clear All</button>
           <button class="btn btn-muted btn-sm" onclick="printBill()">🖨️ Print Bill</button>
+          <button class="btn btn-muted btn-sm btn-icon" onclick="openBillSettings()" title="Bill Settings">⚙️</button>
         </div>
       </div>
 
@@ -3006,56 +3016,6 @@ body.dark-mode .empty-state { color: #7a8499; }
   </div>
 </div>
 
-<!-- ══ STICKY BILL BAR — Draggable + Minimizable ══ -->
-<div class="sticky-bill-bar" id="stickyBillBar">
-  <!-- Drag handle / header row -->
-  <div class="bill-bar-header" id="billDragHandle">
-    <div class="bill-bar-title">
-      <div class="bill-drag-dots"><span></span><span></span></div>
-      🧾 Bill Summary
-    </div>
-    <div class="bill-header-controls">
-      <button class="bill-ctrl-btn minimize-btn" onclick="toggleBillMinimize(event)" title="Minimize">⊟</button>
-    </div>
-  </div>
-
-  <!-- Minimized pill (shown when collapsed) -->
-  <div class="bill-minimized-pill" onclick="toggleBillMinimize(event)" title="Click to expand">
-    <span class="bill-pill-icon">🧾</span>
-    <div>
-      <div class="bill-pill-net" id="stickyNetPill">₹0</div>
-      <div class="bill-pill-label">Net Bill</div>
-    </div>
-    <span class="bill-pill-restore">▲ expand</span>
-  </div>
-
-  <!-- Stats grid -->
-  <div class="sticky-bill-stats">
-    <div class="sticky-bill-stat">
-      <div class="s-label">Tests</div>
-      <div class="s-val accent" id="stickyTestCount">0</div>
-    </div>
-    <div class="sticky-bill-stat">
-      <div class="s-label">Subtotal</div>
-      <div class="s-val" id="stickySubtotal">₹0</div>
-    </div>
-    <div class="sticky-bill-stat">
-      <div class="s-label">Discount</div>
-      <div class="s-val red" id="stickyDiscount">₹0</div>
-    </div>
-    <div class="sticky-bill-stat">
-      <div class="s-label">Net Bill</div>
-      <div class="s-val green" id="stickyNet">₹0</div>
-    </div>
-  </div>
-  <div class="bill-bar-actions">
-    <button class="btn-clear-all" onclick="clearAllTests()">🗑 Clear All</button>
-    <button class="btn-print" onclick="printBill()">🖨️ Print Bill</button>
-    <button class="book-test-btn" id="stickyBookBtn" onclick="initiateBooking()" style="padding:8px 18px;font-size:13px;">
-      📋 Book Test
-    </button>
-  </div>
-</div>
 
 <!-- ══ TEST DETAIL MODAL ══ -->
 <div class="test-detail-modal" id="testDetailModal" onclick="if(event.target===this)closeTestDetail()">
@@ -3134,6 +3094,92 @@ body.dark-mode .empty-state { color: #7a8499; }
       <button class="btn-booking-close" onclick="closeBookingModal()">Close</button>
       <button class="btn-booking-new" onclick="startNewBooking()">+ New Booking</button>
       <button class="btn-booking-new" style="background:linear-gradient(135deg,#0d9488,#0891b2);" onclick="goToResultEntry()">🔬 Enter Results</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ BILL SETTINGS MODAL ══ -->
+<div class="bill-settings-overlay" id="billSettingsOverlay" onclick="if(event.target===this)closeBillSettings()">
+  <div class="bill-settings-modal">
+    <div class="bsm-header">
+      <div class="bsm-title">
+        <span style="font-size:18px;">⚙️</span>
+        <div>
+          <h3>Bill Settings</h3>
+          <p>Customize your printed bill layout</p>
+        </div>
+      </div>
+      <button class="bsm-close" onclick="closeBillSettings()">✕</button>
+    </div>
+    <div class="bsm-body">
+      <div class="bsm-section">
+        <div class="bsm-section-title">🏥 Lab Information</div>
+        <div class="bsm-field">
+          <label>Lab Name</label>
+          <input type="text" id="bsLabName" placeholder="e.g. MediCore Pathology Lab">
+        </div>
+        <div class="bsm-field">
+          <label>Tagline / Subtitle</label>
+          <input type="text" id="bsTagline" placeholder="e.g. NABL Accredited Diagnostic Centre">
+        </div>
+        <div class="bsm-field">
+          <label>Address</label>
+          <input type="text" id="bsAddress" placeholder="e.g. 123 Medical Lane, City - 400001">
+        </div>
+        <div class="bsm-row2">
+          <div class="bsm-field">
+            <label>Phone</label>
+            <input type="text" id="bsPhone" placeholder="+91 98765 43210">
+          </div>
+          <div class="bsm-field">
+            <label>Email</label>
+            <input type="text" id="bsEmail" placeholder="lab@example.com">
+          </div>
+        </div>
+      </div>
+      <div class="bsm-section">
+        <div class="bsm-section-title">📄 Bill Footer</div>
+        <div class="bsm-field">
+          <label>Footer Note</label>
+          <input type="text" id="bsFooterNote" placeholder="Thank you for choosing us. Report valid for 30 days.">
+        </div>
+        <div class="bsm-field">
+          <label>Authorised Signatory</label>
+          <input type="text" id="bsSignatory" placeholder="e.g. Dr. Lab Director">
+        </div>
+      </div>
+      <div class="bsm-section">
+        <div class="bsm-section-title">🎨 Layout Options</div>
+        <div class="bsm-toggles">
+          <label class="bsm-toggle">
+            <input type="checkbox" id="bsShowHeader" checked>
+            <span class="bst-track"><span class="bst-thumb"></span></span>
+            <span class="bst-label">Show Lab Header</span>
+          </label>
+          <label class="bsm-toggle">
+            <input type="checkbox" id="bsShowDiscount" checked>
+            <span class="bst-track"><span class="bst-thumb"></span></span>
+            <span class="bst-label">Show Discount Column</span>
+          </label>
+          <label class="bsm-toggle">
+            <input type="checkbox" id="bsShowDept" checked>
+            <span class="bst-track"><span class="bst-thumb"></span></span>
+            <span class="bst-label">Show Department Column</span>
+          </label>
+          <label class="bsm-toggle">
+            <input type="checkbox" id="bsShowFooter" checked>
+            <span class="bst-track"><span class="bst-thumb"></span></span>
+            <span class="bst-label">Show Footer Section</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="bsm-footer">
+      <button class="btn btn-muted btn-sm" onclick="resetBillSettings()">↺ Reset Defaults</button>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-muted btn-sm" onclick="closeBillSettings()">Cancel</button>
+        <button class="btn btn-primary btn-sm" onclick="saveBillSettings()">💾 Save Settings</button>
+      </div>
     </div>
   </div>
 </div>
@@ -3631,73 +3677,283 @@ function clearAllTests() {
 }
 
 // ═══════════════════════════════════════════
+//  BILL SETTINGS
+// ═══════════════════════════════════════════
+const BILL_SETTINGS_KEY = 'mc_billSettings';
+const BILL_SETTINGS_DEFAULT = {
+  labName: '⚕️ MediCore Pathology Lab',
+  tagline: 'NABL Accredited Diagnostic Centre',
+  address: '',
+  phone: '',
+  email: '',
+  footerNote: 'Thank you for choosing us. Report is valid for 30 days from date of issue.',
+  signatory: 'Lab Director',
+  showHeader: true,
+  showDiscount: true,
+  showDept: true,
+  showFooter: true,
+};
+
+function getBillSettings() {
+  try { return Object.assign({}, BILL_SETTINGS_DEFAULT, JSON.parse(localStorage.getItem(BILL_SETTINGS_KEY) || '{}')); }
+  catch(e) { return Object.assign({}, BILL_SETTINGS_DEFAULT); }
+}
+
+function openBillSettings() {
+  const s = getBillSettings();
+  document.getElementById('bsLabName').value    = s.labName || '';
+  document.getElementById('bsTagline').value    = s.tagline || '';
+  document.getElementById('bsAddress').value    = s.address || '';
+  document.getElementById('bsPhone').value      = s.phone || '';
+  document.getElementById('bsEmail').value      = s.email || '';
+  document.getElementById('bsFooterNote').value = s.footerNote || '';
+  document.getElementById('bsSignatory').value  = s.signatory || '';
+  document.getElementById('bsShowHeader').checked   = s.showHeader !== false;
+  document.getElementById('bsShowDiscount').checked = s.showDiscount !== false;
+  document.getElementById('bsShowDept').checked     = s.showDept !== false;
+  document.getElementById('bsShowFooter').checked   = s.showFooter !== false;
+  document.getElementById('billSettingsOverlay').classList.add('open');
+}
+
+function closeBillSettings() {
+  document.getElementById('billSettingsOverlay').classList.remove('open');
+}
+
+function saveBillSettings() {
+  const s = {
+    labName:      document.getElementById('bsLabName').value.trim() || BILL_SETTINGS_DEFAULT.labName,
+    tagline:      document.getElementById('bsTagline').value.trim(),
+    address:      document.getElementById('bsAddress').value.trim(),
+    phone:        document.getElementById('bsPhone').value.trim(),
+    email:        document.getElementById('bsEmail').value.trim(),
+    footerNote:   document.getElementById('bsFooterNote').value.trim(),
+    signatory:    document.getElementById('bsSignatory').value.trim(),
+    showHeader:   document.getElementById('bsShowHeader').checked,
+    showDiscount: document.getElementById('bsShowDiscount').checked,
+    showDept:     document.getElementById('bsShowDept').checked,
+    showFooter:   document.getElementById('bsShowFooter').checked,
+  };
+  localStorage.setItem(BILL_SETTINGS_KEY, JSON.stringify(s));
+  closeBillSettings();
+  showToast('✓ Bill settings saved', 'success');
+}
+
+function resetBillSettings() {
+  if (!confirm('Reset all bill settings to default?')) return;
+  localStorage.removeItem(BILL_SETTINGS_KEY);
+  openBillSettings();
+  showToast('Bill settings reset', 'warning');
+}
+
+// ═══════════════════════════════════════════
 //  PRINT BILL
 // ═══════════════════════════════════════════
 function printBill() {
   if (patientRows.length === 0) { showToast('No tests to print', 'warning'); return; }
+  const s = getBillSettings();
   const name   = document.getElementById('patientName').value || '—';
   const age    = document.getElementById('patientAge').value || '—';
+  const mobile = document.getElementById('patientMobile')?.value || '—';
   const doctor = document.getElementById('patientDoctor').value || '—';
-  const date   = document.getElementById('patientDate').value
-    ? new Date(document.getElementById('patientDate').value).toLocaleDateString('en-IN', {day:'2-digit',month:'short',year:'numeric'})
+  const dateRaw = document.getElementById('patientDate').value;
+  const date   = dateRaw
+    ? new Date(dateRaw).toLocaleDateString('en-IN', {day:'2-digit',month:'short',year:'numeric'})
     : new Date().toLocaleDateString('en-IN', {day:'2-digit',month:'short',year:'numeric'});
+  const printedAt = new Date().toLocaleString('en-IN', {day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
   const totalP = patientRows.reduce((s,r)=>s+r.price,0);
   const totalD = patientRows.reduce((s,r)=>s+r.discValue,0);
   const totalN = patientRows.reduce((s,r)=>s+r.net,0);
 
+  // Build column config
+  const cols = ['#','Test Name'];
+  if (s.showDept) cols.push('Department');
+  cols.push('Price (₹)');
+  if (s.showDiscount) cols.push('Discount');
+  cols.push('Net (₹)');
+
+  const headerRow = cols.map(c => `<th>${c}</th>`).join('');
+
   const rows = patientRows.map((r,i) => {
     const t = tests.find(t=>t.id===r.testId);
-    return `<tr>
-      <td>${i+1}</td>
-      <td>${t.name}</td>
-      <td>${t.dept}</td>
-      <td style="text-align:right">₹${r.price.toLocaleString()}</td>
-      <td style="text-align:right">${r.discValue>0?'−₹'+r.discValue.toLocaleString():''}</td>
-      <td style="text-align:right;font-weight:800;color:#16a34a">₹${r.net.toLocaleString()}</td>
-    </tr>`;
+    let cells = `<td class="num">${i+1}</td><td class="name">${t.name}</td>`;
+    if (s.showDept) cells += `<td><span class="dept">${t.dept}</span></td>`;
+    cells += `<td class="amount">₹${r.price.toLocaleString()}</td>`;
+    if (s.showDiscount) cells += `<td class="amount disc">${r.discValue>0?'−₹'+r.discValue.toLocaleString():'—'}</td>`;
+    cells += `<td class="amount net">₹${r.net.toLocaleString()}</td>`;
+    return `<tr>${cells}</tr>`;
   }).join('');
 
-  const w = window.open('', '_blank', 'width=800,height=700');
-  w.document.write(`<!DOCTYPE html><html><head>
+  // Total footer row
+  let totalCells = `<td colspan="${s.showDept ? 3 : 2}" class="total-label">TOTAL</td>`;
+  totalCells += `<td class="amount">₹${totalP.toLocaleString()}</td>`;
+  if (s.showDiscount) totalCells += `<td class="amount disc">${totalD>0?'−₹'+totalD.toLocaleString():'—'}</td>`;
+  totalCells += `<td class="amount net big">₹${totalN.toLocaleString()}</td>`;
+
+  // Lab contact line
+  const contactParts = [];
+  if (s.phone) contactParts.push(`📞 ${s.phone}`);
+  if (s.email) contactParts.push(`✉ ${s.email}`);
+  const contactLine = contactParts.join('  &nbsp;·&nbsp;  ');
+
+  const w = window.open('', '_blank', 'width=860,height=800');
+  w.document.write(`<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Lab Bill — MediCore</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    body{font-family:Arial,sans-serif;margin:0;padding:24px;color:#0f172a;font-size:13px;}
-    .header{text-align:center;border-bottom:2px solid #2563eb;padding-bottom:12px;margin-bottom:16px;}
-    .header h1{font-size:22px;color:#2563eb;margin:0;}
-    .header p{margin:2px 0;font-size:12px;color:#475569;}
-    .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:#f0f5ff;border-radius:8px;padding:12px;margin-bottom:16px;}
-    .info-row{font-size:12px;} .info-row span{font-weight:700;color:#0c1445;}
-    table{width:100%;border-collapse:collapse;font-size:12px;}
-    th{background:#2563eb;color:white;padding:8px 10px;text-align:left;}
-    td{padding:7px 10px;border-bottom:1px solid #e2e8f0;}
-    .total-row td{font-weight:800;background:#f0f5ff;font-size:13px;}
-    .footer{margin-top:20px;text-align:center;font-size:11px;color:#94a3b8;}
-    @media print{button{display:none}}
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Outfit', sans-serif; background: #f0f4f8; color: #0f172a; font-size: 13px; min-height: 100vh; }
+    .page { max-width: 760px; margin: 0 auto; background: white; min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* ── HEADER ── */
+    .bill-header { background: linear-gradient(135deg, #0c1445 0%, #1e40af 60%, #1d4ed8 100%); padding: 28px 32px 22px; color: white; position: relative; overflow: hidden; }
+    .bill-header::before { content: ''; position: absolute; top: -40px; right: -40px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(6,182,212,0.18) 0%, transparent 70%); pointer-events: none; }
+    .bill-header::after { content: ''; position: absolute; bottom: -20px; left: -20px; width: 150px; height: 150px; background: radial-gradient(circle, rgba(37,99,235,0.22) 0%, transparent 70%); pointer-events: none; }
+    .bh-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; position: relative; z-index: 1; }
+    .bh-lab { flex: 1; }
+    .bh-lab-name { font-size: 22px; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 4px; }
+    .bh-lab-tag { font-size: 12px; opacity: 0.7; font-weight: 500; }
+    .bh-lab-addr { font-size: 11px; opacity: 0.55; margin-top: 4px; }
+    .bh-lab-contact { font-size: 11px; opacity: 0.6; margin-top: 3px; }
+    .bh-badge { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 12px 16px; text-align: right; flex-shrink: 0; }
+    .bh-badge-label { font-size: 9px; font-weight: 700; opacity: 0.6; text-transform: uppercase; letter-spacing: 1.5px; display: block; margin-bottom: 4px; }
+    .bh-badge-title { font-size: 15px; font-weight: 900; line-height: 1; }
+    .bh-badge-date { font-size: 11px; opacity: 0.65; margin-top: 5px; font-family: 'DM Mono', monospace; }
+    .bh-divider { border: none; border-top: 1px solid rgba(255,255,255,0.15); margin: 18px 0 16px; position: relative; z-index: 1; }
+
+    /* Patient info grid */
+    .bh-patient { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; position: relative; z-index: 1; }
+    .bh-pfield { display: flex; flex-direction: column; gap: 3px; }
+    .bh-plabel { font-size: 9px; font-weight: 700; opacity: 0.5; text-transform: uppercase; letter-spacing: 1px; }
+    .bh-pval { font-size: 13px; font-weight: 700; }
+
+    /* ── CONTENT ── */
+    .bill-content { flex: 1; padding: 24px 32px; }
+
+    /* Section title */
+    .sec-title { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #2563eb; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #e8efff; display: flex; align-items: center; gap: 8px; }
+
+    /* Table */
+    .bill-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .bill-table thead th { background: linear-gradient(to bottom, #eef3fd, #e6edfc); color: #1e40af; font-weight: 800; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.5px; padding: 10px 12px; text-align: left; border-bottom: 2px solid #c7d7f8; white-space: nowrap; }
+    .bill-table tbody tr { border-bottom: 1px solid #f0f5ff; transition: background 0.1s; }
+    .bill-table tbody tr:nth-child(even) { background: #fafbff; }
+    .bill-table tbody tr:last-child { border-bottom: none; }
+    .bill-table td { padding: 10px 12px; vertical-align: middle; }
+    td.num { width: 38px; color: #94a3b8; font-family: 'DM Mono', monospace; font-size: 12px; text-align: center; }
+    td.name { font-weight: 700; color: #0f172a; }
+    td.amount { text-align: right; font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 600; color: #334155; white-space: nowrap; }
+    td.disc { color: #dc2626; }
+    td.net { color: #16a34a; font-weight: 800; }
+    .dept { display: inline-block; background: rgba(37,99,235,0.08); color: #2563eb; border-radius: 20px; padding: 2px 9px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+
+    /* Total row */
+    tfoot tr { background: linear-gradient(to right, #f0f5ff, #e8efff) !important; border-top: 2px solid #c7d7f8; }
+    td.total-label { font-weight: 800; color: #1e40af; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; padding: 13px 12px; }
+    td.big { font-size: 17px !important; font-weight: 900 !important; color: #16a34a !important; }
+
+    /* ── SUMMARY CARDS ── */
+    .bill-summary { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 20px; }
+    .summary-card { background: #f8faff; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 14px 16px; text-align: center; }
+    .summary-card.net-card { background: linear-gradient(135deg, #f0fdf4, #dcfce7); border-color: #86efac; }
+    .sc-label { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8; margin-bottom: 6px; }
+    .sc-val { font-family: 'DM Mono', monospace; font-size: 20px; font-weight: 800; color: #0c1445; }
+    .net-card .sc-val { color: #16a34a; }
+    .sc-disc-val { color: #dc2626; }
+
+    /* ── FOOTER ── */
+    .bill-footer { background: #f8faff; border-top: 2px solid #e2e8f0; padding: 18px 32px; display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-top: auto; }
+    .bf-note { font-size: 11px; color: #94a3b8; line-height: 1.6; flex: 1; }
+    .bf-sig { text-align: right; flex-shrink: 0; }
+    .bf-sig-line { width: 140px; border-top: 1.5px solid #cbd5e1; margin: 0 0 5px auto; }
+    .bf-sig-name { font-size: 12px; font-weight: 700; color: #475569; }
+    .bf-generated { font-size: 10px; color: #b0bec5; margin-top: 3px; font-family: 'DM Mono', monospace; }
+
+    /* ── PRINT BUTTON ── */
+    .print-bar { display: flex; justify-content: center; gap: 10px; padding: 16px; background: #f0f5ff; border-top: 1px solid #dbeafe; }
+    .print-btn { padding: 11px 28px; background: linear-gradient(135deg, #2563eb, #1e40af); color: white; border: none; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'Outfit', sans-serif; box-shadow: 0 4px 14px rgba(37,99,235,0.3); transition: all 0.15s; }
+    .print-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(37,99,235,0.4); }
+
+    @media (max-width: 600px) {
+      .bill-header, .bill-content, .bill-footer { padding-left: 18px; padding-right: 18px; }
+      .bh-top { flex-direction: column; }
+      .bh-badge { text-align: left; }
+      .bill-summary { grid-template-columns: 1fr 1fr; }
+    }
+    @media print {
+      body { background: white; }
+      .print-bar { display: none !important; }
+      .page { max-width: 100%; min-height: auto; }
+      .bill-table tbody tr:nth-child(even) { -webkit-print-color-adjust: exact; print-color-adjust: exact; background: #fafbff; }
+    }
   </style></head><body>
-  <div class="header">
-    <h1>⚕️ MediCore Pathology Lab</h1>
-    <p>Lab Test Bill / Invoice</p>
+  <div class="page">
+
+    ${s.showHeader ? `
+    <div class="bill-header">
+      <div class="bh-top">
+        <div class="bh-lab">
+          <div class="bh-lab-name">${s.labName}</div>
+          ${s.tagline ? `<div class="bh-lab-tag">${s.tagline}</div>` : ''}
+          ${s.address ? `<div class="bh-lab-addr">📍 ${s.address}</div>` : ''}
+          ${contactLine ? `<div class="bh-lab-contact">${contactLine}</div>` : ''}
+        </div>
+        <div class="bh-badge">
+          <span class="bh-badge-label">Document</span>
+          <div class="bh-badge-title">LAB BILL</div>
+          <div class="bh-badge-date">${date}</div>
+        </div>
+      </div>
+      <hr class="bh-divider">
+      <div class="bh-patient">
+        <div class="bh-pfield"><span class="bh-plabel">Patient Name</span><span class="bh-pval">${name}</span></div>
+        <div class="bh-pfield"><span class="bh-plabel">Age / Gender</span><span class="bh-pval">${age}</span></div>
+        <div class="bh-pfield"><span class="bh-plabel">Mobile</span><span class="bh-pval">${mobile}</span></div>
+        <div class="bh-pfield"><span class="bh-plabel">Ref. Doctor</span><span class="bh-pval">${doctor}</span></div>
+      </div>
+    </div>` : ''}
+
+    <div class="bill-content">
+      <div class="sec-title">📋 Test Details</div>
+      <table class="bill-table">
+        <thead><tr>${headerRow}</tr></thead>
+        <tbody>${rows}</tbody>
+        <tfoot><tr>${totalCells}</tr></tfoot>
+      </table>
+
+      <div class="bill-summary">
+        <div class="summary-card">
+          <div class="sc-label">Subtotal</div>
+          <div class="sc-val">₹${totalP.toLocaleString()}</div>
+        </div>
+        <div class="summary-card">
+          <div class="sc-label">Discount</div>
+          <div class="sc-val sc-disc-val">${totalD > 0 ? '−₹'+totalD.toLocaleString() : '—'}</div>
+        </div>
+        <div class="summary-card net-card">
+          <div class="sc-label">Net Amount</div>
+          <div class="sc-val">₹${totalN.toLocaleString()}</div>
+        </div>
+      </div>
+    </div>
+
+    ${s.showFooter ? `
+    <div class="bill-footer">
+      <div class="bf-note">
+        ${s.footerNote ? `<p>${s.footerNote}</p>` : ''}
+        <div class="bf-generated">Generated by MediCore &nbsp;·&nbsp; ${printedAt}</div>
+      </div>
+      <div class="bf-sig">
+        <div class="bf-sig-line"></div>
+        <div class="bf-sig-name">${s.signatory || 'Lab Director'}</div>
+        <div class="bf-generated">Authorised Signatory</div>
+      </div>
+    </div>` : ''}
+
+    <div class="print-bar">
+      <button class="print-btn" onclick="window.print()">🖨️ Print Bill</button>
+    </div>
   </div>
-  <div class="info-grid">
-    <div class="info-row">Patient: <span>${name}</span></div>
-    <div class="info-row">Age / Gender: <span>${age}</span></div>
-    <div class="info-row">Ref. Doctor: <span>${doctor}</span></div>
-    <div class="info-row">Sample Date: <span>${date}</span></div>
-  </div>
-  <table>
-    <thead><tr><th>#</th><th>Test Name</th><th>Department</th><th style="text-align:right">Price</th><th style="text-align:right">Discount</th><th style="text-align:right">Net</th></tr></thead>
-    <tbody>${rows}</tbody>
-    <tfoot>
-      <tr class="total-row">
-        <td colspan="3">TOTAL</td>
-        <td style="text-align:right">₹${totalP.toLocaleString()}</td>
-        <td style="text-align:right;color:#dc2626">${totalD>0?'−₹'+totalD.toLocaleString():''}</td>
-        <td style="text-align:right;color:#16a34a">₹${totalN.toLocaleString()}</td>
-      </tr>
-    </tfoot>
-  </table>
-  <div class="footer">Generated by MediCore — ${new Date().toLocaleString('en-IN')}</div>
-  <br><button onclick="window.print()" style="padding:10px 24px;background:#2563eb;color:white;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;margin-top:12px;">🖨️ Print</button>
   </body></html>`);
   w.document.close();
 }
@@ -4042,100 +4298,10 @@ function updateHeaderStats() {
   document.getElementById('statAdded').textContent = patientRows.length;
   const totalNet = patientRows.reduce((s, r) => s + r.net, 0);
   document.getElementById('statBill').textContent  = `₹${totalNet.toLocaleString()}`;
-  updateStickyBar();
-}
-
-function updateStickyBar() {
-  const bar = document.getElementById('stickyBillBar');
-  if (patientRows.length === 0) { bar.classList.remove('visible'); updateBookBtn(); return; }
-  bar.classList.add('visible');
-  const totalP = patientRows.reduce((s,r)=>s+r.price,0);
-  const totalD = patientRows.reduce((s,r)=>s+r.discValue,0);
-  const totalN = patientRows.reduce((s,r)=>s+r.net,0);
-  document.getElementById('stickyTestCount').textContent = patientRows.length;
-  document.getElementById('stickySubtotal').textContent  = '₹'+totalP.toLocaleString();
-  document.getElementById('stickyDiscount').textContent  = totalD>0 ? '−₹'+totalD.toLocaleString() : '₹0';
-  document.getElementById('stickyNet').textContent       = '₹'+totalN.toLocaleString();
-  // Also update minimized pill net
-  const pill = document.getElementById('stickyNetPill');
-  if (pill) pill.textContent = '₹'+totalN.toLocaleString();
   updateBookBtn();
 }
 
-// ═══════════════════════════════════════════
-//  BILL BAR — MINIMIZE TOGGLE
-// ═══════════════════════════════════════════
-function toggleBillMinimize(e) {
-  if (e) e.stopPropagation();
-  const bar = document.getElementById('stickyBillBar');
-  bar.classList.toggle('bill-minimized');
-  // Update minimize button label
-  const btn = bar.querySelector('.minimize-btn');
-  if (btn) btn.textContent = bar.classList.contains('bill-minimized') ? '⊞' : '⊟';
-}
 
-// ═══════════════════════════════════════════
-//  BILL BAR — DRAG TO MOVE
-// ═══════════════════════════════════════════
-(function initBillDrag() {
-  let dragging = false, startX, startY, origLeft, origTop;
-
-  function getBar() { return document.getElementById('stickyBillBar'); }
-
-  function startDrag(cx, cy) {
-    const bar  = getBar();
-    const rect = bar.getBoundingClientRect();
-    // Switch from bottom/right anchoring to absolute top/left
-    bar.style.bottom = 'auto';
-    bar.style.right  = 'auto';
-    bar.style.left   = rect.left + 'px';
-    bar.style.top    = rect.top  + 'px';
-    origLeft = rect.left;
-    origTop  = rect.top;
-    startX = cx; startY = cy;
-    dragging = true;
-  }
-
-  function moveDrag(cx, cy) {
-    if (!dragging) return;
-    const bar = getBar();
-    const dx  = cx - startX;
-    const dy  = cy - startY;
-    let nl = origLeft + dx;
-    let nt = origTop  + dy;
-    // Clamp to viewport
-    nl = Math.max(0, Math.min(nl, window.innerWidth  - bar.offsetWidth));
-    nt = Math.max(0, Math.min(nt, window.innerHeight - bar.offsetHeight));
-    bar.style.left = nl + 'px';
-    bar.style.top  = nt + 'px';
-  }
-
-  function endDrag() { dragging = false; }
-
-  // Mouse
-  document.addEventListener('mousedown', e => {
-    const handle = document.getElementById('billDragHandle');
-    if (!handle || !handle.contains(e.target)) return;
-    if (e.target.closest('button')) return;
-    startDrag(e.clientX, e.clientY);
-    e.preventDefault();
-  });
-  document.addEventListener('mousemove', e => { if (dragging) moveDrag(e.clientX, e.clientY); });
-  document.addEventListener('mouseup',   endDrag);
-
-  // Touch
-  document.addEventListener('touchstart', e => {
-    const handle = document.getElementById('billDragHandle');
-    if (!handle || !handle.contains(e.target)) return;
-    if (e.target.closest('button')) return;
-    startDrag(e.touches[0].clientX, e.touches[0].clientY);
-  }, { passive: true });
-  document.addEventListener('touchmove', e => {
-    if (!dragging) return;
-    moveDrag(e.touches[0].clientX, e.touches[0].clientY);
-  }, { passive: true });
-  document.addEventListener('touchend', endDrag);
-})();
 
 // ═══════════════════════════════════════════
 //  PRICE EDIT POPUP
@@ -4700,10 +4866,8 @@ function updateBookBtn() {
   const hasPatient = !!document.getElementById('patientName').value.trim();
   const hasTests = patientRows.length > 0;
   const enabled = hasPatient && hasTests;
-  ['bookTestBtn','stickyBookBtn'].forEach(id => {
-    const btn = document.getElementById(id);
-    if (btn) btn.disabled = !enabled;
-  });
+  const btn = document.getElementById('bookTestBtn');
+  if (btn) btn.disabled = !enabled;
 }
 
 function generateBookingId() {
@@ -4819,7 +4983,7 @@ function closeBookingModal() {
 // W1 fix: track last booking so "Enter Results" button can deep-link
 let _lastBookingId = null;
 function goToResultEntry() {
-  if (_lastBookingId) window.open(`MAIN4-1.html?booking=${_lastBookingId}`, '_blank');
+  if (_lastBookingId) window.location.href = `MAIN4.html?booking=${_lastBookingId}`;
   else closeBookingModal();
 }
 
@@ -4835,7 +4999,6 @@ function startNewBooking() {
   patientRows.length = 0;
   addedIds.clear();
   renderPatientTable();
-  updateStickyBar();
   updateBookBtn();
   showToast('Ready for new booking', 'info');
   window.scrollTo({ top: 0, behavior: 'smooth' });
