@@ -539,6 +539,128 @@ body.dark-mode .btn-nav:hover {
 .catalog-search-main .s-clear:hover { background: var(--border-light); }
 
 /* ══════════════════════════════════════════════
+   CATALOG SETTINGS MODAL
+══════════════════════════════════════════════ */
+.settings-modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(5,10,40,0.6); backdrop-filter: blur(5px);
+  justify-content: center; align-items: center;
+  z-index: 10000;
+}
+.settings-modal-overlay.open { display: flex; }
+.settings-modal {
+  background: white; width: 660px; max-width: 96vw;
+  max-height: 90vh; border-radius: 18px;
+  box-shadow: 0 28px 70px rgba(12,20,69,0.38);
+  border: 1.5px solid var(--border-light);
+  display: flex; flex-direction: column; overflow: hidden;
+  animation: popIn 0.22s ease;
+}
+.settings-modal-head {
+  padding: 20px 24px 16px;
+  background: linear-gradient(135deg, #0c1445, #1e40af);
+  color: white; display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0;
+}
+.settings-modal-head h2 { font-size: 17px; font-weight: 900; display: flex; align-items: center; gap: 8px; }
+.settings-modal-close {
+  background: rgba(255,255,255,0.15); border: none; color: white;
+  font-size: 15px; padding: 6px 10px; border-radius: 8px; cursor: pointer; transition: background 0.15s;
+}
+.settings-modal-close:hover { background: rgba(220,38,38,0.45); }
+.settings-tabs {
+  display: flex; gap: 0;
+  background: #f0f4ff; border-bottom: 1.5px solid var(--border-light);
+  flex-shrink: 0;
+}
+.settings-tab-btn {
+  padding: 11px 22px; border: none; background: transparent;
+  font-size: 13.5px; font-family: 'Outfit', sans-serif; font-weight: 700;
+  color: var(--muted); cursor: pointer; transition: all 0.15s;
+  border-bottom: 3px solid transparent; display: flex; align-items: center; gap: 6px;
+}
+.settings-tab-btn:hover { color: var(--blue); background: rgba(37,99,235,0.05); }
+.settings-tab-btn.active { color: var(--blue); border-bottom-color: var(--blue); background: white; }
+.settings-body { overflow-y: auto; flex: 1; padding: 24px; }
+.settings-tab-panel { display: none; }
+.settings-tab-panel.active { display: block; }
+.add-test-form {
+  background: var(--input-bg); border: 1.5px solid var(--border-light);
+  border-radius: 14px; padding: 20px; margin-bottom: 24px;
+}
+.add-test-form h4 {
+  font-size: 13px; font-weight: 800; color: var(--navy); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 7px;
+}
+.add-test-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;
+}
+.add-test-field { display: flex; flex-direction: column; gap: 5px; }
+.add-test-field label { font-size: 11.5px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.add-test-field input, .add-test-field select {
+  padding: 9px 12px; border: 1.5px solid var(--border);
+  border-radius: 9px; font-size: 13.5px; font-family: 'Outfit', sans-serif;
+  font-weight: 500; color: var(--text); background: white; transition: all 0.15s;
+}
+.add-test-field input:focus, .add-test-field select:focus {
+  outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+}
+.add-test-field.full { grid-column: 1 / -1; }
+.custom-tests-list { display: flex; flex-direction: column; gap: 8px; }
+.custom-test-item {
+  background: white; border: 1.5px solid var(--border-light);
+  border-radius: 12px; padding: 12px 16px;
+  display: flex; align-items: center; gap: 12px;
+  transition: all 0.15s;
+}
+.custom-test-item:hover { border-color: rgba(37,99,235,0.25); box-shadow: 0 2px 10px rgba(12,20,69,0.06); }
+.custom-test-item-name { font-size: 13.5px; font-weight: 700; color: var(--text); flex: 1; }
+.custom-test-item-dept { font-size: 11.5px; color: var(--muted); margin-top: 1px; }
+.custom-test-item-price {
+  font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 700;
+  color: var(--green); background: var(--green-light);
+  padding: 3px 10px; border-radius: 20px; flex-shrink: 0;
+}
+.custom-test-item-delete {
+  background: var(--red-light); color: var(--red);
+  border: 1.5px solid #fca5a5; padding: 5px 9px;
+  border-radius: 8px; font-size: 12px; cursor: pointer; transition: all 0.14s;
+  flex-shrink: 0;
+}
+.custom-test-item-delete:hover { background: var(--red); color: white; }
+.custom-tag {
+  background: rgba(124,58,237,0.1); color: #7c3aed;
+  border-radius: 20px; padding: 2px 8px;
+  font-size: 10.5px; font-weight: 800; flex-shrink: 0;
+}
+.catalog-settings-btn {
+  width: 34px; height: 34px;
+  background: rgba(37,99,235,0.07); border: 1.5px solid rgba(37,99,235,0.15);
+  border-radius: 9px; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.18s; color: var(--muted); flex-shrink: 0;
+}
+.catalog-settings-btn:hover {
+  background: var(--blue); color: white;
+  border-color: var(--blue);
+  box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+  transform: rotate(30deg);
+}
+/* Dark mode for settings modal */
+body.dark-mode .settings-modal { background: #131929; border-color: #1e2538; }
+body.dark-mode .settings-tabs { background: #0e1422; border-color: #1e2538; }
+body.dark-mode .settings-tab-btn { color: #6b7fa3; }
+body.dark-mode .settings-tab-btn.active { background: #131929; color: var(--blue); }
+body.dark-mode .settings-body { background: #131929; }
+body.dark-mode .add-test-form { background: #0e1422; border-color: #1e2538; }
+body.dark-mode .add-test-form h4 { color: #dde4f0; }
+body.dark-mode .add-test-field label { color: #6b7fa3; }
+body.dark-mode .add-test-field input { background: #1a2338; border-color: #2a3249; color: #dde4f0; }
+body.dark-mode .add-test-field input:focus { border-color: var(--blue); }
+body.dark-mode .custom-test-item { background: #0e1422; border-color: #1e2538; }
+body.dark-mode .custom-test-item:hover { border-color: rgba(37,99,235,0.3); }
+body.dark-mode .custom-test-item-name { color: #dde4f0; }
+
+/* ══════════════════════════════════════════════
    PATIENT ORDER — REDESIGNED ZONE LAYOUT
 ══════════════════════════════════════════════ */
 
@@ -2674,7 +2796,14 @@ body.dark-mode .empty-state { color: #7a8499; }
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M9 3h6m-5 0v7l-4 7a2 2 0 0 0 1.8 3h8.4a2 2 0 0 0 1.8-3l-4-7V3"/></svg>
           Test Catalog
         </h3>
-        <span id="filteredCount" style="font-size:12px;color:var(--muted);font-weight:700;background:rgba(37,99,235,0.07);padding:3px 10px;border-radius:20px;"></span>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span id="filteredCount" style="font-size:12px;color:var(--muted);font-weight:700;background:rgba(37,99,235,0.07);padding:3px 10px;border-radius:20px;"></span>
+          <button class="catalog-settings-btn" onclick="openCatalogSettings()" title="Catalog Settings — Add custom tests">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+          </button>
+        </div>
       </div>
       <!-- UNIFIED SEARCH BAR — redesigned -->
       <div class="catalog-search-bar" style="gap:8px;">
@@ -2886,7 +3015,8 @@ body.dark-mode .empty-state { color: #7a8499; }
             </div>
             <div class="pkg-field">
               <label>Package Price (₹) <span style="color:#94a3b8;font-weight:400;font-size:11px;">— overrides individual sum</span></label>
-              <input type="number" id="pkgPrice" placeholder="0" min="0">
+              <input type="number" id="pkgPrice" placeholder="0" min="0" oninput="updatePkgPriceHint()">
+              <div id="pkgPriceHint" style="display:none;margin-top:6px;font-size:12px;border-radius:8px;padding:7px 11px;font-weight:600;"></div>
             </div>
             <div class="pkg-field">
               <label>Selected Tests <span id="pkgTestCount" style="color:#94a3b8;font-weight:400;">(0 tests selected)</span></label>
@@ -3094,6 +3224,90 @@ body.dark-mode .empty-state { color: #7a8499; }
       <button class="btn-booking-close" onclick="closeBookingModal()">Close</button>
       <button class="btn-booking-new" onclick="startNewBooking()">+ New Booking</button>
       <button class="btn-booking-new" style="background:linear-gradient(135deg,#0d9488,#0891b2);" onclick="goToResultEntry()">🔬 Enter Results</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CATALOG SETTINGS MODAL ══ -->
+<div class="settings-modal-overlay" id="catalogSettingsModal" onclick="if(event.target===this)closeCatalogSettings()">
+  <div class="settings-modal">
+    <div class="settings-modal-head">
+      <h2>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Catalog Settings
+      </h2>
+      <button class="settings-modal-close" onclick="closeCatalogSettings()">✕</button>
+    </div>
+    <div class="settings-tabs">
+      <button class="settings-tab-btn active" onclick="switchSettingsTab('add-test')" id="stab-add-test">➕ Add New Test</button>
+      <button class="settings-tab-btn" onclick="switchSettingsTab('custom-tests')" id="stab-custom-tests">📋 My Custom Tests <span id="customTestCountBadge" style="background:rgba(37,99,235,0.1);color:var(--blue);border-radius:20px;padding:1px 8px;font-size:11px;margin-left:4px;">0</span></button>
+    </div>
+    <div class="settings-body">
+      <!-- TAB: ADD NEW TEST -->
+      <div class="settings-tab-panel active" id="spanel-add-test">
+        <div class="add-test-form">
+          <h4>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            New Test Details
+          </h4>
+          <div class="add-test-grid">
+            <div class="add-test-field full">
+              <label>Test Name *</label>
+              <input type="text" id="ntName" placeholder="e.g. Vitamin D3 Total (25-OH)">
+            </div>
+            <div class="add-test-field">
+              <label>Department *</label>
+              <input type="text" id="ntDept" placeholder="e.g. BIOCHEMISTRY" list="ntDeptSuggestions">
+              <datalist id="ntDeptSuggestions"></datalist>
+            </div>
+            <div class="add-test-field">
+              <label>Price (₹)</label>
+              <input type="number" id="ntPrice" placeholder="0" min="0">
+            </div>
+            <div class="add-test-field full">
+              <label>Description / Notes (optional)</label>
+              <input type="text" id="ntDesc" placeholder="Brief description of the test">
+            </div>
+            <div class="add-test-field">
+              <label>Specimen Type</label>
+              <input type="text" id="ntSpecimen" placeholder="e.g. Serum" list="ntSpecimenSuggestions">
+              <datalist id="ntSpecimenSuggestions"></datalist>
+            </div>
+            <div class="add-test-field">
+              <label>Test ID (auto-generated if blank)</label>
+              <input type="text" id="ntId" placeholder="e.g. CUSTOM-001">
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+            <button class="btn btn-primary" onclick="saveCustomTest()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+              Save Test to Catalog
+            </button>
+            <button class="btn btn-muted btn-sm" onclick="clearAddTestForm()">✕ Clear Form</button>
+            <span style="font-size:12px;color:var(--muted);">Saved tests persist across sessions.</span>
+          </div>
+        </div>
+        <div style="background:linear-gradient(135deg,#f0f9ff,#e8f5ff);border:1.5px solid rgba(37,99,235,0.15);border-left:4px solid var(--blue);border-radius:10px;padding:14px 16px;">
+          <div style="font-size:11px;font-weight:800;color:var(--blue);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">💡 How it works</div>
+          <div style="font-size:13px;color:#374151;line-height:1.65;">
+            Custom tests are saved to <strong>localStorage</strong> and automatically added to the catalog when you open this page. They appear with a <span style="background:rgba(124,58,237,0.1);color:#7c3aed;border-radius:20px;padding:1px 7px;font-size:11px;font-weight:800;">Custom</span> tag. You can delete them anytime from "My Custom Tests" tab.
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: CUSTOM TESTS LIST -->
+      <div class="settings-tab-panel" id="spanel-custom-tests">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+          <div style="font-size:13px;color:var(--muted);font-weight:600;" id="customTestsSubtitle">0 custom tests in your catalog</div>
+          <button class="btn btn-danger btn-sm" onclick="deleteAllCustomTests()" id="deleteAllCustomBtn" style="display:none;">🗑 Delete All Custom Tests</button>
+        </div>
+        <div class="custom-tests-list" id="customTestsList">
+          <div class="empty-state" style="padding:32px 20px;">
+            <div class="icon">🧪</div>
+            <p>No custom tests yet.<br>Use the <strong>Add New Test</strong> tab to add your first one.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -3604,9 +3818,34 @@ function switchTab(name) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
   document.getElementById('panel-' + name).classList.add('active');
+  if (name === 'catalog') { renderTests(); setTimeout(() => document.getElementById('searchName')?.focus(), 80); }
   if (name === 'prices') renderPriceTable();
   if (name === 'packages') { renderPackageTestPicker(); renderPackagesGrid(); }
 }
+
+// ═══════════════════════════════════════════
+//  CUSTOM TESTS — storage helpers + early merge
+//  (must run BEFORE buildDeptFilters so custom
+//   departments appear in all dropdowns/datalists)
+// ═══════════════════════════════════════════
+const CUSTOM_TESTS_KEY = 'medicore-custom-tests';
+function loadCustomTests() {
+  try { return JSON.parse(localStorage.getItem(CUSTOM_TESTS_KEY) || '[]'); }
+  catch(e) { return []; }
+}
+function saveCustomTestsToStorage(arr) {
+  localStorage.setItem(CUSTOM_TESTS_KEY, JSON.stringify(arr));
+}
+function getCustomTests() { return loadCustomTests(); }
+
+(function mergeCustomTests() {
+  const custom = loadCustomTests();
+  custom.forEach(ct => {
+    if (!tests.find(t => t.id === ct.id)) {
+      tests.push({ id: ct.id, name: ct.name, dept: ct.dept, price: ct.price, _custom: true, _desc: ct.desc || '', _specimen: ct.specimen || '' });
+    }
+  });
+})();
 
 // ═══════════════════════════════════════════
 //  BUILD DEPT FILTERS
@@ -4045,6 +4284,162 @@ function addFromDetail() {
 }
 
 // ═══════════════════════════════════════════
+//  CATALOG SETTINGS MODAL
+// ═══════════════════════════════════════════
+function openCatalogSettings() {
+  const depts = [...new Set(tests.map(t => t.dept))].sort();
+  const dl = document.getElementById('ntDeptSuggestions');
+  dl.innerHTML = depts.map(d => `<option value="${d}">`).join('');
+
+  const sdl = document.getElementById('ntSpecimenSuggestions');
+  sdl.innerHTML = SPECIMENS.map(s => `<option value="${s}">`).join('');
+
+  switchSettingsTab('add-test');
+  renderCustomTestsList();
+  document.getElementById('catalogSettingsModal').classList.add('open');
+}
+
+function closeCatalogSettings() {
+  document.getElementById('catalogSettingsModal').classList.remove('open');
+}
+
+function switchSettingsTab(tab) {
+  document.querySelectorAll('.settings-tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.settings-tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('stab-' + tab).classList.add('active');
+  document.getElementById('spanel-' + tab).classList.add('active');
+  if (tab === 'custom-tests') renderCustomTestsList();
+}
+
+function saveCustomTest() {
+  const name = document.getElementById('ntName').value.trim();
+  const dept = document.getElementById('ntDept').value.trim().toUpperCase();
+  const price = parseFloat(document.getElementById('ntPrice').value) || 0;
+  const desc  = document.getElementById('ntDesc').value.trim();
+  const spec  = document.getElementById('ntSpecimen').value.trim();
+  const rawId = document.getElementById('ntId').value.trim();
+
+  if (!name) { showToast('⚠️ Test name is required', 'warning'); return; }
+  if (!dept) { showToast('⚠️ Department is required', 'warning'); return; }
+
+  const existing = loadCustomTests();
+  const newId = rawId || ('CUSTOM-' + Date.now());
+
+  const dupInTests = tests.find(t => t.name.toLowerCase() === name.toLowerCase());
+  if (dupInTests) { showToast('⚠️ A test with this name already exists', 'warning'); return; }
+
+  const newTest = { id: newId, name, dept, price, desc, specimen: spec };
+  existing.push(newTest);
+  saveCustomTestsToStorage(existing);
+
+  // Add to runtime tests array
+  tests.push({ id: newId, name, dept, price, _custom: true, _desc: desc, _specimen: spec });
+
+  // Refresh UI
+  renderTests();
+  renderDeptFilter();
+  updateCustomTestCountBadge();
+  renderCustomTestsList();
+  clearAddTestForm();
+  localStorage.setItem('testCatalogCount', tests.length);
+  showToast(`✓ "${name}" added to catalog`, 'success');
+  switchSettingsTab('custom-tests');
+}
+
+function clearAddTestForm() {
+  ['ntName','ntDept','ntPrice','ntDesc','ntSpecimen','ntId'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+}
+
+function renderCustomTestsList() {
+  const custom = loadCustomTests();
+  const list   = document.getElementById('customTestsList');
+  const subtitle = document.getElementById('customTestsSubtitle');
+  const badge    = document.getElementById('customTestCountBadge');
+  const deleteAllBtn = document.getElementById('deleteAllCustomBtn');
+
+  badge.textContent    = custom.length;
+  subtitle.textContent = `${custom.length} custom test${custom.length !== 1 ? 's' : ''} in your catalog`;
+  deleteAllBtn.style.display = custom.length > 0 ? '' : 'none';
+
+  if (custom.length === 0) {
+    list.innerHTML = `<div class="empty-state" style="padding:32px 20px;">
+      <div class="icon">🧪</div>
+      <p>No custom tests yet.<br>Use the <strong>Add New Test</strong> tab to add your first one.</p>
+    </div>`;
+    return;
+  }
+
+  list.innerHTML = custom.map((ct, i) => `
+    <div class="custom-test-item">
+      <div style="flex:1;min-width:0;">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <div class="custom-test-item-name">${ct.name}</div>
+          <span class="custom-tag">Custom</span>
+        </div>
+        <div class="custom-test-item-dept">${ct.dept}${ct.specimen ? ' · ' + ct.specimen : ''}</div>
+      </div>
+      <div class="custom-test-item-price">₹${(ct.price||0).toLocaleString()}</div>
+      <button class="custom-test-item-delete" onclick="deleteCustomTest(${i})" title="Delete this test">🗑</button>
+    </div>
+  `).join('');
+}
+
+function deleteCustomTest(idx) {
+  const custom = loadCustomTests();
+  const removed = custom.splice(idx, 1)[0];
+  saveCustomTestsToStorage(custom);
+
+  const ti = tests.findIndex(t => t.id === removed.id);
+  if (ti !== -1) tests.splice(ti, 1);
+
+  renderTests();
+  renderDeptFilter();
+  renderCustomTestsList();
+  updateCustomTestCountBadge();
+  localStorage.setItem('testCatalogCount', tests.length);
+  showToast(`🗑 "${removed.name}" removed from catalog`, 'warning');
+}
+
+function deleteAllCustomTests() {
+  const custom = loadCustomTests();
+  if (!custom.length) return;
+  if (!confirm(`Delete all ${custom.length} custom tests? This cannot be undone.`)) return;
+
+  custom.forEach(ct => {
+    const ti = tests.findIndex(t => t.id === ct.id);
+    if (ti !== -1) tests.splice(ti, 1);
+  });
+  saveCustomTestsToStorage([]);
+
+  renderTests();
+  renderDeptFilter();
+  renderCustomTestsList();
+  updateCustomTestCountBadge();
+  localStorage.setItem('testCatalogCount', tests.length);
+  showToast('All custom tests removed', 'warning');
+}
+
+function updateCustomTestCountBadge() {
+  const n = loadCustomTests().length;
+  const badge = document.getElementById('customTestCountBadge');
+  if (badge) badge.textContent = n;
+}
+
+function renderDeptFilter() {
+  const depts = [...new Set(tests.map(t => t.dept))].sort();
+  ['deptFilter','priceDeptFilter'].forEach(id => {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    const cur = sel.value;
+    sel.innerHTML = `<option value="">All Departments</option>` +
+      depts.map(d => `<option value="${d}"${d===cur?' selected':''}>${d}</option>`).join('');
+  });
+}
+
+// ═══════════════════════════════════════════
 //  TEST CATALOG TABLE
 // ═══════════════════════════════════════════
 function renderTests() {
@@ -4091,7 +4486,7 @@ function renderTests() {
     const dc = deptClass(test.dept);
     tr.innerHTML = `
       <td>${start + idx + 1}</td>
-      <td class="test-name">${highlightText(test.name, nameQ)} <button class="info-btn" onclick="openTestDetail('${test.id}')" title="View details">ℹ️</button></td>
+      <td class="test-name">${highlightText(test.name, nameQ)} ${test._custom ? '<span style="background:rgba(124,58,237,0.1);color:#7c3aed;border-radius:20px;padding:1px 7px;font-size:10.5px;font-weight:800;margin-left:3px;">Custom</span>' : ''} <button class="info-btn" onclick="openTestDetail('${test.id}')" title="View details">ℹ️</button></td>
       <td><span class="dept-badge ${dc}">${test.dept}</span></td>
       <td class="center">
         <span class="price-val price-clickable" onclick="openPriceEdit('${test.id}')" title="Click to edit price">
@@ -4472,12 +4867,20 @@ function renderPackageTestPicker() {
     const div = document.createElement('div');
     div.className = `pkg-test-option ${isChecked ? 'checked' : ''}`;
     div.dataset.id = test.id;
-    div.innerHTML = `
-      <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="togglePkgTest(${test.id}, this)">
-      <span>${test.name}</span>
-      <span class="opt-dept">${test.dept}</span>
-    `;
-    div.addEventListener('click', e => { if (e.target.tagName !== 'INPUT') div.querySelector('input').click(); });
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.checked = isChecked;
+    cb.dataset.testId = test.id;
+    cb.addEventListener('change', function() { togglePkgTest(this.dataset.testId, this); });
+    const nameSpan = document.createElement('span');
+    nameSpan.textContent = test.name;
+    const deptSpan = document.createElement('span');
+    deptSpan.className = 'opt-dept';
+    deptSpan.textContent = test.dept;
+    div.appendChild(cb);
+    div.appendChild(nameSpan);
+    div.appendChild(deptSpan);
+    div.addEventListener('click', e => { if (e.target.tagName !== 'INPUT') cb.click(); });
     frag.appendChild(div);
   });
 
@@ -4497,6 +4900,29 @@ function togglePkgTest(id, cb) {
   renderPkgChips();
 }
 
+function updatePkgPriceHint() {
+  const hint = document.getElementById('pkgPriceHint');
+  if (!hint) return;
+  const enteredPrice = parseFloat(document.getElementById('pkgPrice').value) || 0;
+  const sumPrice = [...pkgSelectedTestIds].reduce((s, id) => s + getPrice(id), 0);
+  if (!enteredPrice || !sumPrice) { hint.style.display = 'none'; return; }
+  const diff = sumPrice - enteredPrice;
+  hint.style.display = 'block';
+  if (Math.abs(diff) < 1) {
+    hint.style.background = 'rgba(16,185,129,0.08)';
+    hint.style.color = '#059669';
+    hint.textContent = `✓ Matches individual sum (₹${sumPrice.toLocaleString()})`;
+  } else if (diff > 0) {
+    hint.style.background = 'rgba(37,99,235,0.08)';
+    hint.style.color = 'var(--blue)';
+    hint.textContent = `💊 Bundle discount: saves ₹${diff.toLocaleString()} vs individual sum ₹${sumPrice.toLocaleString()}`;
+  } else {
+    hint.style.background = 'rgba(245,158,11,0.1)';
+    hint.style.color = '#b45309';
+    hint.textContent = `⚠️ Package price exceeds individual sum by ₹${Math.abs(diff).toLocaleString()} (sum = ₹${sumPrice.toLocaleString()})`;
+  }
+}
+
 function renderPkgChips() {
   const container = document.getElementById('pkgSelectedChips');
   container.innerHTML = '';
@@ -4507,9 +4933,17 @@ function renderPkgChips() {
     if (!test) return;
     const chip = document.createElement('span');
     chip.className = 'pkg-chip';
-    chip.innerHTML = `${test.name} <button class="pkg-chip-remove" onclick="removePkgChip(${id})">✕</button>`;
+    const nameNode = document.createTextNode(test.name + ' ');
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'pkg-chip-remove';
+    removeBtn.textContent = '✕';
+    removeBtn.dataset.chipId = id;
+    removeBtn.addEventListener('click', function() { removePkgChip(this.dataset.chipId); });
+    chip.appendChild(nameNode);
+    chip.appendChild(removeBtn);
     container.appendChild(chip);
   });
+  updatePkgPriceHint();
 }
 
 function removePkgChip(id) {
@@ -4554,6 +4988,8 @@ function resetPackageForm() {
   document.getElementById('pkgPrice').value = '';
   document.getElementById('pkgTestSearch').value = '';
   document.getElementById('pkgSaveBtn').textContent = '💾 Save Package';
+  const hint = document.getElementById('pkgPriceHint');
+  if (hint) hint.style.display = 'none';
   renderPackageTestPicker();
   renderPkgChips();
 }
@@ -4867,7 +5303,14 @@ function updateBookBtn() {
   const hasTests = patientRows.length > 0;
   const enabled = hasPatient && hasTests;
   const btn = document.getElementById('bookTestBtn');
-  if (btn) btn.disabled = !enabled;
+  if (!btn) return;
+  btn.disabled = !enabled;
+  if (enabled) {
+    const totalNet = patientRows.reduce((s, r) => s + r.net, 0);
+    btn.textContent = `📋 Book — ₹${totalNet.toLocaleString()}`;
+  } else {
+    btn.textContent = '📋 Book Test';
+  }
 }
 
 function generateBookingId() {
@@ -5310,6 +5753,8 @@ function printSampleReport() {
 // Publish catalog size so index.html dashboard can display it
 localStorage.setItem('testCatalogCount', tests.length);
 renderTests();
+renderDeptFilter();
+updateCustomTestCountBadge();
 updateHeaderStats();
 renderPackageTestPicker();
 renderPackagesGrid(); // ← fix: render saved packages on load
