@@ -1037,6 +1037,198 @@ body.dark-mode select.filter-input { color: #dde4f0; }
 .confirm-modal-footer { display: flex; gap: 10px; padding: 0 24px 24px; }
 
 /* ══════════════════════════════════════
+   STATUS CONFIRM MODAL
+══════════════════════════════════════ */
+.status-confirm-box {
+  background: white; border-radius: 20px;
+  width: 100%; max-width: 460px;
+  overflow: hidden; box-shadow: 0 30px 80px rgba(12,20,69,0.25);
+  animation: slideUp 0.25s ease;
+}
+.status-confirm-head {
+  background: linear-gradient(135deg, var(--navy), #1e3a8a);
+  padding: 20px 24px; color: white;
+  display: flex; align-items: center; gap: 12px;
+}
+.status-confirm-head-icon { font-size: 28px; flex-shrink: 0; }
+.status-confirm-head h3 { font-size: 17px; font-weight: 800; }
+.status-confirm-head p { font-size: 12px; opacity: 0.6; margin-top: 2px; }
+.status-confirm-body { padding: 22px 24px; }
+.status-flow {
+  display: flex; align-items: center; justify-content: center;
+  gap: 12px; margin: 0 0 18px;
+}
+.status-flow-arrow {
+  font-size: 20px; color: var(--muted); flex-shrink: 0;
+}
+.status-confirm-info {
+  background: var(--input-bg); border-radius: 12px;
+  padding: 12px 16px; font-size: 13px; color: var(--muted);
+  border: 1px solid var(--border-light);
+}
+.status-confirm-info strong { color: var(--text); }
+.status-confirm-footer { display: flex; gap: 10px; padding: 0 24px 22px; }
+body.dark-mode .status-confirm-box { background: #131929; border: 1px solid #1e2538; }
+body.dark-mode .status-confirm-info { background: #0e1422; border-color: #1e2538; }
+
+/* ══════════════════════════════════════
+   REVENUE BREAKDOWN POPUP
+══════════════════════════════════════ */
+.rev-popup-box {
+  background: white; border-radius: 20px;
+  width: 100%; max-width: 560px;
+  max-height: 90vh; display: flex; flex-direction: column;
+  overflow: hidden; box-shadow: 0 30px 80px rgba(12,20,69,0.28);
+  animation: slideUp 0.25s ease;
+}
+.rev-popup-head {
+  background: linear-gradient(135deg, #064e3b, #065f46, #047857);
+  padding: 20px 24px; color: white;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.rev-popup-head h2 { font-size: 18px; font-weight: 800; }
+.rev-popup-head p { font-size: 12px; opacity: 0.65; margin-top: 3px; }
+.rev-popup-close {
+  background: rgba(255,255,255,0.15); border: none; color: white;
+  width: 30px; height: 30px; border-radius: 8px; font-size: 15px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+}
+.rev-popup-close:hover { background: rgba(255,255,255,0.25); }
+.rev-popup-body { flex: 1; overflow-y: auto; padding: 20px 24px; display: flex; flex-direction: column; gap: 20px; }
+.rev-section-title {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--muted); margin-bottom: 10px;
+}
+.rev-kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.rev-kpi {
+  border-radius: 12px; padding: 13px 14px; text-align: center;
+  border: 1.5px solid transparent;
+}
+.rev-kpi.green { background: var(--green-light); border-color: #86efac; }
+.rev-kpi.blue  { background: var(--blue-pale); border-color: #93c5fd; }
+.rev-kpi.amber { background: var(--amber-light); border-color: #fcd34d; }
+.rev-kpi.red   { background: var(--red-light); border-color: #fca5a5; }
+.rev-kpi.purple { background: var(--purple-light); border-color: #c4b5fd; }
+.rev-kpi-num { font-family: 'DM Mono', monospace; font-size: 18px; font-weight: 800; }
+.rev-kpi.green .rev-kpi-num  { color: var(--green); }
+.rev-kpi.blue  .rev-kpi-num  { color: var(--blue); }
+.rev-kpi.amber .rev-kpi-num  { color: var(--amber); }
+.rev-kpi.red   .rev-kpi-num  { color: var(--red); }
+.rev-kpi.purple .rev-kpi-num { color: var(--purple); }
+.rev-kpi-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted); margin-top: 3px; }
+.rev-mode-bars { display: flex; flex-direction: column; gap: 8px; }
+.rev-mode-row { display: flex; align-items: center; gap: 10px; }
+.rev-mode-label { font-size: 12px; font-weight: 600; width: 60px; flex-shrink: 0; color: var(--text); }
+.rev-mode-bar-wrap { flex: 1; background: var(--border-light); border-radius: 999px; height: 8px; overflow: hidden; }
+.rev-mode-bar { height: 100%; border-radius: 999px; transition: width 0.6s ease; }
+.rev-mode-amount { font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 700; color: var(--text); min-width: 70px; text-align: right; }
+.rev-top-tests { width: 100%; border-collapse: collapse; font-size: 12px; }
+.rev-top-tests th { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; color: var(--muted); padding: 6px 10px; border-bottom: 1.5px solid var(--border-light); text-align: left; }
+.rev-top-tests td { padding: 8px 10px; border-bottom: 1px solid var(--border-light); }
+.rev-top-tests tr:last-child td { border-bottom: none; }
+body.dark-mode .rev-popup-box { background: #131929; border: 1px solid #1e2538; }
+body.dark-mode .rev-mode-bar-wrap { background: #1e2538; }
+body.dark-mode .rev-top-tests th { border-bottom-color: #1e2538; }
+body.dark-mode .rev-top-tests td { border-bottom-color: #1a2132; }
+/* Make revenue stat clickable */
+#hdrRevenue { cursor: pointer; transition: opacity 0.15s; text-decoration: underline dotted rgba(255,255,255,0.4); text-underline-offset: 3px; }
+#hdrRevenue:hover { opacity: 0.8; }
+
+/* ══════════════════════════════════════
+   SETTINGS MODAL
+══════════════════════════════════════ */
+.settings-box {
+  background: white; border-radius: 20px;
+  width: 100%; max-width: 620px;
+  max-height: 92vh; display: flex; flex-direction: column;
+  overflow: hidden; box-shadow: 0 30px 80px rgba(12,20,69,0.28);
+  animation: slideUp 0.25s ease;
+}
+.settings-head {
+  background: linear-gradient(135deg, var(--navy), #1e3a8a);
+  padding: 20px 26px; color: white;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.settings-head h2 { font-size: 18px; font-weight: 800; }
+.settings-head p { font-size: 12px; opacity: 0.6; margin-top: 2px; }
+.settings-close {
+  background: rgba(255,255,255,0.1); border: none; color: white;
+  width: 30px; height: 30px; border-radius: 8px; font-size: 15px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+}
+.settings-close:hover { background: rgba(255,255,255,0.2); }
+.settings-body { flex: 1; overflow-y: auto; padding: 0; }
+.settings-section {
+  padding: 18px 26px;
+  border-bottom: 1px solid var(--border-light);
+}
+.settings-section:last-child { border-bottom: none; }
+.settings-section-title {
+  font-size: 11px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 1.2px; color: var(--blue); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 6px;
+}
+.settings-row {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; padding: 8px 0;
+  border-bottom: 1px solid var(--border-light);
+}
+.settings-row:last-child { border-bottom: none; }
+.settings-row-left { flex: 1; }
+.settings-row-label { font-size: 14px; font-weight: 600; color: var(--text); }
+.settings-row-hint { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.settings-select {
+  border: 1.5px solid var(--border); border-radius: 8px;
+  padding: 7px 10px; font-size: 13px; font-family: 'Outfit', sans-serif;
+  background: var(--input-bg); outline: none; cursor: pointer; color: var(--text);
+  min-width: 140px;
+}
+.settings-input {
+  border: 1.5px solid var(--border); border-radius: 8px;
+  padding: 7px 10px; font-size: 13px; font-family: 'Outfit', sans-serif;
+  background: var(--input-bg); outline: none; color: var(--text);
+  min-width: 200px; max-width: 240px;
+}
+.settings-input:focus, .settings-select:focus { border-color: var(--blue); background: white; }
+.settings-toggle-wrap { display: flex; align-items: center; gap: 8px; }
+.settings-toggle {
+  position: relative; width: 44px; height: 24px; flex-shrink: 0;
+}
+.settings-toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+.st-track {
+  position: absolute; inset: 0; border-radius: 100px;
+  background: var(--border); border: 1.5px solid var(--border);
+  transition: background 0.25s, border-color 0.25s;
+  cursor: pointer;
+}
+.settings-toggle input:checked ~ .st-track { background: var(--blue); border-color: var(--blue); }
+.st-thumb {
+  position: absolute; top: 3px; left: 3px; width: 16px; height: 16px;
+  border-radius: 50%; background: white;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+  transition: transform 0.25s cubic-bezier(0.34,1.5,0.64,1);
+  pointer-events: none;
+}
+.settings-toggle input:checked ~ .st-thumb { transform: translateX(20px); }
+.settings-footer {
+  padding: 14px 26px; border-top: 1px solid var(--border-light);
+  display: flex; gap: 8px; justify-content: space-between; align-items: center;
+  background: var(--input-bg);
+}
+.settings-reset-btn {
+  background: none; border: 1.5px solid var(--border); color: var(--muted);
+  border-radius: 8px; padding: 7px 14px; font-size: 13px; font-weight: 600;
+  cursor: pointer; font-family: 'Outfit', sans-serif; transition: all 0.15s;
+}
+.settings-reset-btn:hover { border-color: var(--red); color: var(--red); }
+body.dark-mode .settings-box { background: #131929; border: 1px solid #1e2538; }
+body.dark-mode .settings-section { border-bottom-color: #1e2538; }
+body.dark-mode .settings-row { border-bottom-color: #1a2132; }
+body.dark-mode .settings-select, body.dark-mode .settings-input { background: #0e1422; border-color: #2a3249; color: #dde4f0; }
+body.dark-mode .settings-select:focus, body.dark-mode .settings-input:focus { background: #131929; }
+body.dark-mode .settings-footer { background: #0e1422; border-top-color: #1e2538; }
+
+/* ══════════════════════════════════════
    FIX 11 — SPECIMEN LINE ON CARDS
 ══════════════════════════════════════ */
 .bc-specimen {
@@ -1308,9 +1500,9 @@ body.dark-mode .stl-step:not(:last-child).stl-done::after { background: #2563eb;
         <div class="ph-stat-num cyan" id="hdrTotal">0</div>
         <div class="ph-stat-label">Total Today</div>
       </div>
-      <div class="ph-stat">
+      <div class="ph-stat" onclick="openRevenuePopup()" title="Click for revenue breakdown" style="cursor:pointer;">
         <div class="ph-stat-num green" id="hdrRevenue">₹0</div>
-        <div class="ph-stat-label">Today Revenue</div>
+        <div class="ph-stat-label">Today Revenue ▸</div>
       </div>
       <div class="ph-stat">
         <div class="ph-stat-num amber" id="hdrPending">0</div>
@@ -1426,6 +1618,7 @@ body.dark-mode .stl-step:not(:last-child).stl-done::after { background: #2563eb;
     <button class="btn-sm btn-outline" onclick="openReportModal()">📊 Daily Report</button>
     <button class="btn-sm btn-teal" onclick="exportCSV()">⬇️ Export CSV</button>
     <button class="btn-sm btn-primary" onclick="refreshAll()">🔄 Refresh</button>
+    <button class="btn-sm btn-outline" onclick="openSettingsModal()" title="Configure dashboard settings" style="border-color:var(--purple);color:var(--purple);">⚙️ Settings</button>
   </div>
 
   <!-- BOOKINGS LIST -->
@@ -1519,6 +1712,268 @@ body.dark-mode .stl-step:not(:last-child).stl-done::after { background: #2563eb;
     <div class="confirm-modal-footer">
       <button class="btn-sm btn-outline" style="flex:1" onclick="closeConfirmModal()">Cancel</button>
       <button class="btn-sm btn-danger" style="flex:1" id="confirmDeleteBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ STATUS CONFIRM MODAL ══ -->
+<div class="modal-overlay" id="statusConfirmModal" onclick="if(event.target===this)closeStatusConfirmModal()">
+  <div class="status-confirm-box">
+    <div class="status-confirm-head">
+      <div class="status-confirm-head-icon">🔄</div>
+      <div>
+        <h3>Update Booking Status?</h3>
+        <p id="scmSubtitle">This will update the booking pipeline stage</p>
+      </div>
+    </div>
+    <div class="status-confirm-body">
+      <div class="status-flow" id="scmFlow"></div>
+      <div class="status-confirm-info" id="scmInfo"></div>
+    </div>
+    <div class="status-confirm-footer">
+      <button class="btn-sm btn-outline" style="flex:1" onclick="closeStatusConfirmModal()">✕ Cancel</button>
+      <button class="btn-sm btn-primary" style="flex:1" id="scmConfirmBtn">✓ Confirm Update</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ REVENUE BREAKDOWN POPUP ══ -->
+<div class="modal-overlay" id="revPopupModal" onclick="if(event.target===this)closeRevenuePopup()">
+  <div class="rev-popup-box">
+    <div class="rev-popup-head">
+      <div>
+        <h2>💰 Revenue Breakdown</h2>
+        <p id="revPopupDate">Today's detailed revenue analysis</p>
+      </div>
+      <button class="rev-popup-close" onclick="closeRevenuePopup()">✕</button>
+    </div>
+    <div class="rev-popup-body" id="revPopupBody"></div>
+  </div>
+</div>
+
+<!-- ══ SETTINGS MODAL ══ -->
+<div class="modal-overlay" id="settingsModal" onclick="if(event.target===this)closeSettingsModal()">
+  <div class="settings-box">
+    <div class="settings-head">
+      <div>
+        <h2>⚙️ Dashboard Settings</h2>
+        <p>Configure MediCore Booking Dashboard preferences</p>
+      </div>
+      <button class="settings-close" onclick="closeSettingsModal()">✕</button>
+    </div>
+    <div class="settings-body">
+      <div class="settings-section">
+        <div class="settings-section-title">🖨️ Print &amp; Export</div>
+        <div class="settings-row">
+          <div class="settings-row-left">
+            <div class="settings-row-label">Print Format</div>
+            <div class="settings-row-hint">Layout used when printing a booking slip</div>
+          </div>
+          <select class="settings-select" id="setPrintFormat">
+            <option value="full">Full (all columns)</option>
+            <option value="compact">Compact (name, tests, total)</option>
+            <option value="receipt">Receipt (narrow 80mm)</option>
+          </select>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-left">
+            <div class="settings-row-label">Show Discount Column in Print</div>
+            <div class="settings-row-hint">Include discount on printed booking slips</div>
+          </div>
+          <div class="settings-toggle-wrap">
+            <label class="settings-toggle">
+              <input type="checkbox" id="setPrintDiscount" checked>
+              <div class="st-track"></div><div class="st-thumb"></div>
+            </label>
+          </div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-left">
+            <div class="settings-row-label">Show Lab Header in Print</div>
+            <div class="settings-row-hint">Include MediCore branding on printed output</div>
+          </div>
+          <div class="settings-toggle-wrap">
+            <label class="settings-toggle">
+              <input type="checkbox" id="setPrintHeader" checked>
+              <div class="st-track"></div><div class="st-thumb"></div>
+            </label>
+          </div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-left">
+            <div class="settings-row-label">Show Footer Timestamp in Print</div>
+            <div class="settings-row-hint">Print date/time at bottom of each slip</div>
+          </div>
+          <div class="settings-toggle-wrap">
+            <label class="settings-toggle">
+              <input type="checkbox" id="setPrintTimestamp" checked>
+              <div class="st-track"></div><div class="st-thumb"></div>
+            </label>
+          </div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-left">
+            <div class="settings-row-label">CSV Export Scope</div>
+            <div class="settings-row-hint">Which bookings to include when exporting CSV</div>
+          </div>
+          <select class="settings-select" id="setExportScope">
+            <option value="filtered">Current filter (default)</option>
+            <option value="all">All bookings</option>
+            <option value="today">Today only</option>
+          </select>
+        </div>
+      </div>
+      <div class="settings-section">
+        <div class="settings-section-title">🖥️ Display &amp; Defaults</div>
+        <div class="settings-row">
+          <div class="settings-row-left">
+            <div class="settings-row-label">Default Date Filter</div>
+            <div class="settings-row-hint">Filter applied when the page first loads</div>
+          </div>
+          <select class="settings-select" id="setDefaultDate">
+            <option value="today">Today</option>
+            <option value="week">This Week</option>
+            <option value="month">This Month</option>
+            <option value="all">All Dates</option>
+          </select>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-left">
+            <div class="settings-row-label">Default Sort Order</div>
+            <div class="settings-row-hint">How bookings are ordered on first load</div>
+          </div>
+          <select class="settings-select" id="setDefaultSort">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="amount_high">Amount: High to Low</option>
+            <option value="name">Patient Name A to Z</option>
+          </select>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-left">
+            <div class="settings-row-label">Cards Per Page</div>
+            <div class="settings-row-hint">Max booking cards shown (0 = unlimited)</div>
+          </div>
+          <select class="settings-select" id="setCardsPerPage">
+            <option value="0">All (no limit)</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-left">
+            <div class="settings-row-label">Show Summary KPI Cards</div>
+            <div class="settings-row-hint">Display metric cards above the booking list</div>
+          </div>
+          <div class="settings-toggle-wrap">
+            <label class="settings-toggle">
+              <input type="checkbox" id="setShowSummary" checked>
+              <div class="st-track"></div><div class="st-thumb"></div>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="settings-section">
+        <div class="settings-section-title">⚙️ Workflow &amp; Confirmations</div>
+        <div class="settings-row">
+          <div class="settings-row-left">
+            <div class="settings-row-label">Confirm Status Changes</div>
+            <div class="settings-row-hint">Show confirmation dialog before updating status</div>
+          </div>
+          <div class="settings-toggle-wrap">
+            <label class="settings-toggle">
+              <input type="checkbox" id="setConfirmStatus" checked>
+              <div class="st-track"></div><div class="st-thumb"></div>
+            </label>
+          </div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-left">
+            <div class="settings-row-label">Allow Backward Status</div>
+            <div class="settings-row-hint">Allow reverting to an earlier pipeline stage</div>
+          </div>
+          <div class="settings-toggle-wrap">
+            <label class="settings-toggle">
+              <input type="checkbox" id="setAllowBackward" checked>
+              <div class="st-track"></div><div class="st-thumb"></div>
+            </label>
+          </div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-left">
+            <div class="settings-row-label">Auto-refresh Interval</div>
+            <div class="settings-row-hint">Automatically sync data from localStorage</div>
+          </div>
+          <select class="settings-select" id="setAutoRefresh">
+            <option value="0">Off</option>
+            <option value="30">Every 30s</option>
+            <option value="60">Every 1 min</option>
+            <option value="300">Every 5 min</option>
+          </select>
+        </div>
+      </div>
+      <div class="settings-section">
+        <div class="settings-section-title">🏥 Lab Branding</div>
+        <div class="settings-row">
+          <div class="settings-row-left">
+            <div class="settings-row-label">Lab Name</div>
+            <div class="settings-row-hint">Shown on print headers and WhatsApp messages</div>
+          </div>
+          <input type="text" class="settings-input" id="setLabName" placeholder="MediCore Labs">
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-left">
+            <div class="settings-row-label">Lab Contact / Phone</div>
+            <div class="settings-row-hint">Printed on booking slips</div>
+          </div>
+          <input type="text" class="settings-input" id="setLabPhone" placeholder="+91 XXXXX XXXXX">
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-left">
+            <div class="settings-row-label">Currency Symbol</div>
+            <div class="settings-row-hint">Shown next to all amounts</div>
+          </div>
+          <select class="settings-select" id="setCurrency" style="min-width:100px;">
+            <option value="Rs.">Rs. INR</option>
+            <option value="$">$ USD</option>
+            <option value="euro">EUR</option>
+          </select>
+        </div>
+      </div>
+      <div class="settings-section">
+        <div class="settings-section-title">🔔 Notifications</div>
+        <div class="settings-row">
+          <div class="settings-row-left">
+            <div class="settings-row-label">Show Toast Notifications</div>
+            <div class="settings-row-hint">Display brief success/warning messages</div>
+          </div>
+          <div class="settings-toggle-wrap">
+            <label class="settings-toggle">
+              <input type="checkbox" id="setShowToasts" checked>
+              <div class="st-track"></div><div class="st-thumb"></div>
+            </label>
+          </div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-left">
+            <div class="settings-row-label">Toast Duration</div>
+            <div class="settings-row-hint">How long each notification stays visible</div>
+          </div>
+          <select class="settings-select" id="setToastDuration">
+            <option value="2000">2 seconds</option>
+            <option value="2800">3 seconds (default)</option>
+            <option value="5000">5 seconds</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="settings-footer">
+      <button class="settings-reset-btn" onclick="resetSettings()">↺ Reset to Defaults</button>
+      <div style="display:flex;gap:8px;">
+        <button class="btn-sm btn-outline" onclick="closeSettingsModal()">Cancel</button>
+        <button class="btn-sm btn-primary" onclick="saveSettings()">💾 Save Settings</button>
+      </div>
     </div>
   </div>
 </div>
@@ -2049,7 +2504,7 @@ function openDetailModal(bookingId) {
       ${STATUSES.map(s => {
         const sk2 = STATUS_KEY[s];
         const isActive = b.status === s;
-        return `<button class="status-btn sb-${sk2.cls} ${isActive?'active':'inactive'}" onclick="updateStatus('${bookingId}','${s}')">${sk2.label}</button>`;
+        return `<button class="status-btn sb-${sk2.cls} ${isActive?'active':'inactive'}" onclick="requestStatusUpdate('${bookingId}','${s}')">${sk2.label}</button>`;
       }).join('')}
     </div>
 
@@ -2188,24 +2643,49 @@ function whatsappBooking(bookingId) {
 function printBooking(bookingId) {
   const b = allBookings.find(x => x.bookingId === bookingId);
   if (!b) return;
-  const tests = (b.tests||[]).map((t,i) =>
-    `<tr><td>${i+1}</td><td>${t.name}</td><td>${t.dept||'—'}</td><td>${t.sample||'—'}</td><td style="text-align:right">₹${(t.price||0).toLocaleString()}</td><td style="text-align:right;color:#dc2626">${t.discValue>0?'-₹'+t.discValue.toLocaleString():'—'}</td><td style="text-align:right"><strong>₹${(t.net||0).toLocaleString()}</strong></td></tr>`
-  ).join('');
+  const s = _appSettings;
+  const labName = s.labName || 'MediCore Labs';
+  const labPhone = s.labPhone ? `<div style="font-size:12px;color:#666">${s.labPhone}</div>` : '';
+
+  const isCompact = s.printFormat === 'compact';
+  const isReceipt = s.printFormat === 'receipt';
+  const maxWidth  = isReceipt ? '320px' : '800px';
+  const showDisc  = s.printDiscount;
+
+  const tests = (b.tests||[]).map((t,i) => {
+    if (isCompact) {
+      return `<tr><td>${i+1}</td><td>${t.name}</td><td>${t.dept||'—'}</td><td style="text-align:right"><strong>Rs. ${(t.net||0).toLocaleString()}</strong></td></tr>`;
+    }
+    return `<tr><td>${i+1}</td><td>${t.name}</td><td>${t.dept||'—'}</td><td>${t.sample||'—'}</td><td style="text-align:right">Rs. ${(t.price||0).toLocaleString()}</td>${showDisc?`<td style="text-align:right;color:#dc2626">${t.discValue>0?'-Rs. '+t.discValue.toLocaleString():'—'}</td>`:''}
+      <td style="text-align:right"><strong>Rs. ${(t.net||0).toLocaleString()}</strong></td></tr>`;
+  }).join('');
+
+  const tableHeaders = isCompact
+    ? `<tr><th>#</th><th>Test</th><th>Dept</th><th>Net</th></tr>`
+    : `<tr><th>#</th><th>Test</th><th>Dept</th><th>Sample</th><th>Price</th>${showDisc?'<th>Disc</th>':''}<th>Net</th></tr>`;
+  const totalRow = isCompact
+    ? `<tr class="total-row"><td colspan="3" style="text-align:right">TOTAL</td><td style="text-align:right">Rs. ${(b.totalNet||0).toLocaleString()}</td></tr>`
+    : `<tr class="total-row"><td colspan="4" style="text-align:right">TOTAL</td><td style="text-align:right">Rs. ${(b.totalPrice||0).toLocaleString()}</td>${showDisc?`<td style="text-align:right;color:#dc2626">${b.totalDisc>0?'-Rs. '+b.totalDisc.toLocaleString():'—'}</td>`:''}
+      <td style="text-align:right">Rs. ${(b.totalNet||0).toLocaleString()}</td></tr>`;
+
+  const footer = s.printTimestamp
+    ? `<div class="footer">Printed on ${new Date().toLocaleString('en-IN')} · ${labName}</div>`
+    : `<div class="footer">${labName}</div>`;
+
   const pw = window.open('', '_blank');
   pw.document.write(`<!DOCTYPE html><html><head><title>Booking ${b.bookingId}</title>
-  <style>body{font-family:Arial,sans-serif;padding:24px;max-width:800px;margin:0 auto}
-  h1{font-size:22px;margin-bottom:4px}p{font-size:13px;color:#666;margin:0 0 16px}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+  <style>body{font-family:Arial,sans-serif;padding:${isReceipt?'12px':'24px'};max-width:${maxWidth};margin:0 auto}
+  h1{font-size:${isReceipt?'16px':'22px'};margin-bottom:4px}p{font-size:13px;color:#666;margin:0 0 16px}
+  .grid{display:grid;grid-template-columns:${isReceipt?'1fr':'1fr 1fr'};gap:8px;margin-bottom:16px}
   .item label{font-size:10px;text-transform:uppercase;color:#999;display:block}
   .item span{font-size:14px;font-weight:600}
-  table{width:100%;border-collapse:collapse;font-size:13px}
+  table{width:100%;border-collapse:collapse;font-size:${isReceipt?'11px':'13px'}}
   th{background:#f0f5ff;padding:8px;text-align:left;font-size:11px;text-transform:uppercase}
   td{padding:8px;border-bottom:1px solid #e2e8f0}
   .total-row td{font-weight:800;background:#f8faff}
   .footer{margin-top:24px;text-align:center;font-size:11px;color:#94a3b8}
   @media print{button{display:none}}</style></head><body>
-  <h1>⚕️ MediCore Labs — Test Booking</h1>
-  <p>Booking Slip · ${b.bookingId}</p>
+  ${s.printHeader ? `<h1>⚕️ ${labName}</h1>${labPhone}<p>Booking Slip · ${b.bookingId}</p>` : `<p><strong>${b.bookingId}</strong></p>`}
   <div class="grid">
     <div class="item"><label>Patient Name</label><span>${b.patientName||'—'}</span></div>
     <div class="item"><label>Age / Gender</label><span>${b.patientAge||'—'}</span></div>
@@ -2214,12 +2694,9 @@ function printBooking(bookingId) {
     <div class="item"><label>Sample Date</label><span>${fmtDate(b.sampleDate||b.bookedAt)}</span></div>
     <div class="item"><label>Status</label><span>${b.status||'Booked'}</span></div>
   </div>
-  <table><thead><tr><th>#</th><th>Test</th><th>Dept</th><th>Sample</th><th>Price</th><th>Disc</th><th>Net</th></tr></thead>
-  <tbody>${tests}<tr class="total-row"><td colspan="4" style="text-align:right">TOTAL</td>
-  <td style="text-align:right">₹${(b.totalPrice||0).toLocaleString()}</td>
-  <td style="text-align:right;color:#dc2626">${b.totalDisc>0?'-₹'+b.totalDisc.toLocaleString():'—'}</td>
-  <td style="text-align:right">₹${(b.totalNet||0).toLocaleString()}</td></tr></tbody></table>
-  <div class="footer">Printed on ${new Date().toLocaleString('en-IN')} · MediCore Lab Management System</div>
+  <table><thead>${tableHeaders}</thead>
+  <tbody>${tests}${totalRow}</tbody></table>
+  ${footer}
   <br><button onclick="window.print()">🖨️ Print</button>
   </body></html>`);
   pw.document.close();
@@ -2686,6 +3163,9 @@ function undoDelete() {
 // ═══════════════════════════════════════════
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
+    if (document.getElementById('settingsModal').classList.contains('open'))      { closeSettingsModal(); return; }
+    if (document.getElementById('statusConfirmModal').classList.contains('open')) { closeStatusConfirmModal(); return; }
+    if (document.getElementById('revPopupModal').classList.contains('open'))      { closeRevenuePopup(); return; }
     if (document.getElementById('editModal').classList.contains('open'))    { closeEditModal(); return; }
     if (document.getElementById('confirmModal').classList.contains('open')) { closeConfirmModal(); return; }
     if (document.getElementById('reportModal').classList.contains('open'))  { closeReportModal(); return; }
@@ -2694,6 +3174,8 @@ document.addEventListener('keydown', e => {
   }
   // Ctrl/Cmd + E to export
   if ((e.ctrlKey || e.metaKey) && e.key === 'e') { e.preventDefault(); exportCSV(); }
+  // Ctrl/Cmd + comma to open settings
+  if ((e.ctrlKey || e.metaKey) && e.key === ',') { e.preventDefault(); openSettingsModal(); }
 });
 
 // ═══════════════════════════════════════════
@@ -2711,18 +3193,379 @@ function refreshAll() {
 //  TOAST
 // ═══════════════════════════════════════════
 function showToast(msg, type='') {
+  if (!_appSettings.showToasts) return;
   const c = document.getElementById('toastContainer');
   const t = document.createElement('div');
   t.className = `toast ${type}`;
   t.textContent = msg;
   c.appendChild(t);
-  setTimeout(() => t.remove(), 2800);
+  setTimeout(() => t.remove(), _appSettings.toastDuration || 2800);
 }
 
 // ═══════════════════════════════════════════
 //  INIT
 // ═══════════════════════════════════════════
+// ═══════════════════════════════════════════
+//  SETTINGS SYSTEM
+// ═══════════════════════════════════════════
+const SETTINGS_KEY = 'medicore-dashboard-settings';
+const DEFAULT_SETTINGS = {
+  printFormat: 'full',
+  printDiscount: true,
+  printHeader: true,
+  printTimestamp: true,
+  exportScope: 'filtered',
+  defaultDate: 'today',
+  defaultSort: 'newest',
+  cardsPerPage: 0,
+  showSummary: true,
+  confirmStatus: true,
+  allowBackward: true,
+  autoRefresh: 0,
+  labName: 'MediCore Labs',
+  labPhone: '',
+  currency: 'Rs.',
+  showToasts: true,
+  toastDuration: 2800
+};
+
+let _appSettings = { ...DEFAULT_SETTINGS };
+let _autoRefreshTimer = null;
+
+function loadSettings() {
+  try {
+    const saved = localStorage.getItem(SETTINGS_KEY);
+    if (saved) _appSettings = { ...DEFAULT_SETTINGS, ...JSON.parse(saved) };
+  } catch(e) { _appSettings = { ...DEFAULT_SETTINGS }; }
+  applySettings();
+}
+
+function applySettings() {
+  // Summary cards visibility
+  const sg = document.getElementById('summaryGrid');
+  if (sg) sg.style.display = _appSettings.showSummary ? '' : 'none';
+
+  // Auto-refresh
+  if (_autoRefreshTimer) clearInterval(_autoRefreshTimer);
+  if (_appSettings.autoRefresh > 0) {
+    _autoRefreshTimer = setInterval(refreshAll, _appSettings.autoRefresh * 1000);
+  }
+
+  // Apply default date/sort filters on first load only if they differ
+  const dateEl = document.getElementById('dateFilter');
+  const sortEl = document.getElementById('sortFilter');
+  if (dateEl && dateEl.dataset.settingsApplied !== '1') {
+    dateEl.value = _appSettings.defaultDate;
+    dateEl.dataset.settingsApplied = '1';
+  }
+  if (sortEl && sortEl.dataset.settingsApplied !== '1') {
+    sortEl.value = _appSettings.defaultSort;
+    sortEl.dataset.settingsApplied = '1';
+  }
+}
+
+function openSettingsModal() {
+  // Populate form from current settings
+  const s = _appSettings;
+  document.getElementById('setPrintFormat').value   = s.printFormat;
+  document.getElementById('setPrintDiscount').checked = s.printDiscount;
+  document.getElementById('setPrintHeader').checked   = s.printHeader;
+  document.getElementById('setPrintTimestamp').checked = s.printTimestamp;
+  document.getElementById('setExportScope').value    = s.exportScope;
+  document.getElementById('setDefaultDate').value    = s.defaultDate;
+  document.getElementById('setDefaultSort').value    = s.defaultSort;
+  document.getElementById('setCardsPerPage').value   = String(s.cardsPerPage);
+  document.getElementById('setShowSummary').checked  = s.showSummary;
+  document.getElementById('setConfirmStatus').checked = s.confirmStatus;
+  document.getElementById('setAllowBackward').checked = s.allowBackward;
+  document.getElementById('setAutoRefresh').value    = String(s.autoRefresh);
+  document.getElementById('setLabName').value        = s.labName || '';
+  document.getElementById('setLabPhone').value       = s.labPhone || '';
+  document.getElementById('setCurrency').value       = s.currency;
+  document.getElementById('setShowToasts').checked   = s.showToasts;
+  document.getElementById('setToastDuration').value  = String(s.toastDuration);
+  document.getElementById('settingsModal').classList.add('open');
+}
+
+function closeSettingsModal() {
+  document.getElementById('settingsModal').classList.remove('open');
+}
+
+function saveSettings() {
+  _appSettings = {
+    printFormat:    document.getElementById('setPrintFormat').value,
+    printDiscount:  document.getElementById('setPrintDiscount').checked,
+    printHeader:    document.getElementById('setPrintHeader').checked,
+    printTimestamp: document.getElementById('setPrintTimestamp').checked,
+    exportScope:    document.getElementById('setExportScope').value,
+    defaultDate:    document.getElementById('setDefaultDate').value,
+    defaultSort:    document.getElementById('setDefaultSort').value,
+    cardsPerPage:   parseInt(document.getElementById('setCardsPerPage').value) || 0,
+    showSummary:    document.getElementById('setShowSummary').checked,
+    confirmStatus:  document.getElementById('setConfirmStatus').checked,
+    allowBackward:  document.getElementById('setAllowBackward').checked,
+    autoRefresh:    parseInt(document.getElementById('setAutoRefresh').value) || 0,
+    labName:        document.getElementById('setLabName').value.trim() || 'MediCore Labs',
+    labPhone:       document.getElementById('setLabPhone').value.trim(),
+    currency:       document.getElementById('setCurrency').value,
+    showToasts:     document.getElementById('setShowToasts').checked,
+    toastDuration:  parseInt(document.getElementById('setToastDuration').value) || 2800
+  };
+  localStorage.setItem(SETTINGS_KEY, JSON.stringify(_appSettings));
+  applySettings();
+  closeSettingsModal();
+  showToast('✓ Settings saved successfully', 'success');
+}
+
+function resetSettings() {
+  if (!confirm('Reset all settings to defaults?')) return;
+  _appSettings = { ...DEFAULT_SETTINGS };
+  localStorage.removeItem(SETTINGS_KEY);
+  applySettings();
+  closeSettingsModal();
+  showToast('↺ Settings reset to defaults', 'success');
+}
+
+// ═══════════════════════════════════════════
+//  STATUS CONFIRM MODAL
+// ═══════════════════════════════════════════
+let _pendingStatusUpdate = null;
+
+function requestStatusUpdate(bookingId, newStatus) {
+  const b = allBookings.find(x => x.bookingId === bookingId);
+  if (!b) return;
+  if (b.status === newStatus) return; // no-op
+
+  // Check backward setting
+  const statusOrder = ['Booked','Sample Collected','Processing','Ready','Delivered','Cancelled'];
+  const fromIdx = statusOrder.indexOf(b.status);
+  const toIdx   = statusOrder.indexOf(newStatus);
+  if (!_appSettings.allowBackward && newStatus !== 'Cancelled' && toIdx < fromIdx) {
+    showToast('⚠️ Backward status changes are disabled in Settings', 'warning');
+    return;
+  }
+
+  // Skip confirmation if turned off
+  if (!_appSettings.confirmStatus) {
+    executeStatusUpdate(bookingId, newStatus);
+    return;
+  }
+
+  _pendingStatusUpdate = { bookingId, newStatus };
+
+  const fromSk = STATUS_KEY[b.status] || STATUS_KEY['Booked'];
+  const toSk   = STATUS_KEY[newStatus] || STATUS_KEY['Booked'];
+
+  document.getElementById('scmSubtitle').textContent = `${b.bookingId} · ${b.patientName || 'Unknown'}`;
+  document.getElementById('scmFlow').innerHTML = `
+    <span class="bc-status-badge status-${fromSk.cls}" style="font-size:13px;padding:6px 14px;">${fromSk.label}</span>
+    <span class="status-flow-arrow">→</span>
+    <span class="bc-status-badge status-${toSk.cls}" style="font-size:13px;padding:6px 14px;">${toSk.label}</span>
+  `;
+  document.getElementById('scmInfo').innerHTML = `
+    <strong>${b.patientName || '—'}</strong> &nbsp;·&nbsp;
+    ${b.patientAge ? b.patientAge + ' &nbsp;·&nbsp; ' : ''}
+    ${(b.tests||[]).length} test(s) &nbsp;·&nbsp;
+    Net: <strong>Rs. ${(b.totalNet||0).toLocaleString()}</strong>
+  `;
+  document.getElementById('scmConfirmBtn').onclick = () => {
+    closeStatusConfirmModal();
+    executeStatusUpdate(bookingId, newStatus);
+  };
+
+  document.getElementById('statusConfirmModal').classList.add('open');
+}
+
+function closeStatusConfirmModal() {
+  document.getElementById('statusConfirmModal').classList.remove('open');
+  _pendingStatusUpdate = null;
+}
+
+function executeStatusUpdate(bookingId, newStatus) {
+  const b = allBookings.find(x => x.bookingId === bookingId);
+  if (!b) return;
+  if (b.status === newStatus) return;
+  b.status = newStatus;
+  if (!b.statusLog) b.statusLog = [];
+  b.statusLog.push({ status: newStatus, changedAt: new Date().toISOString() });
+  saveBookings();
+  updatePipelineCounts();
+  updateHeaderStats();
+  updateSummaryCards();
+  renderBookings();
+  openDetailModal(bookingId);
+  showToast('✓ Status updated to: ' + newStatus, 'success');
+}
+
+// ═══════════════════════════════════════════
+//  REVENUE BREAKDOWN POPUP
+// ═══════════════════════════════════════════
+function openRevenuePopup() {
+  const today = allBookings.filter(b => isToday(b.bookedAt));
+  const activeToday = today.filter(b => b.status !== 'Cancelled');
+
+  const grossRevenue  = activeToday.reduce((s,b) => s + (b.totalNet||0), 0);
+  const totalCollected = activeToday.reduce((s,b) => s + (b.amountPaid||0), 0);
+  const totalDiscount  = activeToday.reduce((s,b) => s + (b.totalDisc||0), 0);
+  const totalBalance   = grossRevenue - totalCollected;
+  const uniquePatients = new Set(activeToday.map(b => b.patientMobile || b.patientName)).size;
+  const totalTests     = activeToday.reduce((s,b) => s + (b.tests||[]).length, 0);
+
+  // By payment status
+  const paid    = today.filter(b => b.paymentStatus === 'Paid');
+  const partial = today.filter(b => b.paymentStatus === 'Partial');
+  const unpaid  = today.filter(b => b.paymentStatus === 'Unpaid');
+  const paidAmt    = paid.reduce((s,b) => s + (b.amountPaid||0), 0);
+  const partialAmt = partial.reduce((s,b) => s + (b.amountPaid||0), 0);
+  const unpaidAmt  = unpaid.reduce((s,b) => s + (b.totalNet||0), 0);
+
+  // By payment mode — from ledger entries
+  const modeMap = {};
+  activeToday.forEach(b => {
+    (b.paymentLedger||[]).forEach(e => {
+      const m = e.mode || 'Unknown';
+      modeMap[m] = (modeMap[m]||0) + e.amount;
+    });
+  });
+  const modeColors = { Cash: '#16a34a', UPI: '#2563eb', Card: '#7c3aed', NEFT: '#0d9488', Cheque: '#d97706', Unknown: '#64748b' };
+  const totalModeAmt = Object.values(modeMap).reduce((s,v) => s+v, 0) || 1;
+
+  // Top tests by revenue
+  const testRevMap = {};
+  activeToday.forEach(b => {
+    (b.tests||[]).forEach(t => {
+      testRevMap[t.name] = (testRevMap[t.name]||0) + (t.net||t.price||0);
+    });
+  });
+  const topByRev = Object.entries(testRevMap).sort((a,b)=>b[1]-a[1]).slice(0,6);
+
+  // Top doctors by bookings
+  const docMap = {};
+  activeToday.forEach(b => {
+    const d = b.refDoctor || 'Self / Walk-in';
+    docMap[d] = (docMap[d]||0) + 1;
+  });
+  const topDocs = Object.entries(docMap).sort((a,b)=>b[1]-a[1]).slice(0,5);
+
+  document.getElementById('revPopupDate').textContent =
+    new Date().toLocaleDateString('en-IN', { weekday:'long', day:'2-digit', month:'long', year:'numeric' });
+
+  document.getElementById('revPopupBody').innerHTML = `
+    <!-- KPI row -->
+    <div>
+      <div class="rev-section-title">Overview</div>
+      <div class="rev-kpi-row">
+        <div class="rev-kpi green">
+          <div class="rev-kpi-num">Rs. ${grossRevenue.toLocaleString()}</div>
+          <div class="rev-kpi-label">Gross Revenue</div>
+        </div>
+        <div class="rev-kpi blue">
+          <div class="rev-kpi-num">Rs. ${totalCollected.toLocaleString()}</div>
+          <div class="rev-kpi-label">Collected</div>
+        </div>
+        <div class="rev-kpi amber">
+          <div class="rev-kpi-num">Rs. ${totalBalance.toLocaleString()}</div>
+          <div class="rev-kpi-label">Outstanding</div>
+        </div>
+      </div>
+      <div class="rev-kpi-row" style="margin-top:8px;grid-template-columns:repeat(3,1fr);">
+        <div class="rev-kpi purple">
+          <div class="rev-kpi-num">${uniquePatients}</div>
+          <div class="rev-kpi-label">Patients</div>
+        </div>
+        <div class="rev-kpi blue">
+          <div class="rev-kpi-num">${totalTests}</div>
+          <div class="rev-kpi-label">Tests Done</div>
+        </div>
+        <div class="rev-kpi red">
+          <div class="rev-kpi-num">Rs. ${totalDiscount.toLocaleString()}</div>
+          <div class="rev-kpi-label">Discounts Given</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment status breakdown -->
+    <div>
+      <div class="rev-section-title">By Payment Status</div>
+      <div class="rev-mode-bars">
+        ${[
+          {label:'Paid', amt:paidAmt, count:paid.length, color:'#16a34a'},
+          {label:'Partial', amt:partialAmt, count:partial.length, color:'#d97706'},
+          {label:'Unpaid', amt:unpaidAmt, count:unpaid.length, color:'#dc2626'}
+        ].map(row => `
+          <div class="rev-mode-row">
+            <div class="rev-mode-label">${row.label} <span style="font-size:10px;color:var(--muted)">(${row.count})</span></div>
+            <div class="rev-mode-bar-wrap">
+              <div class="rev-mode-bar" style="width:${grossRevenue>0?Math.round((row.amt/grossRevenue)*100):0}%;background:${row.color};"></div>
+            </div>
+            <div class="rev-mode-amount" style="color:${row.color}">Rs. ${row.amt.toLocaleString()}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+
+    <!-- Payment mode breakdown -->
+    ${Object.keys(modeMap).length > 0 ? `
+    <div>
+      <div class="rev-section-title">By Payment Mode</div>
+      <div class="rev-mode-bars">
+        ${Object.entries(modeMap).sort((a,b)=>b[1]-a[1]).map(([mode,amt]) => `
+          <div class="rev-mode-row">
+            <div class="rev-mode-label">${mode}</div>
+            <div class="rev-mode-bar-wrap">
+              <div class="rev-mode-bar" style="width:${Math.round((amt/totalModeAmt)*100)}%;background:${modeColors[mode]||'#64748b'};"></div>
+            </div>
+            <div class="rev-mode-amount">Rs. ${amt.toLocaleString()}</div>
+          </div>`).join('')}
+      </div>
+    </div>` : ''}
+
+    <!-- Top tests by revenue -->
+    ${topByRev.length > 0 ? `
+    <div>
+      <div class="rev-section-title">Top Tests by Revenue</div>
+      <table class="rev-top-tests">
+        <thead><tr><th>#</th><th>Test</th><th style="text-align:right">Revenue</th></tr></thead>
+        <tbody>
+          ${topByRev.map(([name,amt],i) => `
+            <tr>
+              <td style="color:var(--muted);font-size:11px;">${i+1}</td>
+              <td style="font-weight:600">${name}</td>
+              <td style="text-align:right;font-family:'DM Mono',monospace;font-weight:700;color:var(--green)">Rs. ${amt.toLocaleString()}</td>
+            </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>` : ''}
+
+    <!-- Top referring doctors -->
+    ${topDocs.length > 0 ? `
+    <div>
+      <div class="rev-section-title">Bookings by Referring Doctor</div>
+      <table class="rev-top-tests">
+        <thead><tr><th>#</th><th>Doctor</th><th style="text-align:right">Bookings</th></tr></thead>
+        <tbody>
+          ${topDocs.map(([doc,cnt],i) => `
+            <tr>
+              <td style="color:var(--muted);font-size:11px;">${i+1}</td>
+              <td style="font-weight:600">${doc}</td>
+              <td style="text-align:right;font-family:'DM Mono',monospace;font-weight:700;color:var(--blue)">${cnt}</td>
+            </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>` : ''}
+
+    ${today.length === 0 ? `<div style="text-align:center;padding:30px;color:var(--muted);font-style:italic;">No bookings today yet</div>` : ''}
+  `;
+
+  document.getElementById('revPopupModal').classList.add('open');
+}
+
+function closeRevenuePopup() {
+  document.getElementById('revPopupModal').classList.remove('open');
+}
+
+
 refreshAll();
+loadSettings();
 
 // Storage change listener (cross-tab sync)
 window.addEventListener('storage', e => {
