@@ -1107,61 +1107,73 @@ td.td-gauge { padding:5px 10px 5px 8px; }
 .pm-table-wrap { border:1.5px solid var(--border); border-radius:var(--r); overflow:hidden; }
 .pm-table-head {
   display:grid;
-  grid-template-columns: 36px 1fr 100px 150px 70px 70px 44px;
+  grid-template-columns: 30px 1fr 78px 65px 65px 130px 34px;
   background:linear-gradient(to bottom,#edf2ff,#e2eafc);
   border-bottom:2px solid #b8ccf5;
 }
 .pm-table-head span {
-  padding:8px 10px; font-size:9.5px; font-weight:800;
-  letter-spacing:.7px; text-transform:uppercase; color:#2338a0;
+  padding:7px 7px; font-size:9px; font-weight:800;
+  letter-spacing:.5px; text-transform:uppercase; color:#2338a0;
   font-family:'Outfit',sans-serif; display:flex; align-items:center;
 }
-.pm-rows { max-height:320px; overflow-y:auto; }
+.pm-rows { max-height:340px; overflow-y:auto; }
 .pm-rows::-webkit-scrollbar { width:4px; }
 .pm-rows::-webkit-scrollbar-thumb { background:var(--border2); border-radius:4px; }
 .pm-row {
   display:grid;
-  grid-template-columns: 36px 1fr 100px 150px 70px 70px 44px;
-  border-bottom:1px solid var(--border2); align-items:center;
+  grid-template-columns: 30px 1fr 78px 65px 65px 130px 34px;
+  border-bottom:1px solid var(--border2); align-items:stretch;
   transition:background .1s;
 }
 .pm-row:last-child { border-bottom:none; }
 .pm-row:hover { background:#fafbff; }
 .pm-row-num {
-  text-align:center; font-family:'DM Mono',monospace; font-size:9.5px;
-  color:var(--muted2); font-weight:600; background:#fafbff; padding:0 4px;
-  border-right:2px solid var(--border); align-self:stretch;
+  text-align:center; font-family:'DM Mono',monospace; font-size:9px;
+  color:var(--muted2); font-weight:600; background:#fafbff; padding:0 2px;
+  border-right:2px solid var(--border);
   display:flex; align-items:center; justify-content:center;
 }
 .pm-row input {
-  width:100%; padding:8px 10px; border:none; border-right:1px solid var(--border2);
+  width:100%; padding:7px 7px; border:none; border-right:1px solid var(--border2);
   font-family:'Outfit',sans-serif; font-size:12.5px; font-weight:600;
-  color:var(--text); background:transparent; outline:none; transition:background .12s;
+  color:var(--text); background:transparent; outline:none; transition:background .12s; min-height:36px;
 }
-.pm-row input:focus { background:#eff6ff; }
+.pm-row input:focus { background:#eff6ff; border-right-color:var(--blue); }
+.pm-row input[type=number] { font-family:'DM Mono',monospace; text-align:center; }
 .pm-row input:last-of-type { border-right:none; }
-.pm-row-del { display:flex; align-items:center; justify-content:center; width:44px; align-self:stretch; }
-.pm-del-btn { width:26px; height:26px; border-radius:7px; border:none; cursor:pointer; background:#fee2e2; color:var(--red); font-size:14px; display:flex; align-items:center; justify-content:center; transition:all .12s; }
-.pm-del-btn:hover { background:#fecaca; transform:scale(1.1); }
-.pm-add-row { display:flex; align-items:center; gap:8px; padding:9px 14px; background:var(--surface2); border-top:1px dashed var(--border); cursor:pointer; font-size:12px; font-weight:700; color:var(--blue); transition:all .13s; }
+.pm-row-del { display:flex; align-items:center; justify-content:center; }
+.pm-del-btn { width:22px; height:22px; border-radius:6px; border:none; cursor:pointer; background:#fee2e2; color:var(--red); font-size:12px; display:flex; align-items:center; justify-content:center; transition:all .12s; margin:0 4px; }
+.pm-del-btn:hover { background:#fecaca; transform:scale(1.08); }
+.pm-add-row { display:flex; align-items:center; gap:8px; padding:7px 12px; background:var(--surface2); border-top:1px dashed var(--border); cursor:pointer; font-size:12px; font-weight:700; color:var(--blue); transition:all .13s; }
 .pm-add-row:hover { background:#eff6ff; }
+.pm-add-row kbd { background:white; border:1.5px solid var(--border2); border-radius:4px; padding:1px 5px; font-size:9px; font-family:'DM Mono',monospace; color:var(--muted); }
+
+/* Quick Template picker */
+.pm-tpl-bar { display:flex; align-items:center; gap:6px; padding:7px 12px 0; flex-wrap:wrap; }
+.pm-tpl-label { font-size:9.5px; font-weight:800; letter-spacing:.6px; text-transform:uppercase; color:var(--muted2); margin-right:2px; flex-shrink:0; }
+.pm-tpl-btn { padding:3px 9px; border:1.5px solid var(--border); border-radius:6px; background:var(--surface2); font-size:11px; font-weight:700; color:var(--text-2); cursor:pointer; font-family:'Outfit',sans-serif; transition:all .12s; white-space:nowrap; }
+.pm-tpl-btn:hover { border-color:var(--purple); background:#f5f3ff; color:var(--purple); }
 
 /* PM Saved chips */
 .pm-saved-list { margin-top:20px; }
 .pm-saved-title { font-size:11px; font-weight:800; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin-bottom:10px; display:flex; align-items:center; gap:8px; }
 .pm-saved-title::after { content:''; flex:1; height:1px; background:var(--border2); }
 .pm-saved-grid { display:flex; flex-wrap:wrap; gap:8px; }
+.pm-saved-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:6px; max-height:180px; overflow-y:auto; }
+.pm-saved-grid::-webkit-scrollbar { width:4px; }
+.pm-saved-grid::-webkit-scrollbar-thumb { background:var(--border2); border-radius:4px; }
 .pm-saved-chip {
-  display:inline-flex; align-items:center; gap:7px; padding:6px 12px;
-  border:1.5px solid var(--border); border-radius:10px; background:var(--surface2);
-  font-size:12px; font-weight:700; color:var(--text-2); cursor:pointer; transition:all .14s;
+  display:flex; align-items:center; gap:7px; padding:6px 10px;
+  border:1.5px solid var(--border); border-radius:9px; background:var(--surface2);
+  font-size:11.5px; font-weight:700; color:var(--text-2); cursor:pointer; transition:all .14s; min-width:0;
 }
 .pm-saved-chip:hover { border-color:var(--purple); background:#f5f3ff; color:var(--purple); }
 .pm-saved-chip.active-edit { border-color:var(--purple); background:#ede9fe; color:#5b21b6; }
-.pm-saved-chip .psc-count { font-size:9.5px; background:rgba(124,58,237,.12); color:var(--purple); padding:1px 6px; border-radius:100px; font-weight:800; }
-.pm-saved-chip .psc-del { color:#dc2626; font-size:13px; opacity:.6; transition:opacity .1s; }
+.pm-saved-chip span:nth-child(2) { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.pm-saved-chip .psc-count { font-size:9.5px; background:rgba(124,58,237,.12); color:var(--purple); padding:2px 7px; border-radius:100px; font-weight:800; white-space:nowrap; flex-shrink:0; }
+.pm-saved-chip .psc-del { color:#dc2626; font-size:13px; opacity:.5; transition:opacity .1s; flex-shrink:0; }
 .pm-saved-chip .psc-del:hover { opacity:1; }
-.pm-empty-saved { font-size:12.5px; color:var(--muted2); font-style:italic; padding:8px 0; }
+.pm-empty-saved { font-size:12.5px; color:var(--muted2); font-style:italic; padding:8px 0; grid-column:1/-1; }
 .pm-footer { display:flex; gap:8px; padding:16px 24px; border-top:1.5px solid var(--border2); background:var(--surface2); flex-wrap:wrap; }
 .btn-import { background:#0ea5e9;color:#fff;border:none; }
 .btn-import:hover { background:#0284c7; }
@@ -1901,7 +1913,7 @@ Complete Blood Count,T002,WBC,10^9/L,4.5,11.0,2.0,20.0</pre>
      PARAMETER MANAGER MODAL
      Layout: Catalog Test Selector → Parameters → Units → Reference Range
 ════════════════════════════════════════ -->
-<div class="pm-overlay" id="pmOverlay" onclick="if(event.target===this)closePM()">
+<div class="pm-overlay" id="pmOverlay" onclick="if(event.target===this)closePM()" onkeydown="if(event.key==='/'&&document.activeElement.tagName!=='INPUT'&&document.activeElement.tagName!=='TEXTAREA'){event.preventDefault();document.getElementById('pmCatalogSearch').focus();}">
   <div class="pm-box">
 
     <div class="pm-head">
@@ -1948,47 +1960,66 @@ Complete Blood Count,T002,WBC,10^9/L,4.5,11.0,2.0,20.0</pre>
       <!-- ── STEP 2: Parameters Table ──
            Columns: # | Parameter Name | Unit | Reference Range | Lo | Hi | ✕ -->
       <div class="pm-params-section">
-        <div class="pm-params-section-title">② Define Parameters — Test · Parameters · Units · Reference Range</div>
-        <div class="pm-table-wrap">
+        <div class="pm-params-section-title">② Define Parameters <span style="font-weight:500;color:var(--muted2);font-size:9px;text-transform:none;letter-spacing:0;">— Tab between fields · Enter to add row · Name → Unit → Lo → Hi → Ref Range</span></div>
+        <div class="pm-tpl-bar">
+          <span class="pm-tpl-label">Quick templates:</span>
+          <button class="pm-tpl-btn" onclick="pmApplyTemplate('hematology')">🩸 CBC / Haematology</button>
+          <button class="pm-tpl-btn" onclick="pmApplyTemplate('lft')">🫀 Liver (LFT)</button>
+          <button class="pm-tpl-btn" onclick="pmApplyTemplate('kft')">🫁 Kidney (KFT)</button>
+          <button class="pm-tpl-btn" onclick="pmApplyTemplate('lipid')">💊 Lipid Profile</button>
+          <button class="pm-tpl-btn" onclick="pmApplyTemplate('thyroid')">🦋 Thyroid (TFT)</button>
+          <button class="pm-tpl-btn" onclick="pmApplyTemplate('glucose')">🍬 Blood Glucose</button>
+          <button class="pm-tpl-btn" onclick="pmApplyTemplate('urine')">🔬 Urine Routine</button>
+          <button class="pm-tpl-btn" onclick="pmApplyTemplate('text')">📝 Text Result</button>
+        </div>
+        <div class="pm-table-wrap" style="margin-top:8px;">
           <div class="pm-table-head">
             <span style="justify-content:center;">#</span>
             <span>Parameter Name</span>
             <span>Unit</span>
-            <span>Reference Range</span>
-            <span>Lo (numeric)</span>
-            <span>Hi (numeric)</span>
+            <span style="justify-content:center;">Lo</span>
+            <span style="justify-content:center;">Hi</span>
+            <span>Ref Range (display)</span>
             <span></span>
           </div>
           <div class="pm-rows" id="pmRows"></div>
           <div class="pm-add-row" onclick="pmAddRow()">
-            <span style="font-size:16px;">＋</span> Add Parameter Row
+            <span style="font-size:15px;">＋</span> Add Row
+            <kbd>Alt+A</kbd>
+            <span style="margin-left:4px;font-size:10px;color:var(--muted2);font-weight:500;">or press Enter/Tab from last cell</span>
           </div>
         </div>
       </div>
 
       <div class="pm-hint-box">
-        💡 <strong>Parameter Name</strong> = e.g. Haemoglobin, WBC Count, Platelet Count &nbsp;|&nbsp;
-        <strong>Unit</strong> = e.g. g/dL, ×10³/µL &nbsp;|&nbsp;
-        <strong>Reference Range</strong> = display string e.g. <em>11.5–16.5</em>, <em>&lt;200</em>, <em>Negative</em> &nbsp;|&nbsp;
-        <strong>Lo / Hi</strong> = numeric boundaries for the live gauge (leave blank for text results)
+        💡 <strong>Name</strong> = e.g. Haemoglobin &nbsp;·&nbsp;
+        <strong>Unit</strong> = e.g. g/dL &nbsp;·&nbsp;
+        <strong>Lo / Hi</strong> = numeric boundaries for live gauge &amp; auto-flagging (leave blank → text result) &nbsp;·&nbsp;
+        <strong>Ref Range</strong> = display string (auto-filled from Lo–Hi if left blank) &nbsp;·&nbsp;
+        Tab through columns · Enter on last column adds a new row
       </div>
 
       <!-- Saved configs -->
       <div class="pm-saved-list">
-        <div class="pm-saved-title">Saved Parameter Configurations</div>
+        <div class="pm-saved-title">Saved Parameter Configurations <span style="font-weight:500;color:var(--muted2);font-size:9px;text-transform:none;letter-spacing:0;">— click any chip to load & edit</span></div>
         <div id="pmSavedGrid" class="pm-saved-grid">
-          <div class="pm-empty-saved">No tests configured yet.</div>
+          <div class="pm-empty-saved">No tests configured yet. Select a test above and define its parameters.</div>
         </div>
       </div>
 
     </div><!-- /pm-body -->
 
     <div class="pm-footer">
-      <button class="btn btn-save" onclick="pmSave()">💾 Save Parameters</button>
+      <button class="btn btn-save" onclick="pmSave()">💾 Save <span style="font-size:9px;opacity:.7;font-family:'DM Mono',monospace;">(Alt+S)</span></button>
       <button class="btn" style="background:#f1f5f9;color:var(--muted);border:1.5px solid var(--border);" onclick="pmClear()">✕ Clear Form</button>
       <button class="btn btn-back" onclick="closePM()">← Close</button>
       <div style="flex:1"></div>
-      <div style="font-size:11px;color:var(--muted2);align-self:center;" id="pmSaveCount"></div>
+      <div style="font-size:10.5px;color:var(--muted2);align-self:center;display:flex;align-items:center;gap:10px;">
+        <span>Tab = next field</span>
+        <span>Enter on last = new row</span>
+        <span>Alt+A = add row</span>
+        <span id="pmSaveCount" style="color:var(--purple);font-weight:700;"></span>
+      </div>
     </div>
   </div>
 </div>
@@ -2443,6 +2474,10 @@ function openPM() {
   document.getElementById('pmOverlay').classList.add('open');
   pmClear();
   pmRefreshSavedGrid();
+  setTimeout(() => {
+    const search = document.getElementById('pmCatalogSearch');
+    if (search) { search.focus(); search.select(); }
+  }, 80);
 }
 function closePM() {
   document.getElementById('pmOverlay').classList.remove('open');
@@ -2516,28 +2551,39 @@ function pmSelectFromCatalog(testId) {
 /* ── Render editable rows ── */
 function renderPMRows(params) {
   const c = document.getElementById('pmRows');
-  if (!params.length) { c.innerHTML = ''; pmAddRow(); return; }
+  if (!params.length) { c.innerHTML = ''; pmAddRow(false); return; }
   c.innerHTML = params.map((p, i) => buildPMRowHTML(i, p)).join('');
 }
 
 function buildPMRowHTML(i, p = {}) {
   return `<div class="pm-row" id="pmr_${i}">
     <div class="pm-row-num">${i + 1}</div>
-    <input type="text" placeholder="e.g. Haemoglobin" value="${H(p.name || '')}" data-f="name">
-    <input type="text" placeholder="g/dL" value="${H(p.unit || '')}" data-f="unit">
-    <input type="text" placeholder="e.g. 11.5–16.5 or &lt;200" value="${H(p.refRange || '')}" data-f="refRange">
-    <input type="number" step="any" placeholder="Lo" value="${p.lo != null ? p.lo : ''}" data-f="lo">
-    <input type="number" step="any" placeholder="Hi" value="${p.hi != null ? p.hi : ''}" data-f="hi">
-    <div class="pm-row-del"><button class="pm-del-btn" onclick="pmDelRow(${i})" title="Remove">✕</button></div>
+    <input type="text" placeholder="e.g. Haemoglobin" value="${H(p.name || '')}" data-f="name"
+           onkeydown="pmRowKey(event,this,${i},'name')" tabindex="${i*5+1}">
+    <input type="text" placeholder="g/dL" value="${H(p.unit || '')}" data-f="unit"
+           onkeydown="pmRowKey(event,this,${i},'unit')" tabindex="${i*5+2}">
+    <input type="number" step="any" placeholder="Lo" value="${p.lo != null ? p.lo : ''}" data-f="lo"
+           onkeydown="pmRowKey(event,this,${i},'lo')" tabindex="${i*5+3}">
+    <input type="number" step="any" placeholder="Hi" value="${p.hi != null ? p.hi : ''}" data-f="hi"
+           onkeydown="pmRowKey(event,this,${i},'hi')" tabindex="${i*5+4}">
+    <input type="text" placeholder="e.g. 11.5–16.5 or Negative" value="${H(p.refRange || '')}" data-f="refRange"
+           onkeydown="pmRowKey(event,this,${i},'refRange')" tabindex="${i*5+5}">
+    <div class="pm-row-del"><button class="pm-del-btn" onclick="pmDelRow(${i})" title="Remove row">✕</button></div>
   </div>`;
 }
 
-function pmAddRow() {
+function pmAddRow(autoFocus = true) {
   const c = document.getElementById('pmRows');
   const idx = c.children.length;
   const div = document.createElement('div');
   div.innerHTML = buildPMRowHTML(idx);
   c.appendChild(div.firstElementChild);
+  // Scroll new row into view
+  const newRow = c.lastElementChild;
+  if (newRow) newRow.scrollIntoView({ block: 'nearest' });
+  if (autoFocus && newRow) {
+    setTimeout(() => { const inp = newRow.querySelector('input'); if(inp) inp.focus(); }, 20);
+  }
 }
 
 function pmDelRow(i) {
@@ -2556,15 +2602,145 @@ function pmHarvestRows() {
   const params = [];
   rows.forEach(row => {
     const inp = row.querySelectorAll('input');
+    // Column order: name | unit | lo | hi | refRange
     const name = inp[0].value.trim();
     if (!name) return;
     const unit = inp[1].value.trim();
-    const refRange = inp[2].value.trim();
-    const lo = inp[3].value !== '' ? parseFloat(inp[3].value) : null;
-    const hi = inp[4].value !== '' ? parseFloat(inp[4].value) : null;
+    const lo = inp[2].value !== '' ? parseFloat(inp[2].value) : null;
+    const hi = inp[3].value !== '' ? parseFloat(inp[3].value) : null;
+    // Auto-build refRange from lo/hi if display field is empty
+    let refRange = inp[4].value.trim();
+    if (!refRange && lo !== null && hi !== null) refRange = lo + ' – ' + hi;
     params.push({ name, unit, refRange, lo, hi });
   });
   return params;
+}
+
+/* ── PM Row keyboard navigation (Tab to next field, Enter on last = new row) ── */
+function pmRowKey(e, el, rowIdx, field) {
+  const fields = ['name','unit','lo','hi','refRange'];
+  const fi = fields.indexOf(field);
+  if (e.key === 'Tab' && !e.shiftKey && field === 'refRange') {
+    // Last field → Tab → add new row and focus first field of it
+    e.preventDefault();
+    pmAddRow();
+    const newRowIdx = document.querySelectorAll('#pmRows .pm-row').length - 1;
+    const newRow = document.getElementById('pmr_' + newRowIdx);
+    if (newRow) newRow.querySelectorAll('input')[0].focus();
+  } else if (e.key === 'Enter') {
+    e.preventDefault();
+    if (field === 'refRange') {
+      // Enter on last field → add new row
+      pmAddRow();
+      const newRowIdx = document.querySelectorAll('#pmRows .pm-row').length - 1;
+      const newRow = document.getElementById('pmr_' + newRowIdx);
+      if (newRow) newRow.querySelectorAll('input')[0].focus();
+    } else {
+      // Enter mid-row → move to next field
+      const row = document.getElementById('pmr_' + rowIdx);
+      if (row) { const next = row.querySelectorAll('input')[fi + 1]; if (next) next.focus(); }
+    }
+  }
+}
+
+/* ── Quick parameter templates ── */
+const PM_TEMPLATES = {
+  hematology: [
+    {name:'Haemoglobin',unit:'g/dL',lo:12,hi:17,refRange:'M: 13–17 / F: 12–16'},
+    {name:'WBC Count',unit:'cells/µL',lo:4000,hi:11000,refRange:'4000 – 11000'},
+    {name:'Platelet Count',unit:'lakh/µL',lo:1.5,hi:4.5,refRange:'1.5 – 4.5'},
+    {name:'PCV / Haematocrit',unit:'%',lo:38,hi:52,refRange:'M: 40–52 / F: 38–47'},
+    {name:'MCV',unit:'fL',lo:80,hi:100,refRange:'80 – 100'},
+    {name:'MCH',unit:'pg',lo:27,hi:33,refRange:'27 – 33'},
+    {name:'MCHC',unit:'g/dL',lo:31.5,hi:36,refRange:'31.5 – 36'},
+    {name:'Neutrophils',unit:'%',lo:40,hi:75,refRange:'40 – 75'},
+    {name:'Lymphocytes',unit:'%',lo:20,hi:45,refRange:'20 – 45'},
+    {name:'Eosinophils',unit:'%',lo:1,hi:6,refRange:'1 – 6'},
+    {name:'RBC Count',unit:'mill/µL',lo:4.5,hi:5.5,refRange:'M: 4.5–5.5 / F: 4.0–5.2'},
+  ],
+  lft: [
+    {name:'Total Bilirubin',unit:'mg/dL',lo:0.2,hi:1.2,refRange:'0.2 – 1.2'},
+    {name:'Direct Bilirubin',unit:'mg/dL',lo:0,hi:0.4,refRange:'0.0 – 0.4'},
+    {name:'Indirect Bilirubin',unit:'mg/dL',lo:0.2,hi:0.8,refRange:'0.2 – 0.8'},
+    {name:'SGOT (AST)',unit:'U/L',lo:10,hi:40,refRange:'10 – 40'},
+    {name:'SGPT (ALT)',unit:'U/L',lo:7,hi:56,refRange:'7 – 56'},
+    {name:'Alkaline Phosphatase',unit:'U/L',lo:44,hi:147,refRange:'44 – 147'},
+    {name:'Total Protein',unit:'g/dL',lo:6,hi:8.3,refRange:'6.0 – 8.3'},
+    {name:'Albumin',unit:'g/dL',lo:3.5,hi:5.0,refRange:'3.5 – 5.0'},
+    {name:'Globulin',unit:'g/dL',lo:2.0,hi:3.5,refRange:'2.0 – 3.5'},
+    {name:'A/G Ratio',unit:'',lo:1.0,hi:2.5,refRange:'1.0 – 2.5'},
+    {name:'GGT',unit:'U/L',lo:10,hi:71,refRange:'M: 10–71 / F: 6–42'},
+  ],
+  kft: [
+    {name:'Urea',unit:'mg/dL',lo:15,hi:45,refRange:'15 – 45'},
+    {name:'Creatinine',unit:'mg/dL',lo:0.6,hi:1.4,refRange:'M: 0.7–1.4 / F: 0.6–1.1'},
+    {name:'Uric Acid',unit:'mg/dL',lo:3.5,hi:7.5,refRange:'M: 3.5–7.5 / F: 2.6–6.0'},
+    {name:'Sodium (Na)',unit:'mEq/L',lo:136,hi:145,refRange:'136 – 145'},
+    {name:'Potassium (K)',unit:'mEq/L',lo:3.5,hi:5.1,refRange:'3.5 – 5.1'},
+    {name:'Chloride (Cl)',unit:'mEq/L',lo:98,hi:107,refRange:'98 – 107'},
+    {name:'Bicarbonate (HCO3)',unit:'mEq/L',lo:22,hi:29,refRange:'22 – 29'},
+    {name:'Calcium (Ca)',unit:'mg/dL',lo:8.6,hi:10.2,refRange:'8.6 – 10.2'},
+    {name:'Phosphorus',unit:'mg/dL',lo:2.5,hi:4.5,refRange:'2.5 – 4.5'},
+  ],
+  lipid: [
+    {name:'Total Cholesterol',unit:'mg/dL',lo:0,hi:200,refRange:'< 200'},
+    {name:'Triglycerides',unit:'mg/dL',lo:0,hi:150,refRange:'< 150'},
+    {name:'HDL Cholesterol',unit:'mg/dL',lo:40,hi:60,refRange:'> 40'},
+    {name:'LDL Cholesterol',unit:'mg/dL',lo:0,hi:100,refRange:'< 100'},
+    {name:'VLDL Cholesterol',unit:'mg/dL',lo:2,hi:30,refRange:'2 – 30'},
+    {name:'Non-HDL Cholesterol',unit:'mg/dL',lo:0,hi:130,refRange:'< 130'},
+    {name:'LDL/HDL Ratio',unit:'',lo:0,hi:3.5,refRange:'< 3.5'},
+  ],
+  thyroid: [
+    {name:'TSH',unit:'mIU/L',lo:0.27,hi:4.2,refRange:'0.27 – 4.2'},
+    {name:'Free T3 (FT3)',unit:'pg/mL',lo:2.0,hi:4.4,refRange:'2.0 – 4.4'},
+    {name:'Free T4 (FT4)',unit:'ng/dL',lo:0.93,hi:1.7,refRange:'0.93 – 1.7'},
+    {name:'Total T3',unit:'ng/dL',lo:60,hi:200,refRange:'60 – 200'},
+    {name:'Total T4',unit:'µg/dL',lo:4.5,hi:12.5,refRange:'4.5 – 12.5'},
+  ],
+  glucose: [
+    {name:'Fasting Glucose',unit:'mg/dL',lo:70,hi:100,refRange:'70 – 100'},
+    {name:'Post Prandial Glucose',unit:'mg/dL',lo:70,hi:140,refRange:'< 140'},
+    {name:'HbA1c',unit:'%',lo:0,hi:5.7,refRange:'< 5.7'},
+    {name:'Insulin (Fasting)',unit:'µIU/mL',lo:2,hi:25,refRange:'2 – 25'},
+  ],
+  urine: [
+    {name:'Colour',unit:'',lo:null,hi:null,refRange:'Pale Yellow'},
+    {name:'Appearance',unit:'',lo:null,hi:null,refRange:'Clear'},
+    {name:'pH',unit:'',lo:4.5,hi:8.0,refRange:'4.5 – 8.0'},
+    {name:'Specific Gravity',unit:'',lo:1.005,hi:1.030,refRange:'1.005 – 1.030'},
+    {name:'Protein',unit:'',lo:null,hi:null,refRange:'Nil'},
+    {name:'Glucose',unit:'',lo:null,hi:null,refRange:'Nil'},
+    {name:'Ketone Bodies',unit:'',lo:null,hi:null,refRange:'Nil'},
+    {name:'Bilirubin',unit:'',lo:null,hi:null,refRange:'Nil'},
+    {name:'Blood',unit:'',lo:null,hi:null,refRange:'Nil'},
+    {name:'Nitrite',unit:'',lo:null,hi:null,refRange:'Negative'},
+    {name:'Leucocyte Esterase',unit:'',lo:null,hi:null,refRange:'Negative'},
+    {name:'Pus Cells',unit:'/HPF',lo:0,hi:5,refRange:'0 – 5'},
+    {name:'RBCs',unit:'/HPF',lo:0,hi:2,refRange:'0 – 2'},
+    {name:'Epithelial Cells',unit:'/HPF',lo:null,hi:null,refRange:'Few'},
+    {name:'Casts',unit:'',lo:null,hi:null,refRange:'Nil'},
+    {name:'Crystals',unit:'',lo:null,hi:null,refRange:'Nil'},
+    {name:'Bacteria',unit:'',lo:null,hi:null,refRange:'Nil'},
+  ],
+  text: [
+    {name:'Result',unit:'',lo:null,hi:null,refRange:'Negative'},
+    {name:'Interpretation',unit:'',lo:null,hi:null,refRange:'Normal'},
+    {name:'Remarks',unit:'',lo:null,hi:null,refRange:''},
+  ]
+};
+
+function pmApplyTemplate(key) {
+  const tpl = PM_TEMPLATES[key];
+  if (!tpl) return;
+  const existing = pmHarvestRows();
+  const hasData = existing.some(p => p.name);
+  if (hasData && !confirm('Replace current rows with template?')) return;
+  renderPMRows(tpl);
+  showToast('✓ Template applied — ' + tpl.length + ' parameters', 'success');
+  // Focus first input
+  const first = document.querySelector('#pmRows .pm-row input');
+  if (first) first.focus();
 }
 
 function pmSave() {
@@ -2592,7 +2768,7 @@ function pmClear() {
   document.getElementById('pmCatalogDropdown').classList.remove('open');
   document.getElementById('pmSelectedTest').classList.remove('show');
   document.getElementById('pmRows').innerHTML = '';
-  pmAddRow();
+  pmAddRow(false);
   document.querySelectorAll('.pm-saved-chip').forEach(c => c.classList.remove('active-edit'));
 }
 
@@ -3273,6 +3449,16 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       if (_activeTestIdx !== null) saveTestPanel(_activeTestIdx); else saveResults();
     }
+    // Alt+A → add PM row when PM is open
+    if (e.altKey && e.key === 'a') {
+      const pmOpen = document.getElementById('pmOverlay').classList.contains('open');
+      if (pmOpen) { e.preventDefault(); pmAddRow(); const rows = document.querySelectorAll('#pmRows .pm-row'); const last = rows[rows.length-1]; if(last) last.querySelectorAll('input')[0].focus(); }
+    }
+    // Alt+S → save PM when open
+    if (e.altKey && e.key === 's') {
+      const pmOpen = document.getElementById('pmOverlay').classList.contains('open');
+      if (pmOpen) { e.preventDefault(); pmSave(); }
+    }
   });
   // Close FAB and preset menus on outside click
   document.addEventListener('click', e => {
@@ -3764,6 +3950,7 @@ function toggleTestPanel(tIdx) {
   }
   _activeTestIdx=tIdx; renderTestChips(); renderTestPanel(tIdx);
   setTimeout(()=>wrap.scrollIntoView({behavior:'smooth',block:'nearest'}),100);
+  _focusFirstEmptyInPanel();
 }
 
 function renderTestPanel(tIdx) {
@@ -3848,16 +4035,17 @@ function renderTestPanel(tIdx) {
         </div>
       </div>`;
     } else {
+      // Auto-suggest midpoint of normal range as placeholder hint
+      const midHint = (lo != null && hi != null) ? String(Math.round((lo + hi) / 2 * 10) / 10) : '—';
       inputCell=`<div class="ri-wrap">
         <div class="val-icon ${viCls}" id="vi_${row.key}">${viIcon}</div>
-        <input class="ri ${flag?'f-'+flag:''}" type="number" step="any" id="${inpId}" value="${H(val)}" placeholder="—" data-key="${row.key}" data-lo="${lo??''}" data-hi="${hi??''}" data-cl="${cl??''}" data-ch="${ch??''}" data-refrange="${H(row.refRangeStr)}" onclick="this.select()" oninput="onRI(this)" onkeydown="onKeyNav(event,this)" style="flex:1;">
-        ${row.unit?`<span style="font-size:10px;color:var(--muted);white-space:nowrap;flex-shrink:0;font-family:'DM Mono',monospace;font-weight:600;">${H(row.unit)}</span>`:''}
+        <input class="ri ${flag?'f-'+flag:''}" type="number" step="any" id="${inpId}" value="${H(val)}" placeholder="${midHint}" data-key="${row.key}" data-lo="${lo??''}" data-hi="${hi??''}" data-cl="${cl??''}" data-ch="${ch??''}" data-refrange="${H(row.refRangeStr)}" onclick="this.select()" oninput="onRI(this)" onkeydown="onKeyNav(event,this)" style="flex:1;">
       </div>`;
     }
     rowsHtml+=`<tr id="row_${row.key}" class="${rowCls}" data-key="${row.key}">
       <td class="td-num">${i+1}</td>
       <td class="td-test">${paramCell}</td>
-      <td style="padding:0 8px;vertical-align:middle;"><span class="tu-cell">${H(row.unit)||'—'}</span></td>
+      <td style="padding:0 8px;vertical-align:middle;text-align:center;"><span class="tu-cell">${H(row.unit)||'—'}</span></td>
       <td class="td-gauge" id="gauge_${row.key}">${gaugeHtml}</td>
       <td class="td-inp">${inputCell}</td>
     </tr>`;
@@ -3876,23 +4064,24 @@ function renderTestPanel(tIdx) {
       <div class="kb-hint"><span class="kbd">Enter/↓</span> Next</div>
       <div class="kb-hint"><span class="kbd">↑</span> Prev</div>
       <div class="kb-hint"><span class="kbd">Ctrl+S</span> Save</div>
-      <div class="kb-hint" style="margin-left:auto;font-size:9px;color:var(--muted2);">✓ = Normal · ▲▼ = High/Low · ● = Critical</div>
+      <div class="kb-hint"><span class="kbd">Ctrl+↵</span> Done</div>
+      <div class="kb-hint" style="margin-left:auto;font-size:9px;color:var(--muted2);">✓=OK · ▲▼=H/L · ●=Critical · placeholder = midpoint of normal range</div>
     </div>
     <div class="grid-wrap">
       <table class="xls" style="width:100%;border-collapse:collapse;table-layout:fixed;">
         <colgroup>
-          <col style="width:32px">
-          <col style="width:210px">
+          <col style="width:28px">
+          <col style="width:220px">
           <col style="width:80px">
-          <col style="width:190px">
-          <col style="width:150px">
+          <col style="width:200px">
+          <col style="width:170px">
         </colgroup>
         <thead><tr>
           <th class="c-num">#</th>
           <th>Parameter</th>
-          <th>Unit</th>
-          <th>Reference Range</th>
-          <th style="text-align:right">Result Value</th>
+          <th style="text-align:center;">Unit</th>
+          <th>Ref Range / Gauge</th>
+          <th style="text-align:right">Result</th>
         </tr></thead>
         <tbody>${rowsHtml}</tbody>
       </table>
@@ -3937,6 +4126,16 @@ function resetTestPanel(tIdx) {
   });
 }
 function doneTestPanel(tIdx) { saveTestPanel(tIdx); toggleTestPanel(tIdx); }
+
+/* Auto-focus first empty input in active test panel */
+function _focusFirstEmptyInPanel() {
+  setTimeout(() => {
+    const inputs = document.querySelectorAll('#testPanelWrap .ri, #testPanelWrap .ri-txt');
+    for (const inp of inputs) {
+      if (!inp.value.trim()) { inp.focus(); if(inp.select) inp.select(); break; }
+    }
+  }, 80);
+}
 function rows_testName(tIdx) { const rows=_getTestRows(tIdx); return rows.length?rows[0].testName:'Test'; }
 function _syncBookingStatus() {
   const total=_expandedRows.filter(r=>!r.unconfigured).length;
@@ -4049,6 +4248,8 @@ function applyPreset(key, value, menuId) {
 function onKeyNav(e,el) {
   const id=el.id, idx=_inputOrder.indexOf(id); if(idx===-1) return;
   let next=null;
+  // Ctrl+Enter → Done (save + close panel)
+  if((e.ctrlKey||e.metaKey) && e.key==='Enter') { e.preventDefault(); if(_activeTestIdx!==null) doneTestPanel(_activeTestIdx); return; }
   if(e.key==='Enter'||e.key==='ArrowDown'){e.preventDefault();next=_inputOrder[idx+1];}
   else if(e.key==='ArrowUp'){e.preventDefault();next=_inputOrder[idx-1];}
   if(next){const el2=document.getElementById(next);if(el2){el2.focus();el2.select();}}
