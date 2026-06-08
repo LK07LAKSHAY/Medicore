@@ -16,14 +16,14 @@
   --border:#cbd5e1;--border2:#e2e8f0;
   --text:#0f172a;--text2:#334155;--muted:#475569;--muted2:#94a3b8;
   --r:12px;--r-sm:8px;--r-lg:16px;
-  --nav-h:64px;--ph-h:56px;--sb-w:320px;
+  --nav-h:84px;--ph-h:56px;--sb-w:320px;
   /* Report accent — overridden by customizer */
   --rpt-accent:#0c1445;--rpt-accent2:#2563eb;--rpt-header-bg:#0c1445;
   --rpt-header-text:#fff;--rpt-rule-color:#111;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;overflow:hidden;}
-body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);}
+html{scroll-behavior:smooth;}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
 
 /* ── BG ── */
 .bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;
@@ -34,46 +34,143 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);}
     linear-gradient(90deg,rgba(37,99,235,.05) 1px,transparent 1px);
   background-size:48px 48px;}
 
-/* ══════════ NAVBAR ══════════ */
+/* ══════════════════════════════════════════════
+   NAVBAR — Premium (matches MAIN4)
+══════════════════════════════════════════════ */
+header{position:sticky;top:0;z-index:500;}
+
 .navbar{
-  position:fixed;top:0;left:0;right:0;z-index:500;height:var(--nav-h);
-  background:rgba(12,20,69,.97);backdrop-filter:blur(20px);
+  position:relative;z-index:1;
+  background:#06102a;
+  border-bottom:1px solid rgba(255,255,255,0.07);
+  padding:0 clamp(20px,3vw,44px);
   display:flex;align-items:center;justify-content:space-between;
-  padding:0 20px;border-bottom:1px solid rgba(255,255,255,.08);
+  height:84px;gap:20px;
+  transition:box-shadow 0.3s ease,border-color 0.3s ease;
 }
-.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;}
-.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,#2563eb,#06b6d4);
-  border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;}
-.logo-text{font-size:18px;font-weight:800;color:#fff;letter-spacing:-.4px;}
-.logo-text span{color:#06b6d4;}
-.nav-steps{display:flex;align-items:center;gap:2px;overflow:hidden;}
-.nav-step{display:flex;align-items:center;gap:5px;padding:5px 9px;border-radius:7px;
-  font-size:12px;font-weight:600;color:rgba(255,255,255,.38);text-decoration:none;
-  transition:all .14s;white-space:nowrap;flex-shrink:0;}
-.nav-step:hover{color:rgba(255,255,255,.65);}
-.nav-step.active{background:rgba(37,99,235,.26);color:rgba(255,255,255,.9);}
-.nav-step .sn{width:18px;height:18px;border-radius:5px;background:rgba(255,255,255,.1);
-  display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;}
-.nav-step.active .sn{background:#2563eb;color:#fff;}
-.ns-div{width:14px;height:1px;background:rgba(255,255,255,.1);flex-shrink:0;}
+body.dark-mode .navbar{background:#02060f;}
+
+/* ── LOGO ── */
+.nav-logo{display:flex;align-items:center;gap:14px;text-decoration:none;flex-shrink:0;}
+.logo-icon{
+  width:clamp(50px,5vw,62px);height:clamp(50px,5vw,62px);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  border-radius:15px;
+  background:rgba(255,255,255,0.06);
+  border:1.5px solid rgba(255,255,255,0.12);
+  box-shadow:0 0 22px rgba(6,182,212,0.22),0 3px 10px rgba(0,0,0,0.35);
+  transition:box-shadow 0.3s ease,transform 0.25s ease;padding:7px;font-size:26px;
+}
+.nav-logo:hover .logo-icon{box-shadow:0 0 34px rgba(6,182,212,0.38),0 5px 18px rgba(0,0,0,0.35);transform:scale(1.06);}
+.logo-text{font-size:clamp(21px,2.4vw,27px);font-weight:800;color:white;letter-spacing:-0.8px;line-height:1;}
+.logo-text .logo-medi{color:rgba(255,255,255,0.95);}
+.logo-text .logo-core{background:linear-gradient(120deg,#06b6d4,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.logo-sub{display:block;font-size:11px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;color:rgba(255,255,255,0.38);margin-top:4px;-webkit-text-fill-color:rgba(255,255,255,0.38);}
+
+/* ── NAV RIGHT ── */
 .nav-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
-.nav-clock{font-family:'DM Mono',monospace;font-size:13px;color:rgba(255,255,255,.78);letter-spacing:.5px;line-height:1;}
-.nav-date{font-family:'DM Mono',monospace;font-size:9.5px;color:rgba(255,255,255,.32);line-height:1;}
-.nav-vr{width:1px;height:24px;background:rgba(255,255,255,.1);}
-.btn-nav{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.08);
-  color:rgba(255,255,255,.68);border:1px solid rgba(255,255,255,.12);
-  padding:6px 12px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;
-  font-family:'Outfit',sans-serif;transition:all .14s;}
-.btn-nav:hover{background:rgba(255,255,255,.14);color:#fff;}
+
+/* ── CLOCK ── */
+.nav-clock-simple{display:flex;flex-direction:column;align-items:flex-end;gap:1px;padding:0 4px;}
+.clock-badge{font-family:'DM Mono',monospace;font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.9);letter-spacing:0.8px;line-height:1;}
+.date-badge-inline{font-family:'DM Mono',monospace;font-size:9.5px;color:rgba(255,255,255,0.38);letter-spacing:0.2px;line-height:1;}
+
+/* ── NAV DIVIDER ── */
+.nav-divider{width:1px;height:24px;background:rgba(255,255,255,0.1);flex-shrink:0;}
+
+/* ── NAV BUTTONS ── */
+.btn-nav{
+  color:rgba(255,255,255,0.55);text-decoration:none;
+  font-size:14px;font-weight:600;
+  padding:7px 16px;border-radius:9px;
+  border:1.5px solid transparent;
+  transition:color 0.18s,background 0.18s,border-color 0.18s,box-shadow 0.18s;
+  white-space:nowrap;letter-spacing:0.1px;
+  display:inline-flex;align-items:center;gap:6px;
+  cursor:pointer;font-family:'Outfit',sans-serif;
+  background:rgba(255,255,255,0.04);
+}
+.btn-nav:hover{color:#fff;background:#2563eb;border-color:#2563eb;box-shadow:0 4px 14px rgba(37,99,235,0.45);}
+body.dark-mode .btn-nav:hover{background:#0891b2;border-color:#0891b2;box-shadow:0 4px 14px rgba(6,182,212,0.45);}
+
+/* ── NEW BOOKING CTA BUTTON ── */
+.btn-nav-cta{
+  color:#fff;text-decoration:none;
+  font-size:14px;font-weight:700;
+  padding:8px 18px;border-radius:10px;
+  border:1.5px solid rgba(6,182,212,0.5);
+  background:linear-gradient(135deg,rgba(37,99,235,0.55),rgba(6,182,212,0.45));
+  box-shadow:0 0 18px rgba(6,182,212,0.2),0 3px 10px rgba(0,0,0,0.25);
+  transition:all 0.22s;white-space:nowrap;
+  display:inline-flex;align-items:center;gap:7px;
+  cursor:pointer;font-family:'Outfit',sans-serif;
+}
+.btn-nav-cta:hover{background:linear-gradient(135deg,#2563eb,#0891b2);border-color:#06b6d4;box-shadow:0 0 28px rgba(6,182,212,0.45),0 4px 16px rgba(0,0,0,0.3);transform:translateY(-1px);}
+
+/* ── DARK MODE TOGGLE ── */
+.theme-toggle-wrap{display:flex;align-items:center;}
+.theme-toggle{position:relative;width:52px;height:28px;cursor:pointer;flex-shrink:0;}
+.theme-toggle input{opacity:0;width:0;height:0;position:absolute;}
+.theme-track{position:absolute;inset:0;border-radius:100px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);transition:background 0.4s ease,border-color 0.4s ease,box-shadow 0.4s ease;}
+.theme-toggle input:checked ~ .theme-track{background:rgba(14,30,80,0.9);border-color:rgba(100,149,237,0.4);box-shadow:inset 0 0 12px rgba(30,60,150,0.3),0 0 10px rgba(100,149,237,0.15);}
+.theme-thumb{position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#fbbf24,#f59e0b);box-shadow:0 0 10px rgba(251,191,36,0.6),0 2px 6px rgba(0,0,0,0.3);transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1),background 0.4s ease,box-shadow 0.4s ease;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.theme-toggle input:checked ~ .theme-thumb{transform:translateX(24px);background:linear-gradient(135deg,#c7d2fe,#a5b4fc);box-shadow:0 0 12px rgba(165,180,252,0.5),0 2px 6px rgba(0,0,0,0.4);}
+.theme-thumb-icon{font-size:12px;line-height:1;transition:opacity 0.2s,transform 0.3s;position:absolute;}
+.icon-sun{opacity:1;transform:rotate(0deg);}
+.icon-moon{opacity:0;transform:rotate(-90deg);}
+.theme-toggle input:checked ~ .theme-thumb .icon-sun{opacity:0;transform:rotate(90deg);}
+.theme-toggle input:checked ~ .theme-thumb .icon-moon{opacity:1;transform:rotate(0deg);}
+.theme-toggle:hover .theme-track{box-shadow:0 0 0 3px rgba(251,191,36,0.15);}
+.theme-toggle input:checked:hover ~ .theme-track{box-shadow:inset 0 0 12px rgba(30,60,150,0.3),0 0 0 3px rgba(165,180,252,0.15);}
+.theme-toggle input:focus-visible ~ .theme-track{outline:2px solid #06b6d4;outline-offset:3px;}
+.theme-label{font-size:10px;font-weight:600;color:rgba(255,255,255,0.35);letter-spacing:0.5px;text-transform:uppercase;user-select:none;min-width:24px;}
+
+/* ══════════════════════════════════════════════
+   MODULE HUB — Orbital nav menu
+══════════════════════════════════════════════ */
+.mod-hub-wrap{position:relative;flex-shrink:0;}
+.mod-hub-trigger{width:38px;height:38px;border-radius:10px;border:1px solid rgba(255,255,255,0.12);background:rgba(37,99,235,0.18);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background 0.22s,border-color 0.22s,box-shadow 0.22s,transform 0.22s;position:relative;color:rgba(255,255,255,0.85);box-shadow:0 0 16px rgba(37,99,235,0.22);}
+.mod-hub-trigger:hover{background:rgba(37,99,235,0.35);border-color:rgba(6,182,212,0.45);box-shadow:0 0 22px rgba(6,182,212,0.28);}
+.mod-hub-wrap.open .mod-hub-trigger{background:rgba(6,182,212,0.22);border-color:rgba(6,182,212,0.5);box-shadow:0 0 24px rgba(6,182,212,0.35);transform:rotate(45deg);}
+.mod-hub-trigger svg{transition:opacity 0.18s,transform 0.18s;}
+.mod-hub-icon-grid{position:absolute;}
+.mod-hub-icon-close{position:absolute;opacity:0;transform:rotate(-45deg);}
+.mod-hub-wrap.open .mod-hub-icon-grid{opacity:0;transform:rotate(45deg);}
+.mod-hub-wrap.open .mod-hub-icon-close{opacity:1;transform:rotate(0deg);}
+.mod-hub-panel{position:absolute;top:calc(100% + 14px);right:0;display:flex;flex-direction:column;align-items:flex-end;gap:0;z-index:600;pointer-events:none;}
+.mod-hub-track{position:absolute;top:19px;right:19px;width:2px;background:linear-gradient(180deg,rgba(6,182,212,0.55) 0%,rgba(37,99,235,0.35) 60%,transparent 100%);border-radius:99px;transform-origin:top center;transition:height 0.4s cubic-bezier(0.34,1.2,0.64,1),opacity 0.3s;height:0;opacity:0;}
+.mod-hub-wrap.open .mod-hub-track{height:calc(5 * 64px - 24px);opacity:1;}
+.mod-hub-node{display:flex;align-items:center;gap:12px;text-decoration:none;padding:6px 0;pointer-events:none;opacity:0;transform:translateX(20px) scale(0.85);transition:opacity 0.28s cubic-bezier(0.34,1.3,0.64,1),transform 0.28s cubic-bezier(0.34,1.3,0.64,1);}
+.mod-hub-wrap.open .mod-hub-node{opacity:1;transform:translateX(0) scale(1);pointer-events:auto;}
+.mod-hub-wrap.open .mod-hub-node:nth-child(2){transition-delay:0.04s;}
+.mod-hub-wrap.open .mod-hub-node:nth-child(3){transition-delay:0.09s;}
+.mod-hub-wrap.open .mod-hub-node:nth-child(4){transition-delay:0.14s;}
+.mod-hub-wrap.open .mod-hub-node:nth-child(5){transition-delay:0.19s;}
+.mod-hub-wrap.open .mod-hub-node:nth-child(6){transition-delay:0.24s;}
+.mod-hub-label-wrap{display:flex;flex-direction:column;align-items:flex-end;text-align:right;}
+.mod-hub-num{font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,0.28);letter-spacing:1px;line-height:1;font-weight:500;}
+.mod-hub-name{font-size:12px;font-weight:700;color:rgba(255,255,255,0.75);letter-spacing:0.3px;white-space:nowrap;line-height:1.2;transition:color 0.18s;}
+.mod-hub-node:hover .mod-hub-name{color:#22d3ee;}
+.mod-hub-circle{width:40px;height:40px;border-radius:50%;border:1.5px solid rgba(37,99,235,0.45);background:radial-gradient(circle at 35% 35%,rgba(37,99,235,0.5),rgba(6,182,212,0.22) 70%,rgba(8,14,50,0.88) 100%);box-shadow:0 0 14px rgba(6,182,212,0.22),0 0 0 3px rgba(37,99,235,0.12),inset 0 1px 0 rgba(255,255,255,0.14);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.85);flex-shrink:0;transition:box-shadow 0.22s,border-color 0.22s,background 0.22s,transform 0.22s;position:relative;}
+.mod-hub-node:hover .mod-hub-circle{border-color:rgba(6,182,212,0.8);box-shadow:0 0 22px rgba(6,182,212,0.45),0 0 0 5px rgba(6,182,212,0.12),inset 0 1px 0 rgba(255,255,255,0.2);background:radial-gradient(circle at 35% 35%,rgba(6,182,212,0.55),rgba(37,99,235,0.35) 70%,rgba(8,14,50,0.88) 100%);transform:scale(1.1);}
+.mod-hub-circle::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:1px solid rgba(6,182,212,0.3);animation:hubRingPulse 2.5s ease-in-out infinite;opacity:0;}
+.mod-hub-node:hover .mod-hub-circle::after{opacity:1;}
+@keyframes hubRingPulse{0%,100%{transform:scale(1);opacity:0.6;}50%{transform:scale(1.18);opacity:0;}}
+.mod-hub-node.active .mod-hub-circle{border-color:rgba(6,182,212,0.7);box-shadow:0 0 18px rgba(6,182,212,0.4),0 0 0 4px rgba(6,182,212,0.1),inset 0 1px 0 rgba(255,255,255,0.18);}
+.mod-hub-node.active .mod-hub-name{color:#22d3ee;}
+.mod-hub-backdrop{display:none;position:fixed;inset:0;z-index:599;}
+.mod-hub-wrap.open .mod-hub-backdrop{display:block;}
+.mod-hub-wrap.open .mod-hub-panel{pointer-events:auto;}
 
 /* ══════════ PAGE HEADER ══════════ */
 .page-header{
-  position:fixed;top:var(--nav-h);left:0;right:0;z-index:400;
+  position:sticky;top:84px;z-index:400;
   height:var(--ph-h);
   background:linear-gradient(135deg,#0c1445 0%,#1e3a8a 52%,#2563eb 100%);
   display:flex;align-items:center;justify-content:space-between;
   padding:0 20px;overflow:hidden;
 }
+body.dark-mode .page-header{background:linear-gradient(135deg,#020917 0%,#071030 52%,#0f2260 100%);}
 .page-header::before{content:'';position:absolute;inset:0;pointer-events:none;
   background:radial-gradient(ellipse 55% 100% at 90%,rgba(6,182,212,.18),transparent 65%);}
 .ph-left{position:relative;z-index:1;}
@@ -88,11 +185,125 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);}
 
 /* ══════════ APP SHELL ══════════ */
 .app-shell{
-  position:fixed;
-  top:calc(var(--nav-h) + var(--ph-h));
-  left:0;right:0;bottom:0;
-  display:flex;z-index:1;
+  display:flex;
+  height:calc(100vh - 84px - var(--ph-h));
+  overflow:hidden;
 }
+
+/* ════════════════════════════════════════════════════════
+   DARK MODE — Comprehensive overrides
+════════════════════════════════════════════════════════ */
+body.dark-mode{
+  --bg:#070d1c;--surface:#0f1628;--surface2:#0b1220;
+  --text:#dde6f5;--text2:#b8c8e0;--muted:#9baac4;--muted2:#4e6080;
+  --border:#1e2d45;--border2:#263550;
+  background:#070d1c;color:#dde6f5;
+}
+body.dark-mode .bg-grid{background-image:linear-gradient(rgba(37,99,235,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(37,99,235,0.04) 1px,transparent 1px);}
+
+/* Sidebar */
+body.dark-mode .sidebar{background:#0f1628;border-right-color:#1e2d45;}
+body.dark-mode .sb-head{background:#0b1220;border-bottom-color:#1e2d45;}
+body.dark-mode .sb-label{color:#06b6d4;}
+body.dark-mode .sb-search input{background:#0b1220;border-color:#1e2d45;color:#dde6f5;}
+body.dark-mode .sb-search input:focus{border-color:#2563eb;background:#0f1628;box-shadow:0 0 0 3px rgba(37,99,235,0.15);}
+body.dark-mode .sb-search input::placeholder{color:#4e6080;}
+body.dark-mode .sb-si{color:#4e6080;}
+body.dark-mode .fp{background:#0b1220;border-color:#1e2d45;color:#9baac4;}
+body.dark-mode .fp:hover{border-color:#2563eb;color:#93c5fd;background:rgba(37,99,235,0.1);}
+body.dark-mode .fp.on{background:#2563eb;color:#fff;border-color:#2563eb;}
+body.dark-mode .sb-count{color:#4e6080;}
+body.dark-mode .sb-list::-webkit-scrollbar-thumb{background:#1e2d45;}
+
+/* Booking items */
+body.dark-mode .bk{border-color:transparent;}
+body.dark-mode .bk:hover{background:#131e30;border-color:#1e2d45;}
+body.dark-mode .bk.sel{background:rgba(37,99,235,0.14);border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,0.08);}
+body.dark-mode .bk-name{color:#dde6f5;}
+body.dark-mode .bk-meta{color:#9baac4;}
+body.dark-mode .bk-id{background:rgba(37,99,235,0.15);color:#93c5fd;}
+body.dark-mode .st-b{background:rgba(217,119,6,0.15);color:#fbbf24;}
+body.dark-mode .st-p{background:rgba(37,99,235,0.15);color:#93c5fd;}
+body.dark-mode .st-c{background:rgba(22,163,74,0.15);color:#4ade80;}
+body.dark-mode .bk-ready{background:rgba(22,163,74,0.15);color:#4ade80;}
+body.dark-mode .sb-empty p{color:#9baac4;}
+
+/* Main / Welcome */
+body.dark-mode .welcome h2{color:#dde6f5;}
+body.dark-mode .welcome p{color:#9baac4;}
+body.dark-mode .welcome-icon{background:linear-gradient(135deg,rgba(37,99,235,0.2),rgba(124,58,237,0.2));}
+
+/* Top bar (patient strip) */
+body.dark-mode .top-bar{background:linear-gradient(135deg,#020917 0%,#051230 55%,#0a1f58 100%);}
+
+/* Toolbar */
+body.dark-mode .toolbar-wrap{background:#0f1628;border-bottom-color:#1e2d45;}
+body.dark-mode .toolbar-row{border-bottom-color:#1e2d45;}
+body.dark-mode .tool-label{color:#4e6080;}
+body.dark-mode .tool-vr{background:#1e2d45;}
+body.dark-mode .pill-tog{background:#0b1220;}
+body.dark-mode .pt{color:#9baac4;}
+body.dark-mode .pt.on{background:#2563eb;color:#fff;}
+body.dark-mode .swatch-row .swatch{box-shadow:0 1px 3px rgba(0,0,0,0.5);}
+
+/* Toggle switches */
+body.dark-mode .tog-box{background:#1e2d45;}
+body.dark-mode .tog-box.on{background:#2563eb;}
+body.dark-mode .tog-lbl{color:#9baac4;}
+
+/* Preview area */
+body.dark-mode .preview-area{background:#070d1c;}
+body.dark-mode .paper{box-shadow:0 8px 40px rgba(0,0,0,0.6);}
+
+/* Modals */
+body.dark-mode .modal-bg{background:rgba(0,0,0,0.7);}
+body.dark-mode .modal{background:#0f1628;border:1px solid #1e2d45;box-shadow:0 24px 80px rgba(0,0,0,0.7);}
+body.dark-mode .modal-head{background:linear-gradient(135deg,#030a1e 0%,#07163a 55%,#0d2255 100%);border-bottom-color:#1e2d45;}
+body.dark-mode .modal-title{color:#dde6f5;}
+body.dark-mode .modal-tabs{border-bottom-color:#1e2d45;background:#0b1220;}
+body.dark-mode .mtab{color:#9baac4;}
+body.dark-mode .mtab:hover{color:#dde6f5;background:#131e30;}
+body.dark-mode .mtab.on{color:#06b6d4;border-bottom-color:#06b6d4;}
+body.dark-mode .modal-body{background:#0f1628;}
+body.dark-mode .modal-foot{background:#0b1220;border-top-color:#1e2d45;}
+body.dark-mode .modal-hint{color:#4e6080;}
+body.dark-mode .modal-close{color:#9baac4;}
+body.dark-mode .modal-close:hover{color:#f87171;background:rgba(220,38,38,0.15);}
+
+/* Modal fields */
+body.dark-mode .ls-section{color:#4e6080;border-bottom-color:#1e2d45;}
+body.dark-mode .ls-lbl{color:#9baac4;}
+body.dark-mode .ls-field input,.ls-field textarea,.ls-field select{background:#0b1220;border-color:#1e2d45;color:#dde6f5;}
+body.dark-mode .ls-field input:focus,body.dark-mode .ls-field textarea:focus,body.dark-mode .ls-field select:focus{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,0.15);}
+body.dark-mode .ls-hint{color:#4e6080;}
+body.dark-mode .ls-logo-box,.ls-sig-box{background:#0b1220;border-color:#1e2d45;}
+body.dark-mode .ls-logo-sub{color:#4e6080;}
+
+/* Color palette */
+body.dark-mode .cp{box-shadow:0 1px 4px rgba(0,0,0,0.5);}
+
+/* Swatch row */
+body.dark-mode .swatch{box-shadow:0 1px 3px rgba(0,0,0,0.4);}
+body.dark-mode .swatch.on{box-shadow:0 0 0 2px #fff,0 0 8px rgba(0,0,0,0.5);}
+
+/* QR modal */
+body.dark-mode .qr-modal-bg{background:rgba(0,0,0,0.7);}
+body.dark-mode .qr-modal{background:#0f1628;border:1px solid #1e2d45;box-shadow:0 24px 60px rgba(0,0,0,0.7);}
+body.dark-mode .qr-modal-head{background:#0b1220;border-bottom-color:#1e2d45;}
+body.dark-mode .qr-modal-body{background:#0f1628;}
+body.dark-mode .qr-canvas-wrap{background:#fff;border-radius:12px;}
+body.dark-mode .qr-info{color:#9baac4;}
+body.dark-mode .qr-data-preview{background:#0b1220;border-color:#1e2d45;color:#b8c8e0;}
+
+/* Buttons */
+body.dark-mode .btn-ghost{background:rgba(255,255,255,0.05);color:#9baac4;border-color:#1e2d45;}
+body.dark-mode .btn-ghost:hover{background:rgba(255,255,255,0.1);color:#dde6f5;border-color:#263550;}
+
+/* Toasts */
+body.dark-mode .toasts .toast{background:#0f1628;border-color:#1e2d45;color:#dde6f5;}
+body.dark-mode .toasts .toast.success{background:rgba(22,163,74,0.15);border-color:rgba(22,163,74,0.3);color:#4ade80;}
+body.dark-mode .toasts .toast.error{background:rgba(220,38,38,0.15);border-color:rgba(220,38,38,0.3);color:#f87171;}
+body.dark-mode .toasts .toast.info{background:rgba(37,99,235,0.15);border-color:rgba(37,99,235,0.3);color:#93c5fd;}
 
 /* ══════════ SIDEBAR ══════════ */
 .sidebar{
@@ -488,31 +699,140 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);}
 <div id="printRoot"></div>
 
 <!-- ══ NAVBAR ══ -->
+<header>
 <nav class="navbar">
   <a class="nav-logo" href="#">
     <div class="logo-icon">🧬</div>
-    <div class="logo-text">Medi<span>Core</span></div>
-  </a>
-  <div class="nav-steps">
-    <a class="nav-step" href="MAIN1.html"><span class="sn">1</span>Registration</a>
-    <div class="ns-div"></div>
-    <a class="nav-step" href="MAIN2.html"><span class="sn">2</span>Catalog</a>
-    <div class="ns-div"></div>
-    <a class="nav-step" href="MAIN3.html"><span class="sn">3</span>Bookings</a>
-    <div class="ns-div"></div>
-    <a class="nav-step" href="MAIN4.html"><span class="sn">4</span>Results</a>
-    <div class="ns-div"></div>
-    <span class="nav-step active"><span class="sn">5</span>Reports</span>
-  </div>
-  <div class="nav-right">
-    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:1px;">
-      <div class="nav-clock" id="clk">--:--:--</div>
-      <div class="nav-date" id="dateBadge">--</div>
+    <div class="logo-text">
+      <span class="logo-medi">Medi</span><span class="logo-core">Core</span>
+      <span class="logo-sub">Diagnostic Centre</span>
     </div>
-    <div class="nav-vr"></div>
-    <button class="btn-nav" onclick="openSettings()">⚙ Lab Settings</button>
+  </a>
+
+  <!-- RIGHT SIDE -->
+  <div class="nav-right">
+
+    <!-- CLOCK -->
+    <div class="nav-clock-simple">
+      <span class="clock-badge" id="clk">--:--:--</span>
+      <span class="date-badge-inline" id="dateBadge">— — —</span>
+    </div>
+
+    <div class="nav-divider"></div>
+
+    <!-- NEW BOOKING CTA -->
+    <a href="MAIN2.html" class="btn-nav-cta" aria-label="New Booking">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      <span>New Booking</span>
+    </a>
+
+    <!-- SETTINGS BUTTON -->
+    <button class="btn-nav" onclick="openSettings()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <span class="nav-label">Lab Settings</span>
+    </button>
+
+    <div class="nav-divider"></div>
+
+    <!-- SUN/MOON DARK MODE TOGGLE -->
+    <label class="theme-toggle" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">
+      <input type="checkbox" id="themeToggle" name="themeToggle" />
+      <div class="theme-track"></div>
+      <div class="theme-thumb">
+        <span class="theme-thumb-icon icon-sun">☀️</span>
+        <span class="theme-thumb-icon icon-moon">🌙</span>
+      </div>
+    </label>
+    <span class="theme-label" id="themeLabelText">Light</span>
+
+    <div class="nav-divider"></div>
+
+    <!-- MODULE HUB -->
+    <div class="mod-hub-wrap" id="modHubWrap">
+      <div class="mod-hub-backdrop" id="modHubBackdrop"></div>
+
+      <button class="mod-hub-trigger" id="modHubTrigger" aria-label="Module navigation" aria-expanded="false" title="Navigate modules">
+        <svg class="mod-hub-icon-grid" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+          <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+        </svg>
+        <svg class="mod-hub-icon-close" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+
+      <div class="mod-hub-panel" id="modHubPanel" role="navigation" aria-label="Module pages">
+        <div class="mod-hub-track"></div>
+
+        <a href="MAIN1.html" class="mod-hub-node">
+          <div class="mod-hub-label-wrap">
+            <span class="mod-hub-num">01</span>
+            <span class="mod-hub-name">Register</span>
+          </div>
+          <div class="mod-hub-circle">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+        </a>
+
+        <a href="MAIN2.html" class="mod-hub-node">
+          <div class="mod-hub-label-wrap">
+            <span class="mod-hub-num">02</span>
+            <span class="mod-hub-name">Lab Tests</span>
+          </div>
+          <div class="mod-hub-circle">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 3h6m-5 0v7l-4 7a2 2 0 0 0 1.8 3h8.4a2 2 0 0 0 1.8-3l-4-7V3"/>
+            </svg>
+          </div>
+        </a>
+
+        <a href="MAIN3.html" class="mod-hub-node">
+          <div class="mod-hub-label-wrap">
+            <span class="mod-hub-num">03</span>
+            <span class="mod-hub-name">Bookings</span>
+          </div>
+          <div class="mod-hub-circle">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
+              <rect x="9" y="3" width="6" height="4" rx="1"/>
+              <path d="M9 12h6M9 16h4"/>
+            </svg>
+          </div>
+        </a>
+
+        <a href="MAIN4.html" class="mod-hub-node">
+          <div class="mod-hub-label-wrap">
+            <span class="mod-hub-num">04</span>
+            <span class="mod-hub-name">Results</span>
+          </div>
+          <div class="mod-hub-circle">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+          </div>
+        </a>
+
+        <a href="MAIN5.html" class="mod-hub-node active">
+          <div class="mod-hub-label-wrap">
+            <span class="mod-hub-num">05</span>
+            <span class="mod-hub-name">Reports</span>
+          </div>
+          <div class="mod-hub-circle">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 6 2 18 2 18 9"/>
+              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+              <rect x="6" y="14" width="12" height="8"/>
+            </svg>
+          </div>
+        </a>
+      </div>
+    </div>
+
   </div>
 </nav>
+</header>
 
 <!-- ══ PAGE HEADER ══ -->
 <div class="page-header">
@@ -1629,7 +1949,53 @@ document.addEventListener('DOMContentLoaded',()=>{
   const p=new URLSearchParams(location.search).get('booking');
   if(p)setTimeout(()=>{const b=_bks.find(x=>x.bookingId===p);if(b)selBk(b.bookingId);},80);
   if(!_lab.name)setTimeout(openSettings,300);
+  initTheme();
+  initModHub();
 });
+
+/* ── Dark Mode ── */
+function initTheme(){
+  const toggleEl=document.getElementById('themeToggle');
+  if(!toggleEl)return;
+  const saved=localStorage.getItem('medicore-theme');
+  function applyTheme(dark){
+    const themeLabel=document.getElementById('themeLabelText');
+    document.body.style.transition='background 0.4s ease,color 0.3s ease';
+    if(dark){
+      document.body.classList.add('dark-mode');
+      if(themeLabel)themeLabel.textContent='Dark';
+    }else{
+      document.body.classList.remove('dark-mode');
+      if(themeLabel)themeLabel.textContent='Light';
+    }
+  }
+  if(saved==='dark'){toggleEl.checked=true;applyTheme(true);}
+  toggleEl.addEventListener('change',()=>{
+    const dark=toggleEl.checked;
+    applyTheme(dark);
+    localStorage.setItem('medicore-theme',dark?'dark':'light');
+  });
+}
+
+/* ── Module Hub ── */
+function initModHub(){
+  const wrap=document.getElementById('modHubWrap');
+  const trigger=document.getElementById('modHubTrigger');
+  const backdrop=document.getElementById('modHubBackdrop');
+  if(!trigger||!wrap)return;
+  function openHub(){wrap.classList.add('open');trigger.setAttribute('aria-expanded','true');}
+  function closeHub(){wrap.classList.remove('open');trigger.setAttribute('aria-expanded','false');}
+  function toggleHub(){wrap.classList.contains('open')?closeHub():openHub();}
+  trigger.addEventListener('click',toggleHub);
+  trigger.addEventListener('keydown',e=>{
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleHub();}
+    if(e.key==='Escape')closeHub();
+  });
+  if(backdrop)backdrop.addEventListener('click',closeHub);
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'&&wrap.classList.contains('open'))closeHub();
+  });
+}
 </script>
 </body>
 </html>
