@@ -598,6 +598,11 @@ body.dark-mode .pm-saved-title::after { background: #1e2d45; }
 body.dark-mode .pm-saved-chip { background: #0b1220; border-color: #1e2d45; color: #b8c8e0; }
 body.dark-mode .pm-saved-chip:hover { border-color: #7c3aed; background: rgba(124,58,237,0.12); color: #c4b5fd; }
 body.dark-mode .pm-saved-chip.active-edit { border-color: #7c3aed; background: rgba(124,58,237,0.18); color: #c4b5fd; }
+
+/* ── Dark mode: Delete params panel ── */
+body.dark-mode #deleteParamsPanel { background: #1a0a0a; border-bottom-color: #7f1d1d; }
+body.dark-mode .dp-chip { color: #fca5a5 !important; border-color: #7f1d1d !important; background: #1a0a0a !important; }
+body.dark-mode .dp-chip-sel { color: #f87171 !important; border-color: #dc2626 !important; background: rgba(220,38,38,0.18) !important; }
 body.dark-mode .pm-saved-chip .psc-count { background: rgba(124,58,237,0.2); color: #c4b5fd; }
 body.dark-mode .pm-empty-saved { color: #4e6080; }
 
@@ -1711,6 +1716,7 @@ td.td-gauge { padding:5px 10px 5px 8px; }
   <button class="btn btn-import btn-sm" onclick="pmImport()" title="Import parameters from JSON or CSV file" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;">📥 Import</button>
   <button class="btn btn-export btn-sm" onclick="pmExportAll()" title="Export all saved parameter configurations" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;">📤 Export</button>
   <button class="btn btn-sm" onclick="toggleSyntaxPanel()" title="View import format syntax" id="btnViewSyntax" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:#f1f5f9;color:var(--muted,#475569);border:1.5px solid var(--border,#cbd5e1);">📋 View Syntax</button>
+  <button class="btn btn-sm" onclick="toggleDeletePanel()" title="Delete saved parameter configurations" id="btnDeleteParams" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:#fff5f5;color:#dc2626;border:1.5px solid #fca5a5;">🗑 Delete Params</button>
   <div style="width:1px;height:24px;background:var(--border2,#e2e8f0);flex-shrink:0;"></div>
   <span style="font-size:12px;color:var(--muted,#475569);font-weight:500;">Configure lab test reference ranges and parameter templates</span>
   <div style="flex:1;"></div>
@@ -1758,6 +1764,27 @@ Complete Blood Count,T002,WBC,10^9/L,4.5,11.0,2.0,20.0</pre>
     💡 <strong>testName</strong> and <strong>testId</strong> must match catalog entries (T001–T293). 
     <strong>refRangeLo / refRangeHi</strong> set the normal band; <strong>criticLo / criticHi</strong> set critical alert thresholds. 
     Leave numeric fields blank for text-result parameters.
+  </div>
+</div>
+
+<!-- ══ INLINE DELETE PARAMS PANEL ══ -->
+<div id="deleteParamsPanel" style="display:none;background:#fff5f5;border-bottom:2px solid #fca5a5;padding:16px 32px;position:sticky;top:134px;z-index:148;box-shadow:0 2px 8px rgba(220,38,38,0.07);">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+    <span style="font-size:13px;font-weight:800;color:#991b1b;">🗑 Delete Saved Parameter Configurations</span>
+    <div style="flex:1;"></div>
+    <button id="btnDeleteAll" onclick="pmDeleteAllParams()" style="font-size:11px;padding:5px 14px;border:1.5px solid #dc2626;border-radius:7px;background:#dc2626;color:#fff;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:700;display:inline-flex;align-items:center;gap:5px;">🗑 Delete All</button>
+    <button onclick="toggleDeletePanel()" style="font-size:11px;padding:4px 10px;border:1.5px solid #fca5a5;border-radius:6px;background:#fff;color:#dc2626;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:600;">✕ Close</button>
+  </div>
+  <div id="deleteParamsGrid" style="display:flex;flex-wrap:wrap;gap:8px;max-height:220px;overflow-y:auto;padding-right:4px;">
+    <div style="font-size:12px;color:#9ca3af;padding:8px 0;">No saved configurations found.</div>
+  </div>
+  <div style="margin-top:10px;font-size:10.5px;color:#b91c1c;">
+    💡 Click a chip to select it for deletion · <strong>Delete Selected</strong> removes checked items · <strong>Delete All</strong> clears everything at once.
+  </div>
+  <div id="deleteParamsActions" style="display:none;margin-top:10px;display:none;align-items:center;gap:8px;">
+    <span id="deleteParamsSelCount" style="font-size:11.5px;font-weight:700;color:#dc2626;">0 selected</span>
+    <button onclick="pmDeleteSelectedParams()" style="font-size:11px;padding:5px 14px;border:1.5px solid #dc2626;border-radius:7px;background:#fff;color:#dc2626;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:700;">🗑 Delete Selected</button>
+    <button onclick="pmDeselectAllParams()" style="font-size:11px;padding:5px 10px;border:1.5px solid #fca5a5;border-radius:7px;background:#fff;color:#b91c1c;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:600;">✕ Deselect All</button>
   </div>
 </div>
 
@@ -4293,6 +4320,104 @@ function showToast(msg,type='') {
   const c=document.getElementById('toastC'), t=document.createElement('div');
   t.className=`toast ${type}`; t.textContent=msg; c.appendChild(t);
   setTimeout(()=>t.remove(),2800);
+}
+
+/* ── DELETE PARAMS PANEL ── */
+let _deleteSelectedIds = new Set();
+
+function toggleDeletePanel() {
+  const panel = document.getElementById('deleteParamsPanel');
+  const btn   = document.getElementById('btnDeleteParams');
+  const isOpen = panel.style.display !== 'none';
+  // close syntax panel if open
+  const syntaxPanel = document.getElementById('syntaxPanel');
+  if (syntaxPanel) syntaxPanel.style.display = 'none';
+  const svBtn = document.getElementById('btnViewSyntax');
+  if (svBtn) { svBtn.style.background=''; svBtn.style.color=''; svBtn.style.borderColor=''; }
+
+  if (isOpen) {
+    panel.style.display = 'none';
+    if (btn) { btn.style.background='#fff5f5'; btn.style.color='#dc2626'; btn.style.borderColor='#fca5a5'; }
+  } else {
+    panel.style.display = '';
+    if (btn) { btn.style.background='#dc2626'; btn.style.color='#fff'; btn.style.borderColor='#dc2626'; }
+    _deleteSelectedIds.clear();
+    _renderDeleteGrid();
+  }
+}
+
+function _renderDeleteGrid() {
+  const store = loadParamStore();
+  const grid  = document.getElementById('deleteParamsGrid');
+  const acts  = document.getElementById('deleteParamsActions');
+  if (!store.length) {
+    grid.innerHTML = '<div style="font-size:12px;color:#9ca3af;padding:8px 0;">No saved configurations found.</div>';
+    if (acts) acts.style.display = 'none';
+    return;
+  }
+  grid.innerHTML = store.map(t => {
+    const sel = _deleteSelectedIds.has(t.testId);
+    return `<div class="dp-chip${sel?' dp-chip-sel':''}" data-tid="${H(t.testId)}" onclick="_dpToggle('${H(t.testId)}')" title="Click to select for deletion" style="
+      display:inline-flex;align-items:center;gap:6px;padding:5px 12px 5px 10px;
+      border-radius:20px;cursor:pointer;user-select:none;font-size:12px;font-weight:600;
+      border:1.5px solid ${sel?'#dc2626':'#fca5a5'};
+      background:${sel?'rgba(220,38,38,0.12)':'#fff'};
+      color:${sel?'#dc2626':'#7f1d1d'};
+      transition:all .15s;">
+      <span style="font-size:14px;">${sel?'☑':'☐'}</span>
+      <span>🧪 ${H(t.testName)}</span>
+      <span style="background:${sel?'#dc2626':'#fca5a5'};color:#fff;border-radius:10px;padding:1px 7px;font-size:10px;">${t.params.length}</span>
+    </div>`;
+  }).join('');
+  if (acts) acts.style.display = _deleteSelectedIds.size ? 'flex' : 'none';
+  const cnt = document.getElementById('deleteParamsSelCount');
+  if (cnt) cnt.textContent = _deleteSelectedIds.size + ' selected';
+}
+
+function _dpToggle(testId) {
+  if (_deleteSelectedIds.has(testId)) _deleteSelectedIds.delete(testId);
+  else _deleteSelectedIds.add(testId);
+  _renderDeleteGrid();
+}
+
+function pmDeselectAllParams() {
+  _deleteSelectedIds.clear();
+  _renderDeleteGrid();
+}
+
+function pmDeleteSelectedParams() {
+  if (!_deleteSelectedIds.size) { showToast('⚠️ Select at least one configuration', 'warning'); return; }
+  const names = loadParamStore().filter(t => _deleteSelectedIds.has(t.testId)).map(t => t.testName);
+  if (!confirm(`Delete ${names.length} configuration(s)?\n\n${names.join('\n')}`)) return;
+  saveParamStore(loadParamStore().filter(t => !_deleteSelectedIds.has(t.testId)));
+  _deleteSelectedIds.clear();
+  _renderDeleteGrid();
+  pmRefreshSavedGrid();
+  _updateSubHeaderParamCount();
+  showToast(`🗑 ${names.length} configuration(s) deleted`, 'info');
+  if (!loadParamStore().length) document.getElementById('deleteParamsPanel').style.display='none';
+}
+
+function pmDeleteAllParams() {
+  const store = loadParamStore();
+  if (!store.length) { showToast('⚠️ Nothing to delete', 'warning'); return; }
+  if (!confirm(`Delete ALL ${store.length} saved parameter configuration(s)? This cannot be undone.`)) return;
+  saveParamStore([]);
+  _deleteSelectedIds.clear();
+  _renderDeleteGrid();
+  pmRefreshSavedGrid();
+  _updateSubHeaderParamCount();
+  document.getElementById('deleteParamsPanel').style.display='none';
+  const btn = document.getElementById('btnDeleteParams');
+  if (btn) { btn.style.background='#fff5f5'; btn.style.color='#dc2626'; btn.style.borderColor='#fca5a5'; }
+  showToast(`🗑 All parameter configurations deleted`, 'info');
+}
+
+function _updateSubHeaderParamCount() {
+  const el = document.getElementById('subHeaderParamCount');
+  if (el) el.textContent = loadParamStore().length;
+  const badge = document.getElementById('paramCountBadge');
+  if (badge) badge.textContent = loadParamStore().length + ' Tests Configured';
 }
 </script>
 </body>
